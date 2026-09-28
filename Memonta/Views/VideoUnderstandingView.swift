@@ -35,7 +35,7 @@ private struct AVPlayerContainer: NSViewRepresentable {
 /// 视频条目的画面理解页：播放器、关键帧时间轴与视觉纪要集中在同一处。
 struct VideoUnderstandingView: View {
     let recording: AudioRecording
-    @Bindable var viewModel: RecordingViewModel
+    let viewModel: RecordingViewModel
     @Binding var selectedLLMConfig: LLMConfig?
     var allowsAnalysis: Bool = true
     /// 临时模式（不落盘）：禁用抽帧/分析/画面要点编辑，仅保留浏览与复制
