@@ -1,0 +1,423 @@
+{
+  "sourceLanguage" : "zh-Hans",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Memonta"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Memonta"
+          }
+        }
+      }
+    },
+    "NSMicrophoneUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحتاج Memonta إلى الوصول إلى الميكروفون لتسجيل صوت الاجتماع."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta benötigt Zugriff auf das Mikrofon, um Besprechungsaudio aufzunehmen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta needs access to the microphone to record meeting audio."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta necesita acceso al micrófono para grabar el audio de las reuniones."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta a besoin d’accéder au microphone pour enregistrer l’audio des réunions."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta को बैठक का ऑडियो रिकॉर्ड करने के लिए माइक्रोफ़ोन तक पहुँच चाहिए।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta memerlukan akses ke mikrofon untuk merekam audio rapat."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta necessita dell’accesso al microfono per registrare l’audio delle riunioni."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta が会議の音声を録音するためにマイクへのアクセスを必要としています。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta가 회의 오디오를 녹음하려면 마이크에 접근해야 합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta heeft toegang tot de microfoon nodig om vergaderaudio op te nemen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta potrzebuje dostępu do mikrofonu, aby nagrywać dźwięk spotkań."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Memonta precisa de acesso ao microfone para gravar o áudio das reuniões."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta требуется доступ к микрофону для записи звука встреч."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta behöver åtkomst till mikrofonen för att spela in mötesljud."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta ต้องการเข้าถึงไมโครโฟนเพื่อบันทึกเสียงการประชุม"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta, toplantı sesini kaydetmek için mikrofona erişim gerektirir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta потрібен доступ до мікрофона, щоб записувати звук зустрічей."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta cần quyền truy cập micrô để ghi âm cuộc họp."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta 需要访问麦克风以录制会议音频"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta 需要存取麥克風以錄製會議音訊"
+          }
+        }
+      }
+    },
+    "NSRemindersUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحتاج Memonta إلى الوصول إلى التذكيرات لكتابة المهام المستخرجة بالذكاء الاصطناعي في تذكيرات النظام."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta benötigt Zugriff auf Erinnerungen, um von der KI extrahierte To-dos in die System-Erinnerungen zu schreiben."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta needs access to Reminders to write AI-extracted to-dos into the system Reminders."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta necesita acceso a Recordatorios para escribir en Recordatorios del sistema las tareas extraídas por la IA."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta a besoin d’accéder aux Rappels pour écrire dans les Rappels système les tâches extraites par l’IA."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta को AI द्वारा निकाले गए कार्यों को सिस्टम रिमाइंडर में लिखने के लिए रिमाइंडर तक पहुँच चाहिए।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta memerlukan akses ke Pengingat untuk menulis tugas hasil ekstraksi AI ke Pengingat sistem."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta necessita dell’accesso a Promemoria per scrivere nei Promemoria di sistema le attività estratte dall’IA."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta が AI が抽出した To-Do をシステムのリマインダーに書き込むためにリマインダーへのアクセスを必要としています。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta가 AI가 추출한 할 일을 시스템 미리 알림에 기록하려면 미리 알림에 접근해야 합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta heeft toegang tot Herinneringen nodig om door AI geëxtraheerde taken naar de systeem-Herinneringen te schrijven."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta potrzebuje dostępu do Przypomnienia, aby zapisywać zadania wyodrębnione przez AI w systemowych Przypomnieniach."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Memonta precisa de acesso aos Lembretes para gravar nos Lembretes do sistema as tarefas extraídas pela IA."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta требуется доступ к Напоминаниям, чтобы записывать задачи, извлечённые ИИ, в системные Напоминания."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta behöver åtkomst till Påminnelser för att skriva AI-utdragna uppgifter till systemets Påminnelser."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta ต้องการเข้าถึงรายการเตือนเพื่อเขียนสิ่งที่ต้องทำที่ AI สกัดได้ลงในรายการเตือนของระบบ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta, yapay zekânın çıkardığı yapılacakları sistem Hatırlatıcıları’na yazmak için Hatırlatıcılar’a erişim gerektirir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta потрібен доступ до Нагадувань, щоб записувати завдання, витягнуті ШІ, у системні Нагадування."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta cần quyền truy cập Ứng dụng Nhắc việc để ghi các việc cần làm do AI trích xuất vào Nhắc việc của hệ thống."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta 需要访问提醒事项以将 AI 拆解的待办写入系统提醒事项"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta 需要存取提醒事項以將 AI 拆解的待辦寫入系統提醒事項"
+          }
+        }
+      }
+    },
+    "NSSpeechRecognitionUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحتاج Memonta إلى الوصول إلى التعرّف على الكلام لنسخ تسجيلات الاجتماع محليًا."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta benötigt Zugriff auf die Spracherkennung, um Besprechungsaufnahmen lokal zu transkribieren."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta needs access to speech recognition to transcribe meeting recordings locally."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta necesita acceso al reconocimiento de voz para transcribir localmente las grabaciones de reuniones."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta a besoin d’accéder à la reconnaissance vocale pour transcrire localement les enregistrements de réunion."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta को बैठक की रिकॉर्डिंग को स्थानीय रूप से ट्रांसक्राइब करने के लिए वाक् पहचान तक पहुँच चाहिए।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta memerlukan akses ke pengenalan suara untuk mentranskripsikan rekaman rapat secara lokal."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta necessita dell’accesso al riconoscimento vocale per trascrivere localmente le registrazioni delle riunioni."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta が会議の録音をローカルで文字起こしするために音声認識へのアクセスを必要としています。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta가 회의 녹음을 로컬에서 받아쓰기하려면 음성 인식에 접근해야 합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta heeft toegang tot spraakherkenning nodig om vergaderopnamen lokaal te transcriberen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta potrzebuje dostępu do rozpoznawania mowy, aby lokalnie transkrybować nagrania spotkań."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Memonta precisa de acesso ao reconhecimento de voz para transcrever localmente as gravações de reuniões."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta требуется доступ к распознаванию речи для локальной расшифровки записей встреч."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta behöver åtkomst till taligenkänning för att transkribera mötesinspelningar lokalt."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta ต้องการเข้าถึงการรู้จำเสียงเพื่อถอดเสียงบันทึกการประชุมในเครื่อง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta, toplantı kayıtlarını yerel olarak yazıya dökmek için konuşma tanımaya erişim gerektirir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta потрібен доступ до розпізнавання мовлення для локальної транскрипції записів зустрічей."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta cần quyền truy cập nhận dạng giọng nói để chuyển lời bản ghi cuộc họp ngay trên máy."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta 需要访问语音识别以在本地将会议录音转成文字"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta 需要存取語音辨識以在本機將會議錄音轉成文字"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
