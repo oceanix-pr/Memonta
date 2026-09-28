@@ -47,3 +47,6 @@ Memonta/Resources/Models/
 Models/
 Recordings/
 Screenshots/
+
+# Shared Xcode schemes must be versioned (global gitignore ignores *.xcscheme)
+!*.xcscheme
