@@ -44,7 +44,7 @@ icon_backup/
 
 # Downloaded models and user-generated data
 Memonta/Resources/Models/
-Models/
+/Models/
 Recordings/
 Screenshots/
 
