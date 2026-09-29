@@ -59,7 +59,7 @@ struct QueuePanelView: View {
             header
             Divider()
             if center.runningJobs.isEmpty && center.queuedJobs.isEmpty && center.failedJobs.isEmpty
-                && durableTasks.isEmpty && failedTasks.isEmpty {
+                && visibleDurableTasks.isEmpty && failedTasks.isEmpty {
                 emptyState
             } else {
                 ScrollView {
@@ -73,7 +73,7 @@ struct QueuePanelView: View {
                         if !center.failedJobs.isEmpty {
                             failureSection(center.failedJobs)
                         }
-                        if !durableTasks.isEmpty {
+                        if !visibleDurableTasks.isEmpty {
                             durableSection
                         }
                         if !failedTasks.isEmpty {
@@ -104,6 +104,31 @@ struct QueuePanelView: View {
         failedTasks = data.failedEntries
     }
 
+    /// 账本条目要等任务结束（完成/失败/取消）才出队，而用户发起任务时就会入队，
+    /// 因此「前台正在跑/排队」的这段时间里，同一份任务必然同时存在于内存 Job 与账本两处。
+    /// 面板按分区渲染就会把同一目标画成两行，这里把已被前台 Job 接管的条目滤掉。
+    private var visibleDurableTasks: [BackgroundTaskEntry] {
+        let foreground = center.runningJobs + center.queuedJobs
+        return durableTasks.filter { !isHandledByForegroundJob($0, in: foreground) }
+    }
+
+    /// 账本条目是否已有对应的前台 Job 步骤（快捷笔记总结只在笔记内展示，不建前台 Job）
+    private func isHandledByForegroundJob(
+        _ entry: BackgroundTaskEntry,
+        in jobs: [TaskCenter.Job]
+    ) -> Bool {
+        let stepKind: TaskKind?
+        switch entry.kind {
+        case .transcription:    stepKind = .transcription
+        case .summary:          stepKind = .summary
+        case .quicknoteSummary: stepKind = nil
+        }
+        guard let stepKind else { return false }
+        return jobs.contains { job in
+            job.folderName == entry.folderName && job.steps.contains { $0.kind == stepKind }
+        }
+    }
+
     /// 手动重试后立刻续跑（与启动兜底同一入口；worker 正在运行时让位给它）
     private func triggerDrainIfIdle() {
         guard !BackgroundWorker.isWorkerRunning() else { return }
@@ -123,7 +148,7 @@ struct QueuePanelView: View {
             Text("待续跑的任务")
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.secondary)
-            ForEach(durableTasks) { entry in
+            ForEach(visibleDurableTasks) { entry in
                 durableRow(entry)
             }
         }
