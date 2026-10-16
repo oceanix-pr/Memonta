@@ -31,6 +31,7 @@ struct HelpView: View {
                             String(localized: "录音过程中可在顶部工具栏查看时长和静音状态"),
                             String(localized: "支持智能静音检测：会议软件（Teams/Zoom/腾讯会议）静音时自动暂停麦克风采集，解除静音后自动恢复"),
                             String(localized: "也可在录音界面手动静音/解除静音"),
+                            String(localized: "可在「设置 → 录音 → 输入设备」开启「录音开始时静音麦克风」，之后每次开始录音或录屏都先静音麦克风，录音中可随时解除；菜单栏与录制工具栏的麦克风菜单读写同一份偏好"),
                             String(localized: "录音结束后，文件自动保存到数据文件夹中"),
                         ]
                     )
@@ -74,6 +75,17 @@ struct HelpView: View {
                             String(localized: "图片笔记支持本地 Vision OCR 识别或直接发送给支持视觉的 LLM"),
                             String(localized: "图片查看支持缩放、拖拽和全屏查看，方便对比细节"),
                             String(localized: "拆解待办或生成总结后自动生成简短标题并更新列表标题"),
+                        ]
+                    )
+
+                    helpSection(
+                        title: String(localized: "转为语音"),
+                        icon: "speaker.wave.2",
+                        items: [
+                            String(localized: "使用 macOS 系统音色在本机合成，文字不会发送到云端。"),
+                            String(localized: "文字笔记可点「转为语音」，选择朗读笔记正文或已有总结；入口仅在中文界面显示"),
+                            String(localized: "可选择语言与地区、系统音色和语速，先「试听前段」，满意后再「生成完整语音」，并可导出为 WAV 或 M4A 音频（此 Mac 无原生 MP3 编码器时不可选 MP3）"),
+                            String(localized: "关闭面板即取消合成并清理临时音频，不会生成录音条目"),
                         ]
                     )
 
@@ -188,6 +200,7 @@ struct HelpView: View {
                             String(localized: "隐藏的录音与笔记可在「设置 → 数据管理 → 显示隐藏的条目」中查看"),
                             String(localized: "录音文件存储在「设置 → 数据文件夹」指定的路径下，按月份自动分组"),
                             String(localized: "转写、总结、待办文件均会备份到对应录音文件夹中"),
+                            String(localized: "录音详情会显示采集完整性报告（音轨中断、恢复与静音证据）；设备异常、保存失败与自动恢复提醒通过横幅提示，可点「查看详情」定位条目"),
                         ]
                     )
 

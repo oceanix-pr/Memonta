@@ -62,7 +62,7 @@ struct OnboardingView: View {
             icon: "text.pad.header.badge.plus",
             title: String(localized: "快捷笔记"),
             subtitle: String(localized: "随手记录与待办拆解"),
-            description: String(localized: "粘贴文字或拖入图片即可创建笔记，AI 可将笔记拆解为待办事项并写入系统提醒事项，也可生成 AI 总结。图片查看支持缩放、拖拽和全屏查看。")
+            description: String(localized: "粘贴文字或拖入图片即可创建笔记，AI 可将笔记拆解为待办事项并写入系统提醒事项，也可生成 AI 总结。图片查看支持缩放、拖拽和全屏查看。文字笔记还可用系统音色在本机转为语音，并导出为 WAV 或 M4A 音频。")
         ),
         OnboardingPage(
             icon: "camera.viewfinder",

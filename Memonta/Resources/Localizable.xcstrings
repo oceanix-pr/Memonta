@@ -2463,7 +2463,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$@ · %2$@"
           }
         },
@@ -3766,7 +3766,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$d 条录音自动恢复失败：%2$@。\n分片文件已保留在录音文件夹，可用专业音频工具尝试修复。"
           }
         },
@@ -4028,7 +4028,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$lld × %2$lld"
           }
         },
@@ -5068,7 +5068,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$lld/%2$lld"
           }
         },
@@ -24320,7 +24320,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "供说话人分离使用的 CPU 核心数，可调范围 2–%1$lld（本机共 %2$lld 核，建议留 1 核给系统）。核心越多分离越快，但会占用更多 CPU。"
           }
         },
@@ -27832,7 +27832,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "共 %1$lld 个词典文件，%2$lld 条术语。词典为 Markdown 格式：每行一条，支持 “- 术语”（拼音自动纠正）、“| 错误词 | 正确词 |” 与 “错误词 -> 正确词”。"
           }
         },
@@ -58007,7 +58007,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "已写入提醒事项 %1$@/%2$@"
           }
         },
@@ -58137,7 +58137,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "已写入提醒事项 %1$lld/%2$lld"
           }
         },
@@ -60998,7 +60998,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "已自动恢复 %1$d 条崩溃遗留的录音：%2$@。转写与总结需重新发起"
           }
         },
@@ -96512,7 +96512,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "更新于 %1$@ · %2$lld 个片段"
           }
         },
@@ -116152,7 +116152,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "生成于 %1$@ · 模型 %2$@"
           }
         },
@@ -121615,7 +121615,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "磁盘可用空间不足：可用 %1$.1fGB，导入视频至少需要 %2$.1fGB（原片副本 + 音轨与余量）"
           }
         },
@@ -125006,136 +125006,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "粗"
-          }
-        }
-      }
-    },
-    "粘贴文字或拖入图片即可创建笔记，AI 可将笔记拆解为待办事项并写入系统提醒事项，也可生成 AI 总结。图片查看支持缩放、拖拽和全屏查看。" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "الصق نصًا أو اسحب صورًا لإنشاء ملاحظات. يمكن للذكاء الاصطناعي تفكيك الملاحظات إلى مهام وكتابتها في «التذكيرات» بالنظام، أو إنشاء ملخصات بالذكاء الاصطناعي. عرض الصور يدعم التكبير والسحب وملء الشاشة."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Text einfügen oder Bilder hineinziehen, um Notizen zu erstellen. Die KI kann Notizen in Aufgaben aufteilen und in die System-Erinnerungen schreiben oder KI-Zusammenfassungen erstellen. Die Bildanzeige unterstützt Zoomen, Ziehen und Vollbild."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Paste text or drag in images to create notes. AI can break notes into todo items and write them to system Reminders, or generate AI summaries. Image viewing supports zoom, drag, and fullscreen viewing."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pegue texto o arrastre imágenes para crear notas. La IA puede dividir las notas en tareas y escribirlas en Recordatorios del sistema, o generar resúmenes con IA. La visualización de imágenes admite zoom, arrastre y pantalla completa."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Collez du texte ou faites glisser des images pour créer des notes. L'IA peut décomposer les notes en tâches et les écrire dans Rappels du système, ou générer des résumés IA. L'affichage des images prend en charge le zoom, le glissement et le plein écran."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "नोट बनाने के लिए पाठ चिपकाएँ या छवि खींचें। AI नोट को कार्यों में तोड़कर सिस्टम रिमाइंडर में लिख सकता है, या AI सारांश बना सकता है। छवि प्रदर्शन ज़ूम, खिंचाव और पूर्णस्क्रीन समर्थित करता है।"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tempel teks atau seret gambar untuk membuat catatan. AI dapat memecah catatan menjadi tugas dan menulisnya ke Pengingat sistem, atau membuat ringkasan AI. Melihat gambar mendukung zoom, seret, dan layar penuh."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Incolla testo o trascina immagini per creare note. L'IA può scomporre le note in attività e scriverle nei Promemoria di sistema, o generare riepiloghi IA. La visualizzazione delle immagini supporta zoom, trascinamento e schermo intero."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "テキストを貼り付けるか画像をドラッグしてノートを作成できます。AI がノートをToDoに分解してシステムのリマインダーに書き込んだり、AI 要約を生成したりできます。画像表示はズーム、ドラッグ、全画面表示に対応します。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "텍스트를 붙여넣거나 이미지를 끌어다 노트를 만들 수 있습니다. AI가 노트를 할 일로 나누어 시스템 미리 알림에 쓰거나 AI 요약을 생성할 수 있습니다. 이미지 보기는 확대, 드래그, 전체 화면을 지원합니다."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plak tekst of sleep afbeeldingen om notities te maken. AI kan notities opsplitsen in taken en naar systeem Herinneringen schrijven, of AI-samenvattingen genereren. Afbeeldingen bekijken ondersteunt zoomen, slepen en volledig scherm."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wklej tekst lub przeciągnij obrazy, aby utworzyć notatki. AI może rozbijać notatki na zadania i zapisywać je w systemowych Przypomnieniach lub generować podsumowania AI. Przeglądanie obrazów obsługuje powiększanie, przeciąganie i pełny ekran."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cole texto ou arraste imagens para criar notas. A IA pode dividir as notas em tarefas e gravá-las nos Lembretes do sistema, ou gerar resumos com IA. A visualização de imagens oferece zoom, arraste e tela cheia."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вставьте текст или перетащите изображения, чтобы создать заметки. ИИ может разбивать заметки на задачи и записывать их в системные Напоминания или создавать ИИ-резюме. Просмотр изображений поддерживает масштабирование, перетаскивание и полноэкранный режим."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Klistra in text eller dra in bilder för att skapa anteckningar. AI kan dela upp anteckningar i uppgifter och skriva dem till systemets Påminnelser, eller skapa AI-sammanfattningar. Bildvisning stöder zoom, drag och helskärm."
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "วางข้อความหรือลากรูปภาพเพื่อสร้างบันทึก AI สามารถแยกบันทึกเป็นสิ่งที่ต้องทำและเขียนลง “เตือนความจำ” ของระบบ หรือสร้างสรุปด้วย AI การดูรูปภาพรองรับการซูม ลาก และเต็มจอ"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Not oluşturmak için metin yapıştırın veya görsel sürükleyin. AI notları görevlere ayırıp sistem Anımsatıcılar'a yazabilir veya AI özeti oluşturabilir. Görüntüleme yakınlaştırma, sürükleme ve tam ekranı destekler."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вставте текст або перетягніть зображення, щоб створити нотатки. ШІ може розбивати нотатки на завдання та записувати їх у системні Нагадування або створювати ШІ-підсумки. Перегляд зображень підтримує масштабування, перетягування та повноекранний режим."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dán chữ hoặc kéo ảnh vào để tạo ghi chú. AI có thể tách ghi chú thành việc cần làm và ghi vào Nhắc nhở của hệ thống, hoặc tạo tóm tắt AI. Xem ảnh hỗ trợ thu phóng, kéo và toàn màn hình."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "粘贴文字或拖入图片即可创建笔记，AI 可将笔记拆解为待办事项并写入系统提醒事项，也可生成 AI 总结。图片查看支持缩放、拖拽和全屏查看。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "貼上文字或拖入圖片即可建立筆記，AI 可將筆記拆解為待辦事項並寫入系統提醒事項，也可產生 AI 總結。圖片檢視支援縮放、拖曳與全螢幕檢視。"
           }
         }
       }
@@ -135537,7 +135407,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "该声纹与已注册的「%1$@」过于相似（相似度 %2$@），疑似同一人。如需更正请先在设置中删除对应声纹"
           }
         },
@@ -162476,10 +162346,118 @@
     "使用 macOS 系统音色在本机合成，文字不会发送到云端。" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يُنشأ الكلام محليًا باستخدام أصوات macOS. لا يُرسل نصك إلى السحابة."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Sprache wird lokal mit macOS-Stimmen erzeugt. Dein Text wird nicht in die Cloud gesendet."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Speech is generated locally with macOS voices. Your text is not sent to the cloud."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El habla se genera localmente con voces de macOS. Tu texto no se envía a la nube."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La synthèse vocale est générée localement avec les voix de macOS. Votre texte n’est pas envoyé au cloud."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वाक् को macOS आवाज़ों के साथ स्थानीय रूप से बनाया जाता है। आपका टेक्स्ट क्लाउड पर नहीं भेजा जाता।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ucapan dibuat secara lokal dengan suara macOS. Teks Anda tidak dikirim ke cloud."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il parlato viene generato localmente con le voci macOS. Il testo non viene inviato al cloud."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOSのシステムボイスでこのMac上で合成され、テキストはクラウドに送信されません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS 시스템 음성으로 이 Mac에서 합성되며, 텍스트는 클라우드로 전송되지 않습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spraak wordt lokaal gegenereerd met macOS-stemmen. Je tekst wordt niet naar de cloud verzonden."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mowa jest generowana lokalnie przy użyciu głosów macOS. Twój tekst nie jest wysyłany do chmury."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A fala é gerada localmente com vozes do macOS. O seu texto não é enviado para a nuvem."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Речь создаётся локально с помощью голосов macOS. Ваш текст не отправляется в облако."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Talet genereras lokalt med macOS-röster. Din text skickas inte till molnet."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ระบบสร้างเสียงพูดภายในเครื่องด้วยเสียงของ macOS ข้อความของคุณจะไม่ถูกส่งไปยังคลาวด์"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuşma, macOS sesleriyle yerel olarak oluşturulur. Metniniz buluta gönderilmez."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мовлення створюється локально за допомогою голосів macOS. Ваш текст не надсилається в хмару."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giọng nói được tạo cục bộ bằng giọng macOS. Văn bản của bạn không được gửi lên đám mây."
           }
         },
         "zh-Hans" : {
@@ -162499,10 +162477,118 @@
     "停止播放" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إيقاف التشغيل"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiedergabe stoppen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stop Playback"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detener reproducción"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrêter la lecture"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "प्लेबैक रोकें"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hentikan Pemutaran"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interrompi riproduzione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再生を停止"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "재생 중단"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afspelen stoppen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zatrzymaj odtwarzanie"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parar reprodução"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Остановить воспроизведение"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stoppa uppspelning"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "หยุดเล่น"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalmayı Durdur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зупинити відтворення"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dừng phát"
           }
         },
         "zh-Hans" : {
@@ -162522,10 +162608,118 @@
     "刷新音色" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تحديث الأصوات"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stimmen aktualisieren"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Refresh Voices"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualizar voces"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualiser les voix"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आवाज़ें रीफ़्रेश करें"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Segarkan Suara"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiorna voci"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "音声を更新"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "음성 새로 고침"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stemmen vernieuwen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odśwież głosy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualizar vozes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обновить голоса"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uppdatera röster"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รีเฟรชเสียง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesleri Yenile"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оновити голоси"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Làm mới giọng nói"
           }
         },
         "zh-Hans" : {
@@ -162545,10 +162739,118 @@
     "台湾国语" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الماندرين (تايوان)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarin (Taiwan)"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mandarin (Taiwan)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarín (Taiwán)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarin (Taïwan)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मंदारिन (ताइवान)"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarin (Taiwan)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarino (Taiwan)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "台湾国語"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "대만 중국어"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarijn (Taiwan)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandaryński (Tajwan)"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarim (Taiwan)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мандаринский (Тайвань)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarin (Taiwan)"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "จีนกลาง (ไต้หวัน)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarin (Tayvan)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мандаринська (Тайвань)"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quan thoại (Đài Loan)"
           }
         },
         "zh-Hans" : {
@@ -162698,10 +163000,118 @@
     "女声" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "صوت أنثوي"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiblich"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Female"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Femenina"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Féminine"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्त्री"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perempuan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Femminile"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "女性"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "여성"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vrouw"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Żeński"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feminino"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Женский"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kvinnlig"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เสียงหญิง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kadın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жіночий"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giọng nữ"
           }
         },
         "zh-Hans" : {
@@ -162721,10 +163131,118 @@
     "导出格式" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "صيغة التصدير"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportformat"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Export Format"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formato de exportación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Format d’exportation"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "निर्यात प्रारूप"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Format Ekspor"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formato di esportazione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "書き出しフォーマット"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내보내기 포맷"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportformaat"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Format eksportu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formato de exportação"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Формат экспорта"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportformat"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รูปแบบการส่งออก"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dışa Aktarma Biçimi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Формат експорту"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Định dạng xuất"
           }
         },
         "zh-Hans" : {
@@ -162744,10 +163262,118 @@
     "导出音频…" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تصدير الصوت…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio exportieren…"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Export Audio…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportar audio…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exporter l’audio…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ऑडियो निर्यात करें…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekspor Audio…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esporta audio…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オーディオを書き出す…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오디오 내보내기…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio exporteren…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eksportuj dźwięk…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportar áudio…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспортировать аудио…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportera ljud…"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ส่งออกเสียง…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ses Dışa Aktar…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Експортувати аудіо…"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xuất âm thanh…"
           }
         },
         "zh-Hans" : {
@@ -162767,10 +163393,118 @@
     "已有总结" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ملخّص موجود"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorhandene Zusammenfassung"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Existing Summary"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumen existente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Résumé existant"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मौजूदा सारांश"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ringkasan yang Ada"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riepilogo esistente"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "既存の要約"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기존 요약"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestaande samenvatting"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Istniejące podsumowanie"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumo existente"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Существующая сводка"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Befintlig sammanfattning"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "สรุปที่มีอยู่"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mevcut Özet"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Наявний підсумок"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bản tóm tắt có sẵn"
           }
         },
         "zh-Hans" : {
@@ -164221,10 +164955,118 @@
     "所选系统音色不可用，请刷新音色或在系统设置中下载。" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الصوت المحدد للنظام غير متاح. حدّث القائمة أو نزّل صوتًا من إعدادات النظام."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die ausgewählte Systemstimme ist nicht verfügbar. Aktualisiere die Liste oder lade eine Stimme in den Systemeinstellungen herunter."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The selected system voice is unavailable. Refresh the list or download a voice in System Settings."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La voz del sistema seleccionada no está disponible. Actualiza la lista o descarga una voz en Ajustes del Sistema."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La voix système sélectionnée est indisponible. Actualisez la liste ou téléchargez une voix dans Réglages Système."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चयनित सिस्टम आवाज़ उपलब्ध नहीं है। सूची रीफ़्रेश करें या सिस्टम सेटिंग्स में आवाज़ डाउनलोड करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suara sistem yang dipilih tidak tersedia. Segarkan daftar atau unduh suara di Pengaturan Sistem."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La voce di sistema selezionata non è disponibile. Aggiorna l’elenco o scarica una voce in Impostazioni di Sistema."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択したシステムボイスは使用できません。リストを更新するか、システム設定で音声をダウンロードしてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택한 시스템 음성을 사용할 수 없습니다. 목록을 새로 고치거나 시스템 설정에서 음성을 다운로드하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De geselecteerde systeemstem is niet beschikbaar. Vernieuw de lijst of download een stem in Systeeminstellingen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybrany głos systemowy jest niedostępny. Odśwież listę lub pobierz głos w Ustawieniach systemowych."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A voz do sistema selecionada não está disponível. Atualize a lista ou baixe uma voz nos Ajustes do Sistema."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбранный системный голос недоступен. Обновите список или загрузите голос в Системных настройках."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Den valda systemrösten är inte tillgänglig. Uppdatera listan eller hämta en röst i Systeminställningar."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เสียงของระบบที่เลือกใช้ไม่ได้ กรุณารีเฟรชรายการหรือดาวน์โหลดเสียงในการตั้งค่าระบบ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçili sistem sesi kullanılamıyor. Listeyi yenileyin veya Sistem Ayarları’ndan bir ses indirin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вибраний системний голос недоступний. Оновіть список або завантажте голос у Системних налаштуваннях."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giọng hệ thống đã chọn không khả dụng. Làm mới danh sách hoặc tải giọng nói trong Cài đặt Hệ thống."
           }
         },
         "zh-Hans" : {
@@ -164244,10 +165086,118 @@
     "普通话" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الماندرين (الصين)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarin (Festlandchina)"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mandarin (Mainland China)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarín (China continental)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarin (Chine continentale)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मंदारिन (मुख्य भूमि चीन)"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarin (Tiongkok Daratan)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarino (Cina continentale)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "普通話"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "중국어 (본토)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarijn (vasteland van China)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandaryński (Chiny kontynentalne)"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarim (China Continental)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Путунхуа (материковый Китай)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarin (Kina)"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "จีนกลาง (จีนแผ่นดินใหญ่)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mandarin (Çin Anakarası)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мандаринська (материковий Китай)"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quan thoại (Trung Quốc đại lục)"
           }
         },
         "zh-Hans" : {
@@ -164397,10 +165347,118 @@
     "朗读内容" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "القراءة بصوت عالٍ"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorlesen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Read Aloud"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leer en voz alta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lecture à voix haute"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ज़ोर से पढ़ें"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bacakan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leggi ad alta voce"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "読み上げる内容"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리 내어 읽기"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hardop voorlezen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Czytaj na głos"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ler em voz alta"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Читать вслух"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Läs upp"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "อ่านออกเสียง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesli Oku"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Читати вголос"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đọc to"
           }
         },
         "zh-Hans" : {
@@ -164420,10 +165478,118 @@
     "朗读预览（跳过代码块和图片；表格按表头逐项朗读）" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "معاينة القراءة (يتم تخطي كتل التعليمات البرمجية والصور؛ تُقرأ الجداول حسب عنوان العمود)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lesevorschau (Codeblöcke und Bilder werden übersprungen; Tabellen werden nach Spaltenüberschrift vorgelesen)"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reading Preview (code blocks and images are skipped; tables are read by column heading)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa de lectura (se omiten bloques de código e imágenes; las tablas se leen por encabezado de columna)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aperçu de lecture (les blocs de code et les images sont ignorés ; les tableaux sont lus par en-tête de colonne)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पठन पूर्वावलोकन (कोड ब्लॉक और छवियाँ छोड़े जाते हैं; तालिकाएँ स्तंभ शीर्षक के अनुसार पढ़ी जाती हैं)"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pratinjau Pembacaan (blok kode dan gambar dilewati; tabel dibaca per judul kolom)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anteprima di lettura (i blocchi di codice e le immagini vengono saltati; le tabelle vengono lette per intestazione di colonna)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "読み上げプレビュー（コードブロックと画像はスキップされ、表は列見出しごとに読み上げられます）"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "읽기 미리보기 (코드 블록과 이미지는 건너뛰고, 표는 열 제목별로 읽습니다)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voorleesvoorbeeld (codeblokken en afbeeldingen worden overgeslagen; tabellen worden per kolomkop voorgelezen)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podgląd czytania (bloki kodu i obrazy są pomijane; tabele są czytane według nagłówka kolumny)"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prévia de leitura (blocos de código e imagens são ignorados; tabelas são lidas por cabeçalho de coluna)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Предпросмотр чтения (блоки кода и изображения пропускаются; таблицы читаются по заголовку столбца)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Läsningsförhandsvisning (kodblock och bilder hoppas över; tabeller läses per kolumnrubrik)"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ตัวอย่างการอ่าน (บล็อกโค้ดและรูปภาพจะถูกข้าม ตารางอ่านตามหัวคอลัมน์)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okuma Önizlemesi (kod blokları ve görseller atlanır; tablolar sütun başlığına göre okunur)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Попередній перегляд читання (блоки коду та зображення пропускаються; таблиці читаються за заголовком стовпця)"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xem trước đọc (bỏ qua khối mã và hình ảnh; bảng được đọc theo tiêu đề cột)"
           }
         },
         "zh-Hans" : {
@@ -164703,10 +165869,118 @@
     "正在合成或导出语音…" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ إنشاء الكلام أو تصديره…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache wird erzeugt oder exportiert…"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Generating or exporting speech…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generando o exportando voz…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Génération ou exportation de la voix…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वाक् बनाया या निर्यात किया जा रहा है…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Membuat atau mengekspor ucapan…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generazione o esportazione della voce…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "音声を合成または書き出し中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "음성을 생성하거나 내보내는 중…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spraak wordt gegenereerd of geëxporteerd…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generowanie lub eksportowanie mowy…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerando ou exportando fala…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создание или экспорт речи…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genererar eller exporterar tal…"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "กำลังสร้างหรือส่งออกเสียง…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuşma oluşturuluyor veya dışa aktarılıyor…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створення або експорт мовлення…"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đang tạo hoặc xuất giọng nói…"
           }
         },
         "zh-Hans" : {
@@ -164726,10 +166000,118 @@
     "正在整理朗读文本…" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ تحضير النص…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Text wird vorbereitet…"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Preparing text…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparando el texto…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Préparation du texte…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "टेक्स्ट तैयार किया जा रहा है…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menyiapkan teks…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparazione del testo…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "テキストを準備中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "텍스트 준비 중…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekst wordt voorbereid…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przygotowywanie tekstu…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparando o texto…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подготовка текста…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Förbereder text…"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "กำลังเตรียมข้อความ…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metin hazırlanıyor…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підготовка тексту…"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đang chuẩn bị văn bản…"
           }
         },
         "zh-Hans" : {
@@ -164749,10 +166131,118 @@
     "正在生成试听…" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ إنشاء المعاينة…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorschau wird erzeugt…"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Generating preview…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generando la vista previa…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Génération de l’aperçu…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पूर्वावलोकन बनाया जा रहा है…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Membuat pratinjau…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generazione dell’anteprima…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プレビューを生成中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "미리보기 생성 중…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voorbeeld wordt gegenereerd…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generowanie podglądu…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerando prévia…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создание предпросмотра…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genererar förhandsvisning…"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "กำลังสร้างตัวอย่าง…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önizleme oluşturuluyor…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створення попереднього перегляду…"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đang tạo bản xem trước…"
           }
         },
         "zh-Hans" : {
@@ -164772,10 +166262,118 @@
     "此 Mac 没有原生 MP3 编码器，请选择 WAV 或 M4A。" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يتوفر مُرمّز MP3 أصلي على هذا الـ Mac. اختر WAV أو M4A."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieser Mac hat keinen nativen MP3-Encoder. Wähle WAV oder M4A."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "This Mac has no native MP3 encoder. Choose WAV or M4A."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este Mac no tiene codificador MP3 nativo. Elige WAV o M4A."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce Mac n’a pas d’encodeur MP3 natif. Choisissez WAV ou M4A."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस Mac में मूल MP3 एन्कोडर नहीं है। WAV या M4A चुनें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mac ini tidak memiliki encoder MP3 native. Pilih WAV atau M4A."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo Mac non dispone di un codificatore MP3 nativo. Scegli WAV o M4A."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このMacにはネイティブのMP3エンコーダがありません。WAVまたはM4Aを選択してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 Mac에는 기본 MP3 인코더가 없습니다. WAV 또는 M4A를 선택하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze Mac heeft geen native MP3-encoder. Kies WAV of M4A."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ten Mac nie ma natywnego kodera MP3. Wybierz WAV lub M4A."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este Mac não tem codificador MP3 nativo. Escolha WAV ou M4A."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На этом Mac нет встроенного кодировщика MP3. Выберите WAV или M4A."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denna Mac har ingen inbyggd MP3-kodare. Välj WAV eller M4A."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mac เครื่องนี้ไม่มีตัวเข้ารหัส MP3 แบบเนทีฟ กรุณาเลือก WAV หรือ M4A"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu Mac’te yerleşik MP3 kodlayıcı yok. WAV veya M4A seçin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Цей Mac не має вбудованого кодувальника MP3. Виберіть WAV або M4A."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Máy Mac này không có bộ mã hóa MP3 gốc. Chọn WAV hoặc M4A."
           }
         },
         "zh-Hans" : {
@@ -164795,10 +166393,118 @@
     "没有可朗读的文字，请选择其他内容。" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يوجد نص للقراءة. اختر محتوى آخر."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es ist kein Text zum Vorlesen vorhanden. Wähle anderen Inhalt."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "There is no text to read. Choose different content."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay texto para leer. Elige otro contenido."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun texte à lire. Choisissez un autre contenu."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पढ़ने के लिए कोई टेक्स्ट नहीं है। दूसरी सामग्री चुनें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada teks untuk dibacakan. Pilih konten lain."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non c’è testo da leggere. Scegli un altro contenuto."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "読み上げるテキストがありません。別の内容を選択してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "읽을 텍스트가 없습니다. 다른 콘텐츠를 선택하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is geen tekst om voor te lezen. Kies andere inhoud."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak tekstu do czytania. Wybierz inną treść."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não há texto para ler. Escolha outro conteúdo."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет текста для чтения. Выберите другое содержимое."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det finns ingen text att läsa upp. Välj annat innehåll."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ไม่มีข้อความให้อ่าน กรุณาเลือกเนื้อหาอื่น"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okunacak metin yok. Farklı bir içerik seçin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немає тексту для читання. Виберіть інший вміст."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không có văn bản để đọc. Chọn nội dung khác."
           }
         },
         "zh-Hans" : {
@@ -164818,10 +166524,118 @@
     "没有可用的系统音色。请在系统设置的辅助功能语音选项中下载音色，再刷新列表。" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا تتوفر أصوات نظام. نزّل صوتًا من خيارات الكلام ضمن تسهيلات الاستخدام في إعدادات النظام، ثم حدّث القائمة."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es sind keine Systemstimmen verfügbar. Lade unter Bedienungshilfen in den Systemeinstellungen über die Sprachoptionen eine Stimme herunter und aktualisiere dann die Liste."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No system voices are available. Download a voice in the speech options under Accessibility in System Settings, then refresh the list."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay voces del sistema disponibles. Descarga una voz en las opciones de voz de Accesibilidad en Ajustes del Sistema y, a continuación, actualiza la lista."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune voix système n’est disponible. Téléchargez une voix dans les options de parole d’Accessibilité dans Réglages Système, puis actualisez la liste."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कोई सिस्टम आवाज़ उपलब्ध नहीं है। सिस्टम सेटिंग्स में सहायता पहुँच के वाक् विकल्पों में आवाज़ डाउनलोड करें, फिर सूची रीफ़्रेश करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada suara sistem yang tersedia. Unduh suara di opsi ucapan pada Aksesibilitas di Pengaturan Sistem, lalu segarkan daftar."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non sono disponibili voci di sistema. Scarica una voce nelle opzioni del parlato in Accessibilità delle Impostazioni di Sistema, quindi aggiorna l’elenco."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用可能なシステムボイスがありません。システム設定の「アクセシビリティ」にある「読み上げ」オプションで音声をダウンロードし、リストを更新してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용할 수 있는 시스템 음성이 없습니다. 시스템 설정의 손쉬운 사용에 있는 말하기 옵션에서 음성을 다운로드한 다음 목록을 새로 고치십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er zijn geen systeemstemmen beschikbaar. Download een stem bij de spraakopties onder Toegankelijkheid in Systeeminstellingen en vernieuw vervolgens de lijst."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak dostępnych głosów systemowych. Pobierz głos w opcjach mowy w Ułatwieniach dostępu w Ustawieniach systemowych, a następnie odśwież listę."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não há vozes do sistema disponíveis. Baixe uma voz nas opções de fala em Acessibilidade nos Ajustes do Sistema e atualize a lista."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет доступных системных голосов. Загрузите голос в параметрах речи в разделе «Универсальный доступ» Системных настроек, затем обновите список."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inga systemröster är tillgängliga. Hämta en röst i talalternativen under Tillgänglighet i Systeminställningar och uppdatera sedan listan."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ไม่มีเสียงของระบบให้ใช้ กรุณาดาวน์โหลดเสียงในตัวเลือกการพูดภายใต้การช่วยการเข้าถึงในการตั้งค่าระบบ แล้วรีเฟรชรายการ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanılabilir sistem sesi yok. Sistem Ayarları’ndaki Erişilebilirlik altındaki konuşma seçeneklerinden bir ses indirin, ardından listeyi yenileyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немає доступних системних голосів. Завантажте голос у параметрах мовлення в розділі «Універсальний доступ» Системних налаштувань, потім оновіть список."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không có giọng hệ thống khả dụng. Tải giọng nói trong tùy chọn giọng nói thuộc Trợ năng trong Cài đặt Hệ thống, rồi làm mới danh sách."
           }
         },
         "zh-Hans" : {
@@ -164841,10 +166655,118 @@
     "生成完整语音" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إنشاء الصوت الكامل"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vollständiges Audio erzeugen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Generate Full Audio"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generar audio completo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Générer l’audio complet"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पूरा ऑडियो बनाएँ"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buat Audio Lengkap"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genera audio completo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完全な音声を生成"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 음성 생성"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volledige audio genereren"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generuj pełny dźwięk"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerar áudio completo"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создать полное аудио"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generera fullständigt ljud"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "สร้างเสียงเต็มรูปแบบ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tam Ses Oluştur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створити повне аудіо"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tạo âm thanh đầy đủ"
           }
         },
         "zh-Hans" : {
@@ -164864,10 +166786,118 @@
     "男声" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "صوت ذكوري"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Männlich"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Male"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masculina"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masculine"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पुरुष"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laki-laki"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maschile"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "男性"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "남성"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Man"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Męski"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masculino"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мужской"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manlig"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เสียงชาย"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erkek"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чоловічий"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giọng nam"
           }
         },
         "zh-Hans" : {
@@ -164887,10 +166917,118 @@
     "笔记正文" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نص الملاحظة"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiztext"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Note Body"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuerpo de la nota"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corps de la note"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नोट का मुख्य भाग"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isi Catatan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corpo della nota"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ノート本文"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "노트 본문"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notitietekst"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Treść notatki"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corpo da nota"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Текст заметки"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anteckningstext"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เนื้อหาบันทึก"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Gövdesi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Текст нотатки"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nội dung ghi chú"
           }
         },
         "zh-Hans" : {
@@ -164910,10 +167048,118 @@
     "粤语（香港）" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الكانتونية (هونغ كونغ)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kantonesisch (Hongkong)"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cantonese (Hong Kong)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cantonés (Hong Kong)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cantonais (Hong Kong)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैंटोनीज़ (हाँग काँग)"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kanton (Hong Kong)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cantonese (Hong Kong)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "広東語（香港）"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "광둥어 (홍콩)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kantonees (Hongkong)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kantoński (Hongkong)"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cantonês (Hong Kong)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кантонский (Гонконг)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kantonesiska (Hongkong)"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "กวางตุ้ง (ฮ่องกง)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kantonca (Hong Kong)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кантонська (Гонконг)"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quảng Đông (Hồng Kông)"
           }
         },
         "zh-Hans" : {
@@ -164933,10 +167179,118 @@
     "系统未生成有效语音，请尝试其他音色。" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لم ينشئ النظام صوتًا صالحًا. جرّب صوتًا آخر."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das System hat kein gültiges Audio erzeugt. Versuche eine andere Stimme."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The system did not generate valid audio. Try another voice."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El sistema no generó audio válido. Prueba con otra voz."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le système n’a pas généré d’audio valide. Essayez une autre voix."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सिस्टम ने मान्य ऑडियो नहीं बनाया। दूसरी आवाज़ आज़माएँ।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistem tidak menghasilkan audio yang valid. Coba suara lain."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il sistema non ha generato audio valido. Prova un’altra voce."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "システムが有効な音声を生成しませんでした。別のボイスをお試しください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템이 유효한 오디오를 생성하지 않았습니다. 다른 음성을 사용해 보십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het systeem heeft geen geldige audio gegenereerd. Probeer een andere stem."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System nie wygenerował prawidłowego dźwięku. Spróbuj innego głosu."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O sistema não gerou áudio válido. Tente outra voz."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Система не создала корректное аудио. Попробуйте другой голос."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Systemet genererade inget giltigt ljud. Prova en annan röst."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ระบบไม่ได้สร้างเสียงที่ถูกต้อง กรุณาลองใช้เสียงอื่น"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistem geçerli ses oluşturmadı. Başka bir ses deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Система не створила дійсне аудіо. Спробуйте інший голос."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hệ thống không tạo âm thanh hợp lệ. Hãy thử giọng khác."
           }
         },
         "zh-Hans" : {
@@ -164956,10 +167310,118 @@
     "系统语音合成超时，请尝试其他音色或缩短文字。" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انتهت مهلة合成 الكلام في النظام. جرّب صوتًا آخر أو نصًا أقصر."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Zeitspanne für die System-Sprachsynthese wurde überschritten. Versuche eine andere Stimme oder kürzeren Text."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "System speech synthesis timed out. Try another voice or shorter text."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se agotó el tiempo de síntesis de voz del sistema. Prueba con otra voz o un texto más corto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La synthèse vocale du système a expiré. Essayez une autre voix ou un texte plus court."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सिस्टम वाक् संश्लेषण का समय समाप्त हो गया। दूसरी आवाज़ या छोटा टेक्स्ट आज़माएँ।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sintesis ucapan sistem kehabisan waktu. Coba suara lain atau teks yang lebih pendek."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La sintesi vocale del sistema è scaduta. Prova un’altra voce o un testo più breve."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "システム音声合成がタイムアウトしました。別のボイスを試すか、テキストを短くしてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 음성 합성 시간이 초과되었습니다. 다른 음성을 사용하거나 텍스트를 줄여 보십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De systeemspraaksynthese is verlopen. Probeer een andere stem of kortere tekst."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przekroczono limit czasu syntezy mowy systemu. Spróbuj innego głosu lub krótszego tekstu."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A síntese de voz do sistema expirou. Tente outra voz ou um texto mais curto."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время синтеза системной речи истекло. Попробуйте другой голос или более короткий текст."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidsgränsen för systemets talsyntes överskreds. Prova en annan röst eller kortare text."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "การสังเคราะห์เสียงของระบบหมดเวลา กรุณาลองใช้เสียงอื่นหรือข้อความที่สั้นลง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistem konuşma sentezi zaman aşımına uğradı. Başka bir ses veya daha kısa metin deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Час синтезу системного мовлення вичерпано. Спробуйте інший голос або коротший текст."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tổng hợp giọng nói của hệ thống đã hết thời gian. Hãy thử giọng khác hoặc văn bản ngắn hơn."
           }
         },
         "zh-Hans" : {
@@ -164979,10 +167441,118 @@
     "系统音色" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "صوت النظام"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Systemstimme"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "System Voice"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voz del sistema"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voix système"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सिस्टम आवाज़"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suara Sistem"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voce di sistema"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "システムボイス"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 음성"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Systeemstem"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Głos systemowy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voz do sistema"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Системный голос"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Systemröst"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เสียงของระบบ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistem Sesi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Системний голос"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giọng hệ thống"
           }
         },
         "zh-Hans" : {
@@ -165002,10 +167572,118 @@
     "系统音色返回了不兼容的音频格式，请尝试其他音色。" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أعاد صوت النظام صيغة صوت غير متوافقة. جرّب صوتًا آخر."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Systemstimme hat ein inkompatibles Audioformat zurückgegeben. Versuche eine andere Stimme."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The system voice returned an incompatible audio format. Try another voice."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La voz del sistema devolvió un formato de audio incompatible. Prueba con otra voz."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La voix système a renvoyé un format audio incompatible. Essayez une autre voix."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सिस्टम आवाज़ ने असंगत ऑडियो प्रारूप लौटाया। दूसरी आवाज़ आज़माएँ।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suara sistem mengembalikan format audio yang tidak kompatibel. Coba suara lain."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La voce di sistema ha restituito un formato audio incompatibile. Prova un’altra voce."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "システムボイスが互換性のないオーディオフォーマットを返しました。別のボイスをお試しください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 음성이 호환되지 않는 오디오 형식을 반환했습니다. 다른 음성을 사용해 보십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De systeemstem heeft een incompatibel audioformaat geretourneerd. Probeer een andere stem."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Głos systemowy zwrócił niekompatybilny format dźwięku. Spróbuj innego głosu."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A voz do sistema retornou um formato de áudio incompatível. Tente outra voz."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Системный голос вернул несовместимый формат аудио. Попробуйте другой голос."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Systemrösten returnerade ett inkompatibelt ljudformat. Prova en annan röst."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เสียงของระบบส่งคืนรูปแบบเสียงที่ไม่เข้ากัน กรุณาลองใช้เสียงอื่น"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistem sesi uyumsuz bir ses biçimi döndürdü. Başka bir ses deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Системний голос повернув несумісний формат аудіо. Спробуйте інший голос."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giọng hệ thống trả về định dạng âm thanh không tương thích. Hãy thử giọng khác."
           }
         },
         "zh-Hans" : {
@@ -166593,10 +169271,118 @@
     "试听前段" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "معاينة البداية"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anfang anhören"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Preview Beginning"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previsualizar el inicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prévisualiser le début"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शुरुआत का पूर्वावलोकन"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pratinjau Awal"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anteprima iniziale"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "冒頭を試聴"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앞부분 미리 듣기"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begin beluisteren"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podsłuchaj początek"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pré-visualizar o início"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прослушать начало"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Förhandslyssna på början"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ลองฟังช่วงต้น"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Başlangıcı Önizle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прослухати початок"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nghe thử phần đầu"
           }
         },
         "zh-Hans" : {
@@ -166616,10 +169402,118 @@
     "语言与地区" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اللغة والمنطقة"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache und Region"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Language and Region"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma y región"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langue et région"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "भाषा और क्षेत्र"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bahasa dan Wilayah"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingua e regione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語と地域"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "언어 및 지역"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taal en regio"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Język i region"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma e região"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Язык и регион"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Språk och region"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ภาษาและภูมิภาค"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dil ve Bölge"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мова та регіон"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ngôn ngữ và khu vực"
           }
         },
         "zh-Hans" : {
@@ -166639,10 +169533,118 @@
     "语速" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سرعة الكلام"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprechgeschwindigkeit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Speech Rate"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velocidad de habla"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vitesse de lecture"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वाणी गति"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kecepatan Ucapan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velocità di lettura"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "話速"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "말하기 속도"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spreeksnelheid"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo mowy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velocidade da fala"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скорость речи"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tals hastighet"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ความเร็วการพูด"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuşma Hızı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Швидкість мовлення"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tốc độ nói"
           }
         },
         "zh-Hans" : {
@@ -166662,10 +169664,118 @@
     "语音合成正在进行，请先取消当前任务。" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تجري عملية合成 الكلام. ألغِ المهمة الحالية أولاً."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Sprachsynthese läuft. Brich zuerst die aktuelle Aufgabe ab."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Speech synthesis is in progress. Cancel the current task first."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La síntesis de voz está en curso. Cancela primero la tarea actual."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La synthèse vocale est en cours. Annulez d’abord la tâche en cours."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वाक् संश्लेषण जारी है। पहले वर्तमान कार्य रद्द करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sintesis ucapan sedang berlangsung. Batalkan tugas saat ini terlebih dahulu."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La sintesi vocale è in corso. Annulla prima l’attività corrente."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "音声合成が進行中です。先に現在のタスクをキャンセルしてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "음성 합성이 진행 중입니다. 먼저 현재 작업을 취소하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spraaksynthese is bezig. Annuleer eerst de huidige taak."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trwa synteza mowy. Najpierw anuluj bieżące zadanie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A síntese de voz está em andamento. Cancele primeiro a tarefa atual."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выполняется синтез речи. Сначала отмените текущую задачу."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Talsyntes pågår. Avbryt den aktuella aktiviteten först."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "กำลังสังเคราะห์เสียง กรุณายกเลิกงานปัจจุบันก่อน"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuşma sentezi sürüyor. Önce geçerli görevi iptal edin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Триває синтез мовлення. Спершу скасуйте поточне завдання."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quá trình tổng hợp giọng nói đang diễn ra. Hãy hủy tác vụ hiện tại trước."
           }
         },
         "zh-Hans" : {
@@ -166685,10 +169795,118 @@
     "语音已导出" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تصدير الصوت"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio exportiert"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Audio exported"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio exportado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio exporté"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ऑडियो निर्यात किया गया"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio Diekspor"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio esportato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オーディオを書き出しました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오디오 내보냄"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio geëxporteerd"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dźwięk wyeksportowano"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Áudio exportado"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Аудио экспортировано"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ljud exporterat"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ส่งออกเสียงแล้ว"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ses dışa aktarıldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Аудіо експортовано"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã xuất âm thanh"
           }
         },
         "zh-Hans" : {
@@ -166708,10 +169926,118 @@
     "转为语音" : {
       "comment" : "本地文字笔记语音合成",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التحويل إلى كلام"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Sprache umwandeln"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Convert to Speech"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convertir en voz"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convertir en parole"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वाक् में बदलें"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubah ke Ucapan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Converti in voce"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "音声に変換"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "음성으로 변환"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omzetten naar spraak"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konwertuj na mowę"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Converter em fala"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Преобразовать в речь"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konvertera till tal"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "แปลงเป็นเสียง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuşmaya Dönüştür"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перетворити на мовлення"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chuyển thành giọng nói"
           }
         },
         "zh-Hans" : {
@@ -168292,8 +171618,7 @@
           }
         }
       }
-    }
-,
+    },
     "麦克风未能启动，请检查当前输入设备的连接，然后重新开始录音。" : {
       "localizations" : {
         "th" : {
@@ -168420,6 +171745,792 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "麥克風無法啟動，請檢查目前輸入裝置的連線，然後重新開始錄音。"
+          }
+        }
+      }
+    },
+    "可在「设置 → 录音 → 输入设备」开启「录音开始时静音麦克风」，之后每次开始录音或录屏都先静音麦克风，录音中可随时解除；菜单栏与录制工具栏的麦克风菜单读写同一份偏好" : {
+      "comment" : "帮助页-会议录音-开始静音",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يمكنك تفعيل «كتم الميكروفون عند بدء التسجيل» في «الإعدادات → التسجيل → أجهزة الإدخال». بعد ذلك، يُكتَم الميكروفون أولاً في كل مرة يبدأ فيها تسجيل أو تسجيل شاشة، ويمكنك إلغاء الكتم في أي وقت أثناء التسجيل؛ تقرأ قائمة الميكروفون في شريط القوائم وشريط أدوات التسجيل وتكتب نفس التفضيل."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kannst „Mikrofon beim Start der Aufnahme stummschalten“ unter „Einstellungen → Aufnahme → Eingabegeräte“ aktivieren. Danach wird das Mikrofon zu Beginn jeder Audio- oder Bildschirmaufnahme stummgeschaltet, und du kannst es während der Aufnahme jederzeit wieder aktivieren. Die Mikrofonmenüs in der Menüleiste und in der Aufnahmesymbolleiste lesen und schreiben dieselbe Einstellung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can turn on “Mute Microphone When Recording Starts” in “Settings → Recording → Input Devices.” After that, the microphone is muted first whenever a recording or screen recording starts, and you can unmute it at any time during recording. The microphone menus in the menu bar and the recording toolbar read and write the same preference."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puedes activar «Silenciar el micrófono al iniciar la grabación» en «Ajustes → Grabación → Dispositivos de entrada». Después, el micrófono se silencia primero cada vez que comienza una grabación o una grabación de pantalla, y puedes reactivarlo en cualquier momento durante la grabación; los menús del micrófono en la barra de menús y en la barra de herramientas de grabación leen y escriben la misma preferencia."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous pouvez activer « Couper le microphone au démarrage de l’enregistrement » dans « Réglages → Enregistrement → Périphériques d’entrée ». Ensuite, le microphone est coupé au début de chaque enregistrement ou capture d’écran, et vous pouvez le réactiver à tout moment pendant l’enregistrement ; les menus du microphone dans la barre des menus et la barre d’outils d’enregistrement lisent et écrivent la même préférence."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आप «सेटिंग → रिकॉर्डिंग → इनपुट डिवाइस» में «रिकॉर्डिंग शुरू होने पर माइक्रोफ़ोन म्यूट करें» चालू कर सकते हैं। इसके बाद, हर बार रिकॉर्डिंग या स्क्रीन रिकॉर्डिंग शुरू होने पर माइक्रोफ़ोन पहले म्यूट हो जाता है, और रिकॉर्डिंग के दौरान आप इसे कभी भी अनम्यूट कर सकते हैं; मेन्यू बार और रिकॉर्डिंग टूलबार के माइक्रोफ़ोन मेन्यू एक ही प्राथमिकता पढ़ते और लिखते हैं।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda dapat mengaktifkan “Bisukan Mikrofon Saat Perekaman Dimulai” di “Pengaturan → Perekaman → Perangkat Input.” Setelah itu, mikrofon dibisukan terlebih dahulu setiap kali perekaman atau perekaman layar dimulai, dan Anda dapat membunyikannya kembali kapan saja selama perekaman; menu mikrofon di bilah menu dan bilah alat perekaman membaca dan menulis preferensi yang sama."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puoi attivare «Disattiva microfono all’avvio della registrazione» in «Impostazioni → Registrazione → Dispositivi di input». Dopodiché, il microfono viene disattivato all’inizio di ogni registrazione o registrazione schermo e puoi riattivarlo in qualsiasi momento durante la registrazione; i menu del microfono nella barra dei menu e nella barra strumenti di registrazione leggono e scrivono la stessa preferenza."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「設定 → 録音 → 入力デバイス」で「録音開始時にマイクをミュート」を有効にできます。以後、録音や画面収録を開始するたびにマイクが先にミュートされ、録音中はいつでも解除できます。メニューバーと収録ツールバーのマイクメニューは同じ設定を読み書きします。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“설정 → 녹음 → 입력 기기”에서 “녹음 시작 시 마이크 음소거”를 켤 수 있습니다. 이후 녹음이나 화면 기록을 시작할 때마다 마이크가 먼저 음소거되며, 녹음 중 언제든지 해제할 수 있습니다. 메뉴 막대와 녹음 도구 막대의 마이크 메뉴는 동일한 환경설정을 읽고 씁니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je kunt ‘Microfoon dempen bij start van opname’ inschakelen in ‘Instellingen → Opname → Invoerapparaten’. Daarna wordt de microfoon voortaan gedempt bij de start van elke opname of schermopname, en kun je hem tijdens de opname op elk moment weer inschakelen; de microfoonmenu’s in de menubalk en de opnametoolbar lezen en schrijven dezelfde voorkeur."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Możesz włączyć „Wycisz mikrofon przy rozpoczęciu nagrywania” w „Ustawienia → Nagrywanie → Urządzenia wejściowe”. Następnie mikrofon będzie najpierw wyciszany przy każdym rozpoczęciu nagrywania lub nagrywania ekranu, a w trakcie nagrywania możesz go w każdej chwili wyłączyć; menu mikrofonu na pasku menu i na pasku narzędzi nagrywania czytają i zapisują tę samą preferencję."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você pode ativar «Silenciar o microfone ao iniciar a gravação» em «Ajustes → Gravação → Dispositivos de entrada». Depois disso, o microfone é silenciado primeiro sempre que uma gravação ou gravação de tela é iniciada, e você pode reativá-lo a qualquer momento durante a gravação; os menus do microfone na barra de menus e na barra de ferramentas de gravação leem e gravam a mesma preferência."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы можете включить «Отключать микрофон при начале записи» в разделе «Настройки → Запись → Устройства ввода». После этого микрофон будет сначала отключаться при каждом начале записи или записи экрана, и вы сможете включить его в любой момент во время записи; меню микрофона в строке меню и на панели инструментов записи используют одну и ту же настройку."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kan aktivera ”Stäng av mikrofonen när inspelningen börjar” i ”Inställningar → Inspelning → Indataenheter”. Därefter stängs mikrofonen av först varje gång en inspelning eller skärminspelning startar, och du kan aktivera den igen när som helst under inspelningen; mikrofonmenyerna i menyraden och i inspelningsverktygsfältet läser och skriver samma inställning."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "คุณสามารถเปิด “ปิดไมโครโฟนเมื่อเริ่มบันทึก” ได้ใน “การตั้งค่า → การบันทึก → อุปกรณ์อินพุต” หลังจากนั้น ทุกครั้งที่เริ่มบันทึกหรือบันทึกหน้าจอ ไมโครโฟนจะถูกปิดเสียงก่อน และคุณสามารถเปิดเสียงได้ทุกเมื่อระหว่างการบันทึก เมนูไมโครโฟนในแถบเมนูและแถบเครื่องมือบันทึกอ่านและเขียนค่ากำหนดเดียวกัน"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“Ayarlar → Kayıt → Giriş Aygıtları” bölümünde “Kayıt Başladığında Mikrofonu Sessize Al” seçeneğini açabilirsiniz. Bundan sonra her kayıt veya ekran kaydı başladığında mikrofon önce sessize alınır ve kayıt sırasında dilediğiniz zaman sesini açabilirsiniz; menü çubuğundaki ve kayıt araç çubuğundaki mikrofon menüleri aynı tercihi okur ve yazar."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви можете увімкнути «Вимкнення мікрофона на початку запису» в розділі «Налаштування → Запис → Пристрої введення». Після цього мікрофон спершу вимикатиметься щоразу на початку запису або запису екрана, і ви зможете ввімкнути його будь-коли під час запису; меню мікрофона в рядку меню та на панелі інструментів запису використовують одну й ту саму настройку."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn có thể bật “Tắt tiếng micrô khi bắt đầu ghi âm” trong “Cài đặt → Ghi âm → Thiết bị đầu vào”. Sau đó, micrô sẽ được tắt tiếng trước mỗi khi bắt đầu ghi âm hoặc ghi màn hình, và bạn có thể bật lại bất cứ lúc nào trong khi ghi âm; menu micrô trên thanh menu và thanh công cụ ghi âm đọc và ghi cùng một tùy chọn."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可在「设置 → 录音 → 输入设备」开启「录音开始时静音麦克风」，之后每次开始录音或录屏都先静音麦克风，录音中可随时解除；菜单栏与录制工具栏的麦克风菜单读写同一份偏好"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可在「設定 → 錄音 → 輸入裝置」開啟「錄音開始時靜音麥克風」，之後每次開始錄音或錄屏都先靜音麥克風，錄音中可隨時解除；選單列與錄製工具列的麥克風選單讀寫同一份偏好"
+          }
+        }
+      }
+    },
+    "文字笔记可点「转为语音」，选择朗读笔记正文或已有总结；入口仅在中文界面显示" : {
+      "comment" : "帮助页-转为语音",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بالنسبة إلى الملاحظات النصية، انقر «التحويل إلى كلام» لاختيار قراءة نص الملاحظة أو ملخّص موجود؛ تظهر نقطة الدخول في الواجهات الصينية فقط."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bei Textnotizen kannst du auf „In Sprache umwandeln“ klicken, um den Notiztext oder eine vorhandene Zusammenfassung vorlesen zu lassen; der Einstieg wird nur in chinesischen Oberflächen angezeigt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For text notes, click “Convert to Speech” to choose reading the note body or an existing summary; the entry is shown only in Chinese interfaces."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En las notas de texto, haz clic en «Convertir en voz» para elegir leer el cuerpo de la nota o un resumen existente; la entrada solo se muestra en las interfaces en chino."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour les notes textuelles, cliquez sur « Convertir en parole » pour choisir de lire le corps de la note ou un résumé existant ; l’entrée n’est affichée que dans les interfaces en chinois."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "टेक्स्ट नोट्स के लिए, नोट का मुख्य भाग या मौजूदा सारांश पढ़ने के लिए «वाक् में बदलें» पर क्लिक करें; प्रवेश केवल चीनी इंटरफ़ेस में दिखाई देता है।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untuk catatan teks, klik “Ubah ke Ucapan” untuk memilih membacakan isi catatan atau ringkasan yang ada; entri hanya ditampilkan di antarmuka berbahasa Tionghoa."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per le note di testo, fai clic su «Converti in voce» per scegliere di leggere il corpo della nota o un riepilogo esistente; la voce è mostrata solo nelle interfacce in cinese."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "テキストノートでは「音声に変換」をクリックし、ノート本文または既存の要約を読み上げる内容として選択できます。入口は中国語のインターフェイスでのみ表示されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "텍스트 노트에서 “음성으로 변환”을 클릭하여 노트 본문 또는 기존 요약을 읽도록 선택할 수 있습니다. 이 항목은 중국어 인터페이스에서만 표시됩니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voor tekstnotities kun je op ‘Omzetten naar spraak’ klikken om de notitietekst of een bestaande samenvatting te laten voorlezen; de ingang wordt alleen weergegeven in Chinese interfaces."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "W przypadku notatek tekstowych kliknij „Konwertuj na mowę”, aby wybrać czytanie treści notatki lub istniejącego podsumowania; opcja jest widoczna tylko w interfejsach w języku chińskim."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nas notas de texto, clique em «Converter em fala» para escolher ler o corpo da nota ou um resumo existente; a entrada é mostrada apenas em interfaces em chinês."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В текстовых заметках нажмите «Преобразовать в речь», чтобы выбрать чтение текста заметки или существующей сводки; пункт отображается только в китайском интерфейсе."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "För textanteckningar kan du klicka på ”Konvertera till tal” för att välja att läsa upp anteckningstexten eller en befintlig sammanfattning; posten visas endast i kinesiska gränssnitt."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "สำหรับบันทึกข้อความ ให้คลิก “แปลงเป็นเสียง” เพื่อเลือกอ่านเนื้อหาบันทึกหรือสรุปที่มีอยู่ รายการนี้จะแสดงในอินเทอร์เฟซภาษาจีนเท่านั้น"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metin notlarında “Konuşmaya Dönüştür” seçeneğine tıklayarak not gövdesini veya mevcut bir özeti okumayı seçebilirsiniz; giriş yalnızca Çince arayüzlerde gösterilir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для текстових нотаток натисніть «Перетворити на мовлення», щоб вибрати читання тексту нотатки або наявного підсумку; пункт показується лише в китайському інтерфейсі."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Với ghi chú văn bản, hãy nhấp “Chuyển thành giọng nói” để chọn đọc nội dung ghi chú hoặc bản tóm tắt có sẵn; mục này chỉ hiển thị trong giao diện tiếng Trung."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文字笔记可点「转为语音」，选择朗读笔记正文或已有总结；入口仅在中文界面显示"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文字筆記可點「轉為語音」，選擇朗讀筆記正文或已有總結；入口僅在中文介面顯示"
+          }
+        }
+      }
+    },
+    "可选择语言与地区、系统音色和语速，先「试听前段」，满意后再「生成完整语音」，并可导出为 WAV 或 M4A 音频（此 Mac 无原生 MP3 编码器时不可选 MP3）" : {
+      "comment" : "帮助页-转为语音",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اختر اللغة والمنطقة والصوت النظامي وسرعة الكلام؛ انقر «معاينة البداية» أولاً، وبعد الرضا انقر «إنشاء الصوت الكامل»، ويمكنك التصدير بصيغة WAV أو M4A (لا يتوفر MP3 إذا لم يكن على هذا الـ Mac مُرمّز MP3 أصلي)."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle Sprache und Region, eine Systemstimme und die Sprechgeschwindigkeit; klicke zuerst auf „Anfang anhören“ und, wenn du zufrieden bist, auf „Vollständiges Audio erzeugen“. Du kannst als WAV- oder M4A-Audio exportieren (MP3 ist nicht verfügbar, wenn dieser Mac keinen nativen MP3-Encoder hat)."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a language and region, a system voice, and a speech rate; click “Preview Beginning” first, and once you are satisfied, click “Generate Full Audio.” You can export as WAV or M4A audio (MP3 is unavailable when this Mac has no native MP3 encoder)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige idioma y región, una voz del sistema y la velocidad de habla; haz clic primero en «Previsualizar el inicio» y, cuando estés satisfecho, en «Generar audio completo». Puedes exportar como audio WAV o M4A (MP3 no está disponible cuando este Mac no tiene codificador MP3 nativo)."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez une langue et une région, une voix système et une vitesse de lecture ; cliquez d’abord sur « Prévisualiser le début », puis, une fois satisfait, sur « Générer l’audio complet ». Vous pouvez exporter en audio WAV ou M4A (MP3 est indisponible lorsque ce Mac n’a pas d’encodeur MP3 natif)."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "भाषा और क्षेत्र, सिस्टम आवाज़ और वाणी गति चुनें; पहले «शुरुआत का पूर्वावलोकन» पर क्लिक करें, संतुष्ट होने पर «पूरा ऑडियो बनाएँ» पर क्लिक करें, और WAV या M4A ऑडियो के रूप में निर्यात कर सकते हैं (इस Mac में मूल MP3 एन्कोडर न होने पर MP3 उपलब्ध नहीं है)।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pilih bahasa dan wilayah, suara sistem, dan kecepatan ucapan; klik “Pratinjau Awal” terlebih dahulu, lalu setelah puas klik “Buat Audio Lengkap”, dan Anda dapat mengekspor sebagai audio WAV atau M4A (MP3 tidak tersedia jika Mac ini tidak memiliki encoder MP3 native)."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scegli lingua e regione, una voce di sistema e la velocità di lettura; fai prima clic su «Anteprima iniziale» e, quando sei soddisfatto, su «Genera audio completo». Puoi esportare come audio WAV o M4A (MP3 non è disponibile se questo Mac non dispone di un codificatore MP3 nativo)."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語と地域、システムボイス、話速を選択できます。まず「冒頭を試聴」し、満足したら「完全な音声を生成」をクリックしてください。WAVまたはM4Aオーディオとして書き出せます（このMacにネイティブのMP3エンコーダがない場合はMP3を選択できません）。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "언어 및 지역, 시스템 음성, 말하기 속도를 선택할 수 있습니다. 먼저 “앞부분 미리 듣기”를 누르고 만족하면 “전체 음성 생성”을 누르십시오. WAV 또는 M4A 오디오로 내보낼 수 있습니다(이 Mac에 기본 MP3 인코더가 없으면 MP3를 선택할 수 없음)."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kies een taal en regio, een systeemstem en de spreeksnelheid; klik eerst op ‘Begin beluisteren’ en, als je tevreden bent, op ‘Volledige audio genereren’. Je kunt exporteren als WAV- of M4A-audio (MP3 is niet beschikbaar als deze Mac geen native MP3-encoder heeft)."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybierz język i region, głos systemowy oraz tempo mowy; najpierw kliknij „Podsłuchaj początek”, a gdy efekt Ci odpowiada, kliknij „Generuj pełny dźwięk”. Możesz wyeksportować jako dźwięk WAV lub M4A (MP3 jest niedostępny, gdy ten Mac nie ma natywnego kodera MP3)."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha o idioma e a região, uma voz do sistema e a velocidade da fala; clique primeiro em «Pré-visualizar o início» e, quando estiver satisfeito, em «Gerar áudio completo». Você pode exportar como áudio WAV ou M4A (MP3 não fica disponível quando este Mac não tem codificador MP3 nativo)."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите язык и регион, системный голос и скорость речи; сначала нажмите «Прослушать начало», а когда результат устроит — «Создать полное аудио». Можно экспортировать как аудио WAV или M4A (MP3 недоступен, если на этом Mac нет встроенного кодировщика MP3)."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Välj språk och region, en systemröst och tals hastighet; klicka först på ”Förhandslyssna på början” och, när du är nöjd, på ”Generera fullständigt ljud”. Du kan exportera som WAV- eller M4A-ljud (MP3 är inte tillgängligt om denna Mac inte har en inbyggd MP3-kodare)."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เลือกภาษาและภูมิภาค เสียงของระบบ และความเร็วการพูดได้ เริ่มด้วย “ลองฟังช่วงต้น” เมื่อพอใจแล้วจึงกด “สร้างเสียงเต็มรูปแบบ” และส่งออกเป็นเสียง WAV หรือ M4A ได้ (จะเลือก MP3 ไม่ได้เมื่อ Mac เครื่องนี้ไม่มีตัวเข้ารหัส MP3 แบบเนทีฟ)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dil ve bölge, sistem sesi ve konuşma hızını seçebilirsiniz; önce “Başlangıcı Önizle”ye dokunun, memnun kaldığınızda “Tam Ses Oluştur”a dokunun ve WAV veya M4A sesi olarak dışa aktarabilirsiniz (bu Mac’te yerleşik MP3 kodlayıcı yoksa MP3 seçilemez)."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виберіть мову та регіон, системний голос і швидкість мовлення; спершу натисніть «Прослухати початок», а коли результат задовольнить — «Створити повне аудіо». Можна експортувати як аудіо WAV або M4A (MP3 недоступний, якщо на цьому Mac немає вбудованого кодувальника MP3)."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn có thể chọn ngôn ngữ và khu vực, giọng hệ thống và tốc độ nói; trước tiên nhấp “Nghe thử phần đầu”, khi hài lòng thì nhấp “Tạo âm thanh đầy đủ”, và có thể xuất dưới dạng âm thanh WAV hoặc M4A (không chọn được MP3 khi máy Mac này không có bộ mã hóa MP3 gốc)."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可选择语言与地区、系统音色和语速，先「试听前段」，满意后再「生成完整语音」，并可导出为 WAV 或 M4A 音频（此 Mac 无原生 MP3 编码器时不可选 MP3）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可選擇語言與地區、系統音色和語速，先「試聽前段」，滿意後再「生成完整語音」，並可匯出為 WAV 或 M4A 音訊（此 Mac 無原生 MP3 編碼器時不可選 MP3）"
+          }
+        }
+      }
+    },
+    "关闭面板即取消合成并清理临时音频，不会生成录音条目" : {
+      "comment" : "帮助页-转为语音",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يؤدي إغلاق اللوحة إلى إلغاء合成 وتنظيف الصوت المؤقت، ولن يتم إنشاء إدخال تسجيل."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beim Schließen des Fensters wird die Synthese abgebrochen und temporäres Audio bereinigt; es wird kein Aufnahmeeintrag erstellt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Closing the panel cancels synthesis and cleans up temporary audio; no recording entry is created."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar el panel cancela la síntesis y elimina el audio temporal; no se crea ninguna entrada de grabación."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer le panneau annule la synthèse et nettoie l’audio temporaire ; aucune entrée d’enregistrement n’est créée."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पैनल बंद करने पर संश्लेषण रद्द हो जाता है और अस्थायी ऑडियो साफ़ हो जाता है; कोई रिकॉर्डिंग प्रविष्टि नहीं बनती।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menutup panel membatalkan sintesis dan membersihkan audio sementara; tidak ada entri perekaman yang dibuat."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiudere il pannello annulla la sintesi e rimuove l’audio temporaneo; non viene creata alcuna voce di registrazione."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パネルを閉じると合成がキャンセルされ、一時オーディオが削除されます。録音項目は作成されません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "패널을 닫으면 합성이 취소되고 임시 오디오가 정리되며, 녹음 항목은 생성되지 않습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het sluiten van het paneel annuleert de synthese en ruimt tijdelijke audio op; er wordt geen opname-item aangemaakt."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamknięcie panelu anuluje syntezę i usuwa tymczasowy dźwięk; wpis nagrania nie zostanie utworzony."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fechar o painel cancela a síntese e limpa o áudio temporário; nenhum item de gravação é criado."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закрытие панели отменяет синтез и удаляет временное аудио; элемент записи не создаётся."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Om du stänger panelen avbryts syntesen och tillfälligt ljud rensas; ingen inspelningspost skapas."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "การปิดแผงจะยกเลิกการสังเคราะห์และล้างเสียงชั่วคราว โดยจะไม่สร้างรายการบันทึก"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paneli kapatmak sentezi iptal eder ve geçici sesi temizler; kayıt girişi oluşturulmaz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закриття панелі скасовує синтез і прибирає тимчасове аудіо; елемент запису не створюється."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đóng bảng điều khiển sẽ hủy tổng hợp và dọn dẹp âm thanh tạm thời; không tạo mục ghi âm nào."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭面板即取消合成并清理临时音频，不会生成录音条目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關閉面板即取消合成並清理暫存音訊，不會產生錄音項目"
+          }
+        }
+      }
+    },
+    "录音详情会显示采集完整性报告（音轨中断、恢复与静音证据）；设备异常、保存失败与自动恢复提醒通过横幅提示，可点「查看详情」定位条目" : {
+      "comment" : "帮助页-录音管理-采集报告",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعرض تفاصيل التسجيل تقرير سلامة الالتقاط (أدلة انقطاع المسار واستعادته وكتمه)؛ تظهر تنبيهات أعطال الجهاز وفشل الحفظ والاستعادة التلقائية كأشرطة، ويمكنك النقر على «عرض التفاصيل» لتحديد موقع الإدخال."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Aufnahmedetails zeigen einen Bericht zur Aufnahmeintegrität (Hinweise auf Tonspurunterbrechungen, Wiederherstellung und Stummschaltung); Hinweise auf Gerätefehler, Speicherfehler und automatische Wiederherstellung erscheinen als Banner. Klicke auf „Details anzeigen“, um den Eintrag zu finden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The recording details show a capture integrity report (evidence of track interruptions, recovery, and muting). Device errors, save failures, and auto-recovery notices appear as banners; click “View Details” to locate the entry."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los detalles de la grabación muestran un informe de integridad de captura (evidencia de interrupciones, recuperación y silenciamiento de la pista); los avisos de errores de dispositivo, fallos de guardado y recuperación automática aparecen como banners; haz clic en «Ver detalles» para localizar la entrada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les détails de l’enregistrement affichent un rapport d’intégrité de capture (preuves d’interruptions, de reprise et de coupure de la piste) ; les avis d’anomalie d’appareil, d’échec d’enregistrement et de récupération automatique s’affichent sous forme de bandeaux ; cliquez sur « Voir les détails » pour localiser l’entrée."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रिकॉर्डिंग विवरण कैप्चर अखंडता रिपोर्ट दिखाते हैं (ट्रैक रुकावट, रिकवरी और म्यूट के प्रमाण); डिवाइस गड़बड़ी, सेव विफलता और स्वतः रिकवरी सूचनाएँ बैनर के रूप में दिखती हैं; प्रविष्टि ढूँढ़ने के लिए «विवरण देखें» पर क्लिक करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detail perekaman menampilkan laporan integritas penangkapan (bukti gangguan, pemulihan, dan pembisuan trek); pemberitahuan kesalahan perangkat, kegagalan penyimpanan, dan pemulihan otomatis muncul sebagai banner; klik “Lihat Detail” untuk menemukan entri."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dettagli della registrazione mostrano un rapporto di integrità dell’acquisizione (prove di interruzioni, ripristino e disattivazione della traccia); gli avvisi di errore del dispositivo, salvataggio non riuscito e ripristino automatico appaiono come banner; fai clic su «Visualizza dettagli» per individuare la voce."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "録音の詳細には収録整合性レポート（トラックの中断・復旧・ミュートの証跡）が表示されます。デバイスの異常、保存の失敗、自動復旧の通知はバナーで表示され、「詳細を表示」をクリックすると項目を特定できます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹음 세부사항은 캡처 무결성 보고서(트랙 중단, 복구 및 음소거 증거)를 표시합니다. 기기 오류, 저장 실패 및 자동 복구 알림은 배너로 표시되며, “세부사항 보기”를 클릭하여 항목을 찾을 수 있습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De opnamedetails tonen een rapport over de opname-integriteit (bewijs van onderbrekingen, herstel en demping van de track); meldingen over apparaatfouten, mislukt opslaan en automatisch herstel verschijnen als banners; klik op ‘Details weergeven’ om het item te vinden."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szczegóły nagrania pokazują raport integralności przechwytywania (dowody przerwania, wznowienia i wyciszenia ścieżki); powiadomienia o błędach urządzenia, niepowodzeniu zapisu i automatycznym odzyskiwaniu pojawiają się jako banery; kliknij „Pokaż szczegóły”, aby znaleźć wpis."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os detalhes da gravação mostram um relatório de integridade da captura (evidências de interrupções, recuperação e silenciamento da faixa); avisos de erro de dispositivo, falha ao salvar e recuperação automática aparecem como banners; clique em «Ver Detalhes» para localizar o item."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В подробностях записи отображается отчёт о целостности захвата (свидетельства прерываний, восстановления и отключения звука дорожки); уведомления об ошибках устройства, сбоях сохранения и автоматическом восстановлении показываются в виде баннеров; нажмите «Показать подробности», чтобы найти запись."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inspelningsinformationen visar en rapport om inspelningsintegritet (bevis på avbrott, återställning och avstängning av spåret); meddelanden om enhetsfel, misslyckad sparning och automatisk återställning visas som banners; klicka på ”Visa information” för att hitta posten."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รายละเอียดการบันทึกจะแสดงรายงานความสมบูรณ์ของการเก็บเสียง (หลักฐานการหยุด การกู้คืน และการปิดเสียงของแทร็ก) การแจ้งเตือนความผิดปกติของอุปกรณ์ การบันทึกล้มเหลว และการกู้คืนอัตโนมัติจะแสดงเป็นแบนเนอร์ คลิก “ดูรายละเอียด” เพื่อระบุรายการ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kayıt ayrıntıları bir yakalama bütünlüğü raporu gösterir (parça kesintileri, kurtarma ve sessize alma kanıtları); aygıt hatası, kaydetme hatası ve otomatik kurtarma bildirimleri banner olarak görünür; girişi bulmak için “Ayrıntıları Görüntüle”ye dokunun."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У подробицях запису показується звіт про цілісність захоплення (свідчення переривань, відновлення та вимкнення звуку доріжки); повідомлення про помилки пристрою, збої збереження й автоматичне відновлення з’являються як банери; натисніть «Показати подробиці», щоб знайти запис."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chi tiết ghi âm hiển thị báo cáo toàn vẹn thu nhận (bằng chứng về gián đoạn, phục hồi và tắt tiếng của rãnh); thông báo lỗi thiết bị, lưu thất bại và tự động phục hồi hiển thị dưới dạng biểu ngữ; nhấp “Xem chi tiết” để định vị mục."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "录音详情会显示采集完整性报告（音轨中断、恢复与静音证据）；设备异常、保存失败与自动恢复提醒通过横幅提示，可点「查看详情」定位条目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "錄音詳情會顯示擷取完整性報告（音軌中斷、恢復與靜音證據）；裝置異常、儲存失敗與自動恢復提醒透過橫幅提示，可點「查看詳情」定位項目"
+          }
+        }
+      }
+    },
+    "粘贴文字或拖入图片即可创建笔记，AI 可将笔记拆解为待办事项并写入系统提醒事项，也可生成 AI 总结。图片查看支持缩放、拖拽和全屏查看。文字笔记还可用系统音色在本机转为语音，并导出为 WAV 或 M4A 音频。" : {
+      "comment" : "首次使用引导-专业模式-快捷笔记",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الصق نصًا أو اسحب صورًا لإنشاء ملاحظات. يمكن للذكاء الاصطناعي تفكيك الملاحظات إلى مهام وكتابتها في «التذكيرات» بالنظام، أو إنشاء ملخصات بالذكاء الاصطناعي. عرض الصور يدعم التكبير والسحب وملء الشاشة. ويمكن أيضًا تحويل الملاحظات النصية إلى كلام محليًا باستخدام أصوات النظام وتصديرها بصيغة WAV أو M4A."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Text einfügen oder Bilder hineinziehen, um Notizen zu erstellen. Die KI kann Notizen in Aufgaben aufteilen und in die System-Erinnerungen schreiben oder KI-Zusammenfassungen erstellen. Die Bildanzeige unterstützt Zoomen, Ziehen und Vollbild. Textnotizen können außerdem lokal mit Systemstimmen in Sprache umgewandelt und als WAV- oder M4A-Audio exportiert werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste text or drag in images to create notes. AI can break notes into todo items and write them to system Reminders, or generate AI summaries. Image viewing supports zoom, drag, and fullscreen viewing. Text notes can also be converted to speech locally with system voices and exported as WAV or M4A audio."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pegue texto o arrastre imágenes para crear notas. La IA puede dividir las notas en tareas y escribirlas en Recordatorios del sistema, o generar resúmenes con IA. La visualización de imágenes admite zoom, arrastre y pantalla completa. Las notas de texto también se pueden convertir en voz localmente con voces del sistema y exportar como audio WAV o M4A."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collez du texte ou faites glisser des images pour créer des notes. L’IA peut décomposer les notes en tâches et les écrire dans Rappels du système, ou générer des résumés IA. L’affichage des images prend en charge le zoom, le glissement et le plein écran. Les notes textuelles peuvent aussi être converties en parole localement avec les voix du système et exportées en audio WAV ou M4A."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नोट बनाने के लिए पाठ चिपकाएँ या छवि खींचें। AI नोट को कार्यों में तोड़कर सिस्टम रिमाइंडर में लिख सकता है, या AI सारांश बना सकता है। छवि प्रदर्शन ज़ूम, खिंचाव और पूर्णस्क्रीन समर्थित करता है। टेक्स्ट नोट्स को सिस्टम आवाज़ों से स्थानीय रूप से वाक् में बदलकर WAV या M4A ऑडियो के रूप में निर्यात भी किया जा सकता है।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempel teks atau seret gambar untuk membuat catatan. AI dapat memecah catatan menjadi tugas dan menulisnya ke Pengingat sistem, atau membuat ringkasan AI. Melihat gambar mendukung zoom, seret, dan layar penuh. Catatan teks juga dapat diubah menjadi ucapan secara lokal dengan suara sistem dan diekspor sebagai audio WAV atau M4A."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incolla testo o trascina immagini per creare note. L’IA può scomporre le note in attività e scriverle nei Promemoria di sistema, o generare riepiloghi IA. La visualizzazione delle immagini supporta zoom, trascinamento e schermo intero. Le note di testo possono anche essere convertite in voce localmente con le voci di sistema ed esportate come audio WAV o M4A."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "テキストを貼り付けるか画像をドラッグしてノートを作成できます。AI がノートをToDoに分解してシステムのリマインダーに書き込んだり、AI 要約を生成したりできます。画像表示はズーム、ドラッグ、全画面表示に対応します。テキストノートはシステムボイスでこのMac上で音声に変換し、WAVまたはM4Aオーディオとして書き出すこともできます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "텍스트를 붙여넣거나 이미지를 끌어다 노트를 만들 수 있습니다. AI가 노트를 할 일로 나누어 시스템 미리 알림에 쓰거나 AI 요약을 생성할 수 있습니다. 이미지 보기는 확대, 드래그, 전체 화면을 지원합니다. 텍스트 노트는 시스템 음성으로 이 Mac에서 음성으로 변환하고 WAV 또는 M4A 오디오로 내보낼 수도 있습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plak tekst of sleep afbeeldingen om notities te maken. AI kan notities opsplitsen in taken en naar systeem Herinneringen schrijven, of AI-samenvattingen genereren. Afbeeldingen bekijken ondersteunt zoomen, slepen en volledig scherm. Tekstnotities kunnen ook lokaal met systeemstemmen naar spraak worden omgezet en als WAV- of M4A-audio worden geëxporteerd."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wklej tekst lub przeciągnij obrazy, aby utworzyć notatki. AI może rozbijać notatki na zadania i zapisywać je w systemowych Przypomnieniach lub generować podsumowania AI. Przeglądanie obrazów obsługuje powiększanie, przeciąganie i pełny ekran. Notatki tekstowe można też lokalnie przekonwertować na mowę przy użyciu głosów systemowych i wyeksportować jako dźwięk WAV lub M4A."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cole texto ou arraste imagens para criar notas. A IA pode dividir as notas em tarefas e gravá-las nos Lembretes do sistema, ou gerar resumos com IA. A visualização de imagens oferece zoom, arraste e tela cheia. As notas de texto também podem ser convertidas em fala localmente com vozes do sistema e exportadas como áudio WAV ou M4A."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вставьте текст или перетащите изображения, чтобы создать заметки. ИИ может разбивать заметки на задачи и записывать их в системные Напоминания или создавать ИИ-резюме. Просмотр изображений поддерживает масштабирование, перетаскивание и полноэкранный режим. Текстовые заметки также можно локально преобразовать в речь с помощью системных голосов и экспортировать как аудио WAV или M4A."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klistra in text eller dra in bilder för att skapa anteckningar. AI kan dela upp anteckningar i uppgifter och skriva dem till systemets Påminnelser, eller skapa AI-sammanfattningar. Bildvisning stöder zoom, drag och helskärm. Textanteckningar kan även konverteras till tal lokalt med systemröster och exporteras som WAV- eller M4A-ljud."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "วางข้อความหรือลากรูปภาพเพื่อสร้างบันทึก AI สามารถแยกบันทึกเป็นสิ่งที่ต้องทำและเขียนลง “เตือนความจำ” ของระบบ หรือสร้างสรุปด้วย AI การดูรูปภาพรองรับการซูม ลาก และเต็มจอ บันทึกข้อความยังแปลงเป็นเสียงภายในเครื่องด้วยเสียงของระบบ และส่งออกเป็นเสียง WAV หรือ M4A ได้"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not oluşturmak için metin yapıştırın veya görsel sürükleyin. AI notları görevlere ayırıp sistem Anımsatıcılar’a yazabilir veya AI özeti oluşturabilir. Görüntüleme yakınlaştırma, sürükleme ve tam ekranı destekler. Metin notlar ayrıca sistem sesleriyle yerel olarak konuşmaya dönüştürülüp WAV veya M4A sesi olarak dışa aktarılabilir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вставте текст або перетягніть зображення, щоб створити нотатки. ШІ може розбивати нотатки на завдання та записувати їх у системні Нагадування або створювати ШІ-підсумки. Перегляд зображень підтримує масштабування, перетягування та повноекранний режим. Текстові нотатки також можна локально перетворити на мовлення за допомогою системних голосів і експортувати як аудіо WAV або M4A."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dán chữ hoặc kéo ảnh vào để tạo ghi chú. AI có thể tách ghi chú thành việc cần làm và ghi vào Nhắc nhở của hệ thống, hoặc tạo tóm tắt AI. Xem ảnh hỗ trợ thu phóng, kéo và toàn màn hình. Ghi chú văn bản cũng có thể được chuyển thành giọng nói cục bộ bằng giọng hệ thống và xuất dưới dạng âm thanh WAV hoặc M4A."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "粘贴文字或拖入图片即可创建笔记，AI 可将笔记拆解为待办事项并写入系统提醒事项，也可生成 AI 总结。图片查看支持缩放、拖拽和全屏查看。文字笔记还可用系统音色在本机转为语音，并导出为 WAV 或 M4A 音频。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "貼上文字或拖入圖片即可建立筆記，AI 可將筆記拆解為待辦事項並寫入系統提醒事項，也可產生 AI 總結。圖片檢視支援縮放、拖曳與全螢幕檢視。文字筆記還可用系統音色在本機轉為語音，並匯出為 WAV 或 M4A 音訊。"
           }
         }
       }
