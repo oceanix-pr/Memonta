@@ -401,8 +401,7 @@ final class MeetingRecorderService: @unchecked Sendable {
 
         do {
             // 静音状态复位：上一次会话可能停在静音（停止路径同样会复位），本次按配置重新决定。
-            // 必须在采集启动之前复位：MicCaptureService.start 会把写入缓冲恢复为非静音，
-            // 残留的 isMicMuted=true 会让界面显示「已静音」而实际正在录
+            // 采集层在首包前应用初始静音；这里同步界面状态。
             isMicMuted = false
             muteSource = .none
 
@@ -443,12 +442,9 @@ final class MeetingRecorderService: @unchecked Sendable {
                 #endif
             }
 
-            // 「录音开始时静音麦克风」：此时麦克风采集已启动（tap 已装、分片已开），
-            // 这里只把写入缓冲改成全零，分片时间轴保持连续（与手动静音同一实现，
-            // mixed 模式下与系统音轨对齐）；用户可在录音徽章菜单或菜单栏「麦克风」里随时解除。
+            // 首包已经按初始静音偏好写入；这里只更新界面，恢复重建保持该状态。
             // 仅系统音频来源没有麦克风轨，不需要也不应改写静音状态
             if config.startMuted, config.source != .systemAudio {
-                micCapture.mute()
                 isMicMuted = true
                 muteSource = .local
                 logger.info("按偏好「录音开始时静音麦克风」以静音状态开始采集")
@@ -486,10 +482,15 @@ final class MeetingRecorderService: @unchecked Sendable {
         } catch {
             // 启动失败时清理已启动的子服务
             await stopAllCaptures()
+            // 首包等待/后续声轨启动可能失败，但前面已写入的数据必须保留供恢复扫描。
+            let preserveSegments = Self.hasCapturedFrames(in: micSegmentURLs + sysSegmentURLs)
             resetSegmentState()
             pendingMergeFinalURL = nil
-            // 未进入正式录音的半成品目录不应在下次磁盘扫描时被导入。
-            try? FileManager.default.removeItem(at: folderDir)
+            activeCaptureSession = nil
+            if !preserveSegments {
+                do { try FileManager.default.removeItem(at: folderDir) }
+                catch { logger.error("清理未启动的录音目录失败: \(error.localizedDescription)") }
+            }
             lastError = UserFacingError.summary(for: error)
             throw error
         }
@@ -1076,7 +1077,21 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// 启动麦克风采集（所有平台可用）
     /// 首次运行会在权限未决时弹系统授权框，故为 async
     private func startMicCapture(url: URL) async throws {
-        try await micCapture.start(to: url)
+        try await micCapture.start(to: url, initiallyMuted: config.startMuted)
+    }
+
+    /// 读失败时保守保留，不能把不可读取的录音当作空壳删除。
+    static func hasCapturedFrames(in urls: [URL]) -> Bool {
+        for url in urls where FileManager.default.fileExists(atPath: url.path) {
+            do {
+                if try AVAudioFile(forReading: url).length > 0 { return true }
+            } catch {
+                Logger(subsystem: "com.oceanix.Memonta", category: "MeetingRecorder")
+                    .error("启动回滚无法检查分片，已保留录音目录: \(error.localizedDescription)")
+                return true
+            }
+        }
+        return false
     }
 
     #if os(macOS)

@@ -168293,6 +168293,137 @@
         }
       }
     }
+,
+    "麦克风未能启动，请检查当前输入设备的连接，然后重新开始录音。" : {
+      "localizations" : {
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ไม่สามารถเริ่มไมโครโฟนได้ โปรดตรวจสอบการเชื่อมต่อของอุปกรณ์อินพุตปัจจุบัน แล้วเริ่มบันทึกอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mikrofon başlatılamadı. Geçerli giriş aygıtının bağlantısını kontrol edip kaydı yeniden başlatın."
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تشغيل الميكروفون. تحقّق من اتصال جهاز الإدخال الحالي، ثم ابدأ التسجيل مجددًا."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Mikrofon konnte nicht gestartet werden. Prüfe die Verbindung des aktuellen Eingabegeräts und starte die Aufnahme erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The microphone could not start. Check the connection of the current input device, then start recording again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo iniciar el micrófono. Comprueba la conexión del dispositivo de entrada actual y vuelve a iniciar la grabación."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le microphone n’a pas pu démarrer. Vérifiez la connexion du périphérique d’entrée actuel, puis relancez l’enregistrement."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "माइक्रोफ़ोन शुरू नहीं हो सका। वर्तमान इनपुट डिवाइस का कनेक्शन जाँचें, फिर रिकॉर्डिंग दोबारा शुरू करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mikrofon tidak dapat dimulai. Periksa koneksi perangkat masukan saat ini, lalu mulai merekam lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile avviare il microfono. Controlla la connessione del dispositivo di ingresso attuale, quindi avvia di nuovo la registrazione."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "マイクを開始できませんでした。現在の入力デバイスの接続を確認してから、録音を再開してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마이크를 시작할 수 없습니다. 현재 입력 장치의 연결을 확인한 후 녹음을 다시 시작하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De microfoon kon niet worden gestart. Controleer de verbinding van het huidige invoerapparaat en start de opname opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udało się uruchomić mikrofonu. Sprawdź połączenie bieżącego urządzenia wejściowego i rozpocznij nagrywanie ponownie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível iniciar o microfone. Verifique a conexão do dispositivo de entrada atual e inicie a gravação novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось запустить микрофон. Проверьте подключение текущего устройства ввода и начните запись снова."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mikrofonen kunde inte startas. Kontrollera anslutningen till den aktuella inmatningsenheten och starta inspelningen igen."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося запустити мікрофон. Перевірте підключення поточного пристрою введення та почніть запис знову."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể khởi động micrô. Hãy kiểm tra kết nối của thiết bị đầu vào hiện tại, rồi bắt đầu ghi âm lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "麦克风未能启动，请检查当前输入设备的连接，然后重新开始录音。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "麥克風無法啟動，請檢查目前輸入裝置的連線，然後重新開始錄音。"
+          }
+        }
+      }
+    }
   },
   "version" : "1.0"
 }

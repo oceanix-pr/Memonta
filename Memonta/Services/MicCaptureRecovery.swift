@@ -17,10 +17,15 @@ final class MicCaptureRecovery {
     private let onPacketTimeout: (Int) -> Void
     private let onFailed: (Int) -> Void
     private let onRecovered: () -> Void
+    private let shouldRetry: () -> Bool
     private var task: Task<Void, Never>?
+    private var waiter: CheckedContinuation<Void, any Error>?
     private var recoveryID: UUID?
     private var activeAttempt: Attempt?
     private(set) var isConfirmed = false
+    private(set) var isActive = false
+
+    enum Failure: Error { case exhausted }
 
     var maxAttempts: Int { backoff.count + 1 }
 
@@ -32,7 +37,8 @@ final class MicCaptureRecovery {
         onStarted: @escaping (Int) -> Void,
         onPacketTimeout: @escaping (Int) -> Void,
         onFailed: @escaping (Int) -> Void,
-        onRecovered: @escaping () -> Void
+        onRecovered: @escaping () -> Void,
+        shouldRetry: @escaping () -> Bool = { true }
     ) {
         self.backoff = backoff
         self.totalBudget = totalBudget
@@ -42,17 +48,45 @@ final class MicCaptureRecovery {
         self.onPacketTimeout = onPacketTimeout
         self.onFailed = onFailed
         self.onRecovered = onRecovered
+        self.shouldRetry = shouldRetry
     }
 
     /// 立即尝试一次，返回引擎是否启动；真正恢复仍由当前尝试的写入确认决定。
     @discardableResult
     func start() -> Bool {
         cancel()
+        return startCycle(id: UUID())
+    }
+
+    /// 首次启动也沿用同一预算；先登记续体再启动，避免同步失败遗漏结算。
+    /// 取消绑定本轮 ID，旧等待方的迟到取消不能终止下一轮恢复。
+    func startAndWait() async throws {
         let id = UUID()
+        try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
+                cancel()
+                guard !Task.isCancelled else {
+                    continuation.resume(throwing: CancellationError())
+                    return
+                }
+                waiter = continuation
+                _ = startCycle(id: id)
+            }
+        } onCancel: {
+            Task { @MainActor [weak self] in
+                guard self?.recoveryID == id else { return }
+                self?.cancel()
+            }
+        }
+    }
+
+    private func startCycle(id: UUID) -> Bool {
         recoveryID = id
+        isActive = true
         let clock = ContinuousClock()
         let deadline = clock.now.advanced(by: totalBudget)
         let started = startAttempt(id: id, number: 1)
+        guard recoveryID == id, isActive else { return started }
         task = Task { [weak self] in
             await self?.run(id: id, started: started, deadline: deadline)
         }
@@ -65,6 +99,10 @@ final class MicCaptureRecovery {
         recoveryID = nil
         activeAttempt = nil
         isConfirmed = false
+        isActive = false
+        let waiting = waiter
+        waiter = nil
+        waiting?.resume(throwing: CancellationError())
     }
 
     /// 最后一次首包超时后仍接受同一尝试的迟到写入，让真实恢复自动结算告警。
@@ -72,13 +110,37 @@ final class MicCaptureRecovery {
     func confirmWrite(_ token: Attempt) {
         guard token == activeAttempt, recoveryID == token.recoveryID, !isConfirmed else { return }
         isConfirmed = true
+        isActive = false
         task?.cancel()
         task = nil
+        let waiting = waiter
+        waiter = nil
+        waiting?.resume()
         onRecovered()
+    }
+
+    /// 写盘等不可重试错误也必须唤醒启动等待方。
+    func fail() {
+        guard isActive else { return }
+        task?.cancel()
+        activeAttempt = nil
+        finishFailed(number: activeAttemptNumber)
+    }
+
+    private var activeAttemptNumber = 1
+
+    private func finishFailed(number: Int) {
+        isActive = false
+        task = nil
+        let waiting = waiter
+        waiter = nil
+        waiting?.resume(throwing: Failure.exhausted)
+        onFailed(number)
     }
 
     private func startAttempt(id: UUID, number: Int) -> Bool {
         let token = Attempt(recoveryID: id, number: number)
+        activeAttemptNumber = number
         activeAttempt = token // 在启动前布防，首包可能早于 engine.start() 返回。
         onStarted(number)
         let started = attempt(token)
@@ -91,6 +153,10 @@ final class MicCaptureRecovery {
         var started = started
         var number = 1
         while recoveryID == id, !Task.isCancelled, !isConfirmed {
+            if !started, !shouldRetry() {
+                finishFailed(number: number)
+                return
+            }
             if started {
                 let packetDeadline = min(clock.now.advanced(by: packetTimeout), deadline)
                 // 写入确认取消此任务；短轮询不阻塞主线程，也不等待硬件回调返回。
@@ -102,13 +168,13 @@ final class MicCaptureRecovery {
                 onPacketTimeout(number)
             }
             guard number < maxAttempts, clock.now < deadline else {
-                onFailed(number)
+                finishFailed(number: number)
                 return // 保留 activeAttempt，允许最终超时后迟到的真实写入解除告警。
             }
             do { try await clock.sleep(until: min(clock.now.advanced(by: backoff[number - 1]), deadline)) }
             catch { return }
             guard recoveryID == id, !Task.isCancelled, !isConfirmed else { return }
-            guard clock.now < deadline else { onFailed(number); return }
+            guard clock.now < deadline else { finishFailed(number: number); return }
             number += 1
             started = startAttempt(id: id, number: number)
         }

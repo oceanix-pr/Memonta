@@ -17,12 +17,38 @@ import os.log
 /// - tap 闭包访问的 fileBox、静音标志和零缓冲均由各自的锁保护。
 final class MicCaptureService: @unchecked Sendable {
 
-    @MainActor init() {}
+    /// 注入权限、设备绑定及引擎创建便于离线验证失败/取消，不触碰真实音频设备。
+    @MainActor init(
+        permissionCheck: @escaping @Sendable () async -> Bool = { await MicCaptureService.ensureMicrophonePermission() },
+        bindInput: @escaping @MainActor (AVAudioEngine) throws -> UInt32 = MicCaptureService.bindInputDevice,
+        makeEngine: @escaping @MainActor () -> AVAudioEngine = { AVAudioEngine() }
+    ) {
+        self.permissionCheck = permissionCheck
+        self.bindInput = bindInput
+        self.makeEngine = makeEngine
+    }
+
+    private let permissionCheck: @Sendable () async -> Bool
+    @MainActor private let bindInput: (AVAudioEngine) throws -> UInt32
+    @MainActor private let makeEngine: () -> AVAudioEngine
 
     private let logger = Logger(subsystem: "com.oceanix.Memonta", category: "MicCapture")
-    private let engine = AVAudioEngine()
+    // 引擎及节点仅在 MainActor 操作；音频回调只捕获文件盒和不可变标识。
+    @MainActor private var engine: AVAudioEngine?
+    @MainActor private var engineGeneration = 0
+    @MainActor private var isStarting = false
+    @MainActor private var initialURL: URL?
+    @MainActor private var lastAttemptError: (any Error)?
+    @MainActor private var lastAttemptCanRetry = true
+    @MainActor private var preparedRoute: Route?
+
+    private struct Route: Equatable {
+        let deviceID: UInt32?
+        let sampleRate: Double
+        let channels: UInt32
+    }
     /// AVAudioFile 的线程安全包装（@unchecked Sendable）
-    private let fileBox = FileBox()
+    private let fileBox = MicCaptureFileStore()
     /// 状态锁：保护 isTapInstalled / recordingFormat 的跨线程访问
     private let stateLock = NSLock()
     private var _isTapInstalled = false
@@ -47,9 +73,6 @@ final class MicCaptureService: @unchecked Sendable {
     /// 静音状态：tap 保持安装、改写全零缓冲（保持分片时间轴连续，
     /// 混音后与系统音轨对齐；同时消除静音期的零帧空壳分片）
     private let silencedBox = SilencedBox()
-
-    /// 静音写入用的全零缓冲（按需重建；写文件为同步调用，单一音频线程复用安全）
-    private let zeroBufferBox = ZeroBufferBox()
 
     /// 写入错误上报节流（磁盘满/IO 故障时 tap 每 ~21ms 失败一次，不去抖会形成风暴）
     private let writeErrorBox = WriteErrorRateBox()
@@ -85,7 +108,7 @@ final class MicCaptureService: @unchecked Sendable {
             self?.applyRecoveryAttempt(token: token) ?? false
         },
         onStarted: { [weak self] attempt in
-            guard let self else { return }
+            guard let self, !self.isStarting else { return }
             self.emit(.recoveryStarted(
                 attempt: attempt, maxAttempts: self.recoveryController.maxAttempts,
                 generation: self.generation
@@ -99,18 +122,28 @@ final class MicCaptureService: @unchecked Sendable {
             )
             self.lastRecoveryFailure = failure
             self.logRecoveryFailure(attempt: attempt)
-            self.emit(.deviceUnavailable(failure))
+            if !self.isStarting { self.emit(.deviceUnavailable(failure)) }
         },
         onFailed: { [weak self] attempt in
             guard let self, let failure = self.lastRecoveryFailure else { return }
             self.logRecoveryFailure(attempt: attempt)
-            self.emit(.recoveryFailed(failure))
+            if !self.isStarting {
+                if self.lastAttemptCanRetry {
+                    self.emit(.recoveryFailed(failure))
+                } else {
+                    self.emit(.writeFailed(
+                        userSummary: UserFacingError.summary(for: self.lastAttemptError ?? CocoaError(.fileWriteUnknown)),
+                        diagnostics: failure
+                    ))
+                }
+            }
         },
         onRecovered: { [weak self] in
             guard let self else { return }
             self.logger.info("麦克风采集恢复确认：当前尝试已有音频缓冲成功写入")
-            self.emit(.recovered(generation: self.generation))
-        }
+            if !self.isStarting { self.emit(.recovered(generation: self.generation)) }
+        },
+        shouldRetry: { [weak self] in self?.lastAttemptCanRetry ?? false }
     )
 
     /// 开始/停止时取消恢复任务，并在锁内使旧音频回调失效。
@@ -122,6 +155,10 @@ final class MicCaptureService: @unchecked Sendable {
         pendingRecoveryAttempt = nil
         stateLock.unlock()
         lastConfigurationChangeAt = nil
+        lastRecoveryFailure = nil
+        lastAttemptError = nil
+        lastAttemptCanRetry = true
+        writeErrorBox.reset()
     }
 
     private func setPendingRecoveryAttempt(_ token: MicCaptureRecovery.Attempt?) {
@@ -140,9 +177,8 @@ final class MicCaptureService: @unchecked Sendable {
     private var configObserver: NSObjectProtocol?
 
     /// 当前是否正在采集
-    var isCapturing: Bool {
-        stateLock.lock(); defer { stateLock.unlock() }
-        return _isTapInstalled && engine.isRunning
+    @MainActor var isCapturing: Bool {
+        isTapInstalled && engine?.isRunning == true
     }
 
     /// C-6: 检查麦克风权限是否已授予
@@ -182,224 +218,223 @@ final class MicCaptureService: @unchecked Sendable {
         #endif
     }
 
-    /// 开始采集
-    /// - Parameter url: 目标分片文件 URL（caf，PCM 容器）
-    @MainActor func start(to url: URL) async throws {
-        guard !isTapInstalled else { return }
+    /// 新会话使用新引擎；首个非空缓冲成功落盘才返回就绪。
+    @MainActor func start(to url: URL, initiallyMuted: Bool = false) async throws {
+        guard !isStarting, fileBox.file == nil, engine == nil else {
+            throw MicCaptureError.alreadyCapturing
+        }
         beginNewSession()
-        // 新录音从非静音状态开始（上一次会话停止于静音状态时的状态残留兑底）
-        silencedBox.set(false)
-
-        // C-6: 麦克风权限：未决时先发起系统请求（首次运行会弹授权框），再判定
-        guard await Self.ensureMicrophonePermission() else {
-            throw MicCaptureError.microphonePermissionNotGranted
+        let session = generation
+        isStarting = true
+        initialURL = url
+        silencedBox.set(initiallyMuted)
+        defer {
+            if isCurrentGeneration(session) {
+                isStarting = false
+                initialURL = nil
+            }
         }
-
-        #if os(macOS)
-        // 指定麦克风：绑定到引擎输入节点（必须在读取输入格式之前，格式随设备变化）；
-        // 未选择或已拔出则不绑定，保持引擎跟随系统默认输入设备
-        if let uid = MicrophoneDeviceRegistry.savedSelectionUID(),
-           let deviceID = MicrophoneDeviceRegistry.deviceID(forUID: uid) {
-            MicrophoneDeviceRegistry.apply(deviceID, to: engine)
+        do {
+            let permissionGranted = await permissionCheck()
+            try Task.checkCancellation()
+            guard isCurrentGeneration(session) else { throw CancellationError() }
+            guard permissionGranted else { throw MicCaptureError.microphonePermissionNotGranted }
+            try await recoveryController.startAndWait()
+            try Task.checkCancellation()
+            guard isCurrentGeneration(session) else { throw CancellationError() }
+        } catch {
+            // 旧启动任务的迟到收尾不能停止随后建立的新会话。
+            let failure: any Error
+            if error is MicCaptureRecovery.Failure {
+                failure = lastAttemptCanRetry ? MicCaptureError.startupFailed
+                    : (lastAttemptError ?? MicCaptureError.startupFailed)
+            } else {
+                failure = error
+            }
+            if isCurrentGeneration(session) { stop() }
+            throw failure
         }
-        #endif
+    }
 
-        let inputNode = engine.inputNode
-        let format = inputNode.outputFormat(forBus: 0)
-        recordingFormat = format
-
-        // 配置 CAF(PCM Int16) 写入格式：崩溃安全，停止录音时统一导出为 m4a
-        guard let settings = Self.fileSettings(for: format) else {
+    /// 硬件格式是采样率/声道的依据。客户端输出格式可能仍是上一次设备的缓存，
+    /// 只有与硬件一致时才沿用其 PCM 布局；否则准备硬件采样率的 Float32 tap。
+    static func captureFormat(hardware: AVAudioFormat, client: AVAudioFormat) throws -> AVAudioFormat {
+        guard hardware.sampleRate.isFinite, hardware.sampleRate > 0, hardware.channelCount > 0 else {
             throw MicCaptureError.inputDeviceLost
         }
-        // 处理格式与 tap 缓冲一致（Float32），AVAudioFile 内部转为 Int16 落盘
-        fileBox.file = try AVAudioFile(
-            forWriting: url,
-            settings: settings,
-            commonFormat: format.commonFormat,
-            interleaved: format.isInterleaved
-        )
-
-        try installTapOnEngine(inputNode: inputNode, format: format)
-        engine.prepare()
-        do {
-            try engine.start()
-        } catch {
-            // 失败回滚：移除刚安装的 tap 并释放文件。
-            // 若在此处先把 isTapInstalled 置 true，engine.start() 抛错后会留下
-            // “tap 已装、引擎未跑、文件已打开”的不一致状态，之后任何 start() 都会命中
-            // 开头的 guard 直接返回“成功”，导致整段录音只有空文件且不上报错误
-            engine.inputNode.removeTap(onBus: 0)
-            fileBox.file = nil
-            throw error
+        if client.sampleRate == hardware.sampleRate, client.channelCount == hardware.channelCount,
+           client.commonFormat == .pcmFormatFloat32 {
+            return client
         }
-        isTapInstalled = true
-        observeConfigurationChanges()
+        guard let format = AVAudioFormat(
+            standardFormatWithSampleRate: hardware.sampleRate, channels: hardware.channelCount
+        ) else { throw MicCaptureError.inputDeviceLost }
+        return format
     }
 
-    /// 监听音频设备配置变化（切换/拔出输入设备）
-    /// 不处理时旧 tap 格式与硬件不匹配会导致 AVAudioEngine 异常甚至崩溃
-    private func observeConfigurationChanges() {
-        guard configObserver == nil else { return }
-        configObserver = NotificationCenter.default.addObserver(
-            forName: .AVAudioEngineConfigurationChange,
-            object: engine,
-            queue: nil
-        ) { [weak self] _ in
-            // queue: nil 使回调在**通知投递线程**（AVAudioEngine 内部线程）执行，
-            // 与主线程上的 stop()/ensureCapturing()/unmute() 并发操作同一引擎，
-            // 会命中 AVAudioEngine 断言或重复安装 tap。统一跳回主线程，与所有
-            // 其它引擎操作串行；tap 闭包本身仍留在音频线程，不受此影响。
-            self?.scheduleConfigurationChangeHandling()
+    @MainActor private static func bindInputDevice(_ engine: AVAudioEngine) throws -> UInt32 {
+        guard let target = MicrophoneDeviceRegistry.resolvedDeviceID() else {
+            throw MicCaptureError.inputDeviceLost
         }
+        if MicrophoneDeviceRegistry.currentDeviceID(of: engine) != target {
+            guard MicrophoneDeviceRegistry.apply(target, to: engine) else {
+                throw MicCaptureError.inputDeviceLost
+            }
+        }
+        return target
     }
 
-    /// 把配置变更处理调度到主线程（引擎操作与 start/stop/ensureCapturing 同线程串行）
-    private func scheduleConfigurationChangeHandling() {
+    /// 先撤销写入资格，再移除观察者/tap、释放旧引擎。调用方保留录音文件和静音状态。
+    @MainActor private func retireEngine() {
+        fileBox.invalidateTap()
+        if let observer = configObserver {
+            NotificationCenter.default.removeObserver(observer)
+            configObserver = nil
+        }
+        removeTapIfInstalled()
+        engine?.stop()
+        engine = nil
+        engineGeneration += 1
+    }
+
+    @MainActor private func observeConfigurationChanges() {
+        guard configObserver == nil, let engine else { return }
         let session = generation
-        Task { @MainActor [weak self] in
-            guard let self, self.isCurrentGeneration(session), self.fileBox.file != nil else { return }
-            // 只在这里记录「真实硬件配置变化」的时刻：紧随其后的写失败属于切换症状。
-            // 不能在 handleConfigurationChange 里记——写失败转恢复也会走那里，
-            // 会不断刷新时间戳，把磁盘/IO 故障永久误判成设备切换而不告警。
-            self.lastConfigurationChangeAt = Date()
-            self.handleConfigurationChange()
+        let originEngine = engineGeneration
+        configObserver = NotificationCenter.default.addObserver(
+            forName: .AVAudioEngineConfigurationChange, object: engine, queue: nil
+        ) { [weak self] _ in
+            // 捕获注册时的标识，不能让旧通知读取到新会话/新引擎的代次。
+            Task { @MainActor [weak self] in
+                guard let self, self.isCurrentGeneration(session),
+                      self.engineGeneration == originEngine,
+                      self.fileBox.file != nil, let engine = self.engine else { return }
+                self.lastConfigurationChangeAt = Date()
+                let hardware = engine.inputNode.inputFormat(forBus: 0)
+                let route = Route(
+                    deviceID: MicrophoneDeviceRegistry.resolvedDeviceID(),
+                    sampleRate: hardware.sampleRate, channels: hardware.channelCount
+                )
+                // 自身绑定/启动造成的同路由通知合并到在途恢复，不重置预算。
+                if route == self.preparedRoute,
+                   self.recoveryController.isActive || engine.isRunning { return }
+                // 初始启动等待方必须保留；它的下一次尝试会重新解析设备。
+                if self.isStarting { return }
+                self.handleConfigurationChange(restart: true)
+            }
         }
     }
 
-    /// 新配置通知重开有界恢复流程；启动失败和首包超时共用次数与时间预算。
-    /// 返回值仅表示引擎已启动，恢复仍以当前尝试成功写入为准。
+    /// 唤醒、写失败等重复请求加入在途恢复；真实新配置才重开恢复流程。
     @MainActor
     @discardableResult
-    private func handleConfigurationChange() -> Bool {
+    private func handleConfigurationChange(restart: Bool = false) -> Bool {
         guard fileBox.file != nil else { return false }
+        if recoveryController.isActive, !restart { return isCapturing }
         lastRecoveryFailure = nil
         return recoveryController.start()
     }
 
-    /// 执行一次恢复尝试：重解析设备与格式 → 必要时切分片 → 装 tap → 启动引擎。
-    /// 每步都记录失败阶段（供 `-10868` 这类无阶段信息的错误码定位）。
-    /// - Returns: 是否已启动成功（成功仍要等首包写入才算真正恢复）
+    /// 每次尝试使用新引擎，避免反复在同一失配的输入节点上安装 tap。
     @MainActor
     private func applyRecoveryAttempt(token: MicCaptureRecovery.Attempt) -> Bool {
-        let attempt = token.number
         setPendingRecoveryAttempt(nil)
+        retireEngine()
         let previousFile = fileBox.file
-        let wasTapInstalled = isTapInstalled
         let oldFormat = recordingFormat
-
-        // 配置变化后引擎已自动停止；按“资源是否存在”安全移除旧 tap
-        removeTapIfInstalled()
-        engine.stop()
-
-        // 上次设备断开时 tap 已移除；设备重新出现后仍须尝试恢复。
-        // 不能用 wasTapInstalled 拦截，否则“等待自动恢复”永远无法发生。
-
-        // 重新对齐目标设备：已选麦克风仍在则绑回它，被拔出则明确回退系统默认，
-        // 避免引擎停在已消失的设备上继续采集（读到的全是静音）
+        let nextEngine = makeEngine()
+        engine = nextEngine
+        let tapID = UUID()
         var deviceBound: Bool?
-        #if os(macOS)
-        if let uid = MicrophoneDeviceRegistry.savedSelectionUID() {
-            let target = MicrophoneDeviceRegistry.deviceID(forUID: uid)
-                ?? MicrophoneDeviceRegistry.defaultInputDeviceID()
-            if let target, MicrophoneDeviceRegistry.currentDeviceID(of: engine) != target {
-                // 绑定结果必须检查：失败后若仍按「已绑定」前提继续恢复，
-                // 后续读到的格式与设备都对不上，只会把真实的绑定失败掩盖成格式错误
-                deviceBound = MicrophoneDeviceRegistry.apply(target, to: engine)
-            }
-        }
-        #endif
-
-        if deviceBound == false {
-            lastRecoveryFailure = diagnostics(
-                stage: .bindDevice, attempt: attempt, deviceBound: false,
-                oldFormat: oldFormat, newFormat: nil, error: MicCaptureError.inputDeviceLost
-            )
-            logRecoveryFailure(attempt: attempt)
-            if let failure = lastRecoveryFailure { emit(.deviceUnavailable(failure)) }
-            return false
-        }
+        var hardwareFormat: AVAudioFormat?
+        var clientFormat: AVAudioFormat?
+        var newFormat: AVAudioFormat?
         var stage: MicCaptureDiagnostics.Stage = .bindDevice
-        let newFormat = engine.inputNode.outputFormat(forBus: 0)
-        // 无效格式（设备已拔出）：本次尝试失败，交由有限重试/最终失败上报
-        guard newFormat.sampleRate > 0, newFormat.channelCount > 0 else {
-            lastRecoveryFailure = diagnostics(
-                stage: .startEngine, attempt: attempt, deviceBound: deviceBound,
-                oldFormat: oldFormat, newFormat: newFormat, error: MicCaptureError.inputDeviceLost
-            )
-            logRecoveryFailure(attempt: attempt)
-            if let failure = lastRecoveryFailure { emit(.deviceUnavailable(failure)) }
-            return false
-        }
-
-        let needsNewSegment = oldFormat.map { Self.requiresNewSegment(from: $0, to: newFormat) } ?? true
         var replacement: (url: URL, file: AVAudioFile)?
         var attemptedURL: URL?
+        lastAttemptError = nil
+        lastAttemptCanRetry = true
         do {
+            // 返回即表示设备已对齐；绑定失败不能继续读取旧格式。
+            let target = try bindInput(nextEngine)
+            deviceBound = true
+            stage = .readFormat
+            let hardware = nextEngine.inputNode.inputFormat(forBus: 0)
+            let client = nextEngine.inputNode.outputFormat(forBus: 0)
+            hardwareFormat = hardware
+            clientFormat = client
+            let format = try Self.captureFormat(hardware: hardware, client: client)
+            newFormat = format
+            preparedRoute = Route(deviceID: target, sampleRate: hardware.sampleRate, channels: hardware.channelCount)
+            logger.debug("麦克风准备 引擎代次=\(self.engineGeneration) 设备=\(target) 硬件=\(hardware.sampleRate)Hz/\(hardware.channelCount)ch 客户端=\(client.sampleRate)Hz/\(client.channelCount)ch tap=\(format.sampleRate)Hz/\(format.channelCount)ch")
+
             stage = .openSegmentFile
-            if needsNewSegment {
-                guard let url = nextSegmentForFormatChange?() else {
-                    logger.error("输入格式变化时无法取得下一个麦克风分片路径")
-                    throw CocoaError(.fileWriteUnknown)
-                }
+            if previousFile == nil || oldFormat.map({ Self.requiresNewSegment(from: $0, to: format) }) != false {
+                let url: URL
+                if previousFile == nil, let initialURL {
+                    url = initialURL
+                } else if let next = nextSegmentForFormatChange?() {
+                    url = next
+                } else { throw CocoaError(.fileWriteUnknown) }
                 attemptedURL = url
-                guard let settings = Self.fileSettings(for: newFormat) else {
-                    throw MicCaptureError.inputDeviceLost
-                }
+                guard let settings = Self.fileSettings(for: format) else { throw MicCaptureError.inputDeviceLost }
                 replacement = (url, try AVAudioFile(
-                    forWriting: url,
-                    settings: settings,
-                    commonFormat: newFormat.commonFormat,
-                    interleaved: newFormat.isInterleaved
+                    forWriting: url, settings: settings,
+                    commonFormat: format.commonFormat, interleaved: format.isInterleaved
                 ))
             }
+            if let replacement { fileBox.file = replacement.file }
             stage = .installTap
             setPendingRecoveryAttempt(token)
-            try installTapOnEngine(inputNode: engine.inputNode, format: newFormat, recoveryAttempt: token)
-            stateLock.lock()
-            _isTapInstalled = true
-            stateLock.unlock()
-            // tap 开始回调前换文件；旧文件先由局部强引用保留，以便启动失败回滚。
-            if let replacement { fileBox.file = replacement.file }
+            fileBox.activate(tapID)
+            try installTapOnEngine(inputNode: nextEngine.inputNode, format: format,
+                                   recoveryAttempt: token, tapID: tapID)
+            isTapInstalled = true
+            observeConfigurationChanges()
             stage = .startEngine
-            try engine.start()
-            recordingFormat = newFormat
+            nextEngine.prepare()
+            try nextEngine.start()
+            recordingFormat = format
             lastRecoveryFailure = nil
-            if let replacement {
+            if let replacement, previousFile != nil {
                 onFormatChangeSegmentOpened?(replacement.url)
-                logger.info("输入格式变化，已切换麦克风分片: \(replacement.url.lastPathComponent, privacy: .public)，采样率=\(newFormat.sampleRate)，声道=\(newFormat.channelCount)")
-            } else if !wasTapInstalled {
-                logger.info("麦克风输入设备恢复，继续写入当前分片")
             }
-            // 启动调用成功不等于已经录到声音：等新代次首个缓冲写入确认
-            return true
+            return true // 仍需当前 tap 首包成功写入才能确认就绪。
         } catch {
+            if stage == .bindDevice { deviceBound = false }
+            let failedEngineGeneration = engineGeneration
             setPendingRecoveryAttempt(nil)
-            // 回滚：engine.start() 失败时 tap 已装而引擎未跑，必须清标志并移除 tap，
-            // 与 start() 的失败回滚一致（否则后续 ensureCapturing/start 会把
-            // “tap 已装、引擎未跑”误判成采集正常）
-            removeTapIfInstalled()
-            if replacement != nil, let previousFile {
-                // 启动失败时继续保留旧片。
+            retireEngine()
+            // 极少数启动失败会发生在首次回调之后；有数据的片必须登记保留。
+            if let replacement, replacement.file.length > 0 {
+                recordingFormat = newFormat
+                if previousFile != nil { onFormatChangeSegmentOpened?(replacement.url) }
+            } else {
                 fileBox.file = previousFile
+                if let attemptedURL, FileManager.default.fileExists(atPath: attemptedURL.path) {
+                    // 先释放文件句柄再删除空壳。
+                    replacement = nil
+                    do { try FileManager.default.removeItem(at: attemptedURL) }
+                    catch { logger.error("清理未启动的麦克风分片失败: \(error.localizedDescription)") }
+                }
             }
-            if let attemptedURL, FileManager.default.fileExists(atPath: attemptedURL.path) {
-                // AVAudioFile 初始化也可能先创建空壳再抛错；该片未登记，不留给恢复扫描。
-                do { try FileManager.default.removeItem(at: attemptedURL) }
-                catch { logger.error("清理未启动的麦克风分片失败: \(error.localizedDescription)") }
-            }
+            lastAttemptError = error
+            lastAttemptCanRetry = stage != .openSegmentFile
             lastRecoveryFailure = diagnostics(
-                stage: stage, attempt: attempt, deviceBound: deviceBound,
-                oldFormat: oldFormat, newFormat: newFormat, error: error
+                stage: stage, attempt: token.number, deviceBound: deviceBound,
+                oldFormat: oldFormat, newFormat: newFormat, error: error,
+                hardwareFormat: hardwareFormat, clientFormat: clientFormat,
+                originEngineGeneration: failedEngineGeneration
             )
-            logRecoveryFailure(attempt: attempt)
-            if let failure = lastRecoveryFailure { emit(.deviceUnavailable(failure)) }
+            logRecoveryFailure(attempt: token.number)
+            if let failure = lastRecoveryFailure, !isStarting, lastAttemptCanRetry { emit(.deviceUnavailable(failure)) }
             return false
         }
     }
 
     /// 仅当前 tap 的非空成功写入可确认恢复（静音的全零缓冲同样有效）。
-    private func noteSuccessfulWrite(_ token: MicCaptureRecovery.Attempt?, session: Int) {
+    private func noteSuccessfulWrite(_ token: MicCaptureRecovery.Attempt?, session: Int, tapID: UUID) {
+        guard fileBox.isCurrentTap(tapID) else { return }
         stateLock.lock()
         guard _generation == session else { stateLock.unlock(); return }
         _lastSuccessfulWriteAt = Date()
@@ -408,7 +443,7 @@ final class MicCaptureService: @unchecked Sendable {
         stateLock.unlock()
         guard accepted, let token else { return }
         Task { @MainActor [weak self] in
-            guard let self, self.isCurrentGeneration(session) else { return }
+            guard let self, self.isCurrentGeneration(session), self.fileBox.isCurrentTap(tapID) else { return }
             self.recoveryController.confirmWrite(token)
         }
     }
@@ -418,15 +453,20 @@ final class MicCaptureService: @unchecked Sendable {
     }
 
     /// 组装失败定位信息（不含任何会议内容）
-    private func diagnostics(
+    @MainActor private func diagnostics(
         stage: MicCaptureDiagnostics.Stage,
         attempt: Int,
         deviceBound: Bool?,
         oldFormat: AVAudioFormat?,
         newFormat: AVAudioFormat?,
-        error: Error?
+        error: Error?,
+        hardwareFormat: AVAudioFormat? = nil,
+        clientFormat: AVAudioFormat? = nil,
+        originEngineGeneration: Int? = nil
     ) -> MicCaptureDiagnostics {
         let nsError = error.map { $0 as NSError }
+        let hardware = hardwareFormat ?? engine?.inputNode.inputFormat(forBus: 0)
+        let client = clientFormat ?? engine?.inputNode.outputFormat(forBus: 0)
         return MicCaptureDiagnostics(
             stage: stage,
             generation: generation,
@@ -439,15 +479,20 @@ final class MicCaptureService: @unchecked Sendable {
             errorDomain: nsError?.domain,
             errorCode: nsError?.code,
             detail: error?.localizedDescription,
-            lastSuccessfulWriteAt: lastSuccessfulWriteAt
+            lastSuccessfulWriteAt: lastSuccessfulWriteAt,
+            engineGeneration: originEngineGeneration ?? engineGeneration,
+            hardwareSampleRate: hardware?.sampleRate,
+            clientSampleRate: client?.sampleRate,
+            hardwareChannelCount: hardware?.channelCount,
+            clientChannelCount: client?.channelCount
         )
     }
 
     /// 恢复失败日志：阶段、会话代次、设备绑定结果、新旧采样率/声道、错误域与错误码。
     /// 这些字段是下次定位 `-10868`（kAudioUnitErr_FormatNotSupported）具体发生在哪一步的依据
-    private func logRecoveryFailure(attempt: Int) {
+    @MainActor private func logRecoveryFailure(attempt: Int) {
         guard let failure = lastRecoveryFailure else { return }
-        let summary = "麦克风恢复失败 stage=\(failure.stage.rawValue) 会话代次=\(failure.generation) 尝试=\(attempt) 设备绑定=\(failure.deviceBound.map { String($0) } ?? "-") 采样率=\(failure.oldSampleRate.map { String($0) } ?? "-")→\(failure.newSampleRate.map { String($0) } ?? "-") 声道=\(failure.oldChannelCount.map { String($0) } ?? "-")→\(failure.newChannelCount.map { String($0) } ?? "-") 错误域=\(failure.errorDomain ?? "-") 错误码=\(failure.errorCode.map { String($0) } ?? "-")"
+        let summary = "麦克风恢复失败 stage=\(failure.stage.rawValue) 会话代次=\(failure.generation) 尝试=\(attempt) 设备绑定=\(failure.deviceBound.map { String($0) } ?? "-") 采样率=\(failure.oldSampleRate.map { String($0) } ?? "-")→\(failure.newSampleRate.map { String($0) } ?? "-") 声道=\(failure.oldChannelCount.map { String($0) } ?? "-")→\(failure.newChannelCount.map { String($0) } ?? "-") 引擎代次=\(failure.engineGeneration) 硬件采样率=\(failure.hardwareSampleRate.map { String($0) } ?? "-") 客户端采样率=\(failure.clientSampleRate.map { String($0) } ?? "-") 错误域=\(failure.errorDomain ?? "-") 错误码=\(failure.errorCode.map { String($0) } ?? "-")"
         logger.error("\(summary, privacy: .public) 详情=\(failure.detail ?? "-", privacy: .private)")
     }
 
@@ -464,7 +509,7 @@ final class MicCaptureService: @unchecked Sendable {
     /// 这里不再抛出——旧实现抛出会把「正在恢复」直接变成一条需要用户「停止后重新录制」的错误。
     @MainActor func unmute() {
         silencedBox.set(false)
-        if fileBox.file != nil, !engine.isRunning {
+        if fileBox.file != nil, engine?.isRunning != true {
             handleConfigurationChange()
         }
     }
@@ -476,7 +521,7 @@ final class MicCaptureService: @unchecked Sendable {
         // 无打开的写入文件 = 未在采集：明确返回 false，让上层能区分
         // “无需恢复”与“恢复失败”，而不是把未在录音误报成采集正常
         guard fileBox.file != nil else { return false }
-        if isTapInstalled && engine.isRunning { return true }
+        if isTapInstalled && engine?.isRunning == true { return true }
 
         // 与设备配置通知走同一恢复路径：唤醒后格式也可能已经变化。
         handleConfigurationChange()
@@ -489,7 +534,7 @@ final class MicCaptureService: @unchecked Sendable {
     /// 先创建新文件再原子替换，写入空窗期近似为零。
     /// - Parameter url: 新分片的目标 URL
     /// - Returns: 是否轮转成功（失败时保留旧文件继续写入）
-    func rotateSegment(to url: URL) -> Bool {
+    @MainActor func rotateSegment(to url: URL) -> Bool {
         guard isCapturing else { return false }
         guard let format = recordingFormat,
               let settings = Self.fileSettings(for: format) else { return false }
@@ -504,7 +549,7 @@ final class MicCaptureService: @unchecked Sendable {
             fileBox.file = newFile
             return true
         } catch {
-            reportWriteError(error)
+            reportWriteError(error, session: generation)
             return false
         }
     }
@@ -535,29 +580,26 @@ final class MicCaptureService: @unchecked Sendable {
     /// 安全移除 tap：以“资源是否存在”为判据，避免对未安装 tap 的 bus 调用
     /// `removeTap(onBus:)`（历史上会命中 `required condition is false` 断言），
     /// 并同步清空 `_isTapInstalled`，保证标志与实际状态一致
-    private func removeTapIfInstalled() {
+    @MainActor private func removeTapIfInstalled() {
         stateLock.lock()
         let wasInstalled = _isTapInstalled
         _isTapInstalled = false
         stateLock.unlock()
         guard wasInstalled else { return }
-        engine.inputNode.removeTap(onBus: 0)
+        engine?.inputNode.removeTap(onBus: 0)
     }
 
     /// 停止采集并关闭文件
     @MainActor func stop() {
-        if let observer = configObserver {
-            NotificationCenter.default.removeObserver(observer)
-            configObserver = nil
-        }
-        removeTapIfInstalled()
-        engine.stop()
+        // 先使等待方和所有旧回调失效，再释放采集资源；重复停止同样安全。
+        beginNewSession()
+        isStarting = false
+        initialURL = nil
+        retireEngine()
         silencedBox.set(false)
         fileBox.file = nil
         recordingFormat = nil
-        // 会话结束：递增采集代次并作废在途恢复与首包确认，
-        // 使停止后迅速重录时旧通知/旧重试不会操作新会话
-        beginNewSession()
+        preparedRoute = nil
     }
 
     /// 安装 tap（nonisolated：切断与调用方 actor 的隔离关联）
@@ -566,12 +608,13 @@ final class MicCaptureService: @unchecked Sendable {
     nonisolated private func installTapOnEngine(
         inputNode: AVAudioInputNode,
         format: AVAudioFormat,
-        recoveryAttempt: MicCaptureRecovery.Attempt? = nil
+        recoveryAttempt: MicCaptureRecovery.Attempt?,
+        tapID: UUID
     ) throws {
         if #available(macOS 27.0, iOS 27.0, tvOS 27.0, visionOS 27.0, *) {
-            try installModernTap(on: inputNode, format: format, recoveryAttempt: recoveryAttempt)
+            try installModernTap(on: inputNode, format: format, recoveryAttempt: recoveryAttempt, tapID: tapID)
         } else {
-            installLegacyTap(on: inputNode, format: format, recoveryAttempt: recoveryAttempt)
+            installLegacyTap(on: inputNode, format: format, recoveryAttempt: recoveryAttempt, tapID: tapID)
         }
     }
 
@@ -581,36 +624,38 @@ final class MicCaptureService: @unchecked Sendable {
     nonisolated private func installModernTap(
         on inputNode: AVAudioInputNode,
         format: AVAudioFormat,
-        recoveryAttempt: MicCaptureRecovery.Attempt?
+        recoveryAttempt: MicCaptureRecovery.Attempt?,
+        tapID: UUID
     ) throws {
         let session = generation
         let box = fileBox
         let silenced = silencedBox
-        let zeroBox = zeroBufferBox
+        let zeroBox = MicCaptureZeroBufferBox() // 每个 tap 独立，避免新旧音频回调共用可变缓冲
+        let writeErrors = WriteErrorRateBox()
         let tap: @Sendable (AVReadOnlyAudioPCMBuffer, AVAudioTime) -> Void = { [weak self] buffer, _ in
-            guard let self = self else { return }
+            guard let self, box.isCurrentTap(tapID) else { return }
             if silenced.isSilenced {
                 guard let zero = zeroBox.zeroBuffer(
                     matching: buffer.format,
                     frameLength: AVAudioFrameCount(buffer.frameLength)
                 ) else { return }
                 do {
-                    let didWrite = try box.write { file in
+                    let didWrite = try box.write(tap: tapID) { file in
                         try file.write(from: AVReadOnlyAudioPCMBuffer(copying: zero))
                     }
-                    if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session) }
+                    if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID) }
                 } catch {
-                    self.reportWriteError(error)
+                    self.reportWriteError(error, session: session, tapID: tapID, rateLimiter: writeErrors)
                 }
                 return
             }
             do {
-                let didWrite = try box.write { file in
+                let didWrite = try box.write(tap: tapID) { file in
                     try file.write(from: buffer)
                 }
-                if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session) }
+                if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID) }
             } catch {
-                self.reportWriteError(error)
+                self.reportWriteError(error, session: session, tapID: tapID, rateLimiter: writeErrors)
             }
         }
         try inputNode.installAudioTap(
@@ -629,35 +674,37 @@ final class MicCaptureService: @unchecked Sendable {
     nonisolated private func installLegacyTap(
         on inputNode: AVAudioInputNode,
         format: AVAudioFormat,
-        recoveryAttempt: MicCaptureRecovery.Attempt?
+        recoveryAttempt: MicCaptureRecovery.Attempt?,
+        tapID: UUID
     ) {
         let session = generation
         let box = fileBox
         let silenced = silencedBox
-        let zeroBox = zeroBufferBox
+        let zeroBox = MicCaptureZeroBufferBox() // 每个 tap 独立，避免新旧音频回调共用可变缓冲
+        let writeErrors = WriteErrorRateBox()
         let tap: @Sendable (AVAudioPCMBuffer, AVAudioTime) -> Void = { [weak self] buffer, _ in
-            guard let self else { return }
+            guard let self, box.isCurrentTap(tapID) else { return }
             // 静音中：写全零缓冲，保持分片时间轴连续（用户预期静音 = 无真实麦克风数据）
             if silenced.isSilenced {
                 guard let zero = zeroBox.zeroBuffer(matching: buffer.format, frameLength: buffer.frameLength) else { return }
                 do {
-                    let didWrite = try box.write { file in
+                    let didWrite = try box.write(tap: tapID) { file in
                         try file.write(from: zero)
                     }
-                    if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session) }
+                    if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID) }
                 } catch {
-                    self.reportWriteError(error)
+                    self.reportWriteError(error, session: session, tapID: tapID, rateLimiter: writeErrors)
                 }
                 return
             }
             do {
-                let didWrite = try box.write { file in
+                let didWrite = try box.write(tap: tapID) { file in
                     try file.write(from: buffer)
                 }
-                if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session) }
+                if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID) }
             } catch {
                 // C-1: 传播写入错误而非静默吞掉，便于上层提示用户磁盘空间不足等问题
-                self.reportWriteError(error)
+                self.reportWriteError(error, session: session, tapID: tapID, rateLimiter: writeErrors)
             }
         }
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: format, block: tap)
@@ -671,23 +718,40 @@ final class MicCaptureService: @unchecked Sendable {
     /// - 设备切换、格式变化或引擎停转期间写失败 = 只是**症状**，此时若仍按写入失败上报，
     ///   AirPods 断开这类可恢复中断就会一直显示「麦克风录音写入失败：处理失败，请重试……」。
     ///   这类必须改按设备事件处理并触发恢复流程。
-    private func reportWriteError(_ error: Error) {
-        guard writeErrorBox.shouldEmit() else { return }
-        let failure = diagnostics(
-            stage: .writeBuffer, attempt: 0, deviceBound: nil,
-            oldFormat: recordingFormat, newFormat: nil, error: error
-        )
-        logger.error("麦克风写入失败: domain=\(failure.errorDomain ?? "-", privacy: .public) code=\(failure.errorCode ?? -1) stage=\(failure.stage.rawValue, privacy: .public) detail=\(error.localizedDescription, privacy: .private)")
-        let userSummary = UserFacingError.summary(for: error)
-        // 成因判定要看引擎与输入格式的“当下”状态，必须回到主线程做；tap 回调在音频线程
+    private func reportWriteError(
+        _ error: Error, session: Int, tapID: UUID? = nil,
+        rateLimiter: WriteErrorRateBox? = nil
+    ) {
+        guard isCurrentGeneration(session) else { return }
+        if let tapID, !fileBox.isCurrentTap(tapID) { return }
+        // 在音频线程节流，避免每个失败缓冲都创建 MainActor Task。
+        // tap 独立节流盒，旧回调不能消耗新 tap 的告警额度。
+        guard (rateLimiter ?? writeErrorBox).shouldEmit() else { return }
         Task { @MainActor [weak self] in
-            guard let self, self.isCurrentGeneration(failure.generation), self.fileBox.file != nil else { return }
-            if self.writeFailureIsDeviceTransition() {
-                self.logger.error("写失败发生在设备切换/引擎停转期间，按设备事件处理并触发恢复（不报写入失败）")
+            guard let self, self.isCurrentGeneration(session), self.fileBox.file != nil else { return }
+            if let tapID, !self.fileBox.isCurrentTap(tapID) { return }
+            let failure = self.diagnostics(
+                stage: .writeBuffer, attempt: 0, deviceBound: nil,
+                oldFormat: self.recordingFormat, newFormat: nil, error: error
+            )
+            self.logger.error("麦克风写入失败: domain=\(failure.errorDomain ?? "-", privacy: .public) code=\(failure.errorCode ?? -1) detail=\(error.localizedDescription, privacy: .private)")
+            self.lastRecoveryFailure = failure
+            if self.isStarting {
+                self.lastAttemptError = error
+                let nsError = error as NSError
+                self.lastAttemptCanRetry = nsError.domain != NSCocoaErrorDomain
+                    && nsError.domain != NSPOSIXErrorDomain && self.writeFailureIsDeviceTransition()
+                if self.lastAttemptCanRetry {
+                    // 留在当前预算内等待下一次尝试；不能重开 startAndWait 丢失续体。
+                    self.retireEngine()
+                } else {
+                    self.recoveryController.fail()
+                }
+            } else if self.writeFailureIsDeviceTransition() {
                 self.emit(.deviceUnavailable(failure))
                 self.handleConfigurationChange()
             } else {
-                self.emit(.writeFailed(userSummary: userSummary, diagnostics: failure))
+                self.emit(.writeFailed(userSummary: UserFacingError.summary(for: error), diagnostics: failure))
             }
         }
     }
@@ -695,7 +759,8 @@ final class MicCaptureService: @unchecked Sendable {
     /// 写失败是否只是设备切换 / 引擎停转的症状（而不是磁盘或 IO 故障）。
     @MainActor
     private func writeFailureIsDeviceTransition() -> Bool {
-        let current = engine.inputNode.outputFormat(forBus: 0)
+        guard let engine else { return true }
+        let current = engine.inputNode.inputFormat(forBus: 0)
         return Self.writeFailureIsDeviceTransition(
             engineRunning: engine.isRunning,
             secondsSinceConfigurationChange: lastConfigurationChangeAt.map { Date().timeIntervalSince($0) },
@@ -739,6 +804,7 @@ final class MicCaptureService: @unchecked Sendable {
     /// 保证静音先于新数据落盘。
     /// - Returns: 实际写入的秒数（未在录音/格式异常时为 0）
     func writeSilence(for seconds: TimeInterval) async -> TimeInterval {
+        let session = generation
         let capped = min(max(0, seconds), Self.maxSilencePaddingSeconds)
         guard capped > 0, let format = recordingFormat, let expectedFile = fileBox.file,
               format.sampleRate > 0 else { return 0 }
@@ -751,10 +817,8 @@ final class MicCaptureService: @unchecked Sendable {
             guard frameCount > 0,
                   let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount) else { break }
             buffer.frameLength = frameCount
-            if let channels = buffer.floatChannelData {
-                for ch in 0..<Int(format.channelCount) {
-                    channels[ch].update(repeating: 0, count: Int(frameCount))
-                }
+            for audioBuffer in UnsafeMutableAudioBufferListPointer(buffer.mutableAudioBufferList) {
+                if let data = audioBuffer.mData { memset(data, 0, Int(audioBuffer.mDataByteSize)) }
             }
             do {
                 // 与 tap 回调使用同一把写锁：避免与后台音频线程并发写同一 AVAudioFile
@@ -763,7 +827,7 @@ final class MicCaptureService: @unchecked Sendable {
                 }
                 guard didWrite else { break }
             } catch {
-                reportWriteError(error)
+                reportWriteError(error, session: session)
                 break
             }
             written += Double(frameCount) / framesPerSecond
@@ -784,7 +848,7 @@ private final class SilencedBox: @unchecked Sendable {
 }
 
 /// 全零 PCM 缓冲池：静音写入按传入缓冲格式/长度复用，每次取出前重新清零
-private final class ZeroBufferBox: @unchecked Sendable {
+final class MicCaptureZeroBufferBox: @unchecked Sendable {
     private let lock = NSLock()
     private var buffer: AVAudioPCMBuffer?
     func zeroBuffer(matching format: AVAudioFormat, frameLength: AVAudioFrameCount) -> AVAudioPCMBuffer? {
@@ -796,9 +860,10 @@ private final class ZeroBufferBox: @unchecked Sendable {
             b.frameLength = frameLength
             buffer = b
         }
-        guard let b = buffer, let channels = b.floatChannelData else { return nil }
-        for ch in 0..<Int(b.format.channelCount) {
-            channels[ch].update(repeating: 0, count: Int(b.frameLength))
+        guard let b = buffer else { return nil }
+        // interleaved PCM 只有一个数据指针，不能按声道数索引 floatChannelData。
+        for audioBuffer in UnsafeMutableAudioBufferListPointer(b.mutableAudioBufferList) {
+            if let data = audioBuffer.mData { memset(data, 0, Int(audioBuffer.mDataByteSize)) }
         }
         return b
     }
@@ -808,38 +873,11 @@ private final class ZeroBufferBox: @unchecked Sendable {
 private final class WriteErrorRateBox: @unchecked Sendable {
     private let lock = NSLock()
     private var lastEmitAt: Date?
+    func reset() { lock.lock(); defer { lock.unlock() }; lastEmitAt = nil }
     func shouldEmit(now: Date = Date()) -> Bool {
         lock.lock(); defer { lock.unlock() }
         if let last = lastEmitAt, now.timeIntervalSince(last) < 5 { return false }
         lastEmitAt = now
-        return true
-    }
-}
-
-/// 包装非 Sendable 的 AVAudioFile，使其可在后台线程中使用。
-/// file 属性通过内部 NSLock 保护，确保 tap 闭包与 start/stop 的并发访问安全。
-private final class FileBox: @unchecked Sendable {
-    private let lock = NSLock()
-    private var _file: AVAudioFile?
-
-    var file: AVAudioFile? {
-        get { lock.lock(); defer { lock.unlock() }; return _file }
-        set { lock.lock(); defer { lock.unlock() }; _file = newValue }
-    }
-
-    /// 串行化对 AVAudioFile 的写入。
-    ///
-    /// `AVAudioFile.write(from:)` 未声明线程安全：tap 回调在后台音频线程写入，
-    /// 睡眠间隙补静音（`writeSilence`）在主线程写入，两者并发会损坏 PCM 数据、
-    /// 破坏文件内部状态。此方法用同一把锁把写入串行化。
-    /// - Returns: 文件当前存在并完成写入返回 true；文件已关闭返回 false（不执行闭包）
-    @discardableResult
-    func write(matching expectedFile: AVAudioFile? = nil, _ body: (AVAudioFile) throws -> Void) rethrows -> Bool {
-        lock.lock()
-        defer { lock.unlock() }
-        guard let file = _file else { return false }
-        if let expectedFile, file !== expectedFile { return false }
-        try body(file)
         return true
     }
 }
@@ -850,11 +888,17 @@ private final class FileBox: @unchecked Sendable {
 enum MicCaptureError: LocalizedError {
     case microphonePermissionNotGranted
     case inputDeviceLost
+    case alreadyCapturing
+    case startupFailed
 
     var errorDescription: String? {
         switch self {
         case .microphonePermissionNotGranted:
             return String(localized: "麦克风权限未授予。请到「系统设置 → 隐私与安全性 → 麦克风」中开启 Memonta，然后重新开始录音。")
+        case .alreadyCapturing:
+            return String(localized: "当前已有录音正在进行，请先停止后再开始新录音。")
+        case .startupFailed:
+            return String(localized: "麦克风未能启动，请检查当前输入设备的连接，然后重新开始录音。")
         case .inputDeviceLost:
             return String(localized: "麦克风输入设备已断开，录音已暂停。重新连接设备后会自动恢复采集。")
         }
@@ -869,6 +913,7 @@ enum MicCaptureError: LocalizedError {
 struct MicCaptureDiagnostics: Sendable {
     enum Stage: String, Sendable {
         case bindDevice
+        case readFormat
         case openSegmentFile
         case installTap
         case startEngine
@@ -890,6 +935,11 @@ struct MicCaptureDiagnostics: Sendable {
     let errorCode: Int?
     let detail: String?
     var lastSuccessfulWriteAt: Date? = nil
+    var engineGeneration: Int = 0
+    var hardwareSampleRate: Double? = nil
+    var clientSampleRate: Double? = nil
+    var hardwareChannelCount: UInt32? = nil
+    var clientChannelCount: UInt32? = nil
 }
 
 /// 麦克风采集事件：把「可恢复的设备切换/恢复」与「真实写盘失败」分开上报。

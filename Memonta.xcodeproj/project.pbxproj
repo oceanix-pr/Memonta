@@ -22,6 +22,7 @@
 		1052EBF4AA72F131F236D3E3 /* AudioConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A6DB48E5C6FFC3DB21771D /* AudioConverter.swift */; };
 		13AFD006B1000DF7A2830799 /* WhisperModelDownloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C8720929A8CE42D0A1F712 /* WhisperModelDownloadTests.swift */; };
 		17C5924857423ED59C342D56 /* TaskCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75017E437D1A6533986C40AE /* TaskCenter.swift */; };
+		1B759CB99A155E68CFA12C1C /* MicCaptureFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B0CEE16DFF0A57619EC33 /* MicCaptureFileStore.swift */; };
 		1CF7583772C2C03D3BCE3473 /* QueuePanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8630EDC36FD68889D1992048 /* QueuePanelView.swift */; };
 		1E96F83A572FF3DA00243EF0 /* BackgroundTaskQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0438590B1DF40FD0DE1F488C /* BackgroundTaskQueueTests.swift */; };
 		1FA3B8129B00959C55FDA076 /* SystemAudioCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59329C6BB99E85E3E474FAD1 /* SystemAudioCaptureService.swift */; };
@@ -158,6 +159,7 @@
 		EFCF6C9C48143E443E2AA9F7 /* SpeakerDiarizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB9FBD7A398426234020931 /* SpeakerDiarizationService.swift */; };
 		F05DB34CB6E9090898FD9862 /* DiarizationCalibrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4571647E37CED274A6E4051 /* DiarizationCalibrator.swift */; };
 		F149AEF6CFEE0EF09AFFF0C0 /* TranscriptionProgressEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AB3584F8A12FE99BF6AA7D /* TranscriptionProgressEstimator.swift */; };
+		F52606DF0F47EC59FA5389CA /* MicCaptureRestartTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683F3B871F1AF2EE49A21A3B /* MicCaptureRestartTests.swift */; };
 		F8838408E1DE5745B1771F07 /* OneClickPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5218C72072DEF3DAFBCA9BBC /* OneClickPreviewView.swift */; };
 		F9756602F5DA894C298B32B6 /* StorageSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A0F8CE74AAE593586E2DCB /* StorageSessionTests.swift */; };
 		F9CCB5DDEDC61052EFE20572 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399C2AFDAA945086FE0DDBB2 /* TranscriptView.swift */; };
@@ -236,6 +238,7 @@
 		540F068833407ECCAE784DA4 /* TextFindReplace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFindReplace.swift; sourceTree = "<group>"; };
 		5463D9A97613E8C4C6598554 /* PIIScrubService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PIIScrubService.swift; sourceTree = "<group>"; };
 		5786ADED6FA719DFD8FBDF72 /* GlobalHotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalHotkeyManager.swift; sourceTree = "<group>"; };
+		587B0CEE16DFF0A57619EC33 /* MicCaptureFileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicCaptureFileStore.swift; sourceTree = "<group>"; };
 		590412AF3B08D86FCA01111A /* RuntimeVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeVerification.swift; sourceTree = "<group>"; };
 		59329C6BB99E85E3E474FAD1 /* SystemAudioCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemAudioCaptureService.swift; sourceTree = "<group>"; };
 		5E670EE311E4734F07C0670B /* MicCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicCaptureService.swift; sourceTree = "<group>"; };
@@ -244,6 +247,7 @@
 		6570C11DB00A6A465DA706F4 /* OverlayAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayAnnotationView.swift; sourceTree = "<group>"; };
 		66E0433524E055F3E21883F4 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		6715321C6C5E7675D7307B30 /* MemontaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemontaTests.swift; sourceTree = "<group>"; };
+		683F3B871F1AF2EE49A21A3B /* MicCaptureRestartTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicCaptureRestartTests.swift; sourceTree = "<group>"; };
 		68A6DB48E5C6FFC3DB21771D /* AudioConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioConverter.swift; sourceTree = "<group>"; };
 		690E301D13889658D881A972 /* MemontaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemontaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		696C5424AA9709B46B99B13D /* KeyframeExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyframeExtractorTests.swift; sourceTree = "<group>"; };
@@ -527,6 +531,7 @@
 				2A9C6012E128677F62399335 /* MarkdownPDFRenderer.swift */,
 				3A6393D47EC167A81A64241F /* MeetingRecorderService.swift */,
 				C612A9053890574B6C628836 /* MenuBarController.swift */,
+				587B0CEE16DFF0A57619EC33 /* MicCaptureFileStore.swift */,
 				889E35E919A09CED7D85F10B /* MicCaptureRecovery.swift */,
 				5E670EE311E4734F07C0670B /* MicCaptureService.swift */,
 				A848D9B766E93793274DCFCA /* MicMuteMonitor.swift */,
@@ -592,6 +597,7 @@
 				83C5857D081B52ADC1115EDF /* MarkdownPDFRendererTests.swift */,
 				6715321C6C5E7675D7307B30 /* MemontaTests.swift */,
 				798D67D700437D5AA1503956 /* MicCaptureRecoveryTests.swift */,
+				683F3B871F1AF2EE49A21A3B /* MicCaptureRestartTests.swift */,
 				ACEBD6E9CC04E16F0B0D17E4 /* NoteSpeechTests.swift */,
 				B9D2842510B39EDEB2006E35 /* OneClickPlanTests.swift */,
 				2FCB2D16CABB8902ED7084EF /* RecordingCaptureHealthTests.swift */,
@@ -874,6 +880,7 @@
 				95BE394560FCFF52BA68C898 /* MarkdownPDFRendererTests.swift in Sources */,
 				70641376F81FD9F144172967 /* MemontaTests.swift in Sources */,
 				D26F7BDBEA191A359B153A5F /* MicCaptureRecoveryTests.swift in Sources */,
+				F52606DF0F47EC59FA5389CA /* MicCaptureRestartTests.swift in Sources */,
 				03AB9DCA87921A0A37C584D9 /* NoteSpeechTests.swift in Sources */,
 				E29AC5F1588B4366804598B3 /* OneClickPlanTests.swift in Sources */,
 				73A0290C71C2F13816797EB7 /* RecordingCaptureHealthTests.swift in Sources */,
@@ -933,6 +940,7 @@
 				104EAF5636B7E3A4FF3FA62B /* MeetingRecorderService.swift in Sources */,
 				8CC1D2AD1EF299594EB84E18 /* MemontaApp.swift in Sources */,
 				5223D848553CB3DFDBC24771 /* MenuBarController.swift in Sources */,
+				1B759CB99A155E68CFA12C1C /* MicCaptureFileStore.swift in Sources */,
 				E2F742EE9C2EE98BC4E30D65 /* MicCaptureRecovery.swift in Sources */,
 				81A56F212AA480280F0D898E /* MicCaptureService.swift in Sources */,
 				C2A531E68665A69C4E8E8367 /* MicMuteCommand.swift in Sources */,
@@ -1140,7 +1148,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 128;
+				CURRENT_PROJECT_VERSION = 131;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1205,7 +1213,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 128;
+				CURRENT_PROJECT_VERSION = 131;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = B35SN74F9U;
