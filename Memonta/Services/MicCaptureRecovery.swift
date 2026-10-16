@@ -18,14 +18,16 @@ final class MicCaptureRecovery {
     private let onFailed: (Int) -> Void
     private let onRecovered: () -> Void
     private let shouldRetry: () -> Bool
+    private let onBudgetExhausted: (Int) -> Void
     private var task: Task<Void, Never>?
     private var waiter: CheckedContinuation<Void, any Error>?
     private var recoveryID: UUID?
     private var activeAttempt: Attempt?
+    private var attemptInvalidated = false
     private(set) var isConfirmed = false
     private(set) var isActive = false
 
-    enum Failure: Error { case exhausted }
+    enum Failure: Error, Equatable { case exhausted, budgetExhausted }
 
     var maxAttempts: Int { backoff.count + 1 }
 
@@ -38,7 +40,8 @@ final class MicCaptureRecovery {
         onPacketTimeout: @escaping (Int) -> Void,
         onFailed: @escaping (Int) -> Void,
         onRecovered: @escaping () -> Void,
-        shouldRetry: @escaping () -> Bool = { true }
+        shouldRetry: @escaping () -> Bool = { true },
+        onBudgetExhausted: @escaping (Int) -> Void = { _ in }
     ) {
         self.backoff = backoff
         self.totalBudget = totalBudget
@@ -49,6 +52,7 @@ final class MicCaptureRecovery {
         self.onFailed = onFailed
         self.onRecovered = onRecovered
         self.shouldRetry = shouldRetry
+        self.onBudgetExhausted = onBudgetExhausted
     }
 
     /// 立即尝试一次，返回引擎是否启动；真正恢复仍由当前尝试的写入确认决定。
@@ -98,6 +102,7 @@ final class MicCaptureRecovery {
         task = nil
         recoveryID = nil
         activeAttempt = nil
+        attemptInvalidated = false
         isConfirmed = false
         isActive = false
         let waiting = waiter
@@ -119,6 +124,16 @@ final class MicCaptureRecovery {
         onRecovered()
     }
 
+    /// 实际设备/格式变化使当前首包等待失效，但不取消启动续体、不重置总预算。
+    /// 同一次尝试的重复通知合并；旧 tap 的迟到写入不能确认已失效的尝试。
+    @discardableResult
+    func invalidateAttempt() -> Bool {
+        guard isActive, activeAttempt != nil else { return false }
+        activeAttempt = nil
+        attemptInvalidated = true
+        return true
+    }
+
     /// 写盘等不可重试错误也必须唤醒启动等待方。
     func fail() {
         guard isActive else { return }
@@ -129,18 +144,20 @@ final class MicCaptureRecovery {
 
     private var activeAttemptNumber = 1
 
-    private func finishFailed(number: Int) {
+    private func finishFailed(number: Int, reason: Failure = .exhausted) {
         isActive = false
         task = nil
         let waiting = waiter
         waiter = nil
-        waiting?.resume(throwing: Failure.exhausted)
+        waiting?.resume(throwing: reason)
+        if case .budgetExhausted = reason { onBudgetExhausted(number) }
         onFailed(number)
     }
 
     private func startAttempt(id: UUID, number: Int) -> Bool {
         let token = Attempt(recoveryID: id, number: number)
         activeAttemptNumber = number
+        attemptInvalidated = false
         activeAttempt = token // 在启动前布防，首包可能早于 engine.start() 返回。
         onStarted(number)
         let started = attempt(token)
@@ -157,24 +174,41 @@ final class MicCaptureRecovery {
                 finishFailed(number: number)
                 return
             }
-            if started {
-                let packetDeadline = min(clock.now.advanced(by: packetTimeout), deadline)
+            if started, !attemptInvalidated {
+                let fullPacketDeadline = clock.now.advanced(by: packetTimeout)
+                let packetDeadline = min(fullPacketDeadline, deadline)
                 // 写入确认取消此任务；短轮询不阻塞主线程，也不等待硬件回调返回。
-                while clock.now < packetDeadline, !Task.isCancelled, !isConfirmed {
+                while clock.now < packetDeadline, !Task.isCancelled, !isConfirmed, !attemptInvalidated {
                     do { try await clock.sleep(until: min(clock.now.advanced(by: .milliseconds(20)), packetDeadline)) }
                     catch { return }
                 }
                 guard recoveryID == id, !Task.isCancelled, !isConfirmed else { return }
-                onPacketTimeout(number)
+                if !attemptInvalidated {
+                    // 只把完整的首包观察窗口记为首包超时；不能把几毫秒的剩余预算误报成无数据。
+                    guard fullPacketDeadline <= deadline else {
+                        finishFailed(number: number, reason: .budgetExhausted)
+                        return
+                    }
+                    onPacketTimeout(number)
+                }
             }
-            guard number < maxAttempts, clock.now < deadline else {
+            guard number < maxAttempts else {
                 finishFailed(number: number)
                 return // 保留 activeAttempt，允许最终超时后迟到的真实写入解除告警。
             }
-            do { try await clock.sleep(until: min(clock.now.advanced(by: backoff[number - 1]), deadline)) }
+            let retryAt = clock.now.advanced(by: backoff[number - 1])
+            // 下一次尝试至少预留首包观察窗口；准备硬件的同步调用也计入总预算。
+            guard retryAt.advanced(by: packetTimeout) <= deadline else {
+                finishFailed(number: number, reason: .budgetExhausted)
+                return
+            }
+            do { try await clock.sleep(until: retryAt) }
             catch { return }
             guard recoveryID == id, !Task.isCancelled, !isConfirmed else { return }
-            guard clock.now < deadline else { finishFailed(number: number); return }
+            guard clock.now.advanced(by: packetTimeout) <= deadline else {
+                finishFailed(number: number, reason: .budgetExhausted)
+                return
+            }
             number += 1
             started = startAttempt(id: id, number: number)
         }

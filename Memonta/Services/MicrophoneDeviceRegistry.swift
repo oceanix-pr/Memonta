@@ -138,6 +138,24 @@ enum MicrophoneDeviceRegistry {
         return defaultInputDeviceID()
     }
 
+    /// 直查目标设备当前采样率，避免蓝牙协商时新建输入节点仍暴露旧格式快照。
+    /// 读取失败交给采集层回退节点格式，并通过 debug 留痕，不改变设备采样率。
+    static func nominalSampleRate(for deviceID: AudioDeviceID) -> Double? {
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyNominalSampleRate,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var rate = Float64(0)
+        var size = UInt32(MemoryLayout<Float64>.size)
+        let status = AudioObjectGetPropertyData(deviceID, &address, 0, nil, &size, &rate)
+        guard status == noErr, rate.isFinite, rate > 0 else {
+            logger.debug("读取麦克风设备采样率失败：设备=\(deviceID) OSStatus=\(status)")
+            return nil
+        }
+        return rate
+    }
+
     // MARK: - 绑定
 
     /// 把设备绑定到引擎输入节点。必须在读取 `inputNode.outputFormat` 之前调用：输入格式随设备变化。

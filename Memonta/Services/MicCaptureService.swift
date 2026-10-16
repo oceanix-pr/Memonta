@@ -40,13 +40,7 @@ final class MicCaptureService: @unchecked Sendable {
     @MainActor private var initialURL: URL?
     @MainActor private var lastAttemptError: (any Error)?
     @MainActor private var lastAttemptCanRetry = true
-    @MainActor private var preparedRoute: Route?
-
-    private struct Route: Equatable {
-        let deviceID: UInt32?
-        let sampleRate: Double
-        let channels: UInt32
-    }
+    @MainActor private var preparedDeviceID: UInt32?
     /// AVAudioFile 的线程安全包装（@unchecked Sendable）
     private let fileBox = MicCaptureFileStore()
     /// 状态锁：保护 isTapInstalled / recordingFormat 的跨线程访问
@@ -143,7 +137,14 @@ final class MicCaptureService: @unchecked Sendable {
             self.logger.info("麦克风采集恢复确认：当前尝试已有音频缓冲成功写入")
             if !self.isStarting { self.emit(.recovered(generation: self.generation)) }
         },
-        shouldRetry: { [weak self] in self?.lastAttemptCanRetry ?? false }
+        shouldRetry: { [weak self] in self?.lastAttemptCanRetry ?? false },
+        onBudgetExhausted: { [weak self] attempt in
+            guard let self else { return }
+            self.lastRecoveryFailure = self.diagnostics(
+                stage: .recoveryBudget, attempt: attempt, deviceBound: nil,
+                oldFormat: nil, newFormat: self.recordingFormat, error: nil
+            )
+        }
     )
 
     /// 开始/停止时取消恢复任务，并在锁内使旧音频回调失效。
@@ -258,18 +259,34 @@ final class MicCaptureService: @unchecked Sendable {
 
     /// 硬件格式是采样率/声道的依据。客户端输出格式可能仍是上一次设备的缓存，
     /// 只有与硬件一致时才沿用其 PCM 布局；否则准备硬件采样率的 Float32 tap。
-    static func captureFormat(hardware: AVAudioFormat, client: AVAudioFormat) throws -> AVAudioFormat {
+    static func captureFormat(
+        hardware: AVAudioFormat, client: AVAudioFormat, deviceSampleRate: Double? = nil
+    ) throws -> AVAudioFormat {
         guard hardware.sampleRate.isFinite, hardware.sampleRate > 0, hardware.channelCount > 0 else {
             throw MicCaptureError.inputDeviceLost
         }
-        if client.sampleRate == hardware.sampleRate, client.channelCount == hardware.channelCount,
+        let rate = deviceSampleRate.flatMap { $0.isFinite && $0 > 0 ? $0 : nil } ?? hardware.sampleRate
+        if client.sampleRate == rate, client.channelCount == hardware.channelCount,
            client.commonFormat == .pcmFormatFloat32 {
             return client
         }
         guard let format = AVAudioFormat(
-            standardFormatWithSampleRate: hardware.sampleRate, channels: hardware.channelCount
+            standardFormatWithSampleRate: rate, channels: hardware.channelCount
         ) else { throw MicCaptureError.inputDeviceLost }
         return format
+    }
+
+    /// 初始化可能触发蓝牙重新协商，不能只比较启动前的格式。
+    static func needsFormatReconfiguration(
+        hardware: AVAudioFormat, client: AVAudioFormat, capture: AVAudioFormat,
+        deviceSampleRate: Double? = nil
+    ) -> Bool {
+        guard let current = try? captureFormat(hardware: hardware, client: client, deviceSampleRate: deviceSampleRate) else {
+            return true
+        }
+        return current != capture || client.sampleRate != current.sampleRate
+            || client.channelCount != current.channelCount || client.commonFormat != current.commonFormat
+            || client.isInterleaved != current.isInterleaved
     }
 
     @MainActor private static func bindInputDevice(_ engine: AVAudioEngine) throws -> UInt32 {
@@ -311,44 +328,58 @@ final class MicCaptureService: @unchecked Sendable {
                       self.fileBox.file != nil, let engine = self.engine else { return }
                 self.lastConfigurationChangeAt = Date()
                 let hardware = engine.inputNode.inputFormat(forBus: 0)
-                let route = Route(
-                    deviceID: MicrophoneDeviceRegistry.resolvedDeviceID(),
-                    sampleRate: hardware.sampleRate, channels: hardware.channelCount
-                )
-                // 自身绑定/启动造成的同路由通知合并到在途恢复，不重置预算。
-                if route == self.preparedRoute,
-                   self.recoveryController.isActive || engine.isRunning { return }
-                // 初始启动等待方必须保留；它的下一次尝试会重新解析设备。
-                if self.isStarting { return }
-                self.handleConfigurationChange(restart: true)
+                let client = engine.inputNode.outputFormat(forBus: 0)
+                let target = MicrophoneDeviceRegistry.resolvedDeviceID()
+                let deviceRate = target.flatMap { MicrophoneDeviceRegistry.nominalSampleRate(for: $0) }
+                guard !engine.isRunning || target != self.preparedDeviceID
+                    || self.recordingFormat.map({ Self.needsFormatReconfiguration(
+                        hardware: hardware, client: client, capture: $0, deviceSampleRate: deviceRate
+                    ) }) != false else { return }
+                self.requestReconfiguration()
             }
         }
     }
 
-    /// 唤醒、写失败等重复请求加入在途恢复；真实新配置才重开恢复流程。
+    /// 让在途尝试失效并提前进入下一次准备，不丢弃启动续体、不刷新预算。
+    @MainActor private func requestReconfiguration() {
+        fileBox.invalidateTap()
+        setPendingRecoveryAttempt(nil)
+        if recoveryController.isActive {
+            recoveryController.invalidateAttempt()
+        } else {
+            // 启动失败已结算，等待原调用方清理；不要另起无等待方的恢复。
+            if isStarting, !recoveryController.isConfirmed { return }
+            handleConfigurationChange()
+        }
+    }
+
+    /// 唤醒等重复请求加入在途恢复；真实配置变化通过 requestReconfiguration 使当前尝试失效。
     @MainActor
     @discardableResult
-    private func handleConfigurationChange(restart: Bool = false) -> Bool {
+    private func handleConfigurationChange() -> Bool {
         guard fileBox.file != nil else { return false }
-        if recoveryController.isActive, !restart { return isCapturing }
+        if recoveryController.isActive { return isCapturing }
         lastRecoveryFailure = nil
         return recoveryController.start()
     }
 
-    /// 每次尝试使用新引擎，避免反复在同一失配的输入节点上安装 tap。
+    /// 同一轮格式协商复用输入节点；仅会话开始或无法继续使用引擎时重新创建。
     @MainActor
     private func applyRecoveryAttempt(token: MicCaptureRecovery.Attempt) -> Bool {
         setPendingRecoveryAttempt(nil)
-        retireEngine()
+        fileBox.invalidateTap()
+        removeTapIfInstalled()
+        engine?.stop()
         let previousFile = fileBox.file
         let oldFormat = recordingFormat
-        let nextEngine = makeEngine()
+        let nextEngine = engine ?? makeEngine()
         engine = nextEngine
         let tapID = UUID()
         var deviceBound: Bool?
         var hardwareFormat: AVAudioFormat?
         var clientFormat: AVAudioFormat?
         var newFormat: AVAudioFormat?
+        var deviceRate: Double?
         var stage: MicCaptureDiagnostics.Stage = .bindDevice
         var replacement: (url: URL, file: AVAudioFile)?
         var attemptedURL: URL?
@@ -363,9 +394,10 @@ final class MicCaptureService: @unchecked Sendable {
             let client = nextEngine.inputNode.outputFormat(forBus: 0)
             hardwareFormat = hardware
             clientFormat = client
-            let format = try Self.captureFormat(hardware: hardware, client: client)
+            deviceRate = MicrophoneDeviceRegistry.nominalSampleRate(for: target)
+            let format = try Self.captureFormat(hardware: hardware, client: client, deviceSampleRate: deviceRate)
             newFormat = format
-            preparedRoute = Route(deviceID: target, sampleRate: hardware.sampleRate, channels: hardware.channelCount)
+            preparedDeviceID = target
             logger.debug("麦克风准备 引擎代次=\(self.engineGeneration) 设备=\(target) 硬件=\(hardware.sampleRate)Hz/\(hardware.channelCount)ch 客户端=\(client.sampleRate)Hz/\(client.channelCount)ch tap=\(format.sampleRate)Hz/\(format.channelCount)ch")
 
             stage = .openSegmentFile
@@ -399,12 +431,28 @@ final class MicCaptureService: @unchecked Sendable {
             if let replacement, previousFile != nil {
                 onFormatChangeSegmentOpened?(replacement.url)
             }
+            // prepare/start 也可能改变硬件格式；即使通知还没排到主线程也立即复核。
+            if Self.needsFormatReconfiguration(
+                hardware: nextEngine.inputNode.inputFormat(forBus: 0),
+                client: nextEngine.inputNode.outputFormat(forBus: 0), capture: format,
+                deviceSampleRate: MicrophoneDeviceRegistry.nominalSampleRate(for: target)
+            ) {
+                requestReconfiguration()
+            }
             return true // 仍需当前 tap 首包成功写入才能确认就绪。
         } catch {
             if stage == .bindDevice { deviceBound = false }
             let failedEngineGeneration = engineGeneration
             setPendingRecoveryAttempt(nil)
-            retireEngine()
+            let nsError = error as NSError
+            if nsError.domain == "com.apple.coreaudio.avfaudio", nsError.code == -10868 {
+                // 保留已完成部分协商的输入节点；立即销毁会再次触发蓝牙格式切换。
+                fileBox.invalidateTap()
+                removeTapIfInstalled()
+                nextEngine.stop()
+            } else {
+                retireEngine()
+            }
             // 极少数启动失败会发生在首次回调之后；有数据的片必须登记保留。
             if let replacement, replacement.file.length > 0 {
                 recordingFormat = newFormat
@@ -424,7 +472,7 @@ final class MicCaptureService: @unchecked Sendable {
                 stage: stage, attempt: token.number, deviceBound: deviceBound,
                 oldFormat: oldFormat, newFormat: newFormat, error: error,
                 hardwareFormat: hardwareFormat, clientFormat: clientFormat,
-                originEngineGeneration: failedEngineGeneration
+                originEngineGeneration: failedEngineGeneration, deviceSampleRate: deviceRate
             )
             logRecoveryFailure(attempt: token.number)
             if let failure = lastRecoveryFailure, !isStarting, lastAttemptCanRetry { emit(.deviceUnavailable(failure)) }
@@ -462,7 +510,8 @@ final class MicCaptureService: @unchecked Sendable {
         error: Error?,
         hardwareFormat: AVAudioFormat? = nil,
         clientFormat: AVAudioFormat? = nil,
-        originEngineGeneration: Int? = nil
+        originEngineGeneration: Int? = nil,
+        deviceSampleRate: Double? = nil
     ) -> MicCaptureDiagnostics {
         let nsError = error.map { $0 as NSError }
         let hardware = hardwareFormat ?? engine?.inputNode.inputFormat(forBus: 0)
@@ -484,7 +533,11 @@ final class MicCaptureService: @unchecked Sendable {
             hardwareSampleRate: hardware?.sampleRate,
             clientSampleRate: client?.sampleRate,
             hardwareChannelCount: hardware?.channelCount,
-            clientChannelCount: client?.channelCount
+            clientChannelCount: client?.channelCount,
+            deviceSampleRate: deviceSampleRate ?? engine.flatMap { engine in
+                MicrophoneDeviceRegistry.currentDeviceID(of: engine)
+                    .flatMap { MicrophoneDeviceRegistry.nominalSampleRate(for: $0) }
+            }
         )
     }
 
@@ -492,7 +545,7 @@ final class MicCaptureService: @unchecked Sendable {
     /// 这些字段是下次定位 `-10868`（kAudioUnitErr_FormatNotSupported）具体发生在哪一步的依据
     @MainActor private func logRecoveryFailure(attempt: Int) {
         guard let failure = lastRecoveryFailure else { return }
-        let summary = "麦克风恢复失败 stage=\(failure.stage.rawValue) 会话代次=\(failure.generation) 尝试=\(attempt) 设备绑定=\(failure.deviceBound.map { String($0) } ?? "-") 采样率=\(failure.oldSampleRate.map { String($0) } ?? "-")→\(failure.newSampleRate.map { String($0) } ?? "-") 声道=\(failure.oldChannelCount.map { String($0) } ?? "-")→\(failure.newChannelCount.map { String($0) } ?? "-") 引擎代次=\(failure.engineGeneration) 硬件采样率=\(failure.hardwareSampleRate.map { String($0) } ?? "-") 客户端采样率=\(failure.clientSampleRate.map { String($0) } ?? "-") 错误域=\(failure.errorDomain ?? "-") 错误码=\(failure.errorCode.map { String($0) } ?? "-")"
+        let summary = "麦克风恢复失败 stage=\(failure.stage.rawValue) 会话代次=\(failure.generation) 尝试=\(attempt) 设备绑定=\(failure.deviceBound.map { String($0) } ?? "-") 采样率=\(failure.oldSampleRate.map { String($0) } ?? "-")→\(failure.newSampleRate.map { String($0) } ?? "-") 声道=\(failure.oldChannelCount.map { String($0) } ?? "-")→\(failure.newChannelCount.map { String($0) } ?? "-") 引擎代次=\(failure.engineGeneration) 硬件采样率=\(failure.hardwareSampleRate.map { String($0) } ?? "-") 客户端采样率=\(failure.clientSampleRate.map { String($0) } ?? "-") 设备采样率=\(failure.deviceSampleRate.map { String($0) } ?? "-") 错误域=\(failure.errorDomain ?? "-") 错误码=\(failure.errorCode.map { String($0) } ?? "-")"
         logger.error("\(summary, privacy: .public) 详情=\(failure.detail ?? "-", privacy: .private)")
     }
 
@@ -599,7 +652,7 @@ final class MicCaptureService: @unchecked Sendable {
         silencedBox.set(false)
         fileBox.file = nil
         recordingFormat = nil
-        preparedRoute = nil
+        preparedDeviceID = nil
     }
 
     /// 安装 tap（nonisolated：切断与调用方 actor 的隔离关联）
@@ -743,13 +796,13 @@ final class MicCaptureService: @unchecked Sendable {
                     && nsError.domain != NSPOSIXErrorDomain && self.writeFailureIsDeviceTransition()
                 if self.lastAttemptCanRetry {
                     // 留在当前预算内等待下一次尝试；不能重开 startAndWait 丢失续体。
-                    self.retireEngine()
+                    self.requestReconfiguration()
                 } else {
                     self.recoveryController.fail()
                 }
             } else if self.writeFailureIsDeviceTransition() {
                 self.emit(.deviceUnavailable(failure))
-                self.handleConfigurationChange()
+                self.requestReconfiguration()
             } else {
                 self.emit(.writeFailed(userSummary: UserFacingError.summary(for: error), diagnostics: failure))
             }
@@ -761,12 +814,14 @@ final class MicCaptureService: @unchecked Sendable {
     private func writeFailureIsDeviceTransition() -> Bool {
         guard let engine else { return true }
         let current = engine.inputNode.inputFormat(forBus: 0)
+        let rate = MicrophoneDeviceRegistry.currentDeviceID(of: engine)
+            .flatMap { MicrophoneDeviceRegistry.nominalSampleRate(for: $0) } ?? current.sampleRate
         return Self.writeFailureIsDeviceTransition(
             engineRunning: engine.isRunning,
             secondsSinceConfigurationChange: lastConfigurationChangeAt.map { Date().timeIntervalSince($0) },
             recordedSampleRate: recordingFormat?.sampleRate,
             recordedChannelCount: recordingFormat?.channelCount,
-            currentSampleRate: current.sampleRate,
+            currentSampleRate: rate,
             currentChannelCount: current.channelCount
         )
     }
@@ -918,6 +973,7 @@ struct MicCaptureDiagnostics: Sendable {
         case installTap
         case startEngine
         case writeBuffer
+        case recoveryBudget
     }
 
     let stage: Stage
@@ -940,6 +996,7 @@ struct MicCaptureDiagnostics: Sendable {
     var clientSampleRate: Double? = nil
     var hardwareChannelCount: UInt32? = nil
     var clientChannelCount: UInt32? = nil
+    var deviceSampleRate: Double? = nil
 }
 
 /// 麦克风采集事件：把「可恢复的设备切换/恢复」与「真实写盘失败」分开上报。

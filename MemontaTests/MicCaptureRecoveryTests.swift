@@ -115,4 +115,81 @@ struct MicCaptureRecoveryTests {
         #expect(MeetingRecorderService.microphoneRecoveryFailureMessage(systemAudio: .recovering)
                 == microphoneOnly + "\n" + String(localized: "系统音频尚未确认恢复。"))
     }
+
+    @Test func startupConfigurationChangePreservesWaiterAndSkipsOldPacketWait() async throws {
+        var attempts: [MicCaptureRecovery.Attempt] = []
+        var timeouts = 0
+        var recovered = 0
+        let recovery = MicCaptureRecovery(
+            backoff: [.milliseconds(5)], totalBudget: .seconds(1), packetTimeout: .milliseconds(200),
+            attempt: { attempts.append($0); return true }, onStarted: { _ in },
+            onPacketTimeout: { _ in timeouts += 1 }, onFailed: { _ in }, onRecovered: { recovered += 1 }
+        )
+        let startup = Task { try await recovery.startAndWait() }
+        try await waitUntil { attempts.count == 1 }
+        #expect(recovery.invalidateAttempt())
+        #expect(!recovery.invalidateAttempt(), "重复配置通知只使同一尝试失效一次")
+        try await waitUntil { attempts.count == 2 }
+        #expect(timeouts == 0, "实际格式变化应提前重试，不能等旧 tap 首包超时")
+        #expect(attempts[0].recoveryID == attempts[1].recoveryID)
+        recovery.confirmWrite(attempts[0])
+        #expect(!recovery.isConfirmed)
+        recovery.confirmWrite(attempts[1])
+        try await startup.value
+        #expect(recovered == 1)
+    }
+
+    @Test func repeatedConfigurationChangesCannotRefreshBudget() async throws {
+        var attempts = 0
+        var packetTimeouts = 0
+        var exhausted = 0
+        var recovery: MicCaptureRecovery?
+        recovery = MicCaptureRecovery(
+            backoff: Array(repeating: .milliseconds(15), count: 20),
+            totalBudget: .milliseconds(80), packetTimeout: .milliseconds(20),
+            attempt: { _ in
+                attempts += 1
+                recovery?.invalidateAttempt()
+                recovery?.invalidateAttempt()
+                return true
+            }, onStarted: { _ in }, onPacketTimeout: { _ in packetTimeouts += 1 },
+            onFailed: { _ in }, onRecovered: {}, onBudgetExhausted: { _ in exhausted += 1 }
+        )
+        let controller = try #require(recovery)
+        await #expect(throws: MicCaptureRecovery.Failure.budgetExhausted) { try await controller.startAndWait() }
+        #expect(attempts > 1 && attempts < controller.maxAttempts)
+        #expect(packetTimeouts == 0)
+        #expect(exhausted == 1)
+        recovery = nil
+    }
+
+    @Test func retryRequiresRemainingPacketObservationWindow() async throws {
+        var attempts = 0
+        var packetTimeouts = 0
+        let recovery = MicCaptureRecovery(
+            backoff: [.milliseconds(5)], totalBudget: .milliseconds(60), packetTimeout: .milliseconds(40),
+            attempt: { _ in attempts += 1; return true }, onStarted: { _ in },
+            onPacketTimeout: { _ in packetTimeouts += 1 }, onFailed: { _ in }, onRecovered: {}
+        )
+        await #expect(throws: MicCaptureRecovery.Failure.budgetExhausted) { try await recovery.startAndWait() }
+        #expect(attempts == 1, "预算不足时不能启动一个只剩几毫秒首包等待的新尝试")
+        #expect(packetTimeouts == 1)
+    }
+
+    @Test func slowSynchronousPreparationReportsBudgetRatherThanPacketTimeout() async throws {
+        var packetTimeouts = 0
+        var budgetExhaustions = 0
+        let recovery = MicCaptureRecovery(
+            backoff: [], totalBudget: .milliseconds(20), packetTimeout: .milliseconds(10),
+            attempt: { _ in
+                // 模拟 prepare/start 中同步的蓝牙协商；不涉及真实硬件。
+                Thread.sleep(forTimeInterval: 0.04)
+                return true
+            }, onStarted: { _ in }, onPacketTimeout: { _ in packetTimeouts += 1 },
+            onFailed: { _ in }, onRecovered: {}, onBudgetExhausted: { _ in budgetExhaustions += 1 }
+        )
+        await #expect(throws: MicCaptureRecovery.Failure.budgetExhausted) { try await recovery.startAndWait() }
+        #expect(packetTimeouts == 0)
+        #expect(budgetExhaustions == 1)
+    }
 }

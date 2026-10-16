@@ -1,9 +1,33 @@
 import Foundation
 import AVFoundation
+import CoreAudio
 import Testing
 @testable import Memonta
 
 struct MicCaptureRestartTests {
+    private static var bluetoothRouteAvailable: Bool {
+        if let input = MicrophoneDeviceRegistry.resolvedDeviceID(), isBluetooth(input) { return true }
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioHardwarePropertyDefaultOutputDevice, mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var output: UInt32 = 0
+        var size = UInt32(MemoryLayout<UInt32>.size)
+        guard AudioObjectGetPropertyData(AudioObjectID(kAudioObjectSystemObject), &address, 0, nil, &size, &output) == noErr else { return false }
+        return output != 0 && isBluetooth(output)
+    }
+
+    private static func isBluetooth(_ device: UInt32) -> Bool {
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyTransportType, mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var transport: UInt32 = 0
+        var size = UInt32(MemoryLayout<UInt32>.size)
+        guard AudioObjectGetPropertyData(device, &address, 0, nil, &size, &transport) == noErr else { return false }
+        return transport == kAudioDeviceTransportTypeBluetooth || transport == kAudioDeviceTransportTypeBluetoothLE
+    }
+
     private func format(_ rate: Double) throws -> AVAudioFormat {
         try #require(AVAudioFormat(standardFormatWithSampleRate: rate, channels: 1))
     }
@@ -33,6 +57,38 @@ struct MicCaptureRestartTests {
             for channel in 0..<pointerCount {
                 #expect(UnsafeBufferPointer(start: samples[channel], count: sampleCount).allSatisfy { $0 == 0 })
             }
+        }
+    }
+
+    /// 复现停录后蓝牙退出采集模式、空闲 45 秒再启动；仅显式开启、蓝牙音频路由且权限齐全时运行。
+    @MainActor
+    @Test(.enabled(if: ProcessInfo.processInfo.environment["MEMONTA_VERIFY_BLUETOOTH_RESTART"] == "1"
+                   && AVAudioApplication.shared.recordPermission == .granted
+                   && SystemAudioCaptureService.preflightPermission() && bluetoothRouteAvailable))
+    func bluetoothMixedCaptureRestartsAfterIdle() async throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("MicBluetooth-\(UUID())")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let microphone = MicCaptureService()
+        let system = SystemAudioCaptureService()
+        defer { microphone.stop() }
+        do {
+            for index in 0..<2 {
+                let url = directory.appendingPathComponent("muted-\(index).caf")
+                try await microphone.start(to: url, initiallyMuted: true)
+                try await system.start(to: directory.appendingPathComponent("system-\(index).wav"))
+                try await Task.sleep(for: .seconds(3))
+                #expect(microphone.isCapturing)
+                microphone.stop()
+                let result = await system.stop()
+                #expect(!result.writerFailed)
+                #expect(try AVAudioFile(forReading: url).length > 0)
+                if index == 0 { try await Task.sleep(for: .seconds(45)) }
+            }
+        } catch {
+            microphone.stop()
+            _ = await system.stop()
+            throw error
         }
     }
 
@@ -71,6 +127,41 @@ struct MicCaptureRestartTests {
         let saved = try AVAudioFile(forReading: url)
         #expect(saved.fileFormat.sampleRate == 24_000)
         #expect(saved.length == 240)
+    }
+
+    @Test func liveDeviceRateOverridesTwoStaleNodeFormats() throws {
+        let staleHardware = try format(48_000)
+        let staleClient = try format(48_000)
+        let capture = try MicCaptureService.captureFormat(
+            hardware: staleHardware, client: staleClient, deviceSampleRate: 24_000
+        )
+        #expect(capture.sampleRate == 24_000)
+        #expect(MicCaptureService.needsFormatReconfiguration(
+            hardware: staleHardware, client: staleClient, capture: staleClient, deviceSampleRate: 24_000
+        ))
+        #expect(!MicCaptureService.needsFormatReconfiguration(
+            hardware: staleHardware, client: capture, capture: capture, deviceSampleRate: 24_000
+        ), "同一已对齐格式的重复通知不需要再次重装 tap")
+        #expect(try MicCaptureService.captureFormat(
+            hardware: staleHardware, client: staleClient, deviceSampleRate: 0
+        ).sampleRate == 48_000)
+    }
+
+    @Test func postStartHardwareChangeInvalidatesPreparedTap() throws {
+        let prepared = try format(48_000)
+        let negotiated = try format(24_000)
+        #expect(MicCaptureService.needsFormatReconfiguration(
+            hardware: negotiated, client: prepared, capture: prepared
+        ))
+        #expect(!MicCaptureService.needsFormatReconfiguration(
+            hardware: negotiated, client: negotiated, capture: negotiated
+        ))
+        let integerClient = try #require(AVAudioFormat(
+            commonFormat: .pcmFormatInt16, sampleRate: 24_000, channels: 1, interleaved: false
+        ))
+        #expect(MicCaptureService.needsFormatReconfiguration(
+            hardware: negotiated, client: integerClient, capture: negotiated
+        ))
     }
 
     @Test func oldTapCannotWriteToRotatedOrNewSessionFile() throws {
