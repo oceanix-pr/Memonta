@@ -20,8 +20,8 @@ struct MarkdownView: View {
     var body: some View {
         LazyVStack(alignment: .leading, spacing: 8) {
             let resolvedBlocks = blocks ?? MarkdownParseCache.shared.blocks(for: markdown)
-            ForEach(Array(resolvedBlocks.enumerated()), id: \.offset) { _, block in
-                renderBlock(block)
+            ForEach(resolvedBlocks.indices, id: \.self) { index in
+                renderBlock(resolvedBlocks[index])
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -39,25 +39,27 @@ struct MarkdownView: View {
             renderInlineText(text, font: .title3)
                 .textSelection(.enabled)
 
-        case .bulletItem(let text):
+        case .bulletItem(let text, let depth, let checked):
             HStack(alignment: .top, spacing: 6) {
-                Text("•")
+                Text(checked.map { $0 ? "☑" : "☐" } ?? "•")
                     .font(.title3)
                 renderInlineText(text, font: .title3)
                     .textSelection(.enabled)
             }
+            .padding(.leading, CGFloat(depth) * 16)
 
-        case .numberedItem(let number, let text):
+        case .numberedItem(let number, let text, let depth):
             HStack(alignment: .top, spacing: 6) {
                 Text("\(number).")
                     .font(.title3)
-                    .frame(width: 28, alignment: .leading)
+                    .fixedSize(horizontal: true, vertical: false)
                 renderInlineText(text, font: .title3)
                     .textSelection(.enabled)
             }
+            .padding(.leading, CGFloat(depth) * 16)
 
         case .codeBlock(let text):
-            Text(text)
+            Text(attributedInlineText(text, isCode: true))
                 .font(.system(.body, design: .monospaced))
                 .foregroundStyle(.primary)
                 .padding(10)
@@ -66,34 +68,73 @@ struct MarkdownView: View {
                 .textSelection(.enabled)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-        case .quote(let text):
+        case .quote(let quotedBlocks):
             HStack(alignment: .top, spacing: 8) {
                 Rectangle()
                     .fill(.secondary)
                     .frame(width: 3)
-                renderInlineText(text, font: .title3)
+                AnyView(MarkdownView(markdown: "", blocks: quotedBlocks,
+                                     highlightText: highlightText, highlightColor: highlightColor))
                     .foregroundStyle(.secondary)
-                    .textSelection(.enabled)
             }
+
+        case .table(let table):
+            renderTable(table)
 
         case .divider:
             Divider()
         }
     }
 
-    @ViewBuilder
     private func renderHeading(level: Int, text: String) -> some View {
-        // 标题直接用 Text + font，不用 AttributedString 避免样式覆盖
-        switch level {
-        case 1:
-            Text(text)
-                .font(.largeTitle.bold())
-        case 2:
-            Text(text)
-                .font(.title.bold())
-        default:
-            Text(text)
-                .font(.title2.bold())
+        let font: Font = switch level {
+        case 1: .largeTitle
+        case 2: .title
+        case 3: .title2
+        case 4: .title3
+        case 5: .headline
+        default: .subheadline
+        }
+        return renderInlineText(text, font: font.bold())
+            .textSelection(.enabled)
+    }
+
+    private func renderTable(_ table: MarkdownTable) -> some View {
+        let widths: [CGFloat] = (0..<table.columnCount).map { column in
+            let length = table.rows.map { $0[column].count }.max() ?? 0
+            return min(280, max(120, CGFloat(length) * 9))
+        }
+        return ScrollView(.horizontal) {
+            Grid(alignment: .topLeading, horizontalSpacing: 0, verticalSpacing: 0) {
+                ForEach(table.rows.indices, id: \.self) { row in
+                    GridRow {
+                        ForEach(0..<table.columnCount, id: \.self) { column in
+                            let alignment = tableAlignment(table.alignments[column])
+                            renderInlineText(table.rows[row][column], font: row == 0 ? .headline : .body)
+                                .textSelection(.enabled)
+                                .multilineTextAlignment(table.alignments[column] == .center ? .center :
+                                    (table.alignments[column] == .trailing ? .trailing : .leading))
+                                .frame(width: widths[column], alignment: alignment)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .padding(8)
+                                .frame(maxHeight: .infinity, alignment: .top)
+                                .background(row == 0 ? Color.secondary.opacity(0.12) : Color.clear)
+                                .overlay(Rectangle().stroke(Color.secondary.opacity(0.25), lineWidth: 0.5))
+                        }
+                    }
+                }
+            }
+            .padding(1)
+            .fixedSize(horizontal: false, vertical: true)
+        }
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func tableAlignment(_ alignment: MarkdownTable.Alignment) -> Alignment {
+        switch alignment {
+        case .leading: .leading
+        case .center: .center
+        case .trailing: .trailing
         }
     }
 
@@ -106,14 +147,15 @@ struct MarkdownView: View {
     /// 解析行内 Markdown，解析失败回退纯文本，再叠加搜索高亮。
     /// 结果按 (文本, 高亮词, 高亮色) 记忆：块级已有记忆，但行内 `AttributedString(markdown:)`
     /// 与高亮扫描此前在每次 body 求值时对每个可见块重跑，长文档滚动/播放进度刷新时会持续掉帧
-    private func attributedInlineText(_ text: String) -> AttributedString {
+    private func attributedInlineText(_ text: String, isCode: Bool = false) -> AttributedString {
         MarkdownInlineCache.shared.attributed(
             text: text,
             highlight: highlightText,
-            color: highlightColor
+            color: highlightColor,
+            isCode: isCode
         ) {
             var attributed: AttributedString
-            if let parsed = try? AttributedString(
+            if !isCode, let parsed = try? AttributedString(
                 markdown: text,
                 options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)
             ) {
@@ -157,36 +199,52 @@ struct MarkdownView: View {
 
 // MARK: - Markdown 解析记忆
 
-/// `MarkdownView` 未收到预解析 `blocks` 时的解析记忆。
-///
-/// 旧写法在 `body` 里直接 `parseBlocks(markdown)`：SwiftUI 每次求值 body 都会把
-/// 整篇文本重新按行切分并重建全部块（选中项变化、动画、父视图失效都会触发），
-/// 再叠加流式总结的逐 token 刷新，形成"总结越长越卡、结束时最卡"。
-/// 这里记住最近一次的 (输入, 解析结果)：输入未变则复用，输入变化才重解析。
-/// 代价是一次字符串比较（O(n) 且无分配），远低于重解析的分配量。
-///
-/// 说明：块 id 仍用下标而非内容。转写/总结里存在完全相同的行（如重复的
-/// 列表项与分隔线），用内容做 id 会产生重复标识符，反而破坏 SwiftUI 的差量更新。
+/// 多篇文本的有界 LRU 缓存，搜索结果中的多个 MarkdownView 不再互相挤掉唯一槽位。
+/// 所有共享状态由 lock 保护，解析在锁外执行，不阻塞其他命中查询。
 final class MarkdownParseMemo: @unchecked Sendable {
+    private struct Slot {
+        let blocks: [TranscriptBlock]
+        let cost: Int
+        var usedAt: UInt64
+    }
     private let lock = NSLock()
-    private var source: String?
-    private var parsed: [TranscriptBlock] = []
+    private var entries: [String: Slot] = [:]
+    private var clock: UInt64 = 0
+    private var totalCost = 0
+    private let costLimit = 8 * 1024 * 1024
 
     func blocks(for markdown: String) -> [TranscriptBlock] {
         lock.lock()
+        clock += 1
+        if var slot = entries[markdown] {
+            slot.usedAt = clock
+            entries[markdown] = slot
+            lock.unlock()
+            return slot.blocks
+        }
+        lock.unlock()
+
+        let blocks = TranscriptMarkdownBuilder.parseBlocks(markdown)
+        let cost = markdown.utf8.count + blocks.reduce(0) { $0 + $1.contentByteCount }
+        guard cost <= costLimit else { return blocks }
+        lock.lock()
         defer { lock.unlock() }
-        if source == markdown { return parsed }
-        let result = TranscriptMarkdownBuilder.parseBlocks(markdown)
-        source = markdown
-        parsed = result
-        return result
+        if let existing = entries[markdown] { return existing.blocks }
+        clock += 1
+        entries[markdown] = Slot(blocks: blocks, cost: cost, usedAt: clock)
+        totalCost += cost
+        while entries.count > 32 || totalCost > costLimit {
+            guard let oldest = entries.min(by: { $0.value.usedAt < $1.value.usedAt }) else { break }
+            totalCost -= oldest.value.cost
+            entries.removeValue(forKey: oldest.key)
+        }
+        return blocks
     }
 
-    /// 内容被就地编辑后强制失效（可选入口，供写路径调用）
     func invalidate() {
         lock.lock()
-        source = nil
-        parsed = []
+        entries.removeAll()
+        totalCost = 0
         lock.unlock()
     }
 }
@@ -207,6 +265,7 @@ final class InlineTextMemo: @unchecked Sendable {
         let text: String
         let highlight: String
         let color: Color
+        let isCode: Bool
     }
 
     private let lock = NSLock()
@@ -217,9 +276,10 @@ final class InlineTextMemo: @unchecked Sendable {
         text: String,
         highlight: String,
         color: Color,
+        isCode: Bool = false,
         build: () -> AttributedString
     ) -> AttributedString {
-        let key = Key(text: text, highlight: highlight, color: color)
+        let key = Key(text: text, highlight: highlight, color: color, isCode: isCode)
         lock.lock()
         if let hit = cache[key] {
             lock.unlock()
@@ -241,4 +301,38 @@ final class InlineTextMemo: @unchecked Sendable {
 enum MarkdownInlineCache {
     /// 进程级单例：与块级解析记忆同理，需跨页面共享
     static let shared = InlineTextMemo()
+}
+
+/// 流式内容最多每 200ms 在后台解析一次；持续输出时也能显示格式，避免逐 token 主线程解析。
+struct StreamingMarkdownView: View {
+    let markdown: String
+    @State private var latest = ""
+    @State private var blocks: [TranscriptBlock] = []
+
+    var body: some View {
+        MarkdownView(markdown: "", blocks: blocks)
+            .onChange(of: markdown) { _, value in latest = value }
+            .task {
+                latest = markdown
+                var rendered: String?
+                while !Task.isCancelled {
+                    let snapshot = latest
+                    if snapshot != rendered {
+                        let parsing = Task.detached(priority: .userInitiated) {
+                            TranscriptMarkdownBuilder.parseBlocks(snapshot, shouldCancel: { Task.isCancelled })
+                        }
+                        let parsed = await withTaskCancellationHandler {
+                            await parsing.value
+                        } onCancel: {
+                            parsing.cancel()
+                        }
+                        guard !Task.isCancelled else { return }
+                        blocks = parsed
+                        rendered = snapshot
+                    }
+                    do { try await Task.sleep(for: .milliseconds(200)) }
+                    catch { return }
+                }
+            }
+    }
 }

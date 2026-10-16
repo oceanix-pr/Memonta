@@ -1049,11 +1049,15 @@ final class OverlayAnnotationView: NSView, NSTextFieldDelegate {
         var summary = String(
             format: String(localized: "质量：%@（%@）"), quality.displayName, quality.estimatedSizeLabel
         ) + " · " + String(format: String(localized: "声源：%@"), source.displayName)
-        // 声源含麦克风时把当前选择一并写明：倒计时是录前最后一个确认点
+        // 声源含麦克风时把当前选择一并写明：倒计时是录前最后一个确认点；
+        // 以静音开始时也要写明，避免倒计时确认的与录出来的不一致
         if source != .systemAudio {
             let microphone = MicrophoneDeviceRegistry.selectedDeviceName()
                 ?? String(localized: "跟随系统默认")
             summary += " · " + String(format: String(localized: "麦克风：%@"), microphone)
+            if MicrophoneStartMutePreference.isEnabled() {
+                summary += " · " + String(localized: "录音时静音")
+            }
         }
 
         let countdown = RecordCountdownController(

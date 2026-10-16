@@ -10,11 +10,8 @@ import Foundation
 ///   只在 `FileDocument.fileWrapper` 里同步要一段 `Data`，套不进这个回调；
 /// - 纯 CoreText 排版是同步纯函数，可离线单测，中英日韩靠字形回退自动处理，不引新依赖。
 ///
-/// 只用 `kCT*` 属性键与 `CTParagraphStyle`：AppKit/UIKit 的类型（`NSMutableParagraphStyle`
-/// 等）在只 `import Foundation` 时不可用，走 CoreText 原生 API 才能让 macOS / iOS 两侧同源编译。
-///
-/// 已知取舍：`~~删除线~~` 只去标记不画线（CoreText 无删除线属性）；表格按「首行加粗 + · 串列」
-/// 输出而不做列宽对齐（跨语言列宽测量不稳定，优先保证内容不丢）。
+/// 块结构与界面共用 `TranscriptMarkdownBuilder`；表格独立排版单元格、边框与跨页表头。
+/// `~~删除线~~` 目前只去标记不画线（CoreText 无删除线属性）。
 enum MarkdownPDFRenderer {
 
     // MARK: - 错误
@@ -69,9 +66,13 @@ enum MarkdownPDFRenderer {
 
     /// 渲染为 PDF 数据。内容为空时也产出一页，保证导出文件永远可打开。
     static func render(markdown: String, configuration: Configuration = Configuration()) throws -> Data {
-        let attributed = attributedString(from: markdown, configuration: configuration)
-        let framesetter = CTFramesetterCreateWithAttributedString(attributed as CFAttributedString)
-        let ranges = pageRanges(for: attributed, framesetter: framesetter, configuration: configuration)
+        guard configuration.pageWidth.isFinite, configuration.pageHeight.isFinite,
+              configuration.bodyFontSize.isFinite, configuration.bodyFontSize > 0,
+              configuration.contentWidth.isFinite, configuration.contentHeight.isFinite,
+              configuration.contentHeight >= configuration.bodyFontSize * 3 + 24 else {
+            throw RenderError.contextUnavailable
+        }
+        let pages = layout(markdown: markdown, configuration: configuration)
 
         let sink = NSMutableData()
         guard let consumer = CGDataConsumer(data: sink as CFMutableData) else {
@@ -88,14 +89,23 @@ enum MarkdownPDFRenderer {
             throw RenderError.contextUnavailable
         }
 
-        let pageCount = ranges.count
-        for (index, range) in ranges.enumerated() {
+        for (index, commands) in pages.enumerated() {
             context.beginPage(mediaBox: &mediaBox)
-            let path = CGPath(rect: configuration.contentRect, transform: nil)
-            let frame = CTFramesetterCreateFrame(framesetter, range, path, nil)
-            CTFrameDraw(frame, context)
-            if configuration.showsPageNumbers, pageCount > 1 {
-                drawPageNumber(index + 1, total: pageCount, configuration: configuration, context: context)
+            for command in commands {
+                switch command {
+                case .text(let setter, let range, let rect):
+                    let frame = CTFramesetterCreateFrame(setter, range, CGPath(rect: rect, transform: nil), nil)
+                    CTFrameDraw(frame, context)
+                case .cell(let rect, let isHeader):
+                    context.setFillColor(gray(isHeader ? 0.94 : 1))
+                    context.fill(rect)
+                    context.setStrokeColor(gray(0.75))
+                    context.setLineWidth(0.5)
+                    context.stroke(rect)
+                }
+            }
+            if configuration.showsPageNumbers, pages.count > 1 {
+                drawPageNumber(index + 1, total: pages.count, configuration: configuration, context: context)
             }
             context.endPage()
         }
@@ -123,193 +133,11 @@ enum MarkdownPDFRenderer {
         return output
     }
 
-    // MARK: - 块级解析
-
-    enum Block: Equatable {
-        case heading(level: Int, text: String)
-        case paragraph(text: String)
-        case bullet(text: String, depth: Int)
-        case numbered(text: String, marker: String, depth: Int)
-        case quote(text: String)
-        case code(text: String)
-        case table(rows: [[String]])
-        case rule
-    }
+    // 界面、预解析缓存与 PDF 只使用这一套语法规则。
+    typealias Block = TranscriptBlock
 
     static func blocks(from markdown: String) -> [Block] {
-        let lines = markdown
-            .replacingOccurrences(of: "\r\n", with: "\n")
-            .replacingOccurrences(of: "\r", with: "\n")
-            .components(separatedBy: "\n")
-
-        var blocks: [Block] = []
-        var paragraph: [String] = []
-
-        func flushParagraph() {
-            var joined = ""
-            for line in paragraph {
-                joined = joined.isEmpty ? line : softJoin(joined, line)
-            }
-            paragraph.removeAll()
-            if !joined.isEmpty { blocks.append(.paragraph(text: joined)) }
-        }
-
-        var index = 0
-        while index < lines.count {
-            let raw = lines[index]
-            let trimmed = raw.trimmingCharacters(in: .whitespaces)
-
-            if trimmed.isEmpty {
-                flushParagraph()
-                index += 1
-                continue
-            }
-
-            // 围栏代码块：内部按原文保留（含缩进），不做行内解析
-            if trimmed.hasPrefix("```") || trimmed.hasPrefix("~~~") {
-                flushParagraph()
-                let fence = String(trimmed.prefix(3))
-                var code: [String] = []
-                index += 1
-                while index < lines.count {
-                    let current = lines[index]
-                    if current.trimmingCharacters(in: .whitespaces).hasPrefix(fence) {
-                        index += 1
-                        break
-                    }
-                    code.append(stripCodeLine(current))
-                    index += 1
-                }
-                let body = code.joined(separator: "\n")
-                if !body.isEmpty { blocks.append(.code(text: body)) }
-                continue
-            }
-
-            if let (level, text) = headingMatch(trimmed) {
-                flushParagraph()
-                blocks.append(.heading(level: level, text: text))
-                index += 1
-                continue
-            }
-
-            if isHorizontalRule(trimmed) {
-                flushParagraph()
-                blocks.append(.rule)
-                index += 1
-                continue
-            }
-
-            if isTableLine(trimmed) {
-                flushParagraph()
-                var rows: [[String]] = []
-                while index < lines.count {
-                    let rowText = lines[index].trimmingCharacters(in: .whitespaces)
-                    guard isTableLine(rowText) else { break }
-                    let cells = tableCells(rowText)
-                    if !cells.isEmpty, !cells.allSatisfy(isTableSeparatorCell) { rows.append(cells) }
-                    index += 1
-                }
-                if !rows.isEmpty { blocks.append(.table(rows: rows)) }
-                continue
-            }
-
-            if trimmed.hasPrefix(">") {
-                flushParagraph()
-                var quoted: [String] = []
-                while index < lines.count {
-                    let quoteText = lines[index].trimmingCharacters(in: .whitespaces)
-                    guard quoteText.hasPrefix(">") else { break }
-                    let content = stripNoise(String(quoteText.dropFirst()).trimmingCharacters(in: .whitespaces))
-                    if !content.isEmpty { quoted.append(content) }
-                    index += 1
-                }
-                if !quoted.isEmpty {
-                    var text = ""
-                    for line in quoted { text = text.isEmpty ? line : softJoin(text, line) }
-                    blocks.append(.quote(text: text))
-                }
-                continue
-            }
-
-            if let item = listItem(raw) {
-                flushParagraph()
-                blocks.append(item)
-                index += 1
-                continue
-            }
-
-            let content = stripNoise(trimmed)
-            if !content.isEmpty { paragraph.append(content) }
-            index += 1
-        }
-        flushParagraph()
-        return blocks
-    }
-
-    /// `#`~`######`；7 个以上 `#` 按普通文本处理
-    private static func headingMatch(_ line: String) -> (level: Int, text: String)? {
-        guard line.hasPrefix("#") else { return nil }
-        let hashes = line.prefix(while: { $0 == "#" }).count
-        guard hashes >= 1, hashes <= 6 else { return nil }
-        let rest = String(line.dropFirst(hashes))
-        guard rest.isEmpty || rest.hasPrefix(" ") || rest.hasPrefix("\t") else { return nil }
-        let text = stripNoise(rest)
-        return text.isEmpty ? nil : (hashes, text)
-    }
-
-    private static func isHorizontalRule(_ line: String) -> Bool {
-        let collapsed = line.replacingOccurrences(of: " ", with: "")
-        guard collapsed.count >= 3 else { return false }
-        return collapsed.allSatisfy { $0 == "-" } || collapsed.allSatisfy { $0 == "*" } || collapsed.allSatisfy { $0 == "_" }
-    }
-
-    private static func isTableLine(_ line: String) -> Bool {
-        let trimmed = line.trimmingCharacters(in: .whitespaces)
-        return trimmed.hasPrefix("|") && trimmed.filter { $0 == "|" }.count >= 2
-    }
-
-    private static func tableCells(_ line: String) -> [String] {
-        var content = line.trimmingCharacters(in: .whitespaces)
-        if content.hasPrefix("|") { content.removeFirst() }
-        if content.hasSuffix("|") { content.removeLast() }
-        return content.components(separatedBy: "|").map { stripNoise($0) }
-    }
-
-    /// `|---|:--:|` 这类分隔行只用于标记表头，本身不出内容
-    private static func isTableSeparatorCell(_ cell: String) -> Bool {
-        !cell.isEmpty && cell.allSatisfy { $0 == "-" || $0 == ":" || $0 == " " }
-    }
-
-    /// 行首缩进按 2 空格一级折算，最深 4 级（再深按 4 级处理，避免越缩越窄）
-    private static func listItem(_ line: String) -> Block? {
-        let spaces = line.prefix(while: { $0 == " " }).count
-        let tabs = line.prefix(while: { $0 == "\t" }).count
-        let depth = min(4, max(0, (spaces + tabs * 2) / 2))
-        let body = line.drop(while: { $0 == " " || $0 == "\t" })
-
-        if body.hasPrefix("- ") || body.hasPrefix("* ") || body.hasPrefix("+ ") {
-            var text = body.dropFirst(2)
-            var checked: Bool?
-            if text.hasPrefix("[ ]") {
-                checked = false
-                text = text.dropFirst(3)
-            } else if text.hasPrefix("[x]") || text.hasPrefix("[X]") {
-                checked = true
-                text = text.dropFirst(3)
-            }
-            let content = stripNoise(String(text))
-            guard !content.isEmpty || checked != nil else { return nil }
-            let marker = checked == true ? "☑ " : (checked == false ? "☐ " : "")
-            return .bullet(text: marker + content, depth: depth)
-        }
-
-        let digits = body.prefix(while: \.isNumber)
-        guard !digits.isEmpty else { return nil }
-        let rest = body.dropFirst(digits.count)
-        guard rest.hasPrefix(". ") || rest.hasPrefix(") ") else { return nil }
-        let content = stripNoise(String(rest.dropFirst(2)))
-        guard !content.isEmpty else { return nil }
-        return .numbered(text: content, marker: "\(digits).", depth: depth)
+        TranscriptMarkdownBuilder.parseBlocks(markdown)
     }
 
     // MARK: - 块 → 富文本
@@ -329,28 +157,27 @@ enum MarkdownPDFRenderer {
             appendInline(text, to: output, font: typography.bodyFont, color: typography.ink,
                          paragraph: typography.bodyParagraph, typography: typography)
 
-        case .bullet(let text, let depth):
+        case .bulletItem(let text, let depth, let checked):
             let paragraph = typography.listParagraph(depth)
-            let marker = depth.isMultiple(of: 2) ? "•  " : "◦  "
+            let marker = checked.map { $0 ? "☑  " : "☐  " } ?? (depth.isMultiple(of: 2) ? "•  " : "◦  ")
             output.append(NSAttributedString(string: marker, attributes: typography.attributes(
                 font: typography.bodyFont, color: typography.secondary, paragraph: paragraph
             )))
             appendInline(text, to: output, font: typography.bodyFont, color: typography.ink,
                          paragraph: paragraph, typography: typography)
 
-        case .numbered(let text, let marker, let depth):
+        case .numberedItem(let number, let text, let depth):
             let paragraph = typography.listParagraph(depth)
-            output.append(NSAttributedString(string: marker + "  ", attributes: typography.attributes(
+            output.append(NSAttributedString(string: "\(number).  ", attributes: typography.attributes(
                 font: typography.bodyFont, color: typography.secondary, paragraph: paragraph
             )))
             appendInline(text, to: output, font: typography.bodyFont, color: typography.ink,
                          paragraph: paragraph, typography: typography)
 
-        case .quote(let text):
-            appendInline(text, to: output, font: typography.bodyFont, color: typography.secondary,
-                         paragraph: typography.quoteParagraph, typography: typography)
+        case .quote(let children):
+            for child in children { append(child, to: output, typography: typography, configuration: configuration) }
 
-        case .code(let text):
+        case .codeBlock(let text):
             output.append(NSAttributedString(string: text + "\n", attributes: [
                 keyFont: typography.monoFont,
                 keyForeground: typography.secondary,
@@ -358,18 +185,16 @@ enum MarkdownPDFRenderer {
                 keyBackground: typography.codeBackground
             ]))
 
-        case .table(let rows):
-            for (rowIndex, row) in rows.enumerated() {
-                let cells = row.filter { !$0.isEmpty }
-                guard !cells.isEmpty else { continue }
-                let isHeader = rowIndex == 0
-                appendInline(cells.joined(separator: "  ·  "), to: output,
-                             font: isHeader ? typography.strongBody : typography.bodyFont,
+        case .table(let table):
+            // 富文本检查入口保留空单元格的位置；实际 PDF 使用下方逐单元格布局。
+            for (rowIndex, row) in table.rows.enumerated() {
+                appendInline(row.joined(separator: "\t"), to: output,
+                             font: rowIndex == 0 ? typography.strongBody : typography.bodyFont,
                              color: typography.ink,
-                             paragraph: typography.tableParagraph(isHeader: isHeader), typography: typography)
+                             paragraph: typography.tableParagraph(isHeader: rowIndex == 0), typography: typography)
             }
 
-        case .rule:
+        case .divider:
             // 分隔线用 box-drawing 字符拼：实际绘制会发生字体替换（量到的 advance 偏小），
             // 按整宽拼会多出一小截换行。取约 1/3 宽并居中，当作有意为之的短分隔线
             let advance = glyphAdvance(of: "─", font: typography.bodyFont)
@@ -579,32 +404,203 @@ enum MarkdownPDFRenderer {
 
     // MARK: - 分页
 
-    private static func pageRanges(
-        for attributed: NSAttributedString,
-        framesetter: CTFramesetter,
-        configuration: Configuration
-    ) -> [CFRange] {
-        let total = attributed.length
-        guard total > 0 else { return [CFRangeMake(0, 0)] }
+    private enum DrawCommand {
+        case text(CTFramesetter, CFRange, CGRect)
+        case cell(CGRect, isHeader: Bool)
+    }
 
-        let path = CGPath(rect: configuration.contentRect, transform: nil)
-        var ranges: [CFRange] = []
-        var location = 0
-        while location < total {
-            let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(location, 0), path, nil)
-            let visible = CTFrameGetVisibleStringRange(frame)
-            if visible.length > 0 {
-                ranges.append(CFRange(location: location, length: visible.length))
-                location += visible.length
-                continue
-            }
-            // 零进展兜底：单个超长不可断词会占满整页并让可见长度归零。
-            // 此时按固定步长强制推进（宁可切断），否则该页永远排不下、循环永不退出。
-            let step = min(2048, total - location)
-            ranges.append(CFRange(location: location, length: step))
-            location += step
+    /// 先排版后绘制，页码能得到准确总页数。普通文本、引用和表格共享同一页游标。
+    private static func layout(markdown: String, configuration: Configuration) -> [[DrawCommand]] {
+        let content = configuration.contentRect
+        let typography = Typography(bodySize: configuration.bodyFontSize, contentWidth: content.width)
+        var pages: [[DrawCommand]] = [[]]
+        var y = content.maxY
+        var pending = NSMutableAttributedString()
+
+        func newPage() {
+            pages.append([])
+            y = content.maxY
         }
-        return ranges
+
+        func placeText(_ attributed: NSAttributedString, inset: CGFloat = 0) {
+            guard attributed.length > 0 else { return }
+            let setter = CTFramesetterCreateWithAttributedString(attributed as CFAttributedString)
+            var location = 0
+            while location < attributed.length {
+                let available = y - content.minY
+                if available < configuration.bodyFontSize * 2, !pages[pages.count - 1].isEmpty {
+                    newPage()
+                    continue
+                }
+                let rect = CGRect(x: content.minX + inset, y: content.minY,
+                                  width: max(1, content.width - inset), height: max(1, available))
+                let frame = CTFramesetterCreateFrame(setter, CFRangeMake(location, 0), CGPath(rect: rect, transform: nil), nil)
+                let visible = CTFrameGetVisibleStringRange(frame)
+                guard visible.length > 0 else {
+                    // 极窄配置也要推进；字形兜底用独立行，不让长不可断词导致循环停滞。
+                    let length = (attributed.string as NSString).rangeOfComposedCharacterSequence(at: location).length
+                    let fragment = attributed.attributedSubstring(from: NSRange(location: location, length: length))
+                    let line = CTLineCreateWithAttributedString(fragment)
+                    let width = max(rect.width, CGFloat(CTLineGetTypographicBounds(line, nil, nil, nil)) + 1)
+                    let fallback = CGRect(x: rect.minX, y: y - configuration.bodyFontSize * 2,
+                                          width: width, height: configuration.bodyFontSize * 2)
+                    let fragmentSetter = CTFramesetterCreateWithAttributedString(fragment)
+                    pages[pages.count - 1].append(.text(fragmentSetter, CFRangeMake(0, length), fallback))
+                    location += length
+                    y -= configuration.bodyFontSize * 2
+                    continue
+                }
+                let size = CTFramesetterSuggestFrameSizeWithConstraints(setter, visible, nil,
+                    CGSize(width: rect.width, height: .greatestFiniteMagnitude), nil)
+                let height = min(available, ceil(size.height) + 1)
+                let placed = CGRect(x: rect.minX, y: y - height, width: rect.width, height: height)
+                pages[pages.count - 1].append(.text(setter, visible, placed))
+                y -= height
+                location += visible.length
+                if location < attributed.length { newPage() }
+            }
+        }
+
+        func flushText() {
+            placeText(pending)
+            pending = NSMutableAttributedString()
+        }
+
+        func placeTable(_ table: MarkdownTable, inset: CGFloat) {
+            guard table.columnCount > 0, !table.rows.isEmpty else { return }
+            let columnWidth = max(1, (content.width - inset) / CGFloat(table.columnCount))
+            let padding = min(6, columnWidth / 8)
+            let cellWidth = max(1, columnWidth - padding * 2)
+            let minimumHeight = max(16, configuration.bodyFontSize * 1.5 + padding * 2)
+
+            func prepare(_ row: [String], isHeader: Bool) -> [(NSAttributedString, CTFramesetter, CGFloat)] {
+                row.enumerated().map { column, text in
+                    let alignment: CTTextAlignment = switch table.alignments[column] {
+                    case .leading: .left
+                    case .center: .center
+                    case .trailing: .right
+                    }
+                    let paragraph = makeParagraphStyle(alignment: alignment, lineSpacing: 2, tailIndent: cellWidth)
+                    let value = NSMutableAttributedString()
+                    appendInlineContent(text.isEmpty ? " " : text, to: value,
+                                        font: isHeader ? typography.strongBody : typography.bodyFont,
+                                        color: typography.ink, paragraph: paragraph, typography: typography)
+                    let setter = CTFramesetterCreateWithAttributedString(value)
+                    let size = CTFramesetterSuggestFrameSizeWithConstraints(setter, CFRangeMake(0, 0), nil,
+                        CGSize(width: cellWidth, height: .greatestFiniteMagnitude), nil)
+                    return (value, setter, max(minimumHeight, ceil(size.height) + padding * 2 + 1))
+                }
+            }
+
+            let header = prepare(table.rows[0], isHeader: true)
+            let headerHeight = header.map { $0.2 }.max() ?? minimumHeight
+            // 巨大表头本身需要分页时不重复，避免表头占满每页而正文无法推进。
+            let repeatsHeader = headerHeight < content.height / 3
+
+            func drawFragment(_ cells: [(NSAttributedString, CTFramesetter, CGFloat)],
+                              locations: inout [Int], height: CGFloat, isHeader: Bool) {
+                for column in cells.indices {
+                    let rect = CGRect(x: content.minX + inset + CGFloat(column) * columnWidth,
+                                      y: y - height, width: columnWidth, height: height)
+                    pages[pages.count - 1].append(.cell(rect, isHeader: isHeader))
+                    let (text, setter, _) = cells[column]
+                    guard locations[column] < text.length else { continue }
+                    let inner = rect.insetBy(dx: padding, dy: padding)
+                    let frame = CTFramesetterCreateFrame(setter, CFRangeMake(locations[column], 0),
+                                                        CGPath(rect: inner, transform: nil), nil)
+                    let range = CTFrameGetVisibleStringRange(frame)
+                    if range.length > 0 {
+                        pages[pages.count - 1].append(.text(setter, range, inner))
+                        locations[column] += range.length
+                    } else {
+                        // 超窄列也保留字符；不能把排不下误当成该格已完成。
+                        let length = (text.string as NSString).rangeOfComposedCharacterSequence(at: locations[column]).length
+                        let fragment = text.attributedSubstring(from: NSRange(location: locations[column], length: length))
+                        let line = CTLineCreateWithAttributedString(fragment)
+                        let width = max(inner.width, CGFloat(CTLineGetTypographicBounds(line, nil, nil, nil)) + 1)
+                        let fallback = CGRect(x: inner.minX, y: inner.minY, width: width, height: inner.height)
+                        pages[pages.count - 1].append(.text(CTFramesetterCreateWithAttributedString(fragment),
+                                                          CFRangeMake(0, length), fallback))
+                        locations[column] += length
+                    }
+                }
+                y -= height
+            }
+
+            // 表头至少与第一条数据一起出现，避免页尾只剩一个孤立表头。
+            let firstRowHeight = table.rows.count > 1
+                ? prepare(table.rows[1], isHeader: false).map { $0.2 }.max() ?? minimumHeight : 0
+            let firstFragment = firstRowHeight <= content.height - headerHeight ? firstRowHeight : minimumHeight
+            let startHeight = headerHeight + firstFragment
+            if startHeight <= content.height, y - content.minY < startHeight,
+               !pages[pages.count - 1].isEmpty { newPage() }
+
+            for (rowIndex, row) in table.rows.enumerated() {
+                let cells = rowIndex == 0 ? header : prepare(row, isHeader: false)
+                let desired = cells.map { $0.2 }.max() ?? minimumHeight
+                let fullHeight = content.height - (repeatsHeader && rowIndex > 0 ? headerHeight : 0)
+                let needsFreshPage = desired <= fullHeight && y - content.minY < desired
+                    || y - content.minY < minimumHeight
+                if needsFreshPage {
+                    if !pages[pages.count - 1].isEmpty { newPage() }
+                    if rowIndex > 0 && repeatsHeader {
+                        var offsets = Array(repeating: 0, count: header.count)
+                        drawFragment(header, locations: &offsets, height: headerHeight, isHeader: true)
+                    }
+                }
+                var offsets = Array(repeating: 0, count: cells.count)
+                while cells.indices.contains(where: { offsets[$0] < cells[$0].0.length }) {
+                    if y - content.minY < minimumHeight {
+                        newPage()
+                        if rowIndex > 0 && repeatsHeader {
+                            var headerOffsets = Array(repeating: 0, count: header.count)
+                            drawFragment(header, locations: &headerOffsets, height: headerHeight, isHeader: true)
+                        }
+                    }
+                    // 续页按剩余文本测量，短单元格结束后保持空白，不再重复其内容。
+                    let remainingHeight = cells.indices.map { column -> CGFloat in
+                        guard offsets[column] < cells[column].0.length else { return minimumHeight }
+                        let size = CTFramesetterSuggestFrameSizeWithConstraints(cells[column].1,
+                            CFRangeMake(offsets[column], cells[column].0.length - offsets[column]), nil,
+                            CGSize(width: cellWidth, height: .greatestFiniteMagnitude), nil)
+                        return max(minimumHeight, ceil(size.height) + padding * 2 + 1)
+                    }.max() ?? minimumHeight
+                    drawFragment(cells, locations: &offsets,
+                                 height: min(remainingHeight, max(minimumHeight, y - content.minY)), isHeader: rowIndex == 0)
+                }
+            }
+            y -= 8
+        }
+
+        func placeBlocks(_ blocks: [Block], inset: CGFloat = 0) {
+            for block in blocks {
+                switch block {
+                case .table(let table):
+                    flushText()
+                    placeTable(table, inset: inset)
+                case .quote(let children):
+                    flushText()
+                    placeBlocks(children, inset: min(inset + 14, content.width / 2))
+                default:
+                    if inset == 0 {
+                        append(block, to: pending, typography: typography, configuration: configuration)
+                    } else {
+                        let value = NSMutableAttributedString()
+                        let quoteTypography = Typography(bodySize: configuration.bodyFontSize, contentWidth: max(1, content.width - inset))
+                        append(block, to: value, typography: quoteTypography, configuration: configuration)
+                        placeText(value, inset: inset)
+                    }
+                }
+            }
+        }
+
+        if let title = configuration.title?.trimmingCharacters(in: .whitespacesAndNewlines), !title.isEmpty {
+            pending.append(NSAttributedString(string: title + "\n", attributes: typography.attributes(
+                font: typography.titleFont, color: typography.ink, paragraph: typography.titleParagraph)))
+        }
+        placeBlocks(blocks(from: markdown))
+        flushText()
+        return pages
     }
 
     private static func drawPageNumber(
@@ -623,30 +619,6 @@ enum MarkdownPDFRenderer {
         let rect = CGRect(x: configuration.marginLeading, y: 28, width: configuration.contentWidth, height: 16)
         let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), CGPath(rect: rect, transform: nil), nil)
         CTFrameDraw(frame, context)
-    }
-
-    // MARK: - 文本清洗与拼接
-
-    /// 清掉导出时只会干扰阅读的残留：BOM、`<br>` 系列标签、首尾空白
-    private static func stripNoise(_ line: String) -> String {
-        var result = line.replacingOccurrences(of: "\u{feff}", with: "")
-        for tag in ["<br/>", "<br />", "<br>", "</br>"] {
-            result = result.replacingOccurrences(of: tag, with: " ", options: [.caseInsensitive, .literal])
-        }
-        return result.trimmingCharacters(in: .whitespaces)
-    }
-
-    /// 代码行只去 BOM 与行尾空白：缩进属于内容，不能像正文那样压掉
-    private static func stripCodeLine(_ line: String) -> String {
-        line.replacingOccurrences(of: "\u{feff}", with: "")
-            .replacingOccurrences(of: "[ \t]+$", with: "", options: .regularExpression)
-    }
-
-    /// 段落内换行合并：中英混排只在需要空格处补空格，避免中文被排成「的 确」
-    private static func softJoin(_ left: String, _ right: String) -> String {
-        guard let last = left.last, let first = right.first else { return right }
-        let needsSpace = !(last.isCJKLike || first.isCJKLike)
-        return left + (needsSpace ? " " : "") + right
     }
 
     // MARK: - 字体 / 颜色 / 段落样式
@@ -879,17 +851,5 @@ enum MarkdownPDFRenderer {
     private static var isRightToLeft: Bool {
         let code = Locale.current.language.languageCode?.identifier ?? ""
         return ["ar", "he", "fa", "ur", "yi"].contains(code)
-    }
-}
-
-private extension Character {
-    /// 中日韩与全角标点：这类字符之间补空格会明显破坏排版
-    var isCJKLike: Bool {
-        unicodeScalars.contains { scalar in
-            (0x2E80...0x9FFF).contains(scalar.value)
-                || (0xAC00...0xD7AF).contains(scalar.value)
-                || (0x3040...0x30FF).contains(scalar.value)
-                || (0xFF00...0xFFEF).contains(scalar.value)
-        }
     }
 }

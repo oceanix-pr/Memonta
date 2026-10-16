@@ -169,6 +169,9 @@ enum EffectiveSettingsResolver {
             source: standardMode == .onlineMeeting ? .mixed : .microphone,
             autoMuteDetection: true,
             appMuteDetection: false,
+            // 标准模式不暴露静音策略：用户在此看不到开关，沿用专业模式留下的
+            // 「开始时静音」会变成「以为在录其实没声」，一律按不静音开始
+            startMuted: false,
             fileFormat: saved.fileFormat
         )
     }

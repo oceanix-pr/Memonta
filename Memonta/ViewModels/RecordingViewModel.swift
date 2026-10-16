@@ -205,10 +205,12 @@ final class RecordingViewModel {
         qos: .utility
     )
 
-    /// 录音中实时告警（磁盘不足/系统音频中断/唤醒恢复等）：底部胶囊展示 + 30s 去抖弹窗
+    /// 当前采集问题常驻横幅；恢复与保存结果使用非模态一次性反馈。
     var liveRecordingWarning: String?
-    /// 上次实时告警弹窗时间（去抖：同类弹窗 30s 内不重复打断）
-    private var lastLiveWarningShownAt: Date?
+    var recordingFailureFolder: URL?
+    var recordingFeedback: RecordingFeedback?
+    var captureReportRequestedFolder: String?
+    private var lastRecoveredFeedback: String?
 
     private var transcriptionTask: Task<Void, Never>?
     /// 正在转写的目标。取消时要**立刻**回写条目状态并出队：
@@ -2145,7 +2147,9 @@ final class RecordingViewModel {
     }
 
     /// 开始录屏（录音管线 + 视频轨）。区域/窗口目标由调用方（RootView 选取层）解析完成后传入；
-    /// 声源（仅麦克风/仅系统音频/混合）与质量档位由调用方从录屏独立偏好读入
+    /// 声源（仅麦克风/仅系统音频/混合）与质量档位由调用方从录屏独立偏好读入。
+    /// 「录音开始时静音麦克风」偏好与录音共用一份（截图会话工具栏的麦克风菜单也可改），
+    /// 这里在启动瞬间读取，保证开场即按用户预期静音
     #if os(macOS)
     func startScreenRecording(
         target: ScreenRecordingTarget,
@@ -2155,7 +2159,10 @@ final class RecordingViewModel {
     ) {
         guard !rejectWriteIfReadOnly(.createEntry) else { return }
         startScreenRecordingCore(
-            config: RecordingConfig(source: source),
+            config: RecordingConfig(
+                source: source,
+                startMuted: MicrophoneStartMutePreference.isEnabled()
+            ),
             context: context,
             target: target,
             quality: quality
@@ -2231,17 +2238,29 @@ final class RecordingViewModel {
     #endif
 
     /// 录音过程中的重要告警实时上抛（磁盘不足/系统音频中断/唤醒恢复等），
-    /// 不再静默积压到停止时才可见；弹窗 30s 去抖避免打断
+    /// 当前问题用常驻横幅，恢复用短暂反馈；保存失败才进入错误对话框。
     private func attachMeetingRecorderHooks(config: RecordingConfig, context: ModelContext) {
         meetingRecorder.onRecordingWarning = { [weak self] message in
             guard let self else { return }
             liveRecordingWarning = message
-            if let last = lastLiveWarningShownAt, Date().timeIntervalSince(last) < 30 { return }
-            lastLiveWarningShownAt = Date()
-            showErrorMessage(message)
+            // 实时采集问题不阻塞用户操作；实际无法保存由停录结果明确报错。
+        }
+        meetingRecorder.onRecordingStatus = { [weak self] message in
+            guard let self else { return }
+            if meetingRecorder.hasOngoingCaptureIssue {
+                liveRecordingWarning = message
+            } else {
+                liveRecordingWarning = nil
+                let feedback = message ?? String(localized: "音频采集已恢复。")
+                guard lastRecoveredFeedback != feedback else { return }
+                lastRecoveredFeedback = feedback
+                recordingFeedback = RecordingFeedback(
+                    message: feedback, isWarning: meetingRecorder.recordingCaptureReport.hasWarning
+                )
+            }
         }
         liveRecordingWarning = nil
-        lastLiveWarningShownAt = nil
+        lastRecoveredFeedback = nil
         // 磁盘临界止损：走 ViewModel 的正常停止流程（合并分片 + 入库 + 提示）。
         // 不能让服务自己 stop：那样只有磁盘文件、没有数据库条目，
         // 用户会当作“录音丢了”（只能等下次扫描补录）
@@ -2266,7 +2285,7 @@ final class RecordingViewModel {
         screenVideoRecorder.onInterrupted = { [weak self] message in
             // 视频轨已中断、音频继续：本次会话不再是录屏，菜单栏回退为「录音中」
             self?.meetingRecorder.isScreenRecording = false
-            self?.showErrorMessage(message)
+            self?.liveRecordingWarning = message
         }
     }
     #endif
@@ -2280,6 +2299,11 @@ final class RecordingViewModel {
         // 避免第二次调用的 defer 提前清空第一路仍在使用的实时告警/止损回调
         guard !isStoppingRecording else { return }
         isStoppingRecording = true
+        recordingFeedback = nil
+        var processingIssues: [RecordingCaptureReport.Issue] = []
+        // 停录后的异常统一进入最终摘要；合并错误不能同时走实时弹窗再重复提示。
+        meetingRecorder.onRecordingWarning = nil
+        meetingRecorder.onRecordingStatus = nil
         // F-3: 录音合并进行中标志，便于 UI 反馈合并进度
         isMergingAudio = true
         defer {
@@ -2287,6 +2311,7 @@ final class RecordingViewModel {
             isMergingAudio = false
             // 合并已结束（无论成败）：解除实时告警接管并清理横幅
             meetingRecorder.onRecordingWarning = nil
+            meetingRecorder.onRecordingStatus = nil
             meetingRecorder.onRequestStopForDiskPressure = nil
             liveRecordingWarning = nil
             activeRecordingSource = nil
@@ -2341,38 +2366,48 @@ final class RecordingViewModel {
                     do {
                         _ = try await AudioConverter.embedAudio(into: finalized, from: mergedAudioURL)
                     } catch {
-                        showErrorMessage(String(format: String(localized: "mp4 音轨混流失败（%@），回放可能无声或仅系统声，转写不受影响。"), UserFacingError.summary(for: error)))
+                        processingIssues.append(.videoDegraded)
+                        FileSyncService.logWarning("停录后视频混流失败：\(UserFacingError.technicalDetail(for: error))")
                     }
                 }
             } else {
-                showErrorMessage(String(localized: "视频轨保存异常，音频录音不受影响；条目以纯音频入库。"))
+                processingIssues.append(.videoDegraded)
             }
         }
         #endif
 
-        guard let url = mergedAudioURL else {
-            showErrorMessage(String(localized: "录音停止失败：未找到录音文件"))
-            return
-        }
-
-        // 录音过程中可能出现合并降级、系统音频停止等异常，提示用户
-        if let err = meetingRecorder.lastError {
-            showErrorMessage(err)
-            meetingRecorder.lastError = nil
-        }
-
+        var report = meetingRecorder.recordingCaptureReport
+        report.issues.append(contentsOf: processingIssues)
         #if os(macOS)
-        // 视频轨自身记录的异常（封装超时/追加失败/收尾异常）此前无人读取：
-        // `ScreenVideoRecorder.lastError` 只在服务内部写，UI 只显示 `meetingRecorder.lastError`，
-        // 于是"录屏视频轨封装异常，音频不受影响"这类重要提示永远不会出现。这里补齐消费端。
-        if let videoError = screenVideoRecorder.lastError {
-            showErrorMessage(videoError)
+        if screenVideoRecorder.lastError != nil {
+            if !report.issues.contains(.videoDegraded) { report.issues.append(.videoDegraded) }
             screenVideoRecorder.lastError = nil
         }
         #endif
+        guard let url = mergedAudioURL else {
+            // 不能让历史「已恢复」提醒掩盖本次没有可播放产物的真正失败。
+            if let folder = captured?.finalURL.deletingLastPathComponent() {
+                do { try RecordingCaptureReportStore.save(report, in: folder) }
+                catch { PersistenceReporting.reportSaveFailure(error, scene: "停录失败时保存采集详情") }
+            }
+            let message = String(localized: "录音保存失败，未能生成可播放文件。已有分片已保留，请检查录音文件夹。")
+            showErrorMessage([message, meetingRecorder.lastError].compactMap { $0 }.joined(separator: "\n"),
+                             folder: captured?.finalURL.deletingLastPathComponent())
+            return
+        }
 
-        // 获取录音时长
-        let duration = (try? await AudioConverter.getDuration(of: url)) ?? 0
+        let duration: TimeInterval
+        do {
+            duration = try await AudioConverter.getDuration(of: url)
+            guard duration.isFinite, duration > 0 else { throw CocoaError(.fileReadCorruptFile) }
+        } catch {
+            FileSyncService.logWarning("停录后音频时长校验失败：\(UserFacingError.technicalDetail(for: error))")
+            do { try RecordingCaptureReportStore.save(report, in: url.deletingLastPathComponent()) }
+            catch { PersistenceReporting.reportSaveFailure(error, scene: "时长校验失败时保存采集详情") }
+            showErrorMessage(String(localized: "录音文件无法确认有效时长，文件已保留，请检查后重试。"),
+                             folder: url.deletingLastPathComponent())
+            return
+        }
 
         let storedFileName = url.lastPathComponent
         // 从 URL 提取文件夹名（父目录名）
@@ -2395,18 +2430,41 @@ final class RecordingViewModel {
             videoFileName: screenVideoFileName
         )
 
-        context.insert(recording)
-        // B-2: context.save() 失败时给出友好提示，避免静默丢失数据。
-        // 长录音停止合并后 AVFoundation 异步回收文件句柄，可能短暂耗尽描述符限制
-        // 导致 SQLite 无法打开库文件，故带短退避重试（间隔内句柄通常已回收）
-        do {
-            try await saveContextWithRetry(context)
-        } catch {
-            showErrorMessage(String(localized: "录音记录保存到数据库失败：\(UserFacingError.summary(for: error))\n录音文件已保存在磁盘上，请重启应用后检查是否自动恢复。"))
+        await finishRecordingSave(recording: recording, report: report, context: context)
+        meetingRecorder.lastError = nil
+    }
+
+    /// 文件系统先落盘，数据库随后更新；任何关键保存失败都不发布「已保存」反馈。
+    func finishRecordingSave(
+        recording: AudioRecording, report: RecordingCaptureReport, context: ModelContext
+    ) async {
+        recordingFeedback = nil
+        guard !rejectWriteIfReadOnly(.createEntry) else { return }
+        guard FileManager.default.fileExists(atPath: recording.fileURL.path) else {
+            showErrorMessage(String(localized: "录音停止失败：未找到录音文件"), folder: recording.folderURL)
+            return
         }
-        // 将标题保存到文件夹
-        recording.saveMetaToFolder()
+        var reportSaved = true
+        do { try RecordingCaptureReportStore.save(report, in: recording.folderURL) }
+        catch {
+            reportSaved = false
+            PersistenceReporting.reportSaveFailure(error, scene: "保存录音采集详情")
+        }
+        let metadataSaved = recording.saveMetaToFolder()
+        context.insert(recording)
+        var databaseSaved = true
+        do { try await saveContextWithRetry(context) }
+        catch {
+            databaseSaved = false
+            showErrorMessage(String(localized: "录音记录保存到数据库失败：\(UserFacingError.summary(for: error))\n录音文件已保存在磁盘上，请重启应用后检查是否自动恢复。"), folder: recording.folderURL)
+        }
         selectedRecording = recording
+        guard reportSaved, metadataSaved, databaseSaved else { return }
+        let saved = String(localized: "录音已保存。")
+        recordingFeedback = RecordingFeedback(
+            message: [saved, report.summary].compactMap { $0 }.joined(separator: "\n"),
+            isWarning: report.hasWarning, folderName: recording.folderName
+        )
     }
 
     /// 保存 SwiftData 上下文，失败时短退避重试（应对长录音合并后的瞬时句柄耗尽）；
@@ -2430,14 +2488,9 @@ final class RecordingViewModel {
         throw lastError ?? CocoaError(.fileWriteUnknown)
     }
 
-    /// 切换本地手动静音
+    /// 静音切换后的恢复结果由当前采集事件反馈，不能把旧磁盘告警误报成恢复失败。
     func toggleRecordingMute() {
         meetingRecorder.toggleLocalMute()
-        // 麦克风恢复失败时提示用户（录音中静音会导致后续录音残缺）
-        if let err = meetingRecorder.lastError {
-            showErrorMessage(String(format: String(localized: "麦克风恢复失败，当前仍处于静音状态。\n%@\n请尝试手动点击解除静音，或停止后重新开始录音。"), err))
-            meetingRecorder.lastError = nil
-        }
     }
 
     // MARK: - 文件持久化（转写记录、总结保存到文件夹）
@@ -2838,13 +2891,15 @@ final class RecordingViewModel {
         }
     }
 
-    private func showErrorMessage(_ message: LocalizedStringResource) {
+    private func showErrorMessage(_ message: LocalizedStringResource, folder: URL? = nil) {
+        recordingFailureFolder = folder
         errorMessage = String(localized: message)
         showError = true
     }
 
     /// 纯文本版本：已本地化或不可本地化的动态字符串
-    private func showErrorMessage(_ message: String) {
+    private func showErrorMessage(_ message: String, folder: URL? = nil) {
+        recordingFailureFolder = folder
         errorMessage = message
         showError = true
     }

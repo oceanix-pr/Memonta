@@ -1,5 +1,6 @@
 import Testing
 import Foundation
+import AVFoundation
 @testable import Memonta
 
 /// Memonta 基础单元测试
@@ -25,6 +26,24 @@ struct MemontaTests {
     @Test func testFormattedDurationForceHours() {
         let duration: TimeInterval = 65 // 1 minute 5 seconds
         #expect(duration.formattedAsDuration(forceHours: true) == "0:01:05")
+    }
+
+    @Test func testFormattedDurationFractionDigits() {
+        // 转写时间戳使用 0.1 秒精度；同时验证毫秒（3 位）也成立
+        let duration: TimeInterval = 5.1234
+        #expect(duration.formattedAsDuration(fractionDigits: 1) == "0:05.1")
+        #expect(duration.formattedAsDuration(fractionDigits: 3) == "0:05.123")
+    }
+
+    @Test func testFormattedDurationFractionRoundsUpAcrossSecond() {
+        // 四舍五入到 0.1 秒应进位到整秒，而不是显示 59.9
+        let duration: TimeInterval = 59.97
+        #expect(duration.formattedAsDuration(fractionDigits: 1) == "1:00.0")
+    }
+
+    @Test func testFormattedDurationFractionWithHours() {
+        let duration: TimeInterval = 3661.46
+        #expect(duration.formattedAsDuration(fractionDigits: 1) == "1:01:01.5")
     }
 
     // MARK: - TranscriptionStatus 测试
@@ -948,6 +967,72 @@ struct MemontaTests {
         for mode in STTMode.allCases {
             #expect(!mode.displayName.isEmpty)
         }
+    }
+}
+
+/// 设备切换后的麦克风分片格式回归：不依赖真实会议软件或输入设备。
+struct MicCaptureFormatTests {
+    private func writeSilentSegment(to url: URL, format: AVAudioFormat) throws {
+        let settings = try #require(MicCaptureService.fileSettings(for: format))
+        let file = try AVAudioFile(forWriting: url, settings: settings,
+                                   commonFormat: format.commonFormat, interleaved: format.isInterleaved)
+        let frames = AVAudioFrameCount(format.sampleRate / 10)
+        let buffer = try #require(AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frames))
+        buffer.frameLength = frames
+        if let channels = buffer.floatChannelData {
+            for channel in 0..<Int(format.channelCount) {
+                channels[channel].update(repeating: 0, count: Int(frames))
+            }
+        }
+        try file.write(from: buffer)
+    }
+
+    @Test func inputFormatChangeNeedsNewSegment() throws {
+        let mono = try #require(AVAudioFormat(standardFormatWithSampleRate: 48_000, channels: 1))
+        let stereo = try #require(AVAudioFormat(standardFormatWithSampleRate: 44_100, channels: 2))
+        let same = try #require(AVAudioFormat(standardFormatWithSampleRate: 48_000, channels: 1))
+
+        #expect(!MicCaptureService.requiresNewSegment(from: mono, to: same))
+        #expect(MicCaptureService.requiresNewSegment(from: mono, to: stereo))
+        #expect(MicCaptureService.requiresNewSegment(from: stereo, to: mono))
+    }
+
+    @Test func stereoInputCanBeWrittenToItsOwnSegment() throws {
+        let input = try #require(AVAudioFormat(standardFormatWithSampleRate: 44_100, channels: 2))
+        let settings = try #require(MicCaptureService.fileSettings(for: input))
+        #expect(settings[AVNumberOfChannelsKey] as? Int == 2)
+
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("MemontaMicFormat-\(UUID().uuidString).caf")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let file = try AVAudioFile(forWriting: url, settings: settings,
+                                   commonFormat: input.commonFormat, interleaved: input.isInterleaved)
+        let buffer = try #require(AVAudioPCMBuffer(pcmFormat: input, frameCapacity: 128))
+        buffer.frameLength = 128
+        try file.write(from: buffer)
+        #expect(file.length == 128)
+    }
+
+    @Test func changedInputFormatsMergeIntoOneRecording() async throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("MemontaMicMerge-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        let mono = try #require(AVAudioFormat(standardFormatWithSampleRate: 48_000, channels: 1))
+        let stereo = try #require(AVAudioFormat(standardFormatWithSampleRate: 44_100, channels: 2))
+        let first = directory.appendingPathComponent("sample_mic_tmp_0001.caf")
+        let second = directory.appendingPathComponent("sample_mic_tmp_0002.caf")
+        let output = directory.appendingPathComponent("sample.m4a")
+        try writeSilentSegment(to: first, format: mono)
+        try writeSilentSegment(to: second, format: stereo)
+
+        let captured = CapturedSegments(micURLs: [first, second], sysURLs: [],
+                                        finalURL: output, micFormatChanged: true)
+        let merged = await MeetingRecorderService.shared.mergeCapturedSegments(captured)
+        #expect(merged == output)
+        let file = try AVAudioFile(forReading: output)
+        #expect(Double(file.length) / file.fileFormat.sampleRate > 0.15)
     }
 }
 

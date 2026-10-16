@@ -1,6 +1,7 @@
 import SwiftUI
 import AVKit
 import SwiftData
+import os.log
 #if os(macOS)
 import AppKit
 #endif
@@ -116,6 +117,9 @@ struct RecordingDetailView: View {
     /// 一键处理（转写 → 画面分析 → 总结 → 拆解待办），由宿主投递到处理队列
     var onOneClick: (() -> Void)? = nil
 
+    @State private var captureReport: RecordingCaptureReport?
+    @State private var captureReportReadFailed = false
+    @State private var captureReportExpanded = false
     @State private var selectedTab: DetailTab = .transcript
     @State private var selectedLLMConfig: LLMConfig?
     @State private var playerState: AudioPlayerState?
@@ -194,6 +198,7 @@ struct RecordingDetailView: View {
     var body: some View {
         VStack(spacing: 0) {
             headerBar
+            captureReportSection
             Divider()
 
             tabPicker
@@ -223,6 +228,9 @@ struct RecordingDetailView: View {
         .task(id: recording.id) {
             prepareForRecordingSwitch()
         }
+        .onChange(of: viewModel.captureReportRequestedFolder) { _, folder in
+            if folder == recording.folderName { captureReportExpanded = true }
+        }
         .onChange(of: experience) { _, _ in
             normalizeSelectedTab()
         }
@@ -242,12 +250,72 @@ struct RecordingDetailView: View {
         }
     }
 
+    /// 关闭短暂横幅后仍可查看，内容随录音目录保存，不参与标题元数据重写。
+    @ViewBuilder
+    private var captureReportSection: some View {
+        if let report = captureReport, !report.isEmpty {
+            DisclosureGroup(isExpanded: $captureReportExpanded) {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 8) {
+                        ForEach(report.interruptions) { interruption in
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(interruption.message)
+                                HStack(spacing: 4) {
+                                    Text(interruption.observedStart, style: .time)
+                                    if let end = interruption.observedEnd {
+                                        Text(verbatim: "–")
+                                        Text(end, style: .time)
+                                    }
+                                }
+                                .foregroundStyle(.secondary)
+                                if let last = interruption.lastSuccessfulWriteAt {
+                                    HStack {
+                                        Text("最近成功写入")
+                                        Text(last, style: .time)
+                                    }
+                                    .foregroundStyle(.secondary)
+                                }
+                            }
+                        }
+                        ForEach(Array(report.issues.enumerated()), id: \.offset) { _, issue in
+                            Text(issue.message)
+                        }
+                        Text("以下时间是观察到的采集中断区间，不代表精确的声音缺失时长。")
+                            .foregroundStyle(.secondary)
+                    }
+                    .font(.caption)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 6)
+                }
+                .frame(maxHeight: 180)
+            } label: {
+                Label("录音采集详情", systemImage: report.hasWarning ? "exclamationmark.triangle" : "info.circle")
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 8)
+        } else if captureReportReadFailed {
+            Label("录音采集详情读取失败，请检查存储位置。", systemImage: "exclamationmark.triangle")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .padding(8)
+        }
+    }
+
     // MARK: - 生命周期动作
 
     /// 切换录音：替换播放器、补默认模型、校正页签。
     /// 提到方法里是为了让 `body` 的修饰器链只保留一行调用——
     /// 这些闭包原先与 VStack 同属一个巨型表达式，是类型检查超时的一部分
     private func prepareForRecordingSwitch() {
+        captureReport = nil
+        captureReportReadFailed = false
+        captureReportExpanded = viewModel.captureReportRequestedFolder == recording.folderName
+        do { captureReport = try RecordingCaptureReportStore.load(in: recording.folderURL) }
+        catch {
+            captureReportReadFailed = true
+            Logger(subsystem: "com.oceanix.Memonta", category: "CaptureReport")
+                .error("读取采集详情失败：\(error.localizedDescription, privacy: .private)")
+        }
         // 切换录音时直接替换播放器，避免播放栏闪烁
         playerState?.invalidate()
         let url = recording.fileURL

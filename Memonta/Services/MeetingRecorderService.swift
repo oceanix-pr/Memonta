@@ -4,6 +4,7 @@ import os.log
 #if os(macOS)
 import CoreAudio
 import AppKit
+import ScreenCaptureKit
 #else
 /* iOS 专属分支（工程已改为仅 macOS，注释保留以备不时之需）
 import UIKit
@@ -42,7 +43,9 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// 采集停止即复位
     var isScreenRecording = false
     /// 麦克风是否被静音（系统 mute 或本地手动静音）
-    var isMicMuted = false
+    var isMicMuted = false {
+        didSet { captureHealth.microphoneMuteChanged(isMicMuted) }
+    }
     /// 静音来源
     var muteSource: MuteSource = .none
     /// 录音时长（秒）
@@ -58,6 +61,42 @@ final class MeetingRecorderService: @unchecked Sendable {
     }
     /// 实时告警出口：ViewModel 开始录音时接管、停止时解除
     var onRecordingWarning: (@MainActor (String) -> Void)?
+    /// 状态更新只刷新横幅；恢复信息不作为失败再次弹窗。
+    var onRecordingStatus: (@MainActor (String?) -> Void)?
+    private var captureHealth = RecordingCaptureHealth()
+    private var activeCaptureSession: UUID?
+    private var isStoppingCapture = false
+    private var wakeRecoverySession: UUID?
+    /// 当前是否有「麦克风恢复失败」挂起的告警：恢复成功后据此结算，避免停录时重复提示
+    private var micRecoveryError: String?
+
+    /// 设备切换/恢复期间的状态横幅文案。
+    /// 可恢复中断只更新横幅，不能被包装成「麦克风录音写入失败……建议停止后重新录制」
+    private static let microphoneRecoveringBanner = String(
+        localized: "麦克风正在切换，尝试恢复采集；期间麦克风声音可能缺失。"
+    )
+
+    /// 停录后保存结构化采集详情；历史影响不再决定是否弹错误窗。
+    var recordingCaptureReport: RecordingCaptureReport {
+        var report = captureHealth.report
+        if captureHadWarningBeforeMerge || (lastError != nil && !mergeHadDegradation) {
+            report.issues.append(.captureWarning)
+        }
+        if mergeHadDegradation { report.issues.append(.audioDegraded) }
+        return report
+    }
+
+    var recordingWarningSummary: String? {
+        let messages = [lastError, micRecoveryError, captureHealth.summary].compactMap { $0 }
+        return messages.isEmpty ? nil : messages.joined(separator: "\n")
+    }
+
+    /// 只用于当前常驻横幅；历史中断随恢复结算，保留在 report 中。
+    var hasOngoingCaptureIssue: Bool {
+        lastError != nil || micRecoveryError != nil
+            || captureHealth.microphone == .recovering || captureHealth.microphone == .unavailable
+            || captureHealth.systemAudio == .recovering || captureHealth.systemAudio == .interrupted
+    }
     /// 磁盘临界止损请求：空间已不足以安全写完下一个分片时由 ViewModel 走**正常停止流程**
     /// （合并分片 + 入库 + 提示）。不能只靠警告让用户手动停：写满磁盘会同时弄坏
     /// 当前分片与 SwiftData 数据库，代价是整段录音丢失
@@ -65,6 +104,8 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// 停止录音后的合并是否进行中：应用退出流程据此等待合并收尾，
     /// 避免 Cmd+Q 杀死导出留下半成品 m4a 与 .merging 标记
     private(set) var isMerging = false
+    private var mergeHadDegradation = false
+    private var captureHadWarningBeforeMerge = false
     /// 本次合并的预计完成时刻（由导出看门狗上限推得）：退出等待与看门狗**同源**，
     /// 避免旧版写死 300s（而导出可跑至 3600s）造成“等待到期→强退→事故复现”
     private(set) var mergeProjectedFinishAt: Date?
@@ -134,6 +175,8 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// 已写入的分片 URL 列表（按序号递增，停止时拼接）
     private var micSegmentURLs: [URL] = []
     private var sysSegmentURLs: [URL] = []
+    /// 设备格式变化会额外切麦克风分片，两轨片边界此后不再逐片对齐。
+    private var micFormatChanged = false
     /// 防止两次轮转重叠执行
     private var isRotating = false
     /// 分片会话标识：每次开始录音或重置分片状态时递增。
@@ -159,36 +202,136 @@ final class MeetingRecorderService: @unchecked Sendable {
     private var sleepObservers: [NSObjectProtocol] = []
     /// 睡眠开始时间（唤醒后计算睡眠时长提示用户）
     private var sleepStartDate: Date?
-    /// 睡前两条声轨是否活跃（睡后 SCStream 错误回调会抹掉采集状态，需提前记录）
+    /// 本次睡眠后需恢复的声轨；系统轨按资源判断，兼容断流先于睡眠通知。
     private var micActiveBeforeSleep = false
     private var sysActiveBeforeSleep = false
     #endif
 
     init() {
-        #if os(macOS)
-        // 接收系统音频流异常停止事件，提示用户系统音频可能丢失
-        systemCapture.onStreamError = { [weak self] error in
-            Task { @MainActor in
-                self?.lastError = String(format: String(localized: "系统音频采集异常停止，录音将继续但仅包含麦克风音轨。\n%@"), UserFacingError.summary(for: error))
-            }
+        micCapture.nextSegmentForFormatChange = { [weak self] in
+            guard let self, let folderDir = self.segmentFolderDir,
+                  let baseName = self.segmentBaseName else { return nil }
+            self.segmentIndex += 1
+            return Self.micSegmentURL(folderDir: folderDir, baseName: baseName, index: self.segmentIndex)
         }
-        // writer 背压丢样本：系统音轨会出现缺口，走录音中实时告警通道（旧实现只写日志）
-        systemCapture.onSamplesDropped = { [weak self] dropped in
+        micCapture.onFormatChangeSegmentOpened = { [weak self] url in
+            guard let self else { return }
+            self.micSegmentURLs.append(url)
+            self.micFormatChanged = true
+        }
+    }
+
+    /// 每次录音绑定会话快照；回调跨线程排队后必须复查会话和流代次。
+    private func attachCaptureCallbacks(session: UUID) {
+        #if os(macOS)
+        systemCapture.onEvent = { [weak self] event in
             Task { @MainActor in
-                let message = String(
-                    format: String(localized: "系统音频写入跟不上采集速度，已丢弃 %lld 个音频样本，系统音轨可能有缺口。"),
-                    dropped
-                )
-                self?.onRecordingWarning?(message)
+                guard let self, self.activeCaptureSession == session,
+                      self.isRecording, !self.isStoppingCapture,
+                      self.systemCapture.isCurrentEvent(event) else { return }
+                switch event.kind {
+                case .interrupted(let error):
+                    self.captureHealth.handle(.interrupted(), sessionID: session)
+                    // 睡眠期间仅记录事实，唤醒后根据实际恢复结果更新横幅。
+                    guard self.sleepStartDate == nil else { return }
+                    let nsError = error as NSError
+                    let message: String
+                    if nsError.domain == SCStreamErrorDomain,
+                       nsError.code == SCStreamError.Code.userStopped.rawValue {
+                        message = String(localized: "系统音频共享已被停止，后续系统声音将无法录入。")
+                    } else {
+                        message = String(localized: "系统音频采集已中断，中断期间的系统声音无法录入。")
+                    }
+                    if nsError.domain == SCStreamErrorDomain,
+                       nsError.code == SCStreamError.Code.systemStoppedStream.rawValue {
+                        self.onRecordingStatus?(self.lastError ?? message)
+                    } else {
+                        self.onRecordingWarning?(message)
+                    }
+                case .writerFailed:
+                    self.captureHealth.handle(.interrupted(writerFailure: true), sessionID: session)
+                    self.onRecordingWarning?(String(localized: "系统音频写入失败，当前分片可能不完整。请停止录音并检查磁盘。"))
+                case .samplesDropped(let dropped):
+                    self.captureHealth.handle(.samplesDropped, sessionID: session)
+                    self.onRecordingWarning?(String(
+                        format: String(localized: "系统音频写入跟不上采集速度，已丢弃 %lld 个音频样本，系统音轨可能有缺口。"), dropped
+                    ))
+                case .recovered:
+                    self.captureHealth.handle(.recovered, sessionID: session)
+                    self.onRecordingStatus?(self.lastError ?? self.captureHealth.summary)
+                }
             }
         }
         #endif
-        // C-1: 接收麦克风写入错误，提示用户录音可能不完整
-        micCapture.onWriteError = { [weak self] error in
+        micCapture.onEvent = { [weak self] event in
             Task { @MainActor in
-                self?.lastError = String(format: String(localized: "麦克风录音写入失败：%@\n录音数据可能不完整，建议停止后重新录制。"), UserFacingError.summary(for: error))
+                guard let self, self.activeCaptureSession == session,
+                      !self.isStoppingCapture,
+                      // 事件绑定采集会话代次：停止后迅速重录时，旧通知/旧重试的事件不得改写新会话
+                      self.micCapture.isCurrentGeneration(event.generation) else { return }
+                self.handleMicCaptureEvent(event, session: session)
             }
         }
+    }
+
+    /// 麦克风采集事件分流：
+    /// - 设备切换/恢复（deviceUnavailable / recoveryStarted / recovered）只更新状态横幅，
+    ///   不写 `lastError`——旧实现把设备丢失也走写入错误出口，用户看到的是
+    ///   「写入失败……建议停止后重新录制」，而实际只是设备正在切换。
+    /// - 恢复失败与真实写盘失败才作为错误提示，并留下缺口记录。
+    private func handleMicCaptureEvent(_ event: MicCaptureEvent, session: UUID) {
+        switch event {
+        case .deviceUnavailable(let diagnostics):
+            logMicDiagnostics(diagnostics)
+            captureHealth.handle(.microphoneUnavailable, sessionID: session,
+                                 lastSuccessfulWriteAt: diagnostics.lastSuccessfulWriteAt)
+            onRecordingStatus?(lastError ?? Self.microphoneRecoveringBanner)
+        case .recoveryStarted(_, _, _):
+            captureHealth.handle(.microphoneRecovering, sessionID: session)
+            onRecordingStatus?(lastError ?? Self.microphoneRecoveringBanner)
+        case .recovered:
+            captureHealth.handle(.microphoneRecovered, sessionID: session)
+            logger.info("麦克风采集已恢复（新代次首包写入确认）")
+            // 恢复成功即结算此前挂起的「恢复失败」告警，避免同一次故障在停录时再报一次
+            settleMicrophoneRecoveryError()
+            onRecordingStatus?(lastError ?? captureHealth.summary)
+        case .recoveryFailed(let diagnostics):
+            logMicDiagnostics(diagnostics)
+            captureHealth.handle(.microphoneRecoveryFailed, sessionID: session,
+                                 lastSuccessfulWriteAt: diagnostics.lastSuccessfulWriteAt)
+            let systemState = captureHealth.systemAudio == .active && !systemCapture.capturing
+                ? RecordingCaptureHealth.SystemAudioState.interrupted : captureHealth.systemAudio
+            let message = Self.microphoneRecoveryFailureMessage(systemAudio: systemState)
+            micRecoveryError = message
+            onRecordingWarning?(message)
+        case .writeFailed(let userSummary, let diagnostics):
+            logMicDiagnostics(diagnostics)
+            lastError = String(format: String(localized: "麦克风录音写入失败：%@\n录音数据可能不完整，建议停止后重新录制。"), userSummary)
+        }
+    }
+
+    /// 恢复成功即结算历史告警：清除由设备恢复失败挂起的错误，
+    /// 但 captureHealth 里记录的缺口事实不会被抹掉。
+    private func settleMicrophoneRecoveryError() {
+        micRecoveryError = nil
+    }
+
+    /// 分别说明麦克风与系统音频状态，不把单轨恢复失败说成整个录音失效。
+    static func microphoneRecoveryFailureMessage(systemAudio: RecordingCaptureHealth.SystemAudioState) -> String {
+        let microphone = String(localized: "麦克风采集未恢复，后续麦克风声音可能缺失。请检查设备；若仍未恢复，请停止录音后重新开始。")
+        let system: String?
+        switch systemAudio {
+        case .unused: system = nil
+        case .active: system = String(localized: "系统音频采集仍在运行。")
+        case .interrupted: system = String(localized: "系统音频当前未正常采集。")
+        case .recovering: system = String(localized: "系统音频尚未确认恢复。")
+        }
+        return [microphone, system].compactMap { $0 }.joined(separator: "\n")
+    }
+
+    /// 麦克风采集失败定位日志（阶段/代次/绑定结果/新旧格式/错误域与码，不含会议内容）
+    private func logMicDiagnostics(_ diagnostics: MicCaptureDiagnostics) {
+        logger.error("麦克风采集事件 stage=\(diagnostics.stage.rawValue, privacy: .public) 会话代次=\(diagnostics.generation) 尝试=\(diagnostics.attempt) 设备绑定=\(diagnostics.deviceBound.map { String($0) } ?? "-", privacy: .public) 采样率=\(diagnostics.oldSampleRate.map { String($0) } ?? "-", privacy: .public)→\(diagnostics.newSampleRate.map { String($0) } ?? "-", privacy: .public) 声道=\(diagnostics.oldChannelCount.map { String($0) } ?? "-", privacy: .public)→\(diagnostics.newChannelCount.map { String($0) } ?? "-", privacy: .public) 错误域=\(diagnostics.errorDomain ?? "-", privacy: .public) 错误码=\(diagnostics.errorCode.map { String($0) } ?? "-", privacy: .public)")
     }
 
     // MARK: - 录音控制
@@ -205,6 +348,17 @@ final class MeetingRecorderService: @unchecked Sendable {
 
         self.config = config
         lastError = nil
+        micRecoveryError = nil
+        mergeHadDegradation = false
+        captureHadWarningBeforeMerge = false
+        let captureSession = UUID()
+        activeCaptureSession = captureSession
+        captureHealth = RecordingCaptureHealth(
+            usesSystemAudio: config.source != .microphone,
+            usesMicrophone: config.source != .systemAudio,
+            sessionID: captureSession
+        )
+        attachCaptureCallbacks(session: captureSession)
         diskProbeFailures = 0
         diskProbeFailureReported = false
 
@@ -242,9 +396,16 @@ final class MeetingRecorderService: @unchecked Sendable {
         segmentSessionID += 1
         micSegmentURLs = [Self.micSegmentURL(folderDir: folderDir, baseName: baseName, index: 1)]
         sysSegmentURLs = []
+        micFormatChanged = false
         pendingMergeFinalURL = finalURL
 
         do {
+            // 静音状态复位：上一次会话可能停在静音（停止路径同样会复位），本次按配置重新决定。
+            // 必须在采集启动之前复位：MicCaptureService.start 会把写入缓冲恢复为非静音，
+            // 残留的 isMicMuted=true 会让界面显示「已静音」而实际正在录
+            isMicMuted = false
+            muteSource = .none
+
             // 根据配置启动对应的采集服务（均写入第 1 片分片）
             let firstMicURL = micSegmentURLs[0]
             switch config.source {
@@ -280,6 +441,17 @@ final class MeetingRecorderService: @unchecked Sendable {
                 sysSegmentURLs = [Self.sysSegmentURL(folderDir: folderDir, baseName: baseName, index: 1)]
                 try await startSystemCapture(url: sysSegmentURLs[0])
                 #endif
+            }
+
+            // 「录音开始时静音麦克风」：此时麦克风采集已启动（tap 已装、分片已开），
+            // 这里只把写入缓冲改成全零，分片时间轴保持连续（与手动静音同一实现，
+            // mixed 模式下与系统音轨对齐）；用户可在录音徽章菜单或菜单栏「麦克风」里随时解除。
+            // 仅系统音频来源没有麦克风轨，不需要也不应改写静音状态
+            if config.startMuted, config.source != .systemAudio {
+                micCapture.mute()
+                isMicMuted = true
+                muteSource = .local
+                logger.info("按偏好「录音开始时静音麦克风」以静音状态开始采集")
             }
 
             // 启动系统静音监听（仅 macOS）
@@ -341,7 +513,15 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// 用 `mergeCapturedSegments(_:)` 异步完成音频合并。
     /// - Returns: 本次采集的分片与最终文件路径；未在录音或无有效目标时返回 nil
     func stopCapturing() async -> CapturedSegments? {
-        guard isRecording else { return nil }
+        guard isRecording, !isStoppingCapture else { return nil }
+        isStoppingCapture = true
+        #if os(macOS)
+        if let session = activeCaptureSession, config.source != .microphone, !systemCapture.capturing {
+            captureHealth.handle(.interrupted(), sessionID: session)
+        }
+        #endif
+        activeCaptureSession = nil // 在第一个 await 前阻止迟到事件和唤醒任务写回。
+        defer { isStoppingCapture = false }
 
         timer?.invalidate()
         timer = nil
@@ -358,6 +538,7 @@ final class MeetingRecorderService: @unchecked Sendable {
         #endif
 
         await stopAllCaptures()
+        captureHealth.finish()
 
         isRecording = false
         isScreenRecording = false
@@ -368,20 +549,23 @@ final class MeetingRecorderService: @unchecked Sendable {
         // 取出分片列表与最终文件路径，重置状态
         let micURLs = micSegmentURLs
         let sysURLs = sysSegmentURLs
+        let formatChanged = micFormatChanged
         let finalURL = pendingMergeFinalURL
         resetSegmentState()
         pendingMergeFinalURL = nil
         startDate = nil
 
         guard let finalURL else { return nil }
-        return CapturedSegments(micURLs: micURLs, sysURLs: sysURLs, finalURL: finalURL)
+        return CapturedSegments(micURLs: micURLs, sysURLs: sysURLs, finalURL: finalURL,
+                                micFormatChanged: formatChanged)
     }
 
     /// 合并 `stopCapturing()` 冻结的分片为最终文件（耗时操作，可在停止采集后异步执行）
     /// - Returns: 录音文件 URL（失败返回 nil）
     func mergeCapturedSegments(_ captured: CapturedSegments) async -> URL? {
         let resultURL = await mergeSegments(
-            micURLs: captured.micURLs, sysURLs: captured.sysURLs, outputURL: captured.finalURL
+            micURLs: captured.micURLs, sysURLs: captured.sysURLs, outputURL: captured.finalURL,
+            skipEchoReduction: captured.micFormatChanged
         )
         logger.info("停止录音: \(resultURL?.lastPathComponent ?? "nil")")
         return resultURL
@@ -400,6 +584,7 @@ final class MeetingRecorderService: @unchecked Sendable {
         await ScreenVideoRecorder.finalizeActiveRecordersForTermination(timeout: 10)
         #endif
         guard isRecording else { return }
+        activeCaptureSession = nil
         logger.warning("应用退出，紧急收尾录音；已录分片将在下次启动时恢复拼接")
         timer?.invalidate()
         timer = nil
@@ -417,7 +602,7 @@ final class MeetingRecorderService: @unchecked Sendable {
         let stopped = await RacingWatchdog.race(
             name: "退出时系统音频收尾", timeout: 10
         ) { [systemCapture] in
-            await systemCapture.stop()
+            _ = await systemCapture.stop()
         }
         if !stopped {
             logger.warning("系统音频收尾超时，分片将在进程退出后由 worker 恢复")
@@ -441,6 +626,7 @@ final class MeetingRecorderService: @unchecked Sendable {
         lastRotationDate = nil
         micSegmentURLs = []
         sysSegmentURLs = []
+        micFormatChanged = false
         isRotating = false
         // 磁盘探测失败计数随会话结束复位（下次录音重新累计，避免跨会话误报）
         diskProbeFailures = 0
@@ -471,7 +657,7 @@ final class MeetingRecorderService: @unchecked Sendable {
 
         let micActive = micCapture.isCapturing
         #if os(macOS)
-        let sysActive = sysCaptureActive
+        let sysActive = systemCapture.capturing
         #else
         /* iOS 专属分支（工程已改为仅 macOS，注释保留以备不时之需）
         let sysActive = false
@@ -528,8 +714,12 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// 成功时清理全部分片（含未被消费的不可播放空壳，如无 data 块的零帧 CAF）；
     /// 失败时保留分片供手动处理
     /// - Returns: 最终文件 URL；失败返回 nil
-    private func mergeSegments(micURLs: [URL], sysURLs: [URL], outputURL: URL) async -> URL? {
+    private func mergeSegments(
+        micURLs: [URL], sysURLs: [URL], outputURL: URL, skipEchoReduction: Bool
+    ) async -> URL? {
         isMerging = true
+        mergeHadDegradation = false
+        captureHadWarningBeforeMerge = lastError != nil
         mergePhase = .inspectingSegments
         mergeProgressCompleted = 0
         mergeProgressTotal = 0
@@ -558,6 +748,7 @@ final class MeetingRecorderService: @unchecked Sendable {
 
         let skipped = (micURLs.count - micOK.count) + (sysURLs.count - sysOK.count)
         if skipped > 0 {
+            mergeHadDegradation = true
             logger.warning("跳过 \(skipped) 个不可播放分片（静音期空段或异常退出遗留的未 finalize 分片）")
         }
 
@@ -577,7 +768,7 @@ final class MeetingRecorderService: @unchecked Sendable {
         // 混音后会造成转写重复与说话人误判）。只对已确认可播放的成对分片处理，
         // 任一环节失败/超时/取消都回退为原始分片，不丢音频、不阻断合并入库。
         var createdCleanURLs: [URL] = []
-        if !micOK.isEmpty, !sysOK.isEmpty, EchoReductionPreference.isEnabled() {
+        if !skipEchoReduction, !micOK.isEmpty, !sysOK.isEmpty, EchoReductionPreference.isEnabled() {
             if let reduced = await runEchoReduction(
                 micOK: micOK, sysOK: sysOK, outputURL: outputURL, timeout: echoTimeout
             ) {
@@ -613,10 +804,14 @@ final class MeetingRecorderService: @unchecked Sendable {
                 return outputURL
             }
             // 混音导出失败：回退为仅拼接麦克风轨
+            mergeHadDegradation = true
             logger.error("双轨混音失败，回退为仅麦克风音轨")
             lastError = String(localized: "两条音轨合并失败，已保留麦克风音轨，系统音频可能丢失。")
-        } else if micOK.isEmpty {
+        } else if micOK.isEmpty, config.source != .systemAudio {
+            mergeHadDegradation = true
             lastError = String(localized: "麦克风声轨无可播放分片，已使用系统音频音轨。")
+        } else if sysOK.isEmpty, config.source == .mixed {
+            mergeHadDegradation = true
         }
 
         // 单轨路径：主轨（麦克风优先）分片顺序拼接
@@ -862,15 +1057,12 @@ final class MeetingRecorderService: @unchecked Sendable {
                 logger.info("当前静音由 \(self.muteSource.rawValue) 触发，无法手动解除")
                 return
             }
-            do {
-                try micCapture.unmute()
-                isMicMuted = false
-                if muteSource == .local { muteSource = .none }
-                logger.info("解除本地静音")
-            } catch {
-                lastError = UserFacingError.summary(for: error)
-                logger.error("解除本地静音失败: \(error.localizedDescription)")
-            }
+            // 恢复结果由 MicCaptureService 的采集事件上报（恢复失败会明确告警），
+            // 这里不再抛出/捕获：否则「正在恢复」会被当成一次即时错误重复提示
+            micCapture.unmute()
+            isMicMuted = false
+            if muteSource == .local { muteSource = .none }
+            logger.info("解除本地静音")
         } else {
             micCapture.mute()
             isMicMuted = true
@@ -914,14 +1106,10 @@ final class MeetingRecorderService: @unchecked Sendable {
         } else {
             // 系统解除静音：仅当非本地手动静音且非 app 静音时才恢复
             if muteSource != .local && muteSource != .app {
-                do {
-                    try micCapture.unmute()
-                    isMicMuted = false
-                    muteSource = .none
-                    logger.info("系统静音解除，恢复麦克风采集")
-                } catch {
-                    lastError = UserFacingError.summary(for: error)
-                }
+                micCapture.unmute()
+                isMicMuted = false
+                muteSource = .none
+                logger.info("系统静音解除，恢复麦克风采集")
             }
         }
     }
@@ -953,15 +1141,10 @@ final class MeetingRecorderService: @unchecked Sendable {
         } else {
             // 会议软件解除静音：仅当非本地手动静音且非系统静音时才恢复
             if muteSource != .local && muteSource != .system {
-                do {
-                    try micCapture.unmute()
-                    isMicMuted = false
-                    muteSource = .none
-                    logger.info("[App静音] ✅ 已恢复麦克风采集 (muteSource=.none)")
-                } catch {
-                    lastError = UserFacingError.summary(for: error)
-                    logger.error("[App静音] 恢复麦克风失败: \(error.localizedDescription)")
-                }
+                micCapture.unmute()
+                isMicMuted = false
+                muteSource = .none
+                logger.info("[App静音] ✅ 已恢复麦克风采集 (muteSource=.none)")
             } else {
                 logger.info("[App静音] 跳过恢复，当前 muteSource=\(self.muteSource.rawValue)（本地/系统静音优先）")
             }
@@ -972,7 +1155,15 @@ final class MeetingRecorderService: @unchecked Sendable {
     private func stopAllCaptures() async {
         micCapture.stop()
         #if os(macOS)
-        await systemCapture.stop()
+        let result = await systemCapture.stop()
+        if let session = captureHealth.sessionID {
+            if result.wasInterrupted || result.writerFailed {
+                captureHealth.handle(.interrupted(writerFailure: result.writerFailed), sessionID: session)
+            }
+            if result.droppedSamples > 0 {
+                captureHealth.handle(.samplesDropped, sessionID: session)
+            }
+        }
         #endif
     }
 
@@ -1019,11 +1210,6 @@ final class MeetingRecorderService: @unchecked Sendable {
         }
     }
 
-    /// 系统音频采集是否活跃
-    private var sysCaptureActive: Bool {
-        systemCapture.capturing
-    }
-
     // MARK: - 睡眠/唤醒处理（合盖场景）
     //
     // 合盖睡眠会停掉 AVAudioEngine、终止 SCStream；麦克风大概率随配置变化通知自愈，
@@ -1063,52 +1249,73 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// 系统即将睡眠：记录睡眠开始时间与睡前两轨状态
     /// （唤醒后 SCStream 的错误回调已把采集状态抹掉，不提前记录就无从判断该不该重连）
     private func handleSystemWillSleep() {
-        guard isRecording else { return }
+        guard isRecording, let session = activeCaptureSession, !isStoppingCapture else { return }
         sleepStartDate = Date()
-        micActiveBeforeSleep = micCapture.isCapturing
-        sysActiveBeforeSleep = sysCaptureActive
+        captureHealth.handle(.sleep, sessionID: session)
+        // 断流通知可能先于睡眠通知到达；按本次实际声源和残留资源决定恢复。
+        micActiveBeforeSleep = config.source != .systemAudio
+        sysActiveBeforeSleep = config.source != .microphone && systemCapture.canResumeAfterWake
         logger.info("系统即将睡眠（录音中）：mic=\(self.micActiveBeforeSleep) sys=\(self.sysActiveBeforeSleep)")
     }
 
     /// 系统唤醒：主动恢复两条采集链路，并向用户提示睡眠时段无录音数据
     private func handleSystemDidWake() async {
-        guard isRecording else { return }
-        let sleepMinutes = sleepStartDate.map { max(1, Int(Date().timeIntervalSince($0) / 60)) } ?? 0
+        guard isRecording, !isStoppingCapture,
+              let session = activeCaptureSession, wakeRecoverySession != session,
+              let sleepStart = sleepStartDate else { return }
+        wakeRecoverySession = session
+        defer { if wakeRecoverySession == session { wakeRecoverySession = nil } }
+        let restoreSystem = sysActiveBeforeSleep
+        let restoreMic = micActiveBeforeSleep
         logger.info("系统唤醒（录音中），开始恢复采集链路")
 
-        // 系统音频：重建 SCStream 继续写入当前分片（先恢复系统轨，才能计算麦克风间隙）
         var sysOK = true
-        if sysActiveBeforeSleep {
-            sysOK = await systemCapture.resumeAfterWake()
+        if restoreSystem {
+            captureHealth.handle(.beginRecovery, sessionID: session)
+            let originID = systemCapture.captureID
+            let result = LockedBox(false)
+            let capture = systemCapture
+            let finished = await RacingWatchdog.race(
+                name: "唤醒后系统音频恢复", timeout: 30,
+                onTimeout: { capture.cancelWakeRecovery(originID: originID) },
+                onCancel: { capture.cancelWakeRecovery(originID: originID) }
+            ) {
+                result.value = await capture.resumeAfterWake(expectedCaptureID: originID)
+            }
+            sysOK = finished && result.value
+            guard activeCaptureSession == session, !isStoppingCapture else { return }
+            if !sysOK { captureHealth.handle(.interrupted(), sessionID: session) }
         }
 
-        // 麦克风：先补齐睡眠间隙静音再重建采集。系统音轨 PTS 连续、麦克风轨顺序拼接，
-        // 不补齐则混音后两轨错位睡眠时长（时间轴对齐的关键补偿）
         var micOK = true
-        if micActiveBeforeSleep {
-            if sysActiveBeforeSleep, sysOK, let sleepStart = sleepStartDate {
+        if restoreMic {
+            if restoreSystem, sysOK {
                 let gap = Date().timeIntervalSince(sleepStart)
                 if gap > 1 {
                     let written = await micCapture.writeSilence(for: gap)
+                    guard activeCaptureSession == session, !isStoppingCapture else { return }
                     logger.info("睡眠间隙已补写麦克风静音 \(Int(written))s（间隙 \(Int(gap))s）")
                 }
             }
             micOK = micCapture.ensureCapturing()
         }
 
-        // 提示用户：睡眠时段为静音 + 各轨恢复结果
-        var message = String(format: String(localized: "系统睡眠约 %d 分钟，已自动恢复录音（睡眠时段为静音）。"), sleepMinutes)
-        if micActiveBeforeSleep && !micOK {
-            message += String(localized: "\n⚠️ 麦克风音轨恢复失败，请检查麦克风设备后重新录音。")
+        // 新流首包成功写入才标记 active；启动返回不等于已经录到声音。
+        onRecordingStatus?(lastError ?? captureHealth.summary)
+        if restoreSystem && !sysOK {
+            onRecordingWarning?(String(localized: "系统音频恢复失败，后续系统声音无法录入。请停止录音后重新开始。"))
         }
-        if sysActiveBeforeSleep && !sysOK {
-            message += String(localized: "\n⚠️ 系统音频重连失败，后续录音将仅包含麦克风音轨。")
+        if restoreMic && !micOK {
+            // 恢复结果由 MicCaptureService 的采集事件上报：立即失败先进入有限重试并只更新横幅，
+            // 重试耗尽（recoveryFailed）才作为错误告警，避免「正在恢复」被误报成恢复失败
+            logger.warning("唤醒后麦克风恢复未在首次尝试内完成，已进入有限重试")
         }
-        lastError = message
-
-        sleepStartDate = nil
-        micActiveBeforeSleep = false
-        sysActiveBeforeSleep = false
+        // 若本次恢复期间又发生睡眠，保留较新的睡眠记录供下一次唤醒使用。
+        if sleepStartDate == sleepStart {
+            sleepStartDate = nil
+            micActiveBeforeSleep = false
+            sysActiveBeforeSleep = false
+        }
     }
     #else
     /* iOS 专属分支（工程已改为仅 macOS，注释保留以备不时之需）
@@ -1151,7 +1358,6 @@ final class MeetingRecorderService: @unchecked Sendable {
                 let message = String(localized: "连续多次无法读取磁盘剩余空间，录音的磁盘保护（剩余 200MB 自动停止）可能未生效，请手动留意磁盘空间。")
                 logger.error("\(message, privacy: .public)")
                 lastError = message
-                onRecordingWarning?(message)
             }
             return
         }
@@ -1220,6 +1426,7 @@ struct CapturedSegments: Sendable {
     let micURLs: [URL]
     let sysURLs: [URL]
     let finalURL: URL
+    let micFormatChanged: Bool
 }
 
 // MARK: - 定时节拍器

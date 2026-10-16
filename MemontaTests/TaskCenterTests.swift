@@ -427,4 +427,35 @@ struct TaskCenterTests {
         ) == .unknown)
         #expect(TaskFailureClassifier.classify(primaryInputExists: true, availableDiskBytes: nil) == .unknown)
     }
+
+    // MARK: - 用户文案归类（UserFacingError）
+
+    /// 模拟 `MeetingRecorderError` / `SystemAudioError` / `VideoUnderstandingError` 这类
+    /// 应用自定义、自带本地化描述的 `LocalizedError`。
+    private struct StubLocalizedError: LocalizedError {
+        let errorDescription: String?
+    }
+
+    /// 既不在已知系统域、也没有本地化描述的普通错误。
+    private struct StubPlainError: Error {}
+
+    @Test("自定义 LocalizedError 直接采用其自身文案，而不是被兜底成泛化提示")
+    func customLocalizedErrorSurfacesOwnDescription() {
+        let detail = "原始视频已清理，且没有可复用的关键帧，无法分析画面。"
+        #expect(UserFacingError.summary(for: StubLocalizedError(errorDescription: detail)) == detail)
+        // 空白描述视为无效，仍回退到兜底文案
+        #expect(UserFacingError.summary(for: StubLocalizedError(errorDescription: "  "))
+                == TaskErrorCode.unknown.localizedSummary)
+    }
+
+    @Test("没有可用描述的未归类错误回退到兜底文案")
+    func unclassifiedErrorFallsBackToUnknownSummary() {
+        #expect(UserFacingError.summary(for: StubPlainError()) == TaskErrorCode.unknown.localizedSummary)
+    }
+
+    @Test("系统网络错误仍走网络分支，不被自定义描述分支截获")
+    func systemNetworkErrorKeepsDomainMapping() {
+        #expect(UserFacingError.summary(for: URLError(.cannotConnectToHost))
+                != TaskErrorCode.unknown.localizedSummary)
+    }
 }

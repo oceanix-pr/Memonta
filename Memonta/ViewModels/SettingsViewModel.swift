@@ -260,12 +260,15 @@ final class SettingsViewModel {
 
     // MARK: - Recording Config 转换
 
-    /// 从当前设置创建 RecordingConfig 实例
+    /// 从当前设置创建 RecordingConfig 实例。
+    /// 「录音开始时静音麦克风」不在本 ViewModel 里镜像：它与麦克风设备选择一样由设置页
+    /// `@AppStorage` 与截图会话工具栏直接读写同一份 UserDefaults，这里在启动瞬间取最新值
     func makeRecordingConfig(experience: AppExperience = .pro) -> RecordingConfig {
         let saved = RecordingConfig(
             source: recordingSource,
             autoMuteDetection: autoMuteDetection,
-            appMuteDetection: appMuteDetection
+            appMuteDetection: appMuteDetection,
+            startMuted: MicrophoneStartMutePreference.isEnabled()
         )
         return EffectiveSettingsResolver.recordingConfig(
             saved: saved,

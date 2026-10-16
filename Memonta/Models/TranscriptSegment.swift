@@ -24,9 +24,10 @@ final class TranscriptSegment {
 
 // MARK: - 计算属性（@Model 宏要求放在 extension 中）
 extension TranscriptSegment {
-    /// 格式化的时间范围显示，例如 "01:23 - 02:45" 或 "1:01:23 - 1:02:45"
+    /// 格式化的时间范围显示，例如 "01:23.4 - 02:45.6" 或 "1:01:23.4 - 1:02:45.6"
+    /// 转写时间戳保留 0.1 秒精度，便于区分相邻片段与精确定位
     var formattedTimeRange: String {
-        "\(startTime.formattedAsDuration()) - \(endTime.formattedAsDuration())"
+        "\(startTime.formattedAsDuration(fractionDigits: 1)) - \(endTime.formattedAsDuration(fractionDigits: 1))"
     }
 
     /// 解密后的文本内容

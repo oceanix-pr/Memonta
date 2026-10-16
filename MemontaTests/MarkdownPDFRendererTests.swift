@@ -1,5 +1,6 @@
 import CoreGraphics
 import Foundation
+import PDFKit
 import Testing
 
 @testable import Memonta
@@ -92,10 +93,10 @@ struct MarkdownPDFRendererTests {
         #expect(blocks.contains(.heading(level: 1, text: "一级标题")))
         #expect(blocks.contains(.heading(level: 2, text: "二级标题")))
         #expect(blocks.contains(.paragraph(text: "普通段落。")))
-        #expect(blocks.contains(.bullet(text: "无序项", depth: 0)))
-        #expect(blocks.contains(.numbered(text: "有序项", marker: "1.", depth: 0)))
-        #expect(blocks.contains(.quote(text: "引用")))
-        #expect(blocks.contains(.rule))
+        #expect(blocks.contains(.bulletItem(text: "无序项")))
+        #expect(blocks.contains(.numberedItem(number: 1, text: "有序项")))
+        #expect(blocks.contains(.quote(blocks: [.paragraph(text: "引用")])))
+        #expect(blocks.contains(.divider))
     }
 
     /// 围栏代码块：首行不能丢、闭合 ``` 不能进正文、缩进要原样保留
@@ -106,7 +107,7 @@ struct MarkdownPDFRendererTests {
             print("缩进保留")
         ```
         """)
-        #expect(blocks == [.code(text: "let data = try render(markdown: text)\n    print(\"缩进保留\")")])
+        #expect(blocks == [.codeBlock(text: "let data = try render(markdown: text)\n    print(\"缩进保留\")")])
     }
 
     @Test func testTableSeparatorRowIsDroppedButHeaderKept() {
@@ -115,7 +116,8 @@ struct MarkdownPDFRendererTests {
         |---|---|
         | 时间 | 10:00 |
         """)
-        #expect(blocks == [.table(rows: [["项目", "内容"], ["时间", "10:00"]])])
+        #expect(blocks == [.table(MarkdownTable(rows: [["项目", "内容"], ["时间", "10:00"]],
+                                                    alignments: [.leading, .leading]))])
     }
 
     @Test func testTaskListMarkersBecomeCheckBoxes() {
@@ -123,8 +125,8 @@ struct MarkdownPDFRendererTests {
         - [x] 已完成
         - [ ] 待办
         """)
-        #expect(blocks.contains(.bullet(text: "☑ 已完成", depth: 0)))
-        #expect(blocks.contains(.bullet(text: "☐ 待办", depth: 0)))
+        #expect(blocks.contains(.bulletItem(text: "已完成", checked: true)))
+        #expect(blocks.contains(.bulletItem(text: "待办", checked: false)))
     }
 
     // MARK: - 行内标记
@@ -184,5 +186,112 @@ struct MarkdownPDFRendererTests {
         let content = lines("# 正文标题\n\n内容", title: "录音条目名")
         #expect(content.first == "录音条目名")
         #expect(content.contains("正文标题"))
+    }
+}
+
+/// 共同语法的回归用例：界面缓存与 PDF 必须消费同一份结构。
+struct MarkdownBlockParserTests {
+    @Test func tableKeepsEmptyCellsEscapesAndAlignment() {
+        let source = "项目 | 内容 | 备注\n:--- | :---: | ---:\nA\\|B | | C"
+        let expected: [TranscriptBlock] = [.table(MarkdownTable(
+            rows: [["项目", "内容", "备注"], ["A|B", "", "C"]],
+            alignments: [.leading, .center, .trailing]))]
+        #expect(TranscriptMarkdownBuilder.parseBlocks(source) == expected)
+        #expect(MarkdownPDFRenderer.blocks(from: source) == expected)
+        let text = MarkdownPDFRenderer.attributedString(from: source).string
+        #expect(text.contains("A|B\t\tC"))
+    }
+
+    @Test func tableRequiresMatchingDelimiterAndNormalizesRowWidths() {
+        #expect(TranscriptMarkdownBuilder.parseBlocks("a | b\n普通内容") == [.paragraph(text: "a | b普通内容")])
+        let source = "| A | B |\n| --- | --- |\n| only |\n| one | two | extra |"
+        #expect(TranscriptMarkdownBuilder.parseBlocks(source) == [.table(MarkdownTable(
+            rows: [["A", "B"], ["only", ""], ["one", "two"]], alignments: [.leading, .leading]))])
+        let invalid = "| A | B |\n| --- |"
+        #expect(!TranscriptMarkdownBuilder.parseBlocks(invalid).contains { if case .table = $0 { true } else { false } })
+    }
+
+    @Test func cancelledParsingDoesNotPublishPartialBlocks() {
+        let source = String(repeating: "| A | B |\n| --- | --- |\n| x | y |\n\n", count: 1_000)
+        #expect(TranscriptMarkdownBuilder.parseBlocks(source, shouldCancel: { true }).isEmpty)
+    }
+
+    @Test func headingsUseSixLevelsAndRequireWhitespace() {
+        let source = "#### **四级**\n##### 五级\n###### 六级 ###\n#无空格\n####### 七级"
+        #expect(TranscriptMarkdownBuilder.parseBlocks(source) == [
+            .heading(level: 4, text: "**四级**"), .heading(level: 5, text: "五级"),
+            .heading(level: 6, text: "六级"), .paragraph(text: "#无空格####### 七级")])
+        #expect(TranscriptMarkdownBuilder.parseBlocks("标题\n===") == [.heading(level: 1, text: "标题")])
+        #expect(TranscriptMarkdownBuilder.parseBlocks("标题\n---") == [.heading(level: 2, text: "标题")])
+    }
+
+    @Test func fencesMatchTypeLengthAndClosingSuffix() {
+        let source = "  ````markdown\n  ```swift\n    let x = 1\n  ```\n  ````\n~~~\nbody\n~~~ trailing\n~~~"
+        #expect(TranscriptMarkdownBuilder.parseBlocks(source) == [
+            .codeBlock(text: "```swift\n  let x = 1\n```"), .codeBlock(text: "body\n~~~ trailing")])
+        #expect(TranscriptMarkdownBuilder.parseBlocks("```\nunfinished") == [.codeBlock(text: "unfinished")])
+    }
+
+    @Test func listsKeepDepthTasksAndContinuation() {
+        let source = "- 父项\n  + [x] 子项\n    续行\n  2) 第二项\n+ [ ] 未完成\n- [x]ordinary"
+        #expect(TranscriptMarkdownBuilder.parseBlocks(source) == [
+            .bulletItem(text: "父项"), .bulletItem(text: "子项续行", depth: 1, checked: true),
+            .numberedItem(number: 2, text: "第二项", depth: 1),
+            .bulletItem(text: "未完成", checked: false), .bulletItem(text: "[x]ordinary")])
+    }
+
+    @Test func quotesContainParagraphsNestedQuotesAndTables() {
+        let source = "> 第一行\n> 第二行\n>\n>> 嵌套\n>\n> A | B\n> --- | ---\n> x | y"
+        #expect(TranscriptMarkdownBuilder.parseBlocks(source) == [.quote(blocks: [
+            .paragraph(text: "第一行第二行"), .quote(blocks: [.paragraph(text: "嵌套")]),
+            .table(MarkdownTable(rows: [["A", "B"], ["x", "y"]], alignments: [.leading, .leading]))])])
+    }
+
+    @Test func paragraphsNormalizeNewlinesAndKeepExplicitBreaks() {
+        #expect(TranscriptMarkdownBuilder.parseBlocks("今天讨论\r\n排期\r\n\r\ndiscuss the\r\nschedule") == [
+            .paragraph(text: "今天讨论排期"), .paragraph(text: "discuss the schedule")])
+        #expect(TranscriptMarkdownBuilder.parseBlocks("第一行  \n第二行\\\n第三行") == [
+            .paragraph(text: "第一行\n第二行\n第三行")])
+    }
+
+    @Test func tablePDFRepeatsHeaderAndKeepsLastRow() throws {
+        let rows = (0..<100).map { "| ROW\($0) | 内容 \($0) |" }.joined(separator: "\n")
+        let data = try MarkdownPDFRenderer.render(markdown: "| HEADER | VALUE |\n| --- | --- |\n" + rows)
+        let document = try #require(PDFDocument(data: data))
+        #expect(document.pageCount > 1)
+        for index in 0..<document.pageCount {
+            let text = document.page(at: index)?.string ?? ""
+            #expect(text.contains("HEADER"))
+        }
+        let text = (document.string ?? "").filter { !$0.isWhitespace }
+        for index in 0..<100 { #expect(text.contains("ROW\(index)")) }
+    }
+
+    @Test func tableHeaderStaysWithFirstDataRowAtPageBoundary() throws {
+        var configuration = MarkdownPDFRenderer.Configuration()
+        configuration.pageHeight = 260
+        for count in 0..<8 {
+            let source = String(repeating: "前文内容。\n\n", count: count)
+                + "| HEADER | VALUE |\n| --- | --- |\n| ROWEND | CONTENT |"
+            let data = try MarkdownPDFRenderer.render(markdown: source, configuration: configuration)
+            let document = try #require(PDFDocument(data: data))
+            for index in 0..<document.pageCount {
+                let text = document.page(at: index)?.string ?? ""
+                if text.contains("HEADER") { #expect(text.contains("ROWEND")) }
+            }
+        }
+    }
+
+    @Test func oversizedTableCellContinuesAcrossPagesWithoutRepeatingShortCell() throws {
+        let longText = (0..<800).map { "TOKEN\($0)" }.joined(separator: " ")
+        let source = "开头\n\n| HEADER | VALUE |\n| --- | --- |\n| ONCEONLY | \(longText) |\n\n结尾"
+        let data = try MarkdownPDFRenderer.render(markdown: source)
+        let document = try #require(PDFDocument(data: data))
+        let text = document.string ?? ""
+        #expect(document.pageCount > 2)
+        let compact = text.filter { !$0.isWhitespace }
+        for index in 0..<800 { #expect(compact.contains("TOKEN\(index)")) }
+        #expect(text.contains("结尾"))
+        #expect(text.components(separatedBy: "ONCEONLY").count == 2)
     }
 }

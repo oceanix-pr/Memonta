@@ -93,7 +93,7 @@ enum TaskErrorCode: String, CaseIterable, Sendable {
         case .permissionDenied:  return String(localized: "缺少系统权限，请在系统设置中授权后重试。")
         case .timedOut:          return String(localized: "处理超时，请重试。")
         case .cancelled:         return String(localized: "任务已取消。")
-        case .unknown:           return String(localized: "处理失败，请重试；若反复失败请检查模型配置与网络。")
+        case .unknown:           return String(localized: "处理失败，请重试；若反复失败请检查设置。")
         }
     }
 
@@ -115,10 +115,16 @@ enum TaskErrorCode: String, CaseIterable, Sendable {
 
 /// 把任意底层 `Error` 归类为面向用户的稳定文案。
 ///
-/// 界面主提示只用 `summary(for:)`；原始技术错误（`localizedDescription` 可能是英文、
-/// 后端原文或技术性很强的内容）只写日志，不再直接拼进用户文案。这样断网、无权限、
-/// 磁盘不足、磁盘只读等常见场景下，用户能得到「下一步该做什么」，而不是一句无法操作的原文。
-/// 未归类的情况统一回退为 `TaskErrorCode.unknown` 的通用文案。
+/// 分类优先级：
+/// 1. 系统网络 / POSIX / Cocoa 域：按已知 code 映射成具体文案（断网、磁盘不足、权限等）。
+/// 2. 本应用自定义的 `LocalizedError`（如 `MeetingRecorderError` / `SystemAudioError` /
+///    `VideoUnderstandingError`）：直接采用其已本地化的 `errorDescription`。这类错误的域
+///    不是上面三种，若不特判会被兜底文案吞成一句无法排查的泛化提示（例如「清理视频」实际
+///    因缺少可复用关键帧被拒，却显示成「检查模型配置与网络」）。
+/// 3. 其余情况统一回退为 `TaskErrorCode.unknown` 的中性兜底文案。
+///
+/// 原始技术错误（`localizedDescription` 可能是英文、后端原文或技术性很强的内容）不主动拼进
+/// 用户文案，仅写日志——但上面第 2 类是例外：其描述本身就是面向用户、已本地化的。
 enum UserFacingError {
 
     /// 面向用户的本地化摘要（可直接填入错误提示）
@@ -160,6 +166,14 @@ enum UserFacingError {
                 return TaskErrorCode.unknown.localizedSummary
             }
         default:
+            // 本应用自定义的 LocalizedError（MeetingRecorderError / SystemAudioError /
+            // VideoUnderstandingError 等）带有已本地化、面向用户的 errorDescription，
+            // 直接采用，避免其具体原因被兜底文案抹平。
+            if let localized = error as? LocalizedError,
+               let description = localized.errorDescription,
+               !description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                return description
+            }
             return TaskErrorCode.unknown.localizedSummary
         }
     }

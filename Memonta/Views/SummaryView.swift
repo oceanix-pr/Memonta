@@ -122,9 +122,8 @@ struct SummaryView: View {
                 isExpanded: $isReasoningExpanded
             )
 
-            // 流式阶段避免每个批次重新解析整篇 Markdown；完成后再切换正式渲染。
-            Text(viewModel.summaryText)
-                .textSelection(.enabled)
+            // 流式内容合批在后台解析，生成期间也展示 Markdown。
+            StreamingMarkdownView(markdown: viewModel.summaryText)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }

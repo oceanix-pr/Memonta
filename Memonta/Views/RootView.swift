@@ -153,6 +153,7 @@ struct RootView: View {
     /// 横幅图标：同步用循环箭头，一次性结果（截图已复制/已保存）用对勾，
     /// 否则"已复制到剪贴板"旁边挂着刷新图标会让人误解
     @State private var syncBannerSymbol = "arrow.clockwise.circle.fill"
+    @State private var syncBannerIsWarning = false
     /// 横幅上的可选动作（如「查看队列」）：入队成功后就近提供进度/取消入口
     @State private var syncBannerActionTitle: String?
     @State private var syncBannerAction: (() -> Void)?
@@ -165,17 +166,21 @@ struct RootView: View {
                 transientModeBanner
                 progressOverlay
                 mergingAudioOverlay
-                recordingWarningOverlay
             }
         }
+        // 录音实时告警与磁盘同步结果同级：同处顶部横幅层，位置与刷新反馈一致
         .overlay(alignment: .top) {
-            syncResultBanner
+            VStack(spacing: 8) {
+                syncResultBanner
+                recordingWarningOverlay
+            }
         }
         .animation(.easeInOut, value: syncBannerText)
         .animation(.easeInOut, value: viewModel.liveRecordingWarning)
         .animation(.easeInOut, value: viewModel.importProgressText)
         .animation(.easeInOut, value: viewModel.isMeetingRecording)
         .animation(.easeInOut, value: viewModel.isRecordingMuted)
+        .onChange(of: viewModel.recordingFeedback?.id) { _, _ in handleRecordingFeedback() }
         .fileImporter(
             isPresented: $showMediaImporter,
             allowedContentTypes: AudioImportValidator.allowedContentTypes,
@@ -398,7 +403,13 @@ struct RootView: View {
             HelpView()
         }
         .alert("错误", isPresented: $viewModel.showError) {
-            Button("确定") {}
+            if let folder = viewModel.recordingFailureFolder {
+                Button("在 Finder 中显示") {
+                    viewModel.recordingFailureFolder = nil
+                    NSWorkspace.shared.activateFileViewerSelecting([folder])
+                }
+            }
+            Button("确定") { viewModel.recordingFailureFolder = nil }
         } message: {
             // 兜底串必须先本地化：`String` 直接传给 Text 会走 verbatim 重载，不查 String Catalog
             let errorMsg = viewModel.errorMessage ?? String(localized: "未知错误")
@@ -756,12 +767,18 @@ struct RootView: View {
         viewModel.startMeetingRecording(config: config, context: modelContext)
     }
 
-    /// 菜单栏请求停止录音
+    /// 菜单栏请求停止录音（也是菜单栏退出前的收尾入口）。
+    /// 完成后回发 `.menuBarStopRecordingCompleted`：退出流程据此确认
+    /// 「封存 + 合并 + 入库」已完成再终止进程，避免退出跳过入库
     private func handleMenuBarStopRecording() {
-        guard viewModel.isMeetingRecording else { return }
+        guard viewModel.isMeetingRecording else {
+            NotificationCenter.default.post(name: .menuBarStopRecordingCompleted, object: nil)
+            return
+        }
         Task {
             let source = viewModel.activeRecordingSource ?? settingsVM.recordingSource
             await viewModel.stopMeetingRecording(context: modelContext, source: source)
+            NotificationCenter.default.post(name: .menuBarStopRecordingCompleted, object: nil)
         }
     }
 
@@ -1399,6 +1416,23 @@ struct RootView: View {
         }
     }
 
+    private func handleRecordingFeedback() {
+        guard let feedback = viewModel.recordingFeedback else { return }
+        syncBannerSymbol = feedback.isWarning ? "exclamationmark.triangle.fill" : "checkmark.circle.fill"
+        let action: (() -> Void)? = feedback.folderName.map { folder in
+            {
+                guard let recording = recordings.first(where: { $0.folderName == folder }) else { return }
+                viewModel.captureReportRequestedFolder = folder
+                selectedListItems = [.recording(recording)]
+                viewModel.selectedRecording = recording
+            }
+        }
+        showTransientBanner(
+            feedback.message, actionTitle: action == nil ? nil : String(localized: "查看详情"),
+            action: action, isWarning: feedback.isWarning
+        )
+    }
+
     /// 顶部非模态横幅：展示文本并在 8 秒后自动收起。
     /// 由磁盘同步结果、截图一次性结果（已复制/已保存）与任务入队提示共用。
     /// - Parameters:
@@ -1407,9 +1441,11 @@ struct RootView: View {
     private func showTransientBanner(
         _ text: String,
         actionTitle: String? = nil,
-        action: (() -> Void)? = nil
+        action: (() -> Void)? = nil,
+        isWarning: Bool = false
     ) {
         withAnimation(.easeInOut) {
+            syncBannerIsWarning = isWarning
             syncBannerText = text
             syncBannerActionTitle = actionTitle
             syncBannerAction = action
@@ -1441,7 +1477,7 @@ struct RootView: View {
         if let text = syncBannerText {
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: syncBannerSymbol)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(syncBannerIsWarning ? Color.yellow : Color.secondary)
                 Text(text)
                     .font(.callout)
                     .multilineTextAlignment(.leading)
@@ -1530,8 +1566,9 @@ struct RootView: View {
         }
     }
 
-    /// 录音中实时告警（磁盘不足/系统音频中断/唤醒恢复等）：底部胶囊常驻展示，
-    /// 可手动关闭；同时已通过模态弹窗一次性提示（30s 去抖）
+    /// 录音中实时告警（磁盘不足/系统音频中断/唤醒恢复等）：顶部横幅常驻展示，
+    /// 与磁盘同步结果同级（同一顶部横幅层），可手动关闭；
+    /// 当前故障常驻，恢复后收起；历史记录在录音条目中保留。
     @ViewBuilder
     private var recordingWarningOverlay: some View {
         if viewModel.isMeetingRecording, let warning = viewModel.liveRecordingWarning {
@@ -1542,6 +1579,8 @@ struct RootView: View {
                     .font(.caption)
                     .multilineTextAlignment(.leading)
                     .lineLimit(3)
+                Button("检查设备") { showSettings = true }
+                    .buttonStyle(.link)
                 Button {
                     viewModel.liveRecordingWarning = nil
                 } label: {
@@ -1555,7 +1594,8 @@ struct RootView: View {
             .padding(.vertical, 8)
             .background(.bar)
             .clipShape(Capsule())
-            .transition(.move(edge: .bottom).combined(with: .opacity))
+            .padding(.top, 8)
+            .transition(.move(edge: .top).combined(with: .opacity))
         }
     }
 
@@ -1584,10 +1624,20 @@ struct RootView: View {
                 Button {
                     viewModel.toggleRecordingMute()
                 } label: {
-                    // 用 LocalizedStringKey 而非 String：String 会被当作 verbatim 文本，永不本地化
-                    Label(muteActionTitle, systemImage: muteActionIcon)
+                    // 文案/图标取自 MicMuteCommand：与菜单栏「麦克风」子菜单是同一条命令，
+                    // 口径集中在一处。传入的是 `String(localized:)` 的结果而非 LocalizedStringKey，
+                    // 因此这里用 String 重载是安全的；不要改成裸字面量（那会被当 verbatim 文本，永不翻译）
+                    Label(
+                        MicMuteCommand.title(isMuted: viewModel.isRecordingMuted),
+                        systemImage: MicMuteCommand.iconName(isMuted: viewModel.isRecordingMuted)
+                    )
                 }
-                .disabled(isMuteToggleDisabled)
+                .disabled(
+                    !MicMuteCommand.canToggle(
+                        isMuted: viewModel.isRecordingMuted,
+                        source: viewModel.recordingMuteSource
+                    )
+                )
 
                 Divider()
 
@@ -1613,14 +1663,14 @@ struct RootView: View {
             // 徽章要保持紧凑：不显示下拉箭头，只留图标本身
             .menuIndicator(.hidden)
             .fixedSize()
-            .help(muteButtonHelpText)
+            .help(MicMuteCommand.helpText(isMuted: viewModel.isRecordingMuted, source: viewModel.recordingMuteSource))
             // .help 只提供鼠标 tooltip；菜单 label 是纯图标，VoiceOver 会读成 SF Symbol 名
-            .accessibilityLabel(Text(muteActionTitle))
+            .accessibilityLabel(Text(MicMuteCommand.title(isMuted: viewModel.isRecordingMuted)))
             Divider().frame(height: 12)
             if viewModel.isRecordingMuted {
-                // 原先写成 Text({ ... }())：闭包返回 String，走的是 Text 的 verbatim 重载，
-                // 三条文案在 Catalog 里虽然都有 21 种语言，界面上却永远显示中文
-                Text(muteSourceLabel)
+                // 静音来源文案（系统 / 会议软件 / 本地）与菜单栏状态项共用 MicMuteCommand，
+                // 两处不会出现「已静音」与「已手动静音」这类不同说法
+                Text(MicMuteCommand.sourceLabel(viewModel.recordingMuteSource))
                     .font(.caption)
                     .foregroundStyle(.orange)
                 Divider().frame(height: 12)
@@ -1651,48 +1701,12 @@ struct RootView: View {
         // 不再叠加原底部悬浮条的胶囊背景/内边距/过渡，避免“两层套娃”观感
     }
 
-    /// 菜单里静音项的文案（未静音 → 「静音麦克风」，已静音 → 「解除静音」）。
-    /// 必须是 LocalizedStringKey：String 会被 SwiftUI 当作 verbatim 文本，永不翻译
-    private var muteActionTitle: LocalizedStringKey {
-        viewModel.isRecordingMuted ? "解除静音" : "静音麦克风"
-    }
-
-    /// 菜单里静音项的图标：未静音时用「划掉的麦克风」表示这一步会执行的动作
-    private var muteActionIcon: String {
-        viewModel.isRecordingMuted ? "mic.fill" : "mic.slash"
-    }
-
-    /// 徽章里紧随麦克风图标显示的静音来源（仅在已静音时出现）。
-    /// 用 LocalizedStringKey 让 `系统静音` / `会议软件静音` / `已静音` 真正走本地化
-    private var muteSourceLabel: LocalizedStringKey {
-        switch viewModel.recordingMuteSource {
-        case .system: return "系统静音"
-        case .app:    return "会议软件静音"
-        case .local:  return "已静音"
-        case .none:   return "已静音"
-        }
-    }
-
-    /// 静音是否允许手动切换：系统 / 会议软件触发的静音不能本地解除
-    /// （与原静音按钮的 disabled 条件同口径，抽出后供菜单项复用）
-    private var isMuteToggleDisabled: Bool {
-        viewModel.isRecordingMuted
-            && (viewModel.recordingMuteSource == .system || viewModel.recordingMuteSource == .app)
-    }
+    // 静音命令的文案 / 图标 / 可用性 / 来源标签统一由 MicMuteCommand 提供：
+    // 徽章菜单与菜单栏「麦克风」子菜单是同一条命令，口径不再各留一份
 
     /// 徽章麦克风菜单的可选输入设备（含 Loopback 等虚拟/回环设备，与系统「声音 → 输入」口径一致）
     private var availableMicrophones: [MicrophoneDevice] {
         MicrophoneDeviceRegistry.availableDevices()
-    }
-
-    /// 静音按钮的悬浮提示文案
-    private var muteButtonHelpText: String {
-        if !viewModel.isRecordingMuted { return String(localized: "静音麦克风") }
-        switch viewModel.recordingMuteSource {
-        case .system: return String(localized: "系统静音中，需在系统中解除")
-        case .app: return String(localized: "会议软件静音中，需在会议软件内解除")
-        case .local, .none: return String(localized: "解除静音")
-        }
     }
 
     /// 格式化录音时长

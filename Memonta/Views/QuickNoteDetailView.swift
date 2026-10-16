@@ -16,12 +16,18 @@ struct QuickNoteDetailView: View {
     var onOneClick: (() -> Void)? = nil
 
     @Environment(\.modelContext) private var modelContext
+    @AppStorage(MenuBarController.appLanguageDefaultsKey) private var interfaceLanguage = ""
+    @State private var systemLanguages = NoteSpeechAvailability.systemPreferredLanguages
     @State private var isEditingTitle = false
     @State private var titleDraft = ""
     @FocusState private var titleFieldFocused: Bool
 
     /// 临时模式（不落盘）：禁用全部编辑入口，只保留浏览、复制与导出
     private var isReadOnly: Bool { viewModel.persistence.capability.isTransient }
+
+    private var supportsNoteSpeech: Bool {
+        NoteSpeechAvailability.isSupported(interfaceLanguage: interfaceLanguage, systemLanguages: systemLanguages)
+    }
 
     // 待办编辑 Sheet 状态
     @State private var showTodoEdit = false
@@ -39,6 +45,7 @@ struct QuickNoteDetailView: View {
     // 文字内容编辑状态（截图/文字笔记正文重新编辑）
     @State private var isEditingText = false
     @State private var textDraft = ""
+    @State private var speechInput: SpeechNoteInput?
 
     // 图片缩放状态
     @State private var imageScale: CGFloat = 1.0
@@ -49,6 +56,24 @@ struct QuickNoteDetailView: View {
         VStack(spacing: 0) {
             // 标题栏
             headerBar
+
+            if !quickNote.hasImage && supportsNoteSpeech {
+                HStack {
+                    Spacer()
+                    Button {
+                        guard supportsNoteSpeech else { return }
+                        speechInput = SpeechNoteInput(title: quickNote.title,
+                            body: quickNote.decryptedTextContent, summary: quickNote.decryptedSummaryText)
+                    } label: {
+                        Label("转为语音", systemImage: "speaker.wave.2")
+                    }
+                    .buttonStyle(.bordered)
+                    .disabled(isEditingText || isEditingSummary ||
+                        ((quickNote.textContent ?? "").isEmpty && (quickNote.summaryText ?? "").isEmpty))
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 8)
+            }
 
             Divider()
 
@@ -86,6 +111,12 @@ struct QuickNoteDetailView: View {
             viewModel.loadTodoDocument(for: quickNote)
             viewModel.loadSummary(for: quickNote)
         }
+        .onChange(of: supportsNoteSpeech) { _, supported in
+            if !supported { speechInput = nil }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSLocale.currentLocaleDidChangeNotification)) { _ in
+            systemLanguages = NoteSpeechAvailability.systemPreferredLanguages
+        }
         #if os(macOS)
         .onReceive(NotificationCenter.default.publisher(for: .screenshotReannotated)) { notification in
             handleReannotated(notification)
@@ -104,6 +135,9 @@ struct QuickNoteDetailView: View {
                     editingTodoItem = nil
                 }
             )
+        }
+        .sheet(item: $speechInput) { input in
+            NoteSpeechView(input: input)
         }
     }
 
@@ -496,9 +530,8 @@ struct QuickNoteDetailView: View {
                         isExpanded: $isReasoningExpanded
                     )
                     if !viewModel.summaryText.isEmpty {
-                        // 流式阶段用纯文本，避免每批 token 整篇重解析 Markdown。
-                        Text(viewModel.summaryText)
-                            .textSelection(.enabled)
+                        // 流式内容合批在后台解析，生成期间也展示 Markdown。
+                        StreamingMarkdownView(markdown: viewModel.summaryText)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(12)
                             .background(.quaternary.opacity(0.3))

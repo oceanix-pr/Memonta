@@ -154,7 +154,8 @@ struct AppExperienceTests {
         let saved = RecordingConfig(
             source: .systemAudio,
             autoMuteDetection: false,
-            appMuteDetection: true
+            appMuteDetection: true,
+            startMuted: true
         )
 
         let online = EffectiveSettingsResolver.recordingConfig(
@@ -180,6 +181,44 @@ struct AppExperienceTests {
         #expect(pro.source == .systemAudio)
         #expect(!pro.autoMuteDetection)
         #expect(pro.appMuteDetection)
+        // 标准模式隐藏了静音策略开关，沿用专业模式留下的「开始时静音」会变成「以为在录其实没声」
+        #expect(!online.startMuted)
+        #expect(!inPerson.startMuted)
+        #expect(pro.startMuted)
+    }
+
+    @Test("录音开始时静音偏好默认关闭且可往返读写")
+    func microphoneStartMutePreferenceRoundTrip() {
+        let defaults = makeDefaults()
+        #expect(!MicrophoneStartMutePreference.isEnabled(in: defaults))
+
+        MicrophoneStartMutePreference.set(true, in: defaults)
+        #expect(MicrophoneStartMutePreference.isEnabled(in: defaults))
+
+        MicrophoneStartMutePreference.set(false, in: defaults)
+        #expect(!MicrophoneStartMutePreference.isEnabled(in: defaults))
+    }
+
+    @Test("静音命令：系统/会议软件静音不能在 App 内解除")
+    func micMuteCommandBlocksForeignMuteSources() {
+        // 未静音：任何来源下都能静音
+        for source in [MuteSource.none, .local, .system, .app] {
+            #expect(MicMuteCommand.canToggle(isMuted: false, source: source))
+        }
+        // 已静音：本地静音可解除，系统 / 会议软件静音必须去源头解除
+        #expect(MicMuteCommand.canToggle(isMuted: true, source: .local))
+        #expect(MicMuteCommand.canToggle(isMuted: true, source: .none))
+        #expect(!MicMuteCommand.canToggle(isMuted: true, source: .system))
+        #expect(!MicMuteCommand.canToggle(isMuted: true, source: .app))
+
+        // 图标表达「这一步会做什么」：未静音时是划掉的麦克风
+        #expect(MicMuteCommand.iconName(isMuted: false) == "mic.slash")
+        #expect(MicMuteCommand.iconName(isMuted: true) == "mic.fill")
+
+        // 来源文案区分系统 / 会议软件 / 本地（徽章与菜单栏状态项共用同一份）
+        #expect(MicMuteCommand.sourceLabel(.system) != MicMuteCommand.sourceLabel(.app))
+        #expect(MicMuteCommand.sourceLabel(.local) != MicMuteCommand.sourceLabel(.system))
+        #expect(MicMuteCommand.sourceLabel(.local) == MicMuteCommand.sourceLabel(.none))
     }
 
     @Test("普通模式强制云端脱敏且 Pro 尊重保存值")

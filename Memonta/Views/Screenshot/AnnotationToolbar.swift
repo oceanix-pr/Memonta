@@ -448,11 +448,24 @@ final class AnnotationToolbar: NSView {
     // MARK: - 麦克风快切
 
     /// 麦克风菜单：列出系统全部输入设备（含 Loopback 等虚拟设备，与系统「声音 → 输入」口径一致）
-    /// 并勾选当前项。选择写入与菜单栏「麦克风」、设置页共用的同一偏好，下次录音生效
+    /// 并勾选当前项；顶部另给「录音开始时静音麦克风」勾选项（与设置页共用同一偏好）。
+    /// 选择写入与菜单栏「麦克风」、设置页共用的同一偏好，下次录音生效
     private func presentMicrophoneMenu() {
         guard let anchor = microphoneButton else { return }
         let selected = MicrophoneDeviceRegistry.savedSelectionUID()
         let menu = NSMenu()
+
+        // 这里的「静音」只能是开始前的初始状态：录制一开始悬浮层即结束（finish(.recordRequested)），
+        // 运行中的静音命令在此不可达，录音中改静音请用录音徽章菜单或菜单栏「麦克风」
+        let startMutedItem = NSMenuItem(
+            title: String(localized: "录音开始时静音麦克风"),
+            action: #selector(toggleStartMuted(_:)),
+            keyEquivalent: ""
+        )
+        startMutedItem.target = self
+        startMutedItem.state = MicrophoneStartMutePreference.isEnabled() ? .on : .off
+        menu.addItem(startMutedItem)
+        menu.addItem(.separator())
 
         let followItem = NSMenuItem(
             title: String(localized: "跟随系统默认"),
@@ -501,10 +514,23 @@ final class AnnotationToolbar: NSView {
         microphoneButton?.toolTip = Self.microphoneTooltip()
     }
 
-    /// 按钮提示：显示当前麦克风（未指定或已拔出时为「跟随系统默认」）
+    /// 切换「录音开始时静音麦克风」（与设置页「录音 → 输入设备」下同一份偏好，下次录制生效）
+    @objc private func toggleStartMuted(_ sender: NSMenuItem) {
+        let enabled = sender.state != .on
+        MicrophoneStartMutePreference.set(enabled)
+        sender.state = enabled ? .on : .off
+        microphoneButton?.toolTip = Self.microphoneTooltip()
+    }
+
+    /// 按钮提示：显示当前麦克风（未指定或已拔出时为「跟随系统默认」），
+    /// 以及本次录制是否会以静音开始
     private static func microphoneTooltip() -> String {
         let current = MicrophoneDeviceRegistry.selectedDeviceName() ?? String(localized: "跟随系统默认")
-        return String(format: String(localized: "麦克风：%@"), current)
+        var summary = String(format: String(localized: "麦克风：%@"), current)
+        if MicrophoneStartMutePreference.isEnabled() {
+            summary += " · " + String(localized: "录音时静音")
+        }
+        return summary
     }
 
     // MARK: - 私有构建

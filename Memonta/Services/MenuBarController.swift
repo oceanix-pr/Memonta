@@ -1,5 +1,6 @@
 #if os(macOS)
 import AppKit
+import os.log
 #endif
 import SwiftUI
 import Observation
@@ -22,6 +23,13 @@ final class MenuBarController: NSObject {
     /// 共享实例
     static let shared = MenuBarController()
 
+    private static let logger = Logger(subsystem: "com.oceanix.Memonta", category: "MenuBar")
+
+    /// 菜单栏退出前等待统一停止流程（封存 + 合并 + 入库）的上限。
+    /// 与退出时等待合并的量级一致，避免这里先放弃、造成「退出等待到期 → 强退 →
+    /// 合并半成品」的旧事故；实际会在服务停止且合并结束时立即返回
+    private static let quitStopTimeout: TimeInterval = 900
+
     /// 菜单栏状态项
     private var statusItem: NSStatusItem!
 
@@ -43,10 +51,18 @@ final class MenuBarController: NSObject {
     // 录屏偏好 radio 项（质量/声源），用于选中态刷新
     private var screenSourceItems: [NSMenuItem] = []
     private var screenQualityItems: [NSMenuItem] = []
-    /// 麦克风子菜单（「跟随系统默认」+ 各输入设备）：设备随插拔变化，需整体重建
+    /// 麦克风子菜单（「静音 / 解除静音」+「跟随系统默认」+ 各输入设备）：
+    /// 设备随插拔变化，需整体重建
     private var microphoneMenuItem: NSMenuItem?
     private var microphoneItems: [NSMenuItem] = []
-    /// 上次构建麦克风子菜单的指纹（设备集合 + 当前选择），未变则只刷新勾选态
+    /// 子菜单顶部的静音命令项：标题/图标/可用性随录音与静音状态刷新
+    private var microphoneMuteItem: NSMenuItem?
+    /// 「录音开始时静音麦克风」预设项与其分隔线（录音中隐藏：只对下一场录音有效的开关
+    /// 摆在运行中的命令旁边会误导，本场改静音走上方的命令）
+    private var microphoneStartMutedItem: NSMenuItem?
+    private var microphoneStartMutedSeparator: NSMenuItem?
+    /// 上次构建麦克风子菜单的指纹（设备集合 + 当前选择 + 「开始时静音」偏好），
+    /// 未变则只刷新状态，变了就整体重建
     private var lastMicrophoneSignature: String?
     /// 录屏直达项（全屏/选区/窗口）：录音/录屏中禁用，互斥状态在菜单里显性化
     private var screenRecordingStartItems: [NSMenuItem] = []
@@ -401,17 +417,11 @@ final class MenuBarController: NSObject {
             item.isHidden = !showsProfessionalControls
         }
 
-        // 3) 状态信息（不显示时长，只显示简单状态）；录屏时状态前缀为「录屏中」
+        // 3) 状态信息（不显示时长，只显示简单状态）；录屏时状态前缀为「录屏中」。
+        //    静音来源文案与录音徽章共用 MicMuteCommand，避免同一状态两处说法不同
         if isRecording {
             if isMuted {
-                let src: String = {
-                    switch muteSource {
-                    case .system: return String(localized: "系统静音")
-                    case .app:    return String(localized: "会议软件静音")
-                    case .local:  return String(localized: "已手动静音")
-                    case .none:   return String(localized: "已静音")
-                    }
-                }()
+                let src = MicMuteCommand.sourceLabel(muteSource)
                 let mutedFormat = isScreenRecording
                     ? String(localized: "录屏中 · %@")
                     : String(localized: "录音中 · %@")
@@ -556,19 +566,48 @@ final class MenuBarController: NSObject {
     }
 
     /// 退出应用
+    ///
+    /// 录音中退出走**统一停止入口**（`RecordingViewModel.stopMeetingRecording`）：
+    /// 旧实现先直接调用服务的 `stopRecording()`，服务随即变成 isRecording=false，
+    /// 之后发出的停止通知在 ViewModel 侧被 `guard isMeetingRecording` 拦下，
+    /// 封存/合并/入库整段被跳过——结果是磁盘上有文件、本次却没有数据库条目，
+    /// 只能等下次启动的磁盘扫描补录。这里改为：只发停止通知，等待入库完成再退出。
     @objc nonisolated private func quitApp() {
         MainActor.assumeOnMainThread {
-            // 若正在录音，先停止
-            if recorder.isRecording {
-                Task { @MainActor in
-                    _ = await recorder.stopRecording()
-                    NotificationCenter.default.post(name: .menuBarStopRecording, object: nil)
-                    NSApp.terminate(nil)
-                }
-            } else {
+            guard recorder.isRecording else {
+                NSApp.terminate(nil)
+                return
+            }
+            Task { @MainActor in
+                await Self.stopRecordingBeforeQuit(recorder: recorder)
                 NSApp.terminate(nil)
             }
         }
+    }
+
+    /// 发停止通知并等待统一停止流程完成。
+    /// 完成判据优先用 ViewModel 收尾后回发的通知；同时以「服务已停且合并不进行中」
+    /// 作为兜底，避免通知无人响应（主窗口未挂载）时永久等待。
+    @MainActor
+    private static func stopRecordingBeforeQuit(recorder: MeetingRecorderService) async {
+        let finished = LockedBox(false)
+        let token = NotificationCenter.default.addObserver(
+            forName: .menuBarStopRecordingCompleted, object: nil, queue: .main
+        ) { _ in
+            finished.value = true
+        }
+        defer { NotificationCenter.default.removeObserver(token) }
+
+        NotificationCenter.default.post(name: .menuBarStopRecording, object: nil)
+
+        let deadline = Date().addingTimeInterval(quitStopTimeout)
+        while Date() < deadline {
+            if finished.value { return }
+            if !recorder.isRecording, !recorder.isMerging { return }
+            try? await Task.sleep(for: .milliseconds(100))
+        }
+        // 超时：不再等待。退出流程仍会做紧急收尾，已录分片由下次启动恢复拼接
+        Self.logger.warning("退出前等待录音停止流程超时，改由退出收尾兜底")
     }
 
     // MARK: - 截图动作
@@ -673,10 +712,21 @@ final class MenuBarController: NSObject {
         }
     }
 
-    /// 设备集合 + 当前选择的指纹：任一变化都需要重建子菜单项
+    /// 静音 / 解除静音麦克风（与录音徽章菜单同一条命令：都走 MeetingRecorderService.toggleLocalMute）。
+    /// NSMenuItem 非 Sendable：这里不读取 sender，只切主 actor 后执行并刷新菜单
+    @objc nonisolated private func toggleMicMute() {
+        MainActor.assumeOnMainThread {
+            recorder.toggleLocalMute()
+            refreshState()
+        }
+    }
+
+    /// 设备集合 + 当前选择 + 「开始时静音」偏好的指纹：任一变化都需要重建子菜单项。
+    /// 偏好纳入指纹：设置页或截图会话工具栏改过它之后，菜单栏的勾选态要在一秒内跟上
     private func microphoneMenuSignature() -> String {
         let uids = MicrophoneDeviceRegistry.availableDevices().map(\.uid).joined(separator: ",")
-        return uids + "#" + (MicrophoneDeviceRegistry.savedSelectionUID() ?? "")
+        let startMuted = MicrophoneStartMutePreference.isEnabled() ? "1" : "0"
+        return uids + "#" + (MicrophoneDeviceRegistry.savedSelectionUID() ?? "") + "#" + startMuted
     }
 
     /// 按指纹重建或仅刷新勾选态（切换麦克风只改偏好，下次录音生效，与声源/质量 radio 同语义）
@@ -693,6 +743,37 @@ final class MenuBarController: NSObject {
         guard let submenu = microphoneMenuItem?.submenu else { return }
         submenu.removeAllItems()
         microphoneItems.removeAll()
+        microphoneMuteItem = nil
+        microphoneStartMutedItem = nil
+        microphoneStartMutedSeparator = nil
+
+        // 静音命令：与设备列表同处一个「麦克风」子菜单，选设备的地方就能静音。
+        // 运行时命令只对进行中的录音有效，空闲时禁用并说明原因（见 refreshMicrophoneMenuStates）
+        let muteItem = NSMenuItem(
+            title: MicMuteCommand.title(isMuted: false),
+            action: #selector(toggleMicMute),
+            keyEquivalent: ""
+        )
+        muteItem.target = self
+        submenu.addItem(muteItem)
+        microphoneMuteItem = muteItem
+
+        // 「录音开始时静音麦克风」预设：空闲时用菜单栏预设下一场录音的初始静音状态，
+        // 与设置页「录音 → 输入设备」、截图会话工具栏麦克风菜单读写同一份偏好。
+        // 录音中隐藏（只对下一场生效的开关摆在运行中的命令旁会误导，本场改静音走上一条命令）
+        let startMutedItem = NSMenuItem(
+            title: String(localized: "录音开始时静音麦克风"),
+            action: #selector(toggleStartMuted(_:)),
+            keyEquivalent: ""
+        )
+        startMutedItem.target = self
+        startMutedItem.state = MicrophoneStartMutePreference.isEnabled() ? .on : .off
+        submenu.addItem(startMutedItem)
+        microphoneStartMutedItem = startMutedItem
+
+        let startMutedSeparator = NSMenuItem.separator()
+        submenu.addItem(startMutedSeparator)
+        microphoneStartMutedSeparator = startMutedSeparator
 
         let followItem = NSMenuItem(
             title: String(localized: "跟随系统默认"),
@@ -741,6 +822,41 @@ final class MenuBarController: NSObject {
         for item in microphoneItems {
             guard let uid = item.representedObject as? String else { continue }
             item.state = (uid == selected) ? .on : .off
+        }
+
+        // 静音命令：标题与图标表达「这一步会做什么」（勾选态留给下面的偏好项与设备项，
+        // 命令项不显示对钩，避免与「所选设备」的勾选混淆），可用性与系统/会议软件静音口径一致。
+        // 空闲时没有可静音的采集链路，禁用并说明；录音中若静音来自系统或会议软件，
+        // 同样不能在 App 内解除（与徽章菜单的 disabled 条件同源）
+        let isRecording = recorder.isRecording
+        let isMuted = recorder.isMicMuted
+        let source = recorder.muteSource
+        guard let muteItem = microphoneMuteItem else { return }
+        muteItem.title = MicMuteCommand.title(isMuted: isMuted)
+        muteItem.image = NSImage(
+            systemSymbolName: MicMuteCommand.iconName(isMuted: isMuted),
+            accessibilityDescription: nil
+        )
+        muteItem.isEnabled = isRecording && MicMuteCommand.canToggle(isMuted: isMuted, source: source)
+        if !isRecording {
+            muteItem.toolTip = String(localized: "录音开始后可静音麦克风")
+        } else if !MicMuteCommand.canToggle(isMuted: isMuted, source: source) {
+            muteItem.toolTip = MicMuteCommand.helpText(isMuted: isMuted, source: source)
+        } else {
+            muteItem.toolTip = nil
+        }
+
+        // 「开始时静音」预设只在空闲时出现（勾选态由重建时的偏好决定）
+        microphoneStartMutedItem?.isHidden = isRecording
+        microphoneStartMutedSeparator?.isHidden = isRecording
+    }
+
+    /// 切换「录音开始时静音麦克风」偏好（空闲时预设下一场录音；与设置页、截图工具栏同一份）。
+    /// NSMenuItem 非 Sendable：只切主 actor，读偏好取反后立即重建子菜单刷新勾选态
+    @objc nonisolated private func toggleStartMuted(_ sender: NSMenuItem) {
+        MainActor.assumeOnMainThread {
+            MicrophoneStartMutePreference.set(!MicrophoneStartMutePreference.isEnabled())
+            refreshMicrophoneMenu(signature: microphoneMenuSignature())
         }
     }
 
@@ -908,6 +1024,9 @@ extension Notification.Name {
     static let menuBarStartRecording = Notification.Name("menuBarStartRecording")
     /// 菜单栏请求停止录音
     static let menuBarStopRecording = Notification.Name("menuBarStopRecording")
+    /// 统一停止流程（封存 + 合并 + 入库）已完成。菜单栏退出等待它后再终止进程，
+    /// 避免「服务已停 → 停止通知被 guard 拦下 → 跳过入库」导致本次录音没有数据库条目
+    static let menuBarStopRecordingCompleted = Notification.Name("menuBarStopRecordingCompleted")
     /// 菜单栏请求显示主窗口（窗口已关闭时）
     static let menuBarShowMainWindow = Notification.Name("menuBarShowMainWindow")
     /// 分布式通知：第二个实例启动时，请求已有实例显示主窗口（跨进程）。

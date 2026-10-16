@@ -1350,7 +1350,8 @@ enum FileSyncService {
             }
             if allShells {
                 removeRecoveryTemporaries(micTmpURLs + sysTmpURLs)
-                let meaningful = ["meta.json", "transcript.json", "summary.md", "source.txt", "source.png"]
+                let meaningful = ["meta.json", "transcript.json", "summary.md", "source.txt", "source.png",
+                                  RecordingCaptureReportStore.fileName]
                 // 读目录失败不得当成「目录为空」：那会误删仍含有效产出的目录。
                 // 只有确实读到目录内容、且其中没有有效产出时才清理空壳目录
                 if let remaining = try? FileManager.default.contentsOfDirectory(

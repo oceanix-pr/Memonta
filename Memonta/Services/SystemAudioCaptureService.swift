@@ -17,6 +17,24 @@ import CoreGraphics
 #if os(macOS)
 final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegate, @unchecked Sendable {
 
+    enum EventKind: Sendable {
+        case interrupted(Error)
+        case writerFailed
+        case samplesDropped(Int)
+        case recovered
+    }
+
+    struct StopResult: Sendable {
+        let wasInterrupted: Bool
+        let writerFailed: Bool
+        let droppedSamples: Int
+    }
+
+    struct Event: Sendable {
+        let captureID: UUID
+        let kind: EventKind
+    }
+
     /// 统一 macOS 26+ Receiver 与旧版 AVAssetWriterInput 的最小写入接口。
     /// 实例始终只在 writeQueue 使用，类本身负责封装跨版本的非 Sendable AVFoundation 对象。
     private final class WriterEndpoint: @unchecked Sendable {
@@ -66,6 +84,8 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
         case starting
         /// 正常采集中
         case running
+        /// 唤醒后替换旧流；旧流已摘除，writer 仍归当前录音持有。
+        case reconnecting
         /// stop() 已取走资源，正在收尾（stopCapture + finalize）
         case stopping
         /// 启动失败或流异常停止：资源仍在，等待 stop() 收尾
@@ -81,9 +101,11 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
     /// “stream output NOT found. Dropping frame” 报错；独立队列避免与音频写入争用
     private let screenDiscardQueue = DispatchQueue(label: "com.Memonta.systemaudio.screenDiscard")
 
-    private var _onStreamError: (@Sendable (Error) -> Void)?
-    /// 背压丢样本回调（在采样回调线程触发，调用方需自行切到 MainActor）
-    private var _onSamplesDropped: (@Sendable (Int) -> Void)?
+    private var _onEvent: (@Sendable (Event) -> Void)?
+    private var _captureID = UUID()
+    private var _awaitingRecoverySample = false
+    private var _userStopped = false
+    private var _wakeOriginID: UUID?
     /// 上一次因 append 失败写日志的时间（采样级失败不去抖会刷屏）
     private var _lastAppendErrorLoggedAt: Date?
     /// append 失败是否已上报过（同一会话只上报一次，避免反复弹窗）
@@ -107,16 +129,44 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
         return _state == .running
     }
 
-    /// 系统音频流异常停止回调（在 SCStream 回调线程触发，调用方需自行切到 MainActor）
-    var onStreamError: (@Sendable (Error) -> Void)? {
-        get { stateLock.lock(); defer { stateLock.unlock() }; return _onStreamError }
-        set { stateLock.lock(); defer { stateLock.unlock() }; _onStreamError = newValue }
+    /// 带采集代次的事件；接收方切换 actor 后必须再次校验代次。
+    var onEvent: (@Sendable (Event) -> Void)? {
+        get { stateLock.lock(); defer { stateLock.unlock() }; return _onEvent }
+        set { stateLock.lock(); defer { stateLock.unlock() }; _onEvent = newValue }
     }
 
-    /// writer 背压丢弃音频样本回调（会话内最多一次；在采样回调线程触发）
-    var onSamplesDropped: (@Sendable (Int) -> Void)? {
-        get { stateLock.lock(); defer { stateLock.unlock() }; return _onSamplesDropped }
-        set { stateLock.lock(); defer { stateLock.unlock() }; _onSamplesDropped = newValue }
+    func isCurrentEvent(_ event: Event) -> Bool {
+        stateLock.lock(); defer { stateLock.unlock() }
+        guard event.captureID == _captureID, _stream != nil, let writer = _writer else { return false }
+        switch event.kind {
+        case .interrupted: return _state == .failed
+        case .recovered: return _state == .running && writer.status == .writing
+        case .writerFailed, .samplesDropped: return true
+        }
+    }
+
+    var captureID: UUID {
+        stateLock.lock(); defer { stateLock.unlock() }
+        return _captureID
+    }
+
+    /// 超时/取消只撤销对应恢复；旧任务不得撤销新录音或较新的恢复。
+    func cancelWakeRecovery(originID: UUID) {
+        stateLock.lock()
+        guard _wakeOriginID == originID else { stateLock.unlock(); return }
+        let stream = _stream
+        _stream = nil
+        _captureID = UUID()
+        _wakeOriginID = nil
+        _state = .failed
+        stateLock.unlock()
+        if let stream { Task { await Self.stopStream(stream) } }
+    }
+
+    /// failed 仍持有待收尾资源；不能用 capturing 判断是否需要恢复。
+    var canResumeAfterWake: Bool {
+        stateLock.lock(); defer { stateLock.unlock() }
+        return !_userStopped && _writer != nil && (_state == .failed || _state == .running)
     }
 
     // MARK: - 权限检查
@@ -238,7 +288,7 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
     /// 启动失败回滚：停掉刚建的 stream 并 finalize/清空已安装的 writer，交还 idle
     private func rollbackFailedStart(stream: SCStream) async {
         let detached = detachCaptureState(matching: stream)
-        try? await stream.stopCapture()
+        await Self.stopStream(stream)
         await Self.finalizeWriter(writer: detached.writer, endpoint: detached.writerEndpoint, on: writeQueue)
         markIdleIfStopping()
         logger.error("系统音频启动失败，已回滚 stream 与 writer")
@@ -248,15 +298,15 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
     /// 但 writer 仍然有效；重建 SCStream 后继续向当前分片写入。
     /// 不重置会话起点：新采样以 PTS 间隙追加，睡眠时段表现为静音，时间轴保持连续。
     /// - Returns: 是否重连成功
-    func resumeAfterWake() async -> Bool {
+    func resumeAfterWake(expectedCaptureID: UUID) async -> Bool {
         // 同步辅助方法内持锁（NSLock 不能在 async 上下文直接使用）
-        let snapshot = lockedWakeSnapshot()
+        let snapshot = beginWakeRecovery(expectedCaptureID: expectedCaptureID)
         // 无 writer（从未采集或已停止）时不重连
         guard let expectedWriter = snapshot.writer else { return false }
 
         // 旧流可能还存活（部分唤醒路径不报错），先尝试停掉再建新流
         if let oldStream = snapshot.stream {
-            try? await oldStream.stopCapture()
+            await Self.stopStream(oldStream)
         }
 
         do {
@@ -277,39 +327,77 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
             let newStream = SCStream(filter: filter, configuration: config, delegate: self)
             try newStream.addStreamOutput(self, type: .audio, sampleHandlerQueue: writeQueue)
             try newStream.addStreamOutput(self, type: .screen, sampleHandlerQueue: screenDiscardQueue)
-            try await newStream.startCapture()
+            guard installReconnectingStream(newStream, expectedWriter: expectedWriter, originID: expectedCaptureID) else {
+                markWakeRecoveryFailed(expectedWriter: expectedWriter, originID: expectedCaptureID)
+                return false
+            }
+            do {
+                try await newStream.startCapture()
+            } catch {
+                cancelWakeRecovery(originID: expectedCaptureID)
+                throw error
+            }
 
             // 上述 await 期间用户可能已停止录音（或停止后重开）：仅在仍是同一会话
             // （writer 未被替换、状态仍为 failed/running）时才装回。旧实现无条件
             // 写回 _state = .running，会让已停止会话"复活"成无人回收的幽灵采集
             // （持续采集系统音频 + 泄漏文件句柄）。
-            guard lockedInstallStreamIfCurrent(newStream, expectedWriter: expectedWriter) else {
-                try? await newStream.stopCapture()
+            guard lockedInstallStreamIfCurrent(newStream, expectedWriter: expectedWriter, originID: expectedCaptureID) else {
+                markWakeRecoveryFailed(expectedWriter: expectedWriter, originID: expectedCaptureID)
+                await Self.stopStream(newStream)
                 logger.info("唤醒重连在途期间会话已结束，已丢弃新建的采集流")
                 return false
             }
             logger.info("唤醒后系统音频采集已重连")
             return true
         } catch {
+            markWakeRecoveryFailed(expectedWriter: expectedWriter, originID: expectedCaptureID)
             logger.error("唤醒后系统音频重连失败: \(error.localizedDescription)")
             return false
         }
     }
 
     /// 唤醒重连前的状态快照：旧流引用 + writer 引用（后者用于重连后校验会话未变）
-    private func lockedWakeSnapshot() -> (stream: SCStream?, writer: AVAssetWriter?) {
+    private func beginWakeRecovery(expectedCaptureID: UUID) -> (stream: SCStream?, writer: AVAssetWriter?) {
         stateLock.lock(); defer { stateLock.unlock() }
-        return (_stream, _writer)
+        guard _captureID == expectedCaptureID, !Task.isCancelled,
+              !_userStopped, let writer = _writer,
+              _state == .failed || _state == .running else { return (nil, nil) }
+        let oldStream = _stream
+        _stream = nil
+        _wakeOriginID = expectedCaptureID
+        _captureID = UUID() // 旧流及其已排进 MainActor 的事件立即失效。
+        _state = .reconnecting
+        _awaitingRecoverySample = true
+        return (oldStream, writer)
+    }
+
+    private func installReconnectingStream(
+        _ stream: SCStream, expectedWriter: AVAssetWriter, originID: UUID
+    ) -> Bool {
+        stateLock.lock(); defer { stateLock.unlock() }
+        guard !Task.isCancelled, _wakeOriginID == originID,
+              _state == .reconnecting, _writer === expectedWriter,
+              expectedWriter.status == .writing else { return false }
+        _stream = stream
+        return true
+    }
+
+    private func markWakeRecoveryFailed(expectedWriter: AVAssetWriter, originID: UUID) {
+        stateLock.lock(); defer { stateLock.unlock() }
+        if _wakeOriginID == originID, _writer === expectedWriter, _state == .reconnecting { _state = .failed }
     }
 
     /// 重连成功后安装新流并恢复采集状态。
-    /// 必须确认 writer 仍是快照里的那一个且会话尚未结束（`.failed` 断流待重连，
-    /// 或 `.running` 旧流仍存活），否则返回 false，调用方需停掉新流。
+    /// 必须确认 writer、新流和 reconnecting 状态仍归本次恢复持有；
+    /// 否则返回 false，调用方需停掉新流。
     private func lockedInstallStreamIfCurrent(
-        _ stream: SCStream, expectedWriter: AVAssetWriter
+        _ stream: SCStream, expectedWriter: AVAssetWriter, originID: UUID
     ) -> Bool {
         stateLock.lock(); defer { stateLock.unlock() }
-        guard _writer === expectedWriter, _state == .failed || _state == .running else {
+        guard !Task.isCancelled, _wakeOriginID == originID,
+              _writer === expectedWriter, _stream === stream,
+              _state == .reconnecting, expectedWriter.status == .writing else {
             return false
         }
         _stream = stream
@@ -353,6 +441,8 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
         _writer = writer
         _writerEndpoint = endpoint
         _sessionStarted = false
+        _captureID = UUID()
+        _awaitingRecoverySample = _awaitingRecoverySample || _appendFailureReported
         // 轮转后的新分片重新允许一次失败上报
         _appendFailureReported = false
         return (true, old.0, old.1)
@@ -459,16 +549,36 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
     ///
     /// 清理依据是「资源是否存在」而非状态标志：启动失败与异常断流后资源仍在，
     /// stop() 必须把 writer finalize 掉（否则分片容器不完整、文件句柄泄漏）
-    func stop() async {
+    @discardableResult
+    func stop() async -> StopResult {
         // 同步辅助方法内持锁取出并清空状态（NSLock 不能在 async 上下文直接使用）
         let detached = detachCaptureState()
         if let stream = detached.stream {
-            try? await stream.stopCapture()
+            await Self.stopStream(stream)
         }
         await Self.finalizeWriter(writer: detached.writer, endpoint: detached.writerEndpoint, on: writeQueue)
         // 只在仍处于 stopping 时归位：并发 stop() 交错时不会踩掉随后启动的新会话
         markIdleIfStopping()
         logger.info("系统音频采集已停止")
+        return StopResult(
+            wasInterrupted: detached.wasInterrupted,
+            writerFailed: detached.writer?.status == .failed || detached.writer?.status == .cancelled,
+            droppedSamples: detached.droppedSamples
+        )
+    }
+
+    private static func stopStream(_ stream: SCStream) async {
+        do {
+            try await stream.stopCapture()
+        } catch {
+            let nsError = error as NSError
+            if nsError.domain == SCStreamErrorDomain,
+               nsError.code == SCStreamError.Code.attemptToStopStreamState.rawValue {
+                staticLogger.debug("采集流已经停止，无需重复停止")
+            } else {
+                staticLogger.error("停止系统音频失败 domain=\(nsError.domain, privacy: .public) code=\(nsError.code)")
+            }
+        }
     }
 
     // MARK: - 同步持锁辅助方法（NSLock 在 async 上下文中被禁用，统一包装为同步方法）
@@ -514,6 +624,10 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
         stateLock.lock(); defer { stateLock.unlock() }
         guard _state == .starting, _stream == nil, _writer == nil else { return false }
         _stream = stream
+        _captureID = UUID()
+        _awaitingRecoverySample = false
+        _userStopped = false
+        _wakeOriginID = nil
         _writer = writer
         _writerEndpoint = endpoint
         _sessionStarted = false
@@ -530,24 +644,32 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
     /// 于是 stop() 直接返回、writer 永不 finalize
     private func detachCaptureState(
         matching expectedStream: SCStream? = nil
-    ) -> (stream: SCStream?, writerEndpoint: WriterEndpoint?, writer: AVAssetWriter?) {
+    ) -> (stream: SCStream?, writerEndpoint: WriterEndpoint?, writer: AVAssetWriter?, wasInterrupted: Bool, droppedSamples: Int) {
         stateLock.lock(); defer { stateLock.unlock() }
         if let expectedStream, _stream !== expectedStream {
-            return (nil, nil, nil)
+            return (nil, nil, nil, false, 0)
         }
-        let result = (_stream, _writerEndpoint, _writer)
+        let result = (_stream, _writerEndpoint, _writer,
+                      _state == .failed || _state == .reconnecting,
+                      _dropReported ? _droppedSampleCount : 0)
         let hadResources = (result.0 != nil || result.2 != nil)
         _stream = nil
+        _captureID = UUID()
+        _awaitingRecoverySample = false
+        _wakeOriginID = nil
         _writer = nil
         _writerEndpoint = nil
         _sessionStarted = false
+        _droppedSampleCount = 0
+        _dropReported = false
         // starting 期间即使还未安装资源，stop 也要取消这次启动预约。
         if hadResources || _state == .starting || _state == .failed { _state = .stopping }
         return result
     }
 
-    private func noteDroppedSample() {
+    private func noteDroppedSample(captureID: UUID) {
         stateLock.lock()
+        guard captureID == _captureID else { stateLock.unlock(); return }
         _droppedSampleCount += 1
         let count = _droppedSampleCount
         stateLock.unlock()
@@ -558,18 +680,21 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
         // 累计到阈值后上报一次（会话内仅一次），与 append 失败的上报互相独立
         guard count >= Self.droppedSampleReportThreshold else { return }
         stateLock.lock()
+        guard captureID == _captureID else { stateLock.unlock(); return }
         let shouldReport = !_dropReported
         if shouldReport { _dropReported = true }
-        let callback = _onSamplesDropped
+        let callback = _onEvent
+        let isCurrent = captureID == _captureID
         stateLock.unlock()
-        guard shouldReport else { return }
-        callback?(count)
+        guard shouldReport, isCurrent else { return }
+        callback?(Event(captureID: captureID, kind: .samplesDropped(count)))
     }
 
     /// append 失败处理：日志去抖（5s）+ 上报去重（会话内仅一次）；返回需上报的错误（无需上报时为 nil）
-    private func lockedHandleAppendFailure(_ reason: String) -> Error? {
+    private func lockedHandleAppendFailure(_ reason: String, captureID: UUID) -> Error? {
         stateLock.lock()
         defer { stateLock.unlock() }
+        guard _captureID == captureID else { return nil }
         let now = Date()
         let shouldLog = _lastAppendErrorLoggedAt.map { now.timeIntervalSince($0) >= 5 } ?? true
         if shouldLog {
@@ -590,7 +715,8 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
     ) {
         guard type == .audio else { return }
         stateLock.lock()
-        let isRunning = (_state == .running)
+        let isRunning = (_state == .running && _stream === stream)
+        let captureID = _captureID
         let endpoint = _writerEndpoint
         let writer = _writer
         let sessionStarted = _sessionStarted
@@ -607,26 +733,34 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
             let pts = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
             writer.startSession(atSourceTime: pts)
             stateLock.lock()
-            _sessionStarted = true
+            if _writer === writer, _captureID == captureID { _sessionStarted = true }
             stateLock.unlock()
         }
         // append 失败必须可见：丢弃返回值时，writer 进 .failed 后后续采样全部静默丢失，
         // 用户只能在停录后才发现系统音轨为空
         do {
             guard try endpoint.append(sampleBuffer) else {
-                noteDroppedSample()
+                noteDroppedSample(captureID: captureID)
                 return
             }
+            stateLock.lock()
+            let recovered = _captureID == captureID && _state == .running && _awaitingRecoverySample
+            if recovered { _awaitingRecoverySample = false }
+            let callback = _onEvent
+            stateLock.unlock()
+            if recovered { callback?(Event(captureID: captureID, kind: .recovered)) }
         } catch {
+            let nsError = (writer.error ?? error) as NSError
+            logger.error("系统音频写入失败 domain=\(nsError.domain, privacy: .public) code=\(nsError.code)")
             let reason = String(
                 format: String(localized: "系统音频写入失败，当前系统音频分片可能丢失。\n%@"),
                 writer.error?.localizedDescription ?? error.localizedDescription
             )
-            if let error = lockedHandleAppendFailure(reason) {
+            if lockedHandleAppendFailure(reason, captureID: captureID) != nil {
                 stateLock.lock()
-                let callback = _onStreamError
+                let callback = _onEvent
                 stateLock.unlock()
-                callback?(error)
+                callback?(Event(captureID: captureID, kind: .writerFailed))
             }
         }
     }
@@ -634,21 +768,24 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
     // MARK: - SCStreamDelegate
 
     nonisolated func stream(_ stream: SCStream, didStopWithError error: Error) {
-        logger.error("SCStream 异常停止: \(error.localizedDescription)")
         stateLock.lock()
         // 已被替换的旧流（唤醒重连后）的迟到错误回调直接忽略，避免误抹新流的采集状态
         guard _stream === stream else {
             stateLock.unlock()
-            logger.info("忽略已替换旧流的错误回调")
+            logger.debug("忽略已停止或替换旧流的回调")
             return
         }
         // 只标状态为 failed，**保留** writer/stream 引用：
         // writer 仍需在 stop() 里 finalize（否则当前分片容器不完整、句柄泄漏），
         // 唤醒重连（resumeAfterWake）也依赖 writer 继续写当前分片
         _state = .failed
-        let callback = _onStreamError
+        let nsError = error as NSError
+        _userStopped = nsError.domain == SCStreamErrorDomain && nsError.code == SCStreamError.Code.userStopped.rawValue
+        let callback = _onEvent
+        let captureID = _captureID
         stateLock.unlock()
-        callback?(error)
+        logger.error("SCStream 停止 domain=\(nsError.domain, privacy: .public) code=\(nsError.code)")
+        callback?(Event(captureID: captureID, kind: .interrupted(error)))
     }
 }
 #endif

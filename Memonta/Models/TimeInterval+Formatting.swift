@@ -23,25 +23,43 @@ enum DateFormatters {
 
 extension TimeInterval {
     /// 格式化为持续时间字符串
-    /// - Parameter forceHours: 为 true 时始终显示小时（如 "1:05:30"），为 false 时超过 1 小时才显示
+    /// - Parameters:
+    ///   - forceHours: 为 true 时始终显示小时（如 "1:05:30"），为 false 时超过 1 小时才显示
+    ///   - fractionDigits: 小数位数（0 = 整秒，1 = 0.1 秒，3 = 毫秒）。默认 0 保持既有整秒显示；
+    ///     转写时间戳等需要亚秒精度的场景传 1
     /// - Returns: 格式化后的时间字符串
-    func formattedAsDuration(forceHours: Bool = false) -> String {
+    func formattedAsDuration(forceHours: Bool = false, fractionDigits: Int = 0) -> String {
+        let digits = max(0, fractionDigits)
+        let scale = pow(10.0, Double(digits))
+
         // 录制刚启动时的时钟校正可能短暂给出负值；NaN/无穷大则会让
         // Double -> Int 直接 trap。显示层统一夹到可表示的非负整数，避免界面崩溃。
-        let totalSeconds: Int
+        let safe: Double
         if !isFinite || self <= 0 {
-            totalSeconds = 0
+            safe = 0
         } else if self >= Double(Int.max) {
+            safe = Double(Int.max)
+        } else {
+            safe = self
+        }
+
+        // 先按目标精度四舍五入再拆分：否则 59.97 这类值会被截成 59.9，丢掉进位
+        let rounded = digits > 0 ? (safe * scale).rounded() / scale : safe
+        let totalSeconds: Int
+        if rounded >= Double(Int.max) {
             totalSeconds = Int.max
         } else {
-            totalSeconds = Int(self)
+            totalSeconds = Int(rounded)
         }
         let hours = totalSeconds / 3600
         let minutes = (totalSeconds % 3600) / 60
         let seconds = totalSeconds % 60
-        if hours > 0 || forceHours {
-            return "\(hours):" + String(format: "%02d:%02d", minutes, seconds)
-        }
-        return String(format: "%d:%02d", minutes, seconds)
+        let prefix = (hours > 0 || forceHours)
+            ? "\(hours):" + String(format: "%02d:%02d", minutes, seconds)
+            : String(format: "%d:%02d", minutes, seconds)
+
+        guard digits > 0, totalSeconds < Int.max else { return prefix }
+        let fraction = Int(((rounded - Double(totalSeconds)) * scale).rounded())
+        return prefix + "." + String(format: "%0\(digits)d", fraction)
     }
 }

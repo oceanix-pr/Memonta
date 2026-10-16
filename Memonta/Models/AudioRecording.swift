@@ -536,7 +536,7 @@ extension AudioRecording {
         }
         return snapshot
             .map { item in
-                var line = "**\(item.startTime.formattedAsDuration()) - \(item.endTime.formattedAsDuration())**"
+                var line = "**\(item.startTime.formattedAsDuration(fractionDigits: 1)) - \(item.endTime.formattedAsDuration(fractionDigits: 1))**"
                 if let speaker = item.speaker, !speaker.isEmpty {
                     line += " · **\(speaker)**"
                 }

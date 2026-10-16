@@ -43,6 +43,24 @@ enum EchoReductionPreference {
     }
 }
 
+/// 「录音开始时静音麦克风」偏好的无 UI 存取层。
+///
+/// 与麦克风设备选择（`MicrophoneDeviceRegistry`）、录屏声源/质量同样只存 UserDefaults：
+/// 设置页「录音 → 输入设备」下的开关、截图会话工具栏的麦克风菜单读写同一份偏好，
+/// 开启后每次开始录音/录屏都先静音麦克风采集（录音中随时可从徽章菜单或菜单栏「麦克风」解除）。
+/// 标准模式不暴露静音策略，`EffectiveSettingsResolver` 会把它强制为关闭。
+enum MicrophoneStartMutePreference {
+    static let defaultsKey = "microphone_start_muted"
+
+    static func isEnabled(in defaults: UserDefaults = .standard) -> Bool {
+        defaults.object(forKey: defaultsKey) as? Bool ?? false
+    }
+
+    static func set(_ enabled: Bool, in defaults: UserDefaults = .standard) {
+        defaults.set(enabled, forKey: defaultsKey)
+    }
+}
+
 /// 录音配置（纯值类型，由 SettingsViewModel 通过 UserDefaults 持久化）
 struct RecordingConfig: Sendable {
     /// 录音来源
@@ -51,6 +69,8 @@ struct RecordingConfig: Sendable {
     var autoMuteDetection: Bool
     /// 是否启用应用层静音检测（通过 Accessibility API 检测 Teams/Zoom 等会议软件的静音状态）
     var appMuteDetection: Bool
+    /// 是否在录音开始时静音麦克风采集（用户可在录音中手动解除）
+    var startMuted: Bool
     /// 录音文件格式（m4a/AAC，便于转写前统一转换）
     var fileFormat: String
 
@@ -58,11 +78,13 @@ struct RecordingConfig: Sendable {
         source: RecordingSource = .mixed,
         autoMuteDetection: Bool = true,
         appMuteDetection: Bool = false,
+        startMuted: Bool = false,
         fileFormat: String = "m4a"
     ) {
         self.source = source
         self.autoMuteDetection = autoMuteDetection
         self.appMuteDetection = appMuteDetection
+        self.startMuted = startMuted
         self.fileFormat = fileFormat
     }
 }

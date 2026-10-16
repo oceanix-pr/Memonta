@@ -50,6 +50,10 @@ struct SettingsView: View {
     /// （空串 = 跟随系统默认输入设备），与录屏声源/质量同样走 AppStorage 保持双向同步
     @AppStorage(MicrophoneDeviceRegistry.selectionDefaultsKey) private var microphoneDeviceUID: String = ""
 
+    /// 录音开始时静音麦克风：与截图会话工具栏的麦克风菜单读写同一份偏好，
+    /// 录音中可随时从录音徽章菜单或菜单栏「麦克风」解除
+    @AppStorage(MicrophoneStartMutePreference.defaultsKey) private var microphoneStartMuted: Bool = false
+
     /// 离线参考回声消除：默认开启，仅专业模式的录音页暴露
     @AppStorage(EchoReductionPreference.defaultsKey) private var echoReductionEnabled: Bool = true
 
@@ -1405,6 +1409,13 @@ struct SettingsView: View {
                             Text("已断开，将回退系统默认").tag(microphoneDeviceUID)
                         }
                     }
+
+                    // 麦克风选择处同时给出静音入口：这里设的是「开始时」的初始状态，
+                    // 录音中再改走徽章菜单 / 菜单栏「麦克风」/ 截图会话工具栏的麦克风菜单
+                    Toggle("录音开始时静音麦克风", isOn: $microphoneStartMuted)
+                    Text("开启后，每次开始录音或录屏都会先静音麦克风采集；录音中可在录音状态徽章或菜单栏「麦克风」里随时解除。")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
                 #endif
 
