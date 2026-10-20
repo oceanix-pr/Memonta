@@ -737,7 +737,9 @@ final class SpeakerDiarizationService: @unchecked Sendable {
             return .empty
         }
         var names: [String: String] = [:]
-        if enableVoiceprintRecognition {
+        // 声纹属敏感个人信息：即使旧配置或队列快照仍写着 true，
+        // 单独同意被撤回后也不得再比对声纹库。
+        if enableVoiceprintRecognition, MemontaPrivacyPolicy.voiceprintConsentGranted() {
             onStage?(String(localized: "正在比对声纹…"), 0.85)
             names = identifySpeakersFromCentroids(centroids)
         }

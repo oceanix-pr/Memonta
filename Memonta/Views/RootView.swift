@@ -64,7 +64,15 @@ struct RootView: View {
         guard !completedKey.isEmpty else { return true }
         return completedKey != majorMinorVersion(current)
     }
-    @AppStorage("hasAcceptedPrivacyPolicy") private var hasAcceptedPrivacyPolicy = false
+    @AppStorage(MemontaPrivacyPolicy.StorageKey.accepted) private var hasAcceptedPrivacyPolicy = false
+    @AppStorage(MemontaPrivacyPolicy.StorageKey.acceptedVersion) private var acceptedPrivacyVersion = ""
+    /// 同意状态必须同时比对政策版本：只读布尔量会让“协议改了但老用户不再确认”的漏洞复发。
+    private var needsPrivacyConsent: Bool {
+        MemontaPrivacyPolicy.needsConsent(
+            accepted: hasAcceptedPrivacyPolicy,
+            storedVersion: acceptedPrivacyVersion
+        )
+    }
     /// 录音徽章麦克风菜单选中的输入设备 UID（空 = 跟随系统默认）。
     /// 与设置页「录音 → 输入设备」、菜单栏「麦克风」、截图会话工具栏读写同一偏好，
     /// 改任一处，其余入口立即跟随
@@ -215,7 +223,7 @@ struct RootView: View {
         .modifier(LifecycleTasksModifier(
             modelContext: modelContext,
             viewModel: viewModel,
-            privacyAccepted: hasAcceptedPrivacyPolicy,
+            privacyAccepted: !needsPrivacyConsent,
             sttConfig: settingsVM.makeSTTConfig(experience: experienceStore.current),
             isTransientMode: isTransientMode,
             onSyncResult: { handleSyncResult($0, isManualRefresh: false) }
@@ -352,7 +360,7 @@ struct RootView: View {
         }
         #endif
         .onAppear {
-            if !hasAcceptedPrivacyPolicy {
+            if needsPrivacyConsent {
                 showPrivacyConsent = true
             } else if !hasCompletedOnboarding {
                 showOnboarding = true
@@ -387,7 +395,9 @@ struct RootView: View {
             PrivacyConsentView()
                 .interactiveDismissDisabled()
                 .onDisappear {
-                    if hasAcceptedPrivacyPolicy && !hasCompletedOnboarding {
+                    // 直接读 UserDefaults：@AppStorage 的通知可能晚于 sheet 关闭回调，
+                    // 用静态判断保证“刚同意的新用户”能立即进入引导页。
+                    if !MemontaPrivacyPolicy.needsConsent() && !hasCompletedOnboarding {
                         showOnboarding = true
                     }
                 }

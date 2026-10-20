@@ -113,7 +113,21 @@ enum MicrophoneDeviceRegistry {
 
     /// UID → 设备 ID；设备不存在返回 nil
     static func deviceID(forUID uid: String) -> AudioDeviceID? {
-        inputDeviceIDs().first { stringProperty($0, kAudioDevicePropertyDeviceUID) == uid }
+        inputDeviceIDs().first { stringProperty($0, kAudioDevicePropertyDeviceUID) == uid && isAlive($0) != false }
+    }
+
+    /// 蓝牙断连时设备 ID 可能暂时仍在设备列表中；只有明确失效才排除。
+    static func isAlive(_ deviceID: AudioDeviceID) -> Bool? {
+        var address = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyDeviceIsAlive,
+            mScope: kAudioObjectPropertyScopeGlobal, mElement: kAudioObjectPropertyElementMain)
+        var alive = UInt32(0)
+        var size = UInt32(MemoryLayout<UInt32>.size)
+        let status = AudioObjectGetPropertyData(deviceID, &address, 0, nil, &size, &alive)
+        guard status == noErr else {
+            logger.debug("读取麦克风设备存活状态失败：OSStatus=\(status)")
+            return nil
+        }
+        return alive != 0
     }
 
     /// 系统默认输入设备
@@ -195,6 +209,43 @@ enum MicrophoneDeviceRegistry {
     }
 
     // MARK: - CoreAudio 读取
+
+    /// 注册列表初始化后不变；CoreAudio 管理回调派发，释放时逐一注销。
+    /// 回调只捕获调用方提供的 Sendable 闭包，不访问本 token 的状态。
+    final class ChangeObservation: @unchecked Sendable {
+        private struct Registration {
+            let object: AudioObjectID
+            var address: AudioObjectPropertyAddress
+            let block: AudioObjectPropertyListenerBlock
+        }
+        private let registrations: [Registration]
+
+        init(deviceID: AudioDeviceID, onChange: @escaping @Sendable () -> Void) {
+            var installed: [Registration] = []
+            let properties: [(AudioObjectID, AudioObjectPropertySelector)] = [
+                (systemObject, kAudioHardwarePropertyDefaultInputDevice),
+                (systemObject, kAudioHardwarePropertyDevices),
+                (deviceID, kAudioDevicePropertyDeviceIsAlive),
+                (deviceID, kAudioDevicePropertyNominalSampleRate)
+            ]
+            for (object, selector) in properties {
+                var address = AudioObjectPropertyAddress(mSelector: selector,
+                    mScope: kAudioObjectPropertyScopeGlobal, mElement: kAudioObjectPropertyElementMain)
+                let block: AudioObjectPropertyListenerBlock = { _, _ in onChange() }
+                let status = AudioObjectAddPropertyListenerBlock(object, &address, .main, block)
+                if status == noErr { installed.append(Registration(object: object, address: address, block: block)) }
+                else { logger.error("监听麦克风设备变化失败：OSStatus=\(status) selector=\(selector)") }
+            }
+            registrations = installed
+        }
+
+        deinit {
+            for var registration in registrations {
+                let status = AudioObjectRemovePropertyListenerBlock(registration.object, &registration.address, .main, registration.block)
+                if status != noErr { logger.debug("注销麦克风设备监听：OSStatus=\(status)") }
+            }
+        }
+    }
 
     private static func inputDeviceIDs() -> [AudioDeviceID] {
         var address = AudioObjectPropertyAddress(

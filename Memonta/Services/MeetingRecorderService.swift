@@ -83,6 +83,10 @@ final class MeetingRecorderService: @unchecked Sendable {
             report.issues.append(.captureWarning)
         }
         if mergeHadDegradation { report.issues.append(.audioDegraded) }
+        report.skippedSegments = skippedSegmentNames.isEmpty ? nil : skippedSegmentNames
+        report.retainedOriginals = retainedOriginals ? true : nil
+        report.microphoneLastSuccessfulWriteAt = microphoneLastWrite
+        report.microphoneWrittenFrames = microphoneFrames
         return report
     }
 
@@ -106,6 +110,12 @@ final class MeetingRecorderService: @unchecked Sendable {
     private(set) var isMerging = false
     private var mergeHadDegradation = false
     private var captureHadWarningBeforeMerge = false
+    private var segmentTimeline: RecordingSegmentTimelineStore?
+    private var timelineSaveFailed = false
+    private var skippedSegmentNames: [String] = []
+    private var retainedOriginals = false
+    private var microphoneLastWrite: Date?
+    private var microphoneFrames: Int64?
     /// 本次合并的预计完成时刻（由导出看门狗上限推得）：退出等待与看门狗**同源**，
     /// 避免旧版写死 300s（而导出可跑至 3600s）造成“等待到期→强退→事故复现”
     private(set) var mergeProjectedFinishAt: Date?
@@ -351,7 +361,18 @@ final class MeetingRecorderService: @unchecked Sendable {
         micRecoveryError = nil
         mergeHadDegradation = false
         captureHadWarningBeforeMerge = false
+        skippedSegmentNames = []
+        retainedOriginals = false
+        timelineSaveFailed = false
+        microphoneLastWrite = nil
+        microphoneFrames = nil
         let captureSession = UUID()
+        segmentTimeline = RecordingSegmentTimelineStore { [weak self] in
+            Task { @MainActor [weak self] in
+                guard let self, self.activeCaptureSession == captureSession else { return }
+                self.saveCaptureTimeline()
+            }
+        }
         activeCaptureSession = captureSession
         captureHealth = RecordingCaptureHealth(
             usesSystemAudio: config.source != .microphone,
@@ -400,6 +421,7 @@ final class MeetingRecorderService: @unchecked Sendable {
         pendingMergeFinalURL = finalURL
 
         do {
+            try segmentTimeline?.save(in: folderDir)
             // 静音状态复位：上一次会话可能停在静音（停止路径同样会复位），本次按配置重新决定。
             // 采集层在首包前应用初始静音；这里同步界面状态。
             isMicMuted = false
@@ -411,6 +433,7 @@ final class MeetingRecorderService: @unchecked Sendable {
             case .microphone:
                 try await startMicCapture(url: firstMicURL)
             case .systemAudio:
+                micSegmentURLs = []
                 #if os(macOS)
                 // 先预检权限，未授权则阻止录音启动（不触发 SCShareableContent）
                 guard SystemAudioCaptureService.preflightPermission() else {
@@ -538,7 +561,14 @@ final class MeetingRecorderService: @unchecked Sendable {
         appMuteDetector.stop()
         #endif
 
+        microphoneLastWrite = micCapture.lastSuccessfulWriteAt
+        microphoneFrames = config.source == .systemAudio ? nil : micCapture.writtenFrames
+        if let session = captureHealth.sessionID, config.source != .systemAudio, !micCapture.hasRecentWrites {
+            captureHealth.handle(.microphoneUnavailable, sessionID: session, lastSuccessfulWriteAt: microphoneLastWrite)
+        }
         await stopAllCaptures()
+        segmentTimeline?.finish()
+        saveCaptureTimeline()
         captureHealth.finish()
 
         isRecording = false
@@ -609,6 +639,8 @@ final class MeetingRecorderService: @unchecked Sendable {
             logger.warning("系统音频收尾超时，分片将在进程退出后由 worker 恢复")
         }
         #endif
+        segmentTimeline?.finish()
+        saveCaptureTimeline()
         isRecording = false
         isScreenRecording = false
         elapsedSeconds = 0
@@ -621,6 +653,7 @@ final class MeetingRecorderService: @unchecked Sendable {
 
     /// 重置分片状态（不清理磁盘文件：分片保留供恢复/手动处理）
     private func resetSegmentState() {
+        segmentTimeline = nil
         segmentFolderDir = nil
         segmentBaseName = nil
         segmentIndex = 0
@@ -671,7 +704,8 @@ final class MeetingRecorderService: @unchecked Sendable {
         // 否则旧调用的 defer 会踩掉新会话刚置上的 isRotating（导致并发轮转）
         defer { if segmentSessionID == session { isRotating = false } }
 
-        let nextIndex = segmentIndex + 1
+        segmentIndex += 1 // await 前保留编号，设备恢复可能在等待系统 writer 收尾时再分配编号。
+        let nextIndex = segmentIndex
 
         // 麦克风：同步原子替换（先建新文件再切换，无写入空窗）
         if micActive {
@@ -701,7 +735,6 @@ final class MeetingRecorderService: @unchecked Sendable {
             return
         }
 
-        segmentIndex = nextIndex
         lastRotationDate = Date()
         logger.info("分片轮转 → 第 \(nextIndex) 片")
     }
@@ -712,7 +745,7 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// - 两轨均有可播放分片：各自顺序拼接后叠加混音导出
     /// - 仅一轨有可播放分片：该轨分片顺序拼接（旧版 m4a 单分片直接改名）
     /// - 全部不可播放（仅旧版 AAC 分片缺 moov atom）：保留分片并提示用户
-    /// 成功时清理全部分片（含未被消费的不可播放空壳，如无 data 块的零帧 CAF）；
+    /// 完整且无采集故障时清理分片；降级/跳片时全部保留；
     /// 失败时保留分片供手动处理
     /// - Returns: 最终文件 URL；失败返回 nil
     private func mergeSegments(
@@ -742,12 +775,24 @@ final class MeetingRecorderService: @unchecked Sendable {
         FileSyncService.writeMergeMarker(at: folderURL)
         defer { FileSyncService.removeMergeMarker(at: folderURL) }
 
+        var timeline: RecordingSegmentTimeline?
+        do { timeline = try RecordingSegmentTimeline.load(in: folderURL) }
+        catch {
+            retainedOriginals = true
+            lastError = String(localized: "录音时间轴保存失败，原始分片已保留。")
+            logger.error("无法读取录音时间轴，停止合并并保留原片: \(error.localizedDescription)")
+            return nil
+        }
+
         var micOK: [URL] = []
         for url in micURLs where await isPlayable(at: url) { micOK.append(url) }
         var sysOK: [URL] = []
         for url in sysURLs where await isPlayable(at: url) { sysOK.append(url) }
 
-        let skipped = (micURLs.count - micOK.count) + (sysURLs.count - sysOK.count)
+        skippedSegmentNames = (micURLs + sysURLs).filter { !micOK.contains($0) && !sysOK.contains($0) }.map(\.lastPathComponent)
+        let skipped = skippedSegmentNames.count
+        retainedOriginals = skipped > 0 || timelineSaveFailed || captureHadWarningBeforeMerge
+            || micRecoveryError != nil || captureHealth.report.hasWarning
         if skipped > 0 {
             mergeHadDegradation = true
             logger.warning("跳过 \(skipped) 个不可播放分片（静音期空段或异常退出遗留的未 finalize 分片）")
@@ -769,10 +814,15 @@ final class MeetingRecorderService: @unchecked Sendable {
         // 混音后会造成转写重复与说话人误判）。只对已确认可播放的成对分片处理，
         // 任一环节失败/超时/取消都回退为原始分片，不丢音频、不阻断合并入库。
         var createdCleanURLs: [URL] = []
-        if !skipEchoReduction, !micOK.isEmpty, !sysOK.isEmpty, EchoReductionPreference.isEnabled() {
+        if !skipEchoReduction, !micOK.isEmpty, !sysOK.isEmpty, EchoReductionPreference.isEnabled(),
+           await RecordingSegmentTimeline.canReduceEcho(mic: micOK, system: sysOK, timeline: timeline) {
             if let reduced = await runEchoReduction(
                 micOK: micOK, sysOK: sysOK, outputURL: outputURL, timeout: echoTimeout
             ) {
+                for (original, cleaned) in zip(micOK, reduced.micURLs) {
+                    let start = timeline?.starts[original.lastPathComponent]
+                    timeline?.starts[cleaned.lastPathComponent] = start
+                }
                 micOK = reduced.micURLs
                 createdCleanURLs = reduced.createdURLs
             }
@@ -792,13 +842,12 @@ final class MeetingRecorderService: @unchecked Sendable {
 
         // 两轨均可用：拼接后叠加混音
         if !micOK.isEmpty && !sysOK.isEmpty {
-            if await exportMixedComposition(micSegments: micOK, sysSegments: sysOK, outputURL: outputURL, timeout: exportTimeout) {
-                // 可播放分片已全部混入最终文件，其余（未被消费的不可播放空壳）一并清理，
-                // 避免合并成功后文件夹残留 _tmp 分片
+            if await exportMixedComposition(micSegments: micOK, sysSegments: sysOK, outputURL: outputURL, timeout: exportTimeout, timeline: timeline) {
+                // 只有完整且无采集故障的合并才删除原片；未知/未消费素材保留。
                 let shellCount = micURLs.count + sysURLs.count - micOK.count - sysOK.count
-                removeSegments(cleanupURLs)
+                if !retainedOriginals { removeSegments(cleanupURLs) }
                 if shellCount > 0 {
-                    logger.info("已清理 \(shellCount) 个不可播放空壳分片")
+                    logger.warning("已保留 \(shellCount) 个未合入分片供修复")
                 }
                 mergePhase = .saving
                 logger.info("音频合并完成: \(outputURL.lastPathComponent)")
@@ -806,6 +855,7 @@ final class MeetingRecorderService: @unchecked Sendable {
             }
             // 混音导出失败：回退为仅拼接麦克风轨
             mergeHadDegradation = true
+            retainedOriginals = true
             logger.error("双轨混音失败，回退为仅麦克风音轨")
             lastError = String(localized: "两条音轨合并失败，已保留麦克风音轨，系统音频可能丢失。")
         } else if micOK.isEmpty, config.source != .systemAudio {
@@ -815,12 +865,13 @@ final class MeetingRecorderService: @unchecked Sendable {
             mergeHadDegradation = true
         }
 
-        // 单轨路径：主轨（麦克风优先）分片顺序拼接
+        retainedOriginals = retainedOriginals || mergeHadDegradation
+
+        // 单轨路径：按时间轴保留缺口（麦克风优先）
         let single = !micOK.isEmpty ? micOK : sysOK
-        if let result = await concatOrMove(segments: single, to: outputURL, timeout: exportTimeout) {
-            // 与双轨路径一致：全部分片清理（含不可播放空壳）；另一轨音频未混入最终
-            // 文件的丢失风险已由上方 lastError 明确提示用户
-            removeSegments(cleanupURLs)
+        if let result = await concatOrMove(segments: single, to: outputURL, timeout: exportTimeout, timeline: timeline) {
+            // 单轨回退与跳片时保留全部原片，不能删除未合入的另一轨。
+            if !retainedOriginals { removeSegments(cleanupURLs) }
             mergePhase = .saving
             logger.info("分片拼接完成: \(outputURL.lastPathComponent)（\(single.count) 片）")
             return result
@@ -898,32 +949,24 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// 顺序拼接分片导出为最终 m4a；旧版 m4a 单分片直接移动（零开销），
     /// PCM 分片（caf/wav）必须经导出转为 AAC 容器
     /// - Returns: 输出文件 URL；失败返回 nil
-    private func concatOrMove(segments: [URL], to outputURL: URL, timeout: TimeInterval) async -> URL? {
+    private func concatOrMove(segments: [URL], to outputURL: URL, timeout: TimeInterval, timeline: RecordingSegmentTimeline?) async -> URL? {
         guard !segments.isEmpty else { return nil }
-        if segments.count == 1, segments[0].pathExtension.lowercased() == "m4a" {
-            return try? moveFile(at: segments[0], to: outputURL)
-        }
+        var temporaryFiles: [URL] = []
+        defer { removeSegments(temporaryFiles) }
         do {
             let composition = AVMutableComposition()
             let track = composition.addMutableTrack(
                 withMediaType: .audio,
                 preferredTrackID: kCMPersistentTrackID_Invalid
             )
-            var cursor = CMTime.zero
-            for url in segments {
-                let asset = AVURLAsset(url: url)
-                guard let src = try await asset.loadTracks(withMediaType: .audio).first else { continue }
-                let duration = try await asset.load(.duration)
-                try track?.insertTimeRange(CMTimeRange(start: .zero, duration: duration), of: src, at: cursor)
-                cursor = cursor + duration
-            }
+            let seconds = try await RecordingSegmentTimeline.append(segments, to: track, timeline: timeline, temporaryFiles: &temporaryFiles)
             guard let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetAppleM4A) else {
                 return nil
             }
             if FileManager.default.fileExists(atPath: outputURL.path) {
                 try? FileManager.default.removeItem(at: outputURL)
             }
-            try await exportWithWatchdog(exporter, outputURL: outputURL, estimatedAudioDuration: CMTimeGetSeconds(cursor), timeout: timeout)
+            try await exportWithWatchdog(exporter, outputURL: outputURL, estimatedAudioDuration: seconds, timeout: timeout)
             // 校验可播放性：导出过程被中断会留下容器未 finalize 的损坏文件
             return await isPlayable(at: outputURL) ? outputURL : nil
         } catch {
@@ -934,7 +977,9 @@ final class MeetingRecorderService: @unchecked Sendable {
 
     /// 两条轨各自顺序拼接后叠加混音导出为最终文件
     /// - Returns: 是否成功（含导出后可播放性校验）
-    private func exportMixedComposition(micSegments: [URL], sysSegments: [URL], outputURL: URL, timeout: TimeInterval) async -> Bool {
+    private func exportMixedComposition(micSegments: [URL], sysSegments: [URL], outputURL: URL, timeout: TimeInterval, timeline: RecordingSegmentTimeline?) async -> Bool {
+        var temporaryFiles: [URL] = []
+        defer { removeSegments(temporaryFiles) }
         do {
             let composition = AVMutableComposition()
 
@@ -943,28 +988,14 @@ final class MeetingRecorderService: @unchecked Sendable {
                 withMediaType: .audio,
                 preferredTrackID: kCMPersistentTrackID_Invalid
             )
-            var micCursor = CMTime.zero
-            for url in micSegments {
-                let asset = AVURLAsset(url: url)
-                guard let src = try await asset.loadTracks(withMediaType: .audio).first else { continue }
-                let duration = try await asset.load(.duration)
-                try micTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: duration), of: src, at: micCursor)
-                micCursor = micCursor + duration
-            }
+            let micSeconds = try await RecordingSegmentTimeline.append(micSegments, to: micTrack, timeline: timeline, temporaryFiles: &temporaryFiles)
 
             // 系统音频轨：分片顺序拼接，与麦克风同时开始（叠加混音）
             let sysTrack = composition.addMutableTrack(
                 withMediaType: .audio,
                 preferredTrackID: kCMPersistentTrackID_Invalid
             )
-            var sysCursor = CMTime.zero
-            for url in sysSegments {
-                let asset = AVURLAsset(url: url)
-                guard let src = try await asset.loadTracks(withMediaType: .audio).first else { continue }
-                let duration = try await asset.load(.duration)
-                try sysTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: duration), of: src, at: sysCursor)
-                sysCursor = sysCursor + duration
-            }
+            let sysSeconds = try await RecordingSegmentTimeline.append(sysSegments, to: sysTrack, timeline: timeline, temporaryFiles: &temporaryFiles)
 
             guard let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetAppleM4A) else {
                 return false
@@ -972,8 +1003,7 @@ final class MeetingRecorderService: @unchecked Sendable {
             if FileManager.default.fileExists(atPath: outputURL.path) {
                 try? FileManager.default.removeItem(at: outputURL)
             }
-            let estimatedSeconds = CMTimeGetSeconds(micCursor) > CMTimeGetSeconds(sysCursor)
-                ? CMTimeGetSeconds(micCursor) : CMTimeGetSeconds(sysCursor)
+            let estimatedSeconds = max(micSeconds, sysSeconds)
             try await exportWithWatchdog(exporter, outputURL: outputURL, estimatedAudioDuration: estimatedSeconds, timeout: timeout)
             // 导出后校验：导出过程中进程退出/崩溃会留下体积完整但容器未 finalize 的损坏文件
             return await isPlayable(at: outputURL)
@@ -1077,7 +1107,7 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// 启动麦克风采集（所有平台可用）
     /// 首次运行会在权限未决时弹系统授权框，故为 async
     private func startMicCapture(url: URL) async throws {
-        try await micCapture.start(to: url, initiallyMuted: config.startMuted)
+        try await micCapture.start(to: url, initiallyMuted: config.startMuted, timeline: segmentTimeline)
     }
 
     /// 读失败时保守保留，不能把不可读取的录音当作空壳删除。
@@ -1097,7 +1127,7 @@ final class MeetingRecorderService: @unchecked Sendable {
     #if os(macOS)
     /// 启动系统音频采集（仅 macOS）
     private func startSystemCapture(url: URL) async throws {
-        try await systemCapture.start(to: url)
+        try await systemCapture.start(to: url, timeline: segmentTimeline)
     }
 
     private func setupMuteMonitor() {
@@ -1197,8 +1227,25 @@ final class MeetingRecorderService: @unchecked Sendable {
                 if self.diskPacer.fireIfNeeded(at: Date()) {
                     self.checkDiskSpaceWhileRecording()
                 }
+                if self.sleepStartDate == nil, self.config.source != .systemAudio {
+                    self.micCapture.checkCaptureHealth()
+                }
+                self.saveCaptureTimeline()
                 // 分片滚动：到点轮转，确保任何时刻崩溃最多丢一片
                 await self.rotateSegments()
+            }
+        }
+        if let timer { RunLoop.main.add(timer, forMode: .common) }
+    }
+
+    private func saveCaptureTimeline() {
+        guard let folder = segmentFolderDir, let segmentTimeline else { return }
+        do { try segmentTimeline.save(in: folder) }
+        catch {
+            logger.error("录音时间轴保存失败: \(error.localizedDescription)")
+            if !timelineSaveFailed {
+                timelineSaveFailed = true
+                lastError = String(localized: "录音时间轴保存失败，原始分片已保留。")
             }
         }
     }

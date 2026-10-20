@@ -280,6 +280,19 @@ struct RecordingDetailView: View {
                         ForEach(Array(report.issues.enumerated()), id: \.offset) { _, issue in
                             Text(issue.message)
                         }
+                        if let last = report.microphoneLastSuccessfulWriteAt {
+                            HStack {
+                                Text("最近成功写入")
+                                Text(last, style: .time)
+                            }
+                        }
+                        if let skipped = report.skippedSegments, !skipped.isEmpty {
+                            Text("已跳过的音频分片")
+                            ForEach(skipped, id: \.self) { Text(verbatim: $0).textSelection(.enabled) }
+                        }
+                        if report.retainedOriginals == true {
+                            Text("原始音频分片已保留在录音文件夹，可用于修复。")
+                        }
                         Text("以下时间是观察到的采集中断区间，不代表精确的声音缺失时长。")
                             .foregroundStyle(.secondary)
                     }

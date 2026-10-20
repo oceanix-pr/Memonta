@@ -2015,6 +2015,10 @@ final class RecordingViewModel {
             showErrorMessage(blocked.message)
             throw blocked
         }
+        // 声纹属生物识别信息：没有单独同意就不得生成（设置页只是偏好，不能替代同意）
+        guard MemontaPrivacyPolicy.voiceprintConsentGranted() else {
+            throw VoiceprintError.consentRequired
+        }
         let ranges = recording.segments
             .filter { $0.speaker == speaker }
             .map { (start: $0.startTime, end: $0.endTime) }

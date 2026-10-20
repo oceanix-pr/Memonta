@@ -50,6 +50,9 @@ struct SettingsView: View {
     /// （空串 = 跟随系统默认输入设备），与录屏声源/质量同样走 AppStorage 保持双向同步
     @AppStorage(MicrophoneDeviceRegistry.selectionDefaultsKey) private var microphoneDeviceUID: String = ""
 
+    /// 声纹单独同意：未同意时“自动识别声纹”开关不可用（敏感个人信息不能被普通偏好替代同意）
+    @AppStorage(MemontaPrivacyPolicy.StorageKey.voiceprintConsent) private var voiceprintConsentGranted = false
+
     /// 录音开始时静音麦克风：与截图会话工具栏的麦克风菜单读写同一份偏好，
     /// 录音中可随时从录音徽章菜单或菜单栏「麦克风」解除
     @AppStorage(MicrophoneStartMutePreference.defaultsKey) private var microphoneStartMuted: Bool = false
@@ -764,7 +767,7 @@ struct SettingsView: View {
             Section("自动设置") {
                 Label("Memonta 会自动选择录音来源、检测系统静音并在设备变化后继续录音。", systemImage: "wand.and.stars")
                     .font(.subheadline)
-                Text("需要选择具体麦克风、单独录制系统声音或跟随会议软件静音时，可以开启专业模式。")
+                Text("需要选择具体麦克风或单独录制系统声音时，可以开启专业模式。")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -1037,9 +1040,13 @@ struct SettingsView: View {
                     diarizationModelRow
                     cpuCoreRow
                     precisionRow
-                    Toggle(isOn: $settingsVM.enableVoiceprintRecognition) {
+                    Toggle(isOn: Binding(
+                        get: { voiceprintConsentGranted && settingsVM.enableVoiceprintRecognition },
+                        set: { settingsVM.enableVoiceprintRecognition = $0 }
+                    )) {
                         Label("自动识别声纹", systemImage: "person.wave.2")
                     }
+                    .disabled(!voiceprintConsentGranted)
                     // 声纹库已有独立侧边栏 section：直接切换选中项而非推入导航层，
                     // 避免推入页导致侧边栏菜单点击看似无响应
                     Button {
@@ -1047,10 +1054,16 @@ struct SettingsView: View {
                     } label: {
                         Label("管理声纹库", systemImage: "person.text.rectangle")
                     }
+                    if !voiceprintConsentGranted {
+                        Label("声纹处理需要单独同意。请到「设置 → 关于 → 隐私政策」开启「声纹处理单独同意」。", systemImage: "lock.shield")
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                     Text("转写完成后自动区分会议中的不同说话人（基于 pyannote 分段模型，CPU 推理，完全本地运行，说话人数量自动识别）。开启后转写耗时略有增加；模型未就绪时自动跳过，不影响转写。")
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    if settingsVM.enableVoiceprintRecognition {
+                    if voiceprintConsentGranted && settingsVM.enableVoiceprintRecognition {
                         Text("分离完成后与声纹库比对，命中的说话人直接标注为注册姓名（在转写页点“声纹”按钮标记）；未命中保留“说话人 N”。")
                             .font(.caption)
                             .foregroundStyle(.secondary)
@@ -1451,8 +1464,9 @@ struct SettingsView: View {
                 }
                 #endif
 
-                Toggle("自动跟随会议软件静音", isOn: $settingsVM.appMuteDetection)
-                Text("开启后，通过辅助功能权限检测 Teams/Zoom 等会议软件中的静音按钮状态，自动同步 Memonta 的麦克风采集。\n\n需要先在「系统设置 → 隐私与安全性 → 辅助功能」中授予 Memonta 权限。")
+                Toggle("自动跟随会议软件静音（当前版本未启用）", isOn: .constant(false))
+                    .disabled(true)
+                Text("应用层静音检测依赖辅助功能权限；代码保留但当前版本未启动，因此该开关暂不生效。系统级静音仍可使用上方的「自动检测系统静音」。")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -1793,7 +1807,7 @@ struct SettingsView: View {
 
             VStack(spacing: 8) {
                 Label("会议录音：麦克风 + 系统音频", systemImage: "record.circle")
-                Label("智能静音检测：跟随会议软件自动暂停", systemImage: "mic.slash")
+                Label("系统静音检测：跟随系统静音自动暂停", systemImage: "mic.slash")
                 Label("快捷笔记：文字 / 图片即录即拆待办", systemImage: "note.text")
                 Label("本地 WhisperKit + OpenAI API 双模式转写", systemImage: "waveform")
                 Label("AI 待办拆解：一键写入系统提醒事项", systemImage: "checklist")

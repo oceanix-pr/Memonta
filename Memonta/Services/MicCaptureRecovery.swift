@@ -1,5 +1,24 @@
 import Foundation
 
+/// 运行中的采集也要持续有写入。故障只触发一轮恢复，避免每秒重置 15 秒预算。
+struct MicCaptureLiveness {
+    static let timeout: Duration = .seconds(3)
+    private(set) var lastWrite: ContinuousClock.Instant?
+    private(set) var recoveryRequested = false
+
+    mutating func wrote(at instant: ContinuousClock.Instant = .now) { lastWrite = instant }
+    mutating func recoveryBegan() { recoveryRequested = true }
+    mutating func recovered() { recoveryRequested = false }
+
+    mutating func shouldRecover(engineRunning: Bool, recoveryActive: Bool,
+                                now: ContinuousClock.Instant = .now) -> Bool {
+        guard !recoveryActive, !recoveryRequested, let lastWrite,
+              !engineRunning || lastWrite.duration(to: now) >= Self.timeout else { return false }
+        recoveryRequested = true
+        return true
+    }
+}
+
 /// 设备切换后的启动与首包确认共用一个预算。只在主线程协调引擎操作，
 /// 音频回调用 Attempt 值回传写入确认，不把 AVAudioEngine 带入回调。
 @MainActor

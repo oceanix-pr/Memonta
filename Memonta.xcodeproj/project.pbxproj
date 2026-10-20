@@ -51,6 +51,7 @@
 		412C88A9A5F10637A3B12643 /* STTConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836D2C84294295CC44E3097A /* STTConfig.swift */; };
 		4400FA269D5351CAE49A3C70 /* AnnotationOverlaySupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B7C4CFDF01AEEE0FA40C9 /* AnnotationOverlaySupport.swift */; };
 		48EBAB29F87D119643FA88CE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AC3BC74F10E8DA7049410B98 /* README.md */; };
+		4995D243EA8159CA684A4DF2 /* RecordingSegmentTimelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20AEA0492EC2E69874A67ED /* RecordingSegmentTimelineTests.swift */; };
 		4ADF0AF58AE2BDCB08ED9E7F /* StartupRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F143EFF7EF8C4688188C5AD6 /* StartupRootView.swift */; };
 		4AF137EBEB629D4567F59FBB /* VoiceprintLibraryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4802806EC17AC22A3BC84B9D /* VoiceprintLibraryViews.swift */; };
 		500D1CDFE70FD951032D2838 /* AccessibilityAuditUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FD426D45E40230A5D9091E /* AccessibilityAuditUITests.swift */; };
@@ -68,6 +69,7 @@
 		64B23FDD44280BB9FD52EBB5 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F06101DB2937C96879FBA28 /* HelpView.swift */; };
 		64CAAA200DD00295AED91FEF /* NoteSpeechView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1F6C25F6EFC70FB9BF96ED /* NoteSpeechView.swift */; };
 		66A7D528D1E3862CFCAD5062 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEDFCEBF7960340A527E619 /* SummaryView.swift */; };
+		6823B3324605603D19B01E52 /* MemontaPrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4C0FB0B1C0AC7A5B2D8209 /* MemontaPrivacyPolicy.swift */; };
 		6B9AB5B67A7E5BFC90B8B20C /* PIIScanService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D1A170177923D58295914A /* PIIScanService.swift */; };
 		6D947C8FC58ACD9C1847F56D /* PinnedOCRTextPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC8EEBFAF3E400FD413FA03 /* PinnedOCRTextPanel.swift */; };
 		6E84BE4F895F20ECCCAC49CF /* SystemTranscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEFB1A6E2ADB9D3F30C674F /* SystemTranscriptionService.swift */; };
@@ -119,6 +121,7 @@
 		BCF6AE261DF462D7A9A3BF8C /* PersistenceReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158535A62372F2C47EB3A256 /* PersistenceReporting.swift */; };
 		BE6C3751ACB196375DA2C952 /* RecordingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AA4BEDAC1E291ACCDBBC5C /* RecordingListView.swift */; };
 		BEA048610CBCA6F407CC76B7 /* StartupBootstrapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E22AE429C3DEB202470A61D /* StartupBootstrapTests.swift */; };
+		BEA66BF47222DD7E8CC00827 /* RecordingSegmentTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB20192C5A155E511F7B85B /* RecordingSegmentTimeline.swift */; };
 		BFB9FB93E0A2A679FC55EC50 /* NoteSpeechViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91F0EDFDA628F2C776068A6 /* NoteSpeechViewModel.swift */; };
 		C131839BD8FADCCAF596BA70 /* RuntimeVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590412AF3B08D86FCA01111A /* RuntimeVerification.swift */; };
 		C2A531E68665A69C4E8E8367 /* MicMuteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FE77757A658F8456291CA3 /* MicMuteCommand.swift */; };
@@ -141,6 +144,7 @@
 		D310907F350AD383634EB111 /* ExportDocuments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC248B2D399BA73909C8B7A /* ExportDocuments.swift */; };
 		D3D481F2622D17E28B88B7EC /* TextFindReplace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540F068833407ECCAE784DA4 /* TextFindReplace.swift */; };
 		D4C9F9BF01384AE38B77EF32 /* RemindersURLDiagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BA0990A78654B88B74951A /* RemindersURLDiagnostic.swift */; };
+		D4CCDCBE02541C5B615DCAB0 /* PrivacyPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF09B549DB054146BF33F01 /* PrivacyPolicyTests.swift */; };
 		D65DF6DE6FBF58BB0E734DD2 /* STCharacters.txt in Resources */ = {isa = PBXBuildFile; fileRef = F1E8D96ACEDC47F05FE943B7 /* STCharacters.txt */; };
 		D66B3D0294A1596B1942B93B /* QuickNoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FBF80469ED014A00087DB /* QuickNoteDetailView.swift */; };
 		DA32215EFCFB0989B9780879 /* VideoUnderstandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D424B13A82FCB71468559B25 /* VideoUnderstandingView.swift */; };
@@ -209,6 +213,7 @@
 		2AC6A44D0ECD14A85ADA6467 /* PromptSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptSettingsView.swift; sourceTree = "<group>"; };
 		2BB9FBD7A398426234020931 /* SpeakerDiarizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakerDiarizationService.swift; sourceTree = "<group>"; };
 		2D0877D9FD208D7C986F2DC7 /* HotkeySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeySettingsView.swift; sourceTree = "<group>"; };
+		2E4C0FB0B1C0AC7A5B2D8209 /* MemontaPrivacyPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemontaPrivacyPolicy.swift; sourceTree = "<group>"; };
 		2F1F6C25F6EFC70FB9BF96ED /* NoteSpeechView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSpeechView.swift; sourceTree = "<group>"; };
 		2FCB2D16CABB8902ED7084EF /* RecordingCaptureHealthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCaptureHealthTests.swift; sourceTree = "<group>"; };
 		3347BFF97511F53E690F950A /* EchoCanceller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoCanceller.swift; sourceTree = "<group>"; };
@@ -259,8 +264,10 @@
 		791E74BCD8C51E5D42C4627D /* AppMuteDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMuteDetector.swift; sourceTree = "<group>"; };
 		798D67D700437D5AA1503956 /* MicCaptureRecoveryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicCaptureRecoveryTests.swift; sourceTree = "<group>"; };
 		7A1783D3E227D620F547AC56 /* Memonta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memonta.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EB20192C5A155E511F7B85B /* RecordingSegmentTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingSegmentTimeline.swift; sourceTree = "<group>"; };
 		7EC248B2D399BA73909C8B7A /* ExportDocuments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDocuments.swift; sourceTree = "<group>"; };
 		7F06101DB2937C96879FBA28 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
+		7FF09B549DB054146BF33F01 /* PrivacyPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyTests.swift; sourceTree = "<group>"; };
 		80D399D3D0E7E3E61667E142 /* MemontaSmokeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemontaSmokeUITests.swift; sourceTree = "<group>"; };
 		8219A2F0E80F5B97F8B95918 /* EchoReductionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoReductionService.swift; sourceTree = "<group>"; };
 		836D2C84294295CC44E3097A /* STTConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTConfig.swift; sourceTree = "<group>"; };
@@ -341,6 +348,7 @@
 		F0115F630825D9CE63CDE4F3 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F143EFF7EF8C4688188C5AD6 /* StartupRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupRootView.swift; sourceTree = "<group>"; };
 		F1E8D96ACEDC47F05FE943B7 /* STCharacters.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = STCharacters.txt; sourceTree = "<group>"; };
+		F20AEA0492EC2E69874A67ED /* RecordingSegmentTimelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingSegmentTimelineTests.swift; sourceTree = "<group>"; };
 		F260BE9D46A6554344E1B1D6 /* StabilityRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StabilityRegressionTests.swift; sourceTree = "<group>"; };
 		FC96DBFE97F1CD5CAAD7FEF0 /* Memonta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Memonta.entitlements; sourceTree = "<group>"; };
 		FD3BF65D6865CFC0F830D5B9 /* SpeechTextPreparer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTextPreparer.swift; sourceTree = "<group>"; };
@@ -403,6 +411,7 @@
 				089E50AA1F8BC950C8AE48D4 /* RecordingCaptureHealth.swift */,
 				DAF6C05395E2F539A85E7E86 /* RecordingCaptureReport.swift */,
 				12294D93472D291CA1F723B8 /* RecordingConfig.swift */,
+				7EB20192C5A155E511F7B85B /* RecordingSegmentTimeline.swift */,
 				BE22D5CF12A705E6C0BA9AA1 /* SpeechSynthesisOptions.swift */,
 				836D2C84294295CC44E3097A /* STTConfig.swift */,
 				D87EE074DE242F28EBFDDF49 /* TimeInterval+Formatting.swift */,
@@ -530,6 +539,7 @@
 				7209964B0DDEAF2DDEE98693 /* MainActor+AssumeOnMainThread.swift */,
 				2A9C6012E128677F62399335 /* MarkdownPDFRenderer.swift */,
 				3A6393D47EC167A81A64241F /* MeetingRecorderService.swift */,
+				2E4C0FB0B1C0AC7A5B2D8209 /* MemontaPrivacyPolicy.swift */,
 				C612A9053890574B6C628836 /* MenuBarController.swift */,
 				587B0CEE16DFF0A57619EC33 /* MicCaptureFileStore.swift */,
 				889E35E919A09CED7D85F10B /* MicCaptureRecovery.swift */,
@@ -600,8 +610,10 @@
 				683F3B871F1AF2EE49A21A3B /* MicCaptureRestartTests.swift */,
 				ACEBD6E9CC04E16F0B0D17E4 /* NoteSpeechTests.swift */,
 				B9D2842510B39EDEB2006E35 /* OneClickPlanTests.swift */,
+				7FF09B549DB054146BF33F01 /* PrivacyPolicyTests.swift */,
 				2FCB2D16CABB8902ED7084EF /* RecordingCaptureHealthTests.swift */,
 				4487C510A3F23164E51C99A9 /* RecordingCaptureReportTests.swift */,
+				F20AEA0492EC2E69874A67ED /* RecordingSegmentTimelineTests.swift */,
 				F260BE9D46A6554344E1B1D6 /* StabilityRegressionTests.swift */,
 				8E22AE429C3DEB202470A61D /* StartupBootstrapTests.swift */,
 				07A0F8CE74AAE593586E2DCB /* StorageSessionTests.swift */,
@@ -883,8 +895,10 @@
 				F52606DF0F47EC59FA5389CA /* MicCaptureRestartTests.swift in Sources */,
 				03AB9DCA87921A0A37C584D9 /* NoteSpeechTests.swift in Sources */,
 				E29AC5F1588B4366804598B3 /* OneClickPlanTests.swift in Sources */,
+				D4CCDCBE02541C5B615DCAB0 /* PrivacyPolicyTests.swift in Sources */,
 				73A0290C71C2F13816797EB7 /* RecordingCaptureHealthTests.swift in Sources */,
 				595D7554BDC5FB3A857AD083 /* RecordingCaptureReportTests.swift in Sources */,
+				4995D243EA8159CA684A4DF2 /* RecordingSegmentTimelineTests.swift in Sources */,
 				FD4AB10770E5C299606125E6 /* StabilityRegressionTests.swift in Sources */,
 				BEA048610CBCA6F407CC76B7 /* StartupBootstrapTests.swift in Sources */,
 				F9756602F5DA894C298B32B6 /* StorageSessionTests.swift in Sources */,
@@ -939,6 +953,7 @@
 				50F42EADB9670EB78161B22B /* MarkdownView.swift in Sources */,
 				104EAF5636B7E3A4FF3FA62B /* MeetingRecorderService.swift in Sources */,
 				8CC1D2AD1EF299594EB84E18 /* MemontaApp.swift in Sources */,
+				6823B3324605603D19B01E52 /* MemontaPrivacyPolicy.swift in Sources */,
 				5223D848553CB3DFDBC24771 /* MenuBarController.swift in Sources */,
 				1B759CB99A155E68CFA12C1C /* MicCaptureFileStore.swift in Sources */,
 				E2F742EE9C2EE98BC4E30D65 /* MicCaptureRecovery.swift in Sources */,
@@ -974,6 +989,7 @@
 				7654D258DB7DF60336023400 /* RecordingElapsedLabel.swift in Sources */,
 				BE6C3751ACB196375DA2C952 /* RecordingListView.swift in Sources */,
 				71796C14BE82296EC3AC2136 /* RecordingProgressStatus.swift in Sources */,
+				BEA66BF47222DD7E8CC00827 /* RecordingSegmentTimeline.swift in Sources */,
 				5A899653193510A703EA70EB /* RecordingViewModel.swift in Sources */,
 				29AF7629FD104507E265E372 /* RecordingViewModelSupport.swift in Sources */,
 				5F942F177F64FDFF3D5E6436 /* RemindersService.swift in Sources */,
@@ -1148,7 +1164,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 134;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1213,7 +1229,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 134;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = B35SN74F9U;

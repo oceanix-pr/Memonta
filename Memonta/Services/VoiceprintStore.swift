@@ -292,6 +292,8 @@ enum VoiceprintError: LocalizedError {
     case emptyName
     case conflictWithExisting(String, String)
     case insufficientAudio
+    /// 未取得声纹（敏感个人信息）的单独同意
+    case consentRequired
 
     var errorDescription: String? {
         switch self {
@@ -301,6 +303,8 @@ enum VoiceprintError: LocalizedError {
             return String(format: String(localized: "该声纹与已注册的「%@」过于相似（相似度 %@），疑似同一人。如需更正请先在设置中删除对应声纹"), name, similarity)
         case .insufficientAudio:
             return String(localized: "该说话人的有效音频片段不足，无法生成可靠声纹")
+        case .consentRequired:
+            return String(localized: "尚未同意声纹处理。请先在「设置 → 关于 → 隐私政策」开启「声纹处理单独同意」。")
         }
     }
 }

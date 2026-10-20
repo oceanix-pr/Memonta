@@ -81,6 +81,21 @@ final class MicCaptureService: @unchecked Sendable {
 
     /// 采集会话代次：start/stop 时递增。事件携带代次，接收方跨 actor 排队后必须复核，
     /// 迟到的旧事件（停止后迅速重录）不得改写新会话状态。
+    private var liveness = MicCaptureLiveness() // 与成功写入时间一起受 stateLock 保护。
+    private var _writtenFrames: Int64 = 0
+    private var segmentTimeline: RecordingSegmentTimelineStore?
+    @MainActor private var deviceObservation: MicrophoneDeviceRegistry.ChangeObservation?
+    @MainActor private var observedDeviceID: UInt32?
+    @MainActor private var observedRoute: InputRoute?
+    private struct InputRoute: Equatable {
+        let target: UInt32?
+        let rate: Double?
+        let alive: Bool?
+    }
+    var hasRecentWrites: Bool {
+        stateLock.withLock { liveness.lastWrite.map { $0.duration(to: .now) < MicCaptureLiveness.timeout } ?? false }
+    }
+    var writtenFrames: Int64 { stateLock.lock(); defer { stateLock.unlock() }; return _writtenFrames }
     private var _lastSuccessfulWriteAt: Date?
     var lastSuccessfulWriteAt: Date? {
         stateLock.lock(); defer { stateLock.unlock() }
@@ -134,6 +149,7 @@ final class MicCaptureService: @unchecked Sendable {
         },
         onRecovered: { [weak self] in
             guard let self else { return }
+            self.stateLock.withLock { self.liveness.recovered() }
             self.logger.info("麦克风采集恢复确认：当前尝试已有音频缓冲成功写入")
             if !self.isStarting { self.emit(.recovered(generation: self.generation)) }
         },
@@ -153,8 +169,13 @@ final class MicCaptureService: @unchecked Sendable {
         stateLock.lock()
         _generation += 1
         _lastSuccessfulWriteAt = nil
+        _writtenFrames = 0
+        liveness = MicCaptureLiveness()
         pendingRecoveryAttempt = nil
         stateLock.unlock()
+        deviceObservation = nil
+        observedRoute = nil
+        observedDeviceID = nil
         lastConfigurationChangeAt = nil
         lastRecoveryFailure = nil
         lastAttemptError = nil
@@ -220,11 +241,12 @@ final class MicCaptureService: @unchecked Sendable {
     }
 
     /// 新会话使用新引擎；首个非空缓冲成功落盘才返回就绪。
-    @MainActor func start(to url: URL, initiallyMuted: Bool = false) async throws {
+    @MainActor func start(to url: URL, initiallyMuted: Bool = false, timeline: RecordingSegmentTimelineStore? = nil) async throws {
         guard !isStarting, fileBox.file == nil, engine == nil else {
             throw MicCaptureError.alreadyCapturing
         }
         beginNewSession()
+        segmentTimeline = timeline
         let session = generation
         isStarting = true
         initialURL = url
@@ -326,6 +348,8 @@ final class MicCaptureService: @unchecked Sendable {
                 guard let self, self.isCurrentGeneration(session),
                       self.engineGeneration == originEngine,
                       self.fileBox.file != nil, let engine = self.engine else { return }
+                guard self.recoveryController.isActive || self.recoveryController.isConfirmed
+                    || self.currentRoute() != self.observedRoute else { return }
                 self.lastConfigurationChangeAt = Date()
                 let hardware = engine.inputNode.inputFormat(forBus: 0)
                 let client = engine.inputNode.outputFormat(forBus: 0)
@@ -338,6 +362,38 @@ final class MicCaptureService: @unchecked Sendable {
                 self.requestReconfiguration()
             }
         }
+    }
+
+    @MainActor private func currentRoute() -> InputRoute {
+        let target = MicrophoneDeviceRegistry.resolvedDeviceID()
+        return InputRoute(target: target, rate: target.flatMap { MicrophoneDeviceRegistry.nominalSampleRate(for: $0) },
+                          alive: target.flatMap { MicrophoneDeviceRegistry.isAlive($0) })
+    }
+
+    @MainActor private func checkInputRoute() {
+        guard fileBox.file != nil else { return }
+        let route = currentRoute()
+        guard route != observedRoute else { return }
+        observedRoute = route // 重复通知不刷新恢复预算。
+        lastConfigurationChangeAt = Date()
+        requestReconfiguration()
+    }
+
+    /// 通知可能缺失，或 HAL 自动换设备后引擎仍显示运行。静音零缓冲也算成功写入。
+    @MainActor func checkCaptureHealth() {
+        guard !isStarting, fileBox.file != nil else { return }
+        checkInputRoute()
+        let running = isCapturing
+        let active = recoveryController.isActive
+        let needsRecovery = stateLock.withLock {
+            liveness.shouldRecover(engineRunning: running, recoveryActive: active)
+        }
+        guard needsRecovery else { return }
+        let failure = diagnostics(stage: .captureStalled, attempt: 0, deviceBound: nil,
+                                  oldFormat: recordingFormat, newFormat: nil, error: nil)
+        emit(.deviceUnavailable(failure))
+        logger.error("麦克风持续无成功写入，触发有界恢复")
+        requestReconfiguration()
     }
 
     /// 让在途尝试失效并提前进入下一次准备，不丢弃启动续体、不刷新预算。
@@ -360,6 +416,7 @@ final class MicCaptureService: @unchecked Sendable {
         guard fileBox.file != nil else { return false }
         if recoveryController.isActive { return isCapturing }
         lastRecoveryFailure = nil
+        stateLock.withLock { liveness.recoveryBegan() }
         return recoveryController.start()
     }
 
@@ -398,10 +455,21 @@ final class MicCaptureService: @unchecked Sendable {
             let format = try Self.captureFormat(hardware: hardware, client: client, deviceSampleRate: deviceRate)
             newFormat = format
             preparedDeviceID = target
+            observedRoute = currentRoute()
+            if deviceObservation == nil || observedDeviceID != target {
+                observedDeviceID = target
+                let session = generation
+                deviceObservation = MicrophoneDeviceRegistry.ChangeObservation(deviceID: target) { [weak self] in
+                    Task { @MainActor [weak self] in
+                        guard let self, self.isCurrentGeneration(session) else { return }
+                        self.checkInputRoute()
+                    }
+                }
+            }
             logger.debug("麦克风准备 引擎代次=\(self.engineGeneration) 设备=\(target) 硬件=\(hardware.sampleRate)Hz/\(hardware.channelCount)ch 客户端=\(client.sampleRate)Hz/\(client.channelCount)ch tap=\(format.sampleRate)Hz/\(format.channelCount)ch")
 
             stage = .openSegmentFile
-            if previousFile == nil || oldFormat.map({ Self.requiresNewSegment(from: $0, to: format) }) != false {
+            if previousFile == nil || (previousFile?.length ?? 0) > 0 || oldFormat.map({ Self.requiresNewSegment(from: $0, to: format) }) != false {
                 let url: URL
                 if previousFile == nil, let initialURL {
                     url = initialURL
@@ -481,11 +549,13 @@ final class MicCaptureService: @unchecked Sendable {
     }
 
     /// 仅当前 tap 的非空成功写入可确认恢复（静音的全零缓冲同样有效）。
-    private func noteSuccessfulWrite(_ token: MicCaptureRecovery.Attempt?, session: Int, tapID: UUID) {
+    private func noteSuccessfulWrite(_ token: MicCaptureRecovery.Attempt?, session: Int, tapID: UUID, frames: Int) {
         guard fileBox.isCurrentTap(tapID) else { return }
         stateLock.lock()
         guard _generation == session else { stateLock.unlock(); return }
         _lastSuccessfulWriteAt = Date()
+        _writtenFrames += Int64(frames)
+        liveness.wrote()
         let accepted = token != nil && pendingRecoveryAttempt == token
         if accepted { pendingRecoveryAttempt = nil }
         stateLock.unlock()
@@ -574,7 +644,8 @@ final class MicCaptureService: @unchecked Sendable {
         // 无打开的写入文件 = 未在采集：明确返回 false，让上层能区分
         // “无需恢复”与“恢复失败”，而不是把未在录音误报成采集正常
         guard fileBox.file != nil else { return false }
-        if isTapInstalled && engine?.isRunning == true { return true }
+        checkCaptureHealth()
+        if isTapInstalled && engine?.isRunning == true, recoveryController.isConfirmed { return true }
 
         // 与设备配置通知走同一恢复路径：唤醒后格式也可能已经变化。
         handleConfigurationChange()
@@ -653,6 +724,7 @@ final class MicCaptureService: @unchecked Sendable {
         fileBox.file = nil
         recordingFormat = nil
         preparedDeviceID = nil
+        segmentTimeline = nil
     }
 
     /// 安装 tap（nonisolated：切断与调用方 actor 的隔离关联）
@@ -685,7 +757,8 @@ final class MicCaptureService: @unchecked Sendable {
         let silenced = silencedBox
         let zeroBox = MicCaptureZeroBufferBox() // 每个 tap 独立，避免新旧音频回调共用可变缓冲
         let writeErrors = WriteErrorRateBox()
-        let tap: @Sendable (AVReadOnlyAudioPCMBuffer, AVAudioTime) -> Void = { [weak self] buffer, _ in
+        let timeline = segmentTimeline
+        let tap: @Sendable (AVReadOnlyAudioPCMBuffer, AVAudioTime) -> Void = { [weak self] buffer, time in
             guard let self, box.isCurrentTap(tapID) else { return }
             if silenced.isSilenced {
                 guard let zero = zeroBox.zeroBuffer(
@@ -695,8 +768,12 @@ final class MicCaptureService: @unchecked Sendable {
                 do {
                     let didWrite = try box.write(tap: tapID) { file in
                         try file.write(from: AVReadOnlyAudioPCMBuffer(copying: zero))
+                        timeline?.noteWrite(to: file.url, hostTime: time.isHostTimeValid
+                            ? AVAudioTime.seconds(forHostTime: time.hostTime)
+                            : CMClockGetTime(CMClockGetHostTimeClock()).seconds - Double(buffer.frameLength) / buffer.format.sampleRate,
+                            frames: Int(buffer.frameLength))
                     }
-                    if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID) }
+                    if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID, frames: Int(buffer.frameLength)) }
                 } catch {
                     self.reportWriteError(error, session: session, tapID: tapID, rateLimiter: writeErrors)
                 }
@@ -705,8 +782,12 @@ final class MicCaptureService: @unchecked Sendable {
             do {
                 let didWrite = try box.write(tap: tapID) { file in
                     try file.write(from: buffer)
+                        timeline?.noteWrite(to: file.url, hostTime: time.isHostTimeValid
+                            ? AVAudioTime.seconds(forHostTime: time.hostTime)
+                            : CMClockGetTime(CMClockGetHostTimeClock()).seconds - Double(buffer.frameLength) / buffer.format.sampleRate,
+                            frames: Int(buffer.frameLength))
                 }
-                if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID) }
+                if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID, frames: Int(buffer.frameLength)) }
             } catch {
                 self.reportWriteError(error, session: session, tapID: tapID, rateLimiter: writeErrors)
             }
@@ -735,7 +816,8 @@ final class MicCaptureService: @unchecked Sendable {
         let silenced = silencedBox
         let zeroBox = MicCaptureZeroBufferBox() // 每个 tap 独立，避免新旧音频回调共用可变缓冲
         let writeErrors = WriteErrorRateBox()
-        let tap: @Sendable (AVAudioPCMBuffer, AVAudioTime) -> Void = { [weak self] buffer, _ in
+        let timeline = segmentTimeline
+        let tap: @Sendable (AVAudioPCMBuffer, AVAudioTime) -> Void = { [weak self] buffer, time in
             guard let self, box.isCurrentTap(tapID) else { return }
             // 静音中：写全零缓冲，保持分片时间轴连续（用户预期静音 = 无真实麦克风数据）
             if silenced.isSilenced {
@@ -743,8 +825,12 @@ final class MicCaptureService: @unchecked Sendable {
                 do {
                     let didWrite = try box.write(tap: tapID) { file in
                         try file.write(from: zero)
+                        timeline?.noteWrite(to: file.url, hostTime: time.isHostTimeValid
+                            ? AVAudioTime.seconds(forHostTime: time.hostTime)
+                            : CMClockGetTime(CMClockGetHostTimeClock()).seconds - Double(buffer.frameLength) / buffer.format.sampleRate,
+                            frames: Int(buffer.frameLength))
                     }
-                    if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID) }
+                    if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID, frames: Int(buffer.frameLength)) }
                 } catch {
                     self.reportWriteError(error, session: session, tapID: tapID, rateLimiter: writeErrors)
                 }
@@ -753,8 +839,12 @@ final class MicCaptureService: @unchecked Sendable {
             do {
                 let didWrite = try box.write(tap: tapID) { file in
                     try file.write(from: buffer)
+                        timeline?.noteWrite(to: file.url, hostTime: time.isHostTimeValid
+                            ? AVAudioTime.seconds(forHostTime: time.hostTime)
+                            : CMClockGetTime(CMClockGetHostTimeClock()).seconds - Double(buffer.frameLength) / buffer.format.sampleRate,
+                            frames: Int(buffer.frameLength))
                 }
-                if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID) }
+                if didWrite, buffer.frameLength > 0 { self.noteSuccessfulWrite(recoveryAttempt, session: session, tapID: tapID, frames: Int(buffer.frameLength)) }
             } catch {
                 // C-1: 传播写入错误而非静默吞掉，便于上层提示用户磁盘空间不足等问题
                 self.reportWriteError(error, session: session, tapID: tapID, rateLimiter: writeErrors)
@@ -974,6 +1064,7 @@ struct MicCaptureDiagnostics: Sendable {
         case startEngine
         case writeBuffer
         case recoveryBudget
+        case captureStalled
     }
 
     let stage: Stage

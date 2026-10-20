@@ -141,7 +141,7 @@ struct RecordingCaptureReportTests {
         #expect(vm.recordingFeedback == nil)
     }
 
-    @Test func recoveryCleanupPreservesCaptureEvidenceWithoutPlayableSegments() async throws {
+    @Test func recoveryPreservesExistingEvidenceAndUnreadableSmallFiles() async throws {
         let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: folder) }
@@ -151,7 +151,9 @@ struct RecordingCaptureReportTests {
         try Data(repeating: 0, count: 16).write(to: shell)
         let files = try FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)
         _ = await FileSyncService.recoverCrashedRecording(from: folder, files: files, skipFreshnessCheck: true)
-        #expect(try RecordingCaptureReportStore.load(in: folder) == report,
-                "自动清理空分片不能连带删除已保存的采集证据")
+        let updated = try #require(try RecordingCaptureReportStore.load(in: folder))
+        #expect(updated.interruptions == report.interruptions, "恢复不能改写已有采集中断证据")
+        #expect(updated.retainedOriginals == true)
+        #expect(FileManager.default.fileExists(atPath: shell.path), "小且不可读的文件不能当成零帧空壳删除")
     }
 }

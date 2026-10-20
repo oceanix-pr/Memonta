@@ -1117,11 +1117,7 @@ enum FileSyncService {
             return .unreadable(reason: "无法读取文件大小（权限或卷不可达）")
         }
         guard size > 0 else { return .corrupt(reason: "文件为空") }
-        // 空壳快速通道：≤4KB 的文件只有容器头（零帧静音壳），必然不可播放；
-        // 恢复路径需对几十个分片逐个探测，跳过 AVURLAsset 加载的累积开销可观
-        if size <= 4096 {
-            return .corrupt(reason: "仅容器头（\(size) 字节）")
-        }
+        // 小的 AAC/PCM 也可能包含有效声音，文件字节数不能代替音轨和时长验证。
         let asset = AVURLAsset(url: url)
         let duration: CMTime
         do {
@@ -1316,21 +1312,47 @@ enum FileSyncService {
             logger.warning("跳过 \(skipped) 个不可播放分片")
         }
 
+        // 不可读不等于空壳；降级时原片全部留存，且记录到条目报告。
+        var preserveOriginals: Bool
+        do {
+            _ = try RecordingSegmentTimeline.load(in: dir) // 损坏的新时间轴不能回退成无缺口的旧拼接。
+            var report = try RecordingCaptureReportStore.load(in: dir) ?? RecordingCaptureReport()
+            preserveOriginals = skipped > 0 || report.hasWarning
+            if skipped > 0 {
+                if !report.issues.contains(.audioDegraded) { report.issues.append(.audioDegraded) }
+                report.skippedSegments = (micTmpURLs + sysTmpURLs).filter { !micOK.contains($0) && !sysOK.contains($0) }.map(\.lastPathComponent)
+            }
+            if preserveOriginals { report.retainedOriginals = true }
+            try RecordingCaptureReportStore.save(report, in: dir)
+        } catch {
+            logger.error("恢复采集证据读写失败，保留全部分片: \(error.localizedDescription)")
+            return .failed
+        }
+
         // 场景 1：两轨均有可播放分片 → 拼接后叠加混音
         if !micOK.isEmpty, !sysOK.isEmpty {
             logger.info("两条声轨均有可播放分片，尝试拼接并混音")
             if await recoverMerge(micSegments: micOK, sysSegments: sysOK, outputURL: finalURL) {
-                // 可播放分片已全部混入最终文件，其余（未被消费的不可播放空壳）一并清理，
-                // 避免恢复成功后文件夹残留 _tmp 分片
+                // 完整无告警才清理；降级/未知文件保留供后续修复。
                 let shellCount = micTmpURLs.count + sysTmpURLs.count - micOK.count - sysOK.count
-                removeRecoveryTemporaries(micTmpURLs + sysTmpURLs)
+                if !preserveOriginals { removeRecoveryTemporaries(micTmpURLs + sysTmpURLs) }
                 if shellCount > 0 {
-                    logger.info("已清理 \(shellCount) 个不可播放空壳分片")
+                    logger.warning("已保留 \(shellCount) 个未合入分片供修复")
                 }
                 logger.info("✅ 恢复合并成功: \(finalName)")
                 return .recovered(finalURL)
             }
             logger.warning("恢复合并失败，回退为仅拼接麦克风分片")
+            preserveOriginals = true
+            do {
+                var report = try RecordingCaptureReportStore.load(in: dir) ?? RecordingCaptureReport()
+                if !report.issues.contains(.audioDegraded) { report.issues.append(.audioDegraded) }
+                report.retainedOriginals = true
+                try RecordingCaptureReportStore.save(report, in: dir)
+            } catch {
+                logger.error("保存恢复降级证据失败，保留全部原片: \(error.localizedDescription)")
+                return .failed
+            }
         }
 
         // 场景 2：仅一轨可播放 → 拼接该轨作为最终文件（mic 优先，其次 sys）
@@ -1346,12 +1368,13 @@ enum FileSyncService {
             // 避免每轮扫描对同一空壳目录反复空转（20260910182408 案例）。
             // 返回 nothingToDo：非真实恢复失败，不触发用户告警
             let allShells = (micTmpURLs + sysTmpURLs).allSatisfy { url in
-                ((try? FileManager.default.attributesOfItem(atPath: url.path)[.size]) as? Int).map { $0 < 8192 } ?? false
+                // 只有成功解码并确认零帧才是空壳；文件小或读取失败都不能作为删除证据。
+                (try? AVAudioFile(forReading: url).length) == 0
             }
             if allShells {
                 removeRecoveryTemporaries(micTmpURLs + sysTmpURLs)
                 let meaningful = ["meta.json", "transcript.json", "summary.md", "source.txt", "source.png",
-                                  RecordingCaptureReportStore.fileName]
+                                  RecordingCaptureReportStore.fileName, RecordingSegmentTimeline.fileName]
                 // 读目录失败不得当成「目录为空」：那会误删仍含有效产出的目录。
                 // 只有确实读到目录内容、且其中没有有效产出时才清理空壳目录
                 if let remaining = try? FileManager.default.contentsOfDirectory(
@@ -1370,7 +1393,8 @@ enum FileSyncService {
 
         // 旧版 m4a 单分片直接改名（零开销）；PCM 分片与多分片经导出拼接为 m4a
         let concatSucceeded: Bool
-        if salvageSegments.count == 1, salvageSegments[0].pathExtension.lowercased() == "m4a" {
+        if salvageSegments.count == 1, salvageSegments[0].pathExtension.lowercased() == "m4a",
+           !preserveOriginals, !FileManager.default.fileExists(atPath: dir.appendingPathComponent(RecordingSegmentTimeline.fileName).path) {
             concatSucceeded = (try? moveSegment(salvageSegments[0], to: finalURL)) != nil
         } else {
             concatSucceeded = await concatSegments(salvageSegments, to: finalURL)
@@ -1381,17 +1405,9 @@ enum FileSyncService {
         }
         logger.info("✅ 崩溃录音恢复成功: \(finalName)（\(salvageSegments.count) 片）")
 
-        // 清理其余临时分片：不可播放的直接删除，可播放的保留供手动处理
-        for leftover in micTmpURLs + sysTmpURLs where !salvageSegments.contains(leftover) {
-            switch await probeAudio(at: leftover) {
-            case .corrupt:
-                try? FileManager.default.removeItem(at: leftover)
-            case .unreadable(let reason):
-                // 不可读不等于损坏：保留待下轮/人工处理
-                logger.info("临时分片无法探测，不删除并保留: \(leftover.lastPathComponent) - \(reason)")
-            case .playable:
-                logger.info("临时分片可播放，已保留供手动处理: \(leftover.lastPathComponent)")
-            }
+        // 单轨回退不能删除未合入的另一轨；有降级证据时保留所有素材。
+        if !preserveOriginals {
+            removeRecoveryTemporaries(salvageSegments)
         }
 
         // 校验恢复出的最终文件确认可播放（容器未 finalize 的文件无法读取时长/音轨）
@@ -1439,10 +1455,12 @@ enum FileSyncService {
     /// 顺序拼接多个分片为单个 m4a（AVMutableComposition 逐段插入 + 导出）
     /// - Returns: 拼接成功且输出可播放返回 true
     private static func concatSegments(_ segments: [URL], to outputURL: URL) async -> Bool {
+        var temporaryFiles: [URL] = []
+        defer { removeRecoveryTemporaries(temporaryFiles) }
         do {
             let composition = AVMutableComposition()
             let track = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
-            let totalSeconds = try await appendSegments(segments, to: track)
+            let totalSeconds = try await appendSegments(segments, to: track, temporaryFiles: &temporaryFiles)
             guard let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetAppleM4A) else {
                 return false
             }
@@ -1502,31 +1520,25 @@ enum FileSyncService {
 
     /// 把分片按顺序追加到合成轨道（游标逐段后移），返回追加后的总时长（秒）
     @discardableResult
-    private static func appendSegments(_ urls: [URL], to track: AVMutableCompositionTrack?) async throws -> TimeInterval {
-        guard let track else { return 0 }
-        var cursor = CMTime.zero
-        for url in urls {
-            let asset = AVURLAsset(url: url)
-            guard let src = try await asset.loadTracks(withMediaType: .audio).first else { continue }
-            let duration = try await asset.load(.duration)
-            try track.insertTimeRange(CMTimeRange(start: .zero, duration: duration), of: src, at: cursor)
-            cursor = cursor + duration
-        }
-        return CMTimeGetSeconds(cursor)
+    private static func appendSegments(_ urls: [URL], to track: AVMutableCompositionTrack?, temporaryFiles: inout [URL]) async throws -> TimeInterval {
+        let timeline = try urls.first.flatMap { try RecordingSegmentTimeline.load(in: $0.deletingLastPathComponent()) }
+        return try await RecordingSegmentTimeline.append(urls, to: track, timeline: timeline, temporaryFiles: &temporaryFiles)
     }
 
     /// 恢复路径下的重新合并：两条声轨各自分片拼接后叠加混音导出为最终文件。
     /// 与录音停止时的实时合并逻辑一致，但独立实现（恢复路径不依赖录音服务状态）
     private static func recoverMerge(micSegments: [URL], sysSegments: [URL], outputURL: URL) async -> Bool {
+        var temporaryFiles: [URL] = []
+        defer { removeRecoveryTemporaries(temporaryFiles) }
         do {
             let composition = AVMutableComposition()
 
             let micTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
-            let micSeconds = try await appendSegments(micSegments, to: micTrack)
+            let micSeconds = try await appendSegments(micSegments, to: micTrack, temporaryFiles: &temporaryFiles)
 
             // 系统音频轨与麦克风同时开始（叠加混音）
             let sysTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
-            let sysSeconds = try await appendSegments(sysSegments, to: sysTrack)
+            let sysSeconds = try await appendSegments(sysSegments, to: sysTrack, temporaryFiles: &temporaryFiles)
 
             guard let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetAppleM4A) else {
                 return false

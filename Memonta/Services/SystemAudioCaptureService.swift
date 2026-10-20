@@ -94,6 +94,8 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
 
     private var _state: CaptureState = .idle
     /// 写入会话是否已开始（首包到达时以其 PTS 为起点，保证时间戳从 0 开始）
+    private var _timeline: RecordingSegmentTimelineStore?
+    private var _sessionStartTime: TimeInterval?
     private var _sessionStarted = false
     private let writeQueue = DispatchQueue(label: "com.Memonta.systemaudio.write")
     /// 占位屏幕输出的派发队列：只录音频时 SCStream 仍会产生视频帧，
@@ -213,7 +215,7 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
 
     /// 开始采集系统音频
     /// - Parameter url: 目标文件 URL（m4a）
-    func start(to url: URL) async throws {
+    func start(to url: URL, timeline: RecordingSegmentTimelineStore? = nil) async throws {
         // 在第一个 await 前原子占用 idle→starting，避免两个并发 start 都通过检查。
         guard reserveStart() else {
             logger.warning("系统音频采集已在启动、运行或收尾，拒绝重复启动")
@@ -263,7 +265,7 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
 
         // 6. 赋值到共享状态（同步辅助方法内持锁，NSLock 不能在 async 上下文直接使用）
         // 状态进入 starting：资源已存在但尚未开始采集
-        guard installCaptureState(stream: newStream, writer: newWriter, endpoint: newEndpoint) else {
+        guard installCaptureState(stream: newStream, writer: newWriter, endpoint: newEndpoint, timeline: timeline) else {
             await Self.finalizeWriter(writer: newWriter, endpoint: newEndpoint, on: writeQueue)
             throw SystemAudioError.startInterrupted
         }
@@ -441,6 +443,7 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
         _writer = writer
         _writerEndpoint = endpoint
         _sessionStarted = false
+        _sessionStartTime = nil
         _captureID = UUID()
         _awaitingRecoverySample = _awaitingRecoverySample || _appendFailureReported
         // 轮转后的新分片重新允许一次失败上报
@@ -619,11 +622,12 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
     }
 
     private func installCaptureState(
-        stream: SCStream, writer: AVAssetWriter, endpoint: WriterEndpoint
+        stream: SCStream, writer: AVAssetWriter, endpoint: WriterEndpoint, timeline: RecordingSegmentTimelineStore?
     ) -> Bool {
         stateLock.lock(); defer { stateLock.unlock() }
         guard _state == .starting, _stream == nil, _writer == nil else { return false }
         _stream = stream
+        _timeline = timeline
         _captureID = UUID()
         _awaitingRecoverySample = false
         _userStopped = false
@@ -631,6 +635,7 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
         _writer = writer
         _writerEndpoint = endpoint
         _sessionStarted = false
+        _sessionStartTime = nil
         _state = .starting
         // 新 writer：重新允许一次失败上报
         _appendFailureReported = false
@@ -660,6 +665,7 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
         _writer = nil
         _writerEndpoint = nil
         _sessionStarted = false
+        _sessionStartTime = nil
         _droppedSampleCount = 0
         _dropReported = false
         // starting 期间即使还未安装资源，stop 也要取消这次启动预约。
@@ -720,6 +726,8 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
         let endpoint = _writerEndpoint
         let writer = _writer
         let sessionStarted = _sessionStarted
+        let startTime = _sessionStartTime
+        let timeline = _timeline
         stateLock.unlock()
         guard isRunning else { return }
         guard CMSampleBufferIsValid(sampleBuffer) else { return }
@@ -733,7 +741,10 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
             let pts = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
             writer.startSession(atSourceTime: pts)
             stateLock.lock()
-            if _writer === writer, _captureID == captureID { _sessionStarted = true }
+            if _writer === writer, _captureID == captureID {
+                _sessionStarted = true
+                _sessionStartTime = pts.seconds
+            }
             stateLock.unlock()
         }
         // append 失败必须可见：丢弃返回值时，writer 进 .failed 后后续采样全部静默丢失，
@@ -744,10 +755,13 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
                 return
             }
             stateLock.lock()
+            let sessionStart = startTime ?? CMSampleBufferGetPresentationTimeStamp(sampleBuffer).seconds
             let recovered = _captureID == captureID && _state == .running && _awaitingRecoverySample
             if recovered { _awaitingRecoverySample = false }
             let callback = _onEvent
             stateLock.unlock()
+            timeline?.noteWrite(to: writer.outputURL, hostTime: sessionStart,
+                                frames: CMSampleBufferGetNumSamples(sampleBuffer))
             if recovered { callback?(Event(captureID: captureID, kind: .recovered)) }
         } catch {
             let nsError = (writer.error ?? error) as NSError

@@ -44,6 +44,11 @@ struct RecordingCaptureReport: Codable, Sendable, Equatable {
         }
     }
 
+    /// Optional 字段兼容既有 version 1 报告。
+    var skippedSegments: [String]?
+    var retainedOriginals: Bool?
+    var microphoneLastSuccessfulWriteAt: Date?
+    var microphoneWrittenFrames: Int64?
     var version = 1
     var interruptions: [Interruption] = []
     var issues: [Issue] = []
