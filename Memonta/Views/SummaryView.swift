@@ -333,7 +333,7 @@ struct SummaryView: View {
 
                 if viewModel.isExtractingTodos {
                     ProgressView().controlSize(.small)
-                    Text("AI 拆解中...")
+                    Text(viewModel.todoExtractionProgressText)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else if let doc = viewModel.currentTodoDocument {

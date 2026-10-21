@@ -168,6 +168,10 @@ final class RecordingViewModel {
 
     // 待办相关状态
     var isExtractingTodos = false
+    private var todoExtractionProgress: [UUID: TodoExtractionService.Progress] = [:]
+    var todoExtractionProgressText: String {
+        selectedRecording.flatMap { todoExtractionProgress[$0.id] }?.text ?? String(localized: "AI 拆解中...")
+    }
     /// 当前展示的待办文档（按 recording.id 缓存，切换录音时重载）
     var currentTodoDocument: TodoDocument?
     var isWritingTodos = false
@@ -2674,6 +2678,7 @@ final class RecordingViewModel {
         todoExtractionTasks[recordingID]?.cancel()
         let executionToken = UUID()
         todoExtractionExecutions[recordingID] = executionToken
+        todoExtractionProgress[recordingID] = nil
         extractingTodoIDs.insert(recordingID)
         if isSelected(recordingID) { isExtractingTodos = true }
         let taskExperience = AppExperiencePreference.resolved()
@@ -2685,6 +2690,7 @@ final class RecordingViewModel {
                     self.todoExtractionExecutions[recordingID] = nil
                     self.todoExtractionTasks[recordingID] = nil
                     self.extractingTodoIDs.remove(recordingID)
+                    self.todoExtractionProgress[recordingID] = nil
                     if self.isSelected(recordingID) { self.isExtractingTodos = false }
                 }
             }
@@ -2710,8 +2716,16 @@ final class RecordingViewModel {
                     config: snapshot,
                     source: "summary",
                     isMeeting: recording.isMeeting,
-                    piiScrubbed: scrubbed != nil
+                    piiScrubbed: scrubbed != nil,
+                    onProgress: { [weak self] progress in
+                        Task { @MainActor in
+                            guard let self, self.todoExtractionExecutions[recordingID] == executionToken else { return }
+                            self.todoExtractionProgress[recordingID] = progress
+                        }
+                    }
                 )
+                try Task.checkCancellation()
+                guard self.todoExtractionExecutions[recordingID] == executionToken else { throw CancellationError() }
                 if let mapping = scrubbed?.mapping {
                     document = PIIScrubService.restore(document, mapping: mapping)
                 }
@@ -2737,6 +2751,7 @@ final class RecordingViewModel {
         todoExtractionTasks[recordingID]?.cancel()
         todoExtractionTasks[recordingID] = nil
         todoExtractionExecutions[recordingID] = nil
+        todoExtractionProgress[recordingID] = nil
         extractingTodoIDs.remove(recordingID)
         if isSelected(recordingID) { isExtractingTodos = false }
     }

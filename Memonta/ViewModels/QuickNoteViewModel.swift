@@ -22,6 +22,10 @@ final class QuickNoteViewModel {
 
     // 待办相关状态
     var isExtractingTodos = false
+    private var todoExtractionProgress: [UUID: TodoExtractionService.Progress] = [:]
+    var todoExtractionProgressText: String {
+        selectedQuickNote.flatMap { todoExtractionProgress[$0.id] }?.text ?? String(localized: "AI 拆解中...")
+    }
     var currentTodoDocument: TodoDocument?
     var isWritingTodos = false
 
@@ -643,6 +647,7 @@ final class QuickNoteViewModel {
         todoExtractionTasks[noteID]?.cancel()
         let executionToken = UUID()
         todoExtractionExecutions[noteID] = executionToken
+        todoExtractionProgress[noteID] = nil
         extractingTodoIDs.insert(noteID)
         if isSelectedNote(noteID) { isExtractingTodos = true }
         let taskExperience = AppExperiencePreference.resolved()
@@ -654,12 +659,19 @@ final class QuickNoteViewModel {
                     self.todoExtractionExecutions[noteID] = nil
                     self.todoExtractionTasks[noteID] = nil
                     self.extractingTodoIDs.remove(noteID)
+                    self.todoExtractionProgress[noteID] = nil
                     if self.isSelectedNote(noteID) { self.isExtractingTodos = false }
                 }
             }
 
             do {
                 let snapshot = try LLMConfigSnapshot(config: llmConfig)
+                let onProgress: @Sendable (TodoExtractionService.Progress) -> Void = { [weak self] progress in
+                    Task { @MainActor in
+                        guard let self, self.todoExtractionExecutions[noteID] == executionToken else { return }
+                        self.todoExtractionProgress[noteID] = progress
+                    }
+                }
                 var document: TodoDocument
 
                 // 优先用文字内容拆解
@@ -678,7 +690,8 @@ final class QuickNoteViewModel {
                         from: scrubbed?.scrubbed ?? textContent,
                         config: snapshot,
                         source: "quicknote",
-                        piiScrubbed: scrubbed != nil
+                        piiScrubbed: scrubbed != nil,
+                        onProgress: onProgress
                     )
                     if let mapping = scrubbed?.mapping {
                         document = PIIScrubService.restore(document, mapping: mapping)
@@ -689,7 +702,8 @@ final class QuickNoteViewModel {
                     document = try await TodoExtractionService.extractFromImage(
                         imageData: imageData,
                         config: snapshot,
-                        source: "quicknote"
+                        source: "quicknote",
+                        onProgress: onProgress
                     )
                 } else {
                     self.showErrorMessage(String(localized: "快捷笔记内容为空"))
@@ -697,6 +711,8 @@ final class QuickNoteViewModel {
                 }
 
                 // 只有当前展示笔记才更新共享的待办文档 UI；持久化始终按本笔记文件夹写入
+                try Task.checkCancellation()
+                guard self.todoExtractionExecutions[noteID] == executionToken else { throw CancellationError() }
                 if self.isSelectedNote(noteID) { self.currentTodoDocument = document }
                 let saved = self.saveTodosToFolder(document, for: note)
                 // 成功仅当本次确实拆出非空待办并已落盘；空结果不算成功
@@ -732,6 +748,7 @@ final class QuickNoteViewModel {
         todoExtractionTasks[noteID]?.cancel()
         todoExtractionTasks[noteID] = nil
         todoExtractionExecutions[noteID] = nil
+        todoExtractionProgress[noteID] = nil
         extractingTodoIDs.remove(noteID)
         if isSelectedNote(noteID) { isExtractingTodos = false }
     }

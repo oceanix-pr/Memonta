@@ -15,7 +15,18 @@ enum TodoExtractionService {
     /// 输入文本最大字符数（防止超出模型上下文/请求体过大）
     private static let maxInputCharacters = 100_000
 
-    /// 拆解待办（非流式，要求 LLM 返回完整 JSON）
+    enum Progress: Equatable, Sendable {
+        case thinking, generating
+
+        var text: String {
+            switch self {
+            case .thinking: String(localized: "AI 正在思考待办...")
+            case .generating: String(localized: "AI 正在生成待办...")
+            }
+        }
+    }
+
+    /// 拆解待办（本地流式接收，但只在完整 JSON 校验通过后返回文档）
     /// - Parameters:
     ///   - content: 输入文本（总结 / 快捷笔记文字 / OCR 文本）
     ///   - config: LLM 配置快照
@@ -25,7 +36,9 @@ enum TodoExtractionService {
         config: LLMConfigSnapshot,
         source: String,
         isMeeting: Bool? = nil,
-        piiScrubbed: Bool = false
+        piiScrubbed: Bool = false,
+        onProgress: @escaping @Sendable (Progress) -> Void = { _ in },
+        session: URLSession? = nil
     ) async throws -> TodoDocument {
         guard let url = URL(string: config.chatCompletionsURL) else {
             throw LLMError.invalidURL
@@ -61,14 +74,16 @@ enum TodoExtractionService {
 
         // 本地模型不重试
         if config.isLocal {
-            return try await performRequest(url: url, config: config, body: requestBody, source: source)
+            return try await performRequest(url: url, config: config, body: requestBody, source: source,
+                                            onProgress: onProgress, session: session)
         }
 
         // 云端 API 带重试
         var lastError: Error?
         for attempt in 1...maxRetries {
             do {
-                return try await performRequest(url: url, config: config, body: requestBody, source: source)
+                return try await performRequest(url: url, config: config, body: requestBody, source: source,
+                                                onProgress: onProgress, session: session)
             } catch is CancellationError {
                 throw CancellationError()
             } catch {
@@ -94,7 +109,9 @@ enum TodoExtractionService {
     static func extractFromImage(
         imageData: Data,
         config: LLMConfigSnapshot,
-        source: String
+        source: String,
+        onProgress: @escaping @Sendable (Progress) -> Void = { _ in },
+        session: URLSession? = nil
     ) async throws -> TodoDocument {
         guard config.supportsVision else {
             // 不支持视觉：降级到 Vision OCR → 文本拆解
@@ -103,7 +120,8 @@ enum TodoExtractionService {
             guard !ocrText.isEmpty else {
                 throw TodoExtractionError.emptyResult
             }
-            return try await extract(from: ocrText, config: config, source: source)
+            return try await extract(from: ocrText, config: config, source: source,
+                                     onProgress: onProgress, session: session)
         }
 
         guard let url = URL(string: config.chatCompletionsURL) else {
@@ -141,7 +159,8 @@ enum TodoExtractionService {
         }.value
 
         // 视觉请求不重试（图片大，避免超时重复）
-        return try await performRequest(url: url, config: config, bodyData: bodyData, source: source)
+        return try await performRequest(url: url, config: config, bodyData: bodyData, source: source,
+                                        onProgress: onProgress, session: session)
     }
 
     // MARK: - 请求执行
@@ -150,13 +169,17 @@ enum TodoExtractionService {
         url: URL,
         config: LLMConfigSnapshot,
         body: [String: Any],
-        source: String
+        source: String,
+        onProgress: @escaping @Sendable (Progress) -> Void,
+        session: URLSession?
     ) async throws -> TodoDocument {
         try await performRequest(
             url: url,
             config: config,
             bodyData: try JSONSerialization.data(withJSONObject: body),
-            source: source
+            source: source,
+            onProgress: onProgress,
+            session: session
         )
     }
 
@@ -166,38 +189,209 @@ enum TodoExtractionService {
         url: URL,
         config: LLMConfigSnapshot,
         bodyData: Data,
-        source: String
+        source: String,
+        onProgress: @escaping @Sendable (Progress) -> Void,
+        session suppliedSession: URLSession?
     ) async throws -> TodoDocument {
+        let session = suppliedSession ?? makeSession(isLocal: config.isLocal)
+        defer { if suppliedSession == nil { session.invalidateAndCancel() } }
+        return try await withTaskCancellationHandler {
+            let capabilities = try await LocalLLMCapabilities.discover(config: config, session: session)
+            guard var body = try JSONSerialization.jsonObject(with: bodyData) as? [String: Any] else {
+                throw LLMError.parseError
+            }
+            if config.isLocal { body["stream"] = true }
+            if let off = capabilities.reasoningOffValue { body["reasoning_effort"] = off }
+            if capabilities.supportsJSONSchema {
+                body["response_format"] = responseFormat
+                body["stream_options"] = ["include_usage": true]
+                if var messages = body["messages"] as? [[String: Any]],
+                   let system = messages.first?["content"] as? String {
+                    messages[0]["content"] = system + "\n结构化输出中，没有依据的可选字段填 null，不得编造值。"
+                    body["messages"] = messages
+                }
+            }
+            do {
+                return try await sendRequest(url: url, config: config, body: body, source: source,
+                                             session: session, onProgress: onProgress)
+            } catch LLMError.apiError(let status, let message) where shouldRetryWithoutSchema(
+                status: status, message: message, usedSchema: body["response_format"] != nil
+            ) {
+                // 只对明确拒绝格式参数的服务协商一次，保留已验证的关闭思考参数。
+                logger.debug("本地服务拒绝 JSON Schema，移除格式参数重试一次")
+                body.removeValue(forKey: "response_format")
+                return try await sendRequest(url: url, config: config, body: body, source: source,
+                                             session: session, onProgress: onProgress)
+            }
+        } onCancel: {
+            // 每次生产调用独占 session，取消会中断等待响应头、流读取及能力探测。
+            session.invalidateAndCancel()
+        }
+    }
+
+    private static func makeSession(isLocal: Bool) -> URLSession {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.timeoutIntervalForRequest = isLocal ? 180 : 120
+        // 流式思考不断到达时，空闲超时不会触发；资源超时保证整次请求仍有上限。
+        configuration.timeoutIntervalForResource = isLocal ? 600 : 120
+        return URLSession(configuration: configuration)
+    }
+
+    private static func sendRequest(
+        url: URL, config: LLMConfigSnapshot, body: [String: Any], source: String,
+        session: URLSession, onProgress: @escaping @Sendable (Progress) -> Void
+    ) async throws -> TodoDocument {
+        try Task.checkCancellation()
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         if !config.apiKey.isEmpty {
             request.setValue("Bearer \(config.apiKey)", forHTTPHeaderField: "Authorization")
         }
-        request.timeoutInterval = 120
+        request.timeoutInterval = config.isLocal ? 180 : 120
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
 
-        request.httpBody = bodyData
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw LLMError.invalidResponse
+        var state = ResponseState()
+        let started = Date()
+        do {
+            if config.isLocal {
+                let (bytes, response) = try await session.bytes(for: request)
+                guard let http = response as? HTTPURLResponse else { throw LLMError.invalidResponse }
+                if http.statusCode != 200 {
+                    var data = Data()
+                    for try await byte in bytes { data.append(byte) }
+                    throw LLMError.apiError(statusCode: http.statusCode, message: String(decoding: data, as: UTF8.self))
+                }
+                if http.value(forHTTPHeaderField: "Content-Type")?.lowercased().contains("text/event-stream") == true {
+                    for try await line in bytes.lines {
+                        try Task.checkCancellation()
+                        guard line.hasPrefix("data:") else { continue }
+                        let payload = String(line.dropFirst(5)).trimmingCharacters(in: .whitespaces)
+                        if payload == "[DONE]" { state.sawDone = true; break }
+                        let previousPhase = state.progress
+                        try state.receive(payload: payload, streaming: true)
+                        if let phase = state.progress, phase != previousPhase { onProgress(phase) }
+                    }
+                    // 断流不得把尚未结束的、恰好可解析的 JSON 当作完整结果落盘。
+                    guard state.sawDone || state.finishReason != nil else { throw LLMError.invalidResponse }
+                } else {
+                    // 部分兼容服务忽略 stream=true，仍允许完整的 OpenAI JSON 响应。
+                    var data = Data()
+                    for try await byte in bytes { data.append(byte) }
+                    try state.receive(payload: String(decoding: data, as: UTF8.self), streaming: false)
+                }
+            } else {
+                let (data, response) = try await session.data(for: request)
+                guard let http = response as? HTTPURLResponse else { throw LLMError.invalidResponse }
+                guard http.statusCode == 200 else {
+                    throw LLMError.apiError(statusCode: http.statusCode, message: String(decoding: data, as: UTF8.self))
+                }
+                try state.receive(payload: String(decoding: data, as: UTF8.self), streaming: false)
+            }
+            try Task.checkCancellation()
+            let document = try state.document(model: config.modelName, source: source)
+            logDiagnostics(state, elapsed: Date().timeIntervalSince(started))
+            return document
+        } catch {
+            logDiagnostics(state, elapsed: Date().timeIntervalSince(started))
+            if Task.isCancelled || error is CancellationError { throw CancellationError() }
+            if (error as? URLError)?.code == .timedOut {
+                throw state.reasoningCharacters > 0 && state.text.isEmpty
+                    ? TodoExtractionError.reasoningTimedOut : TodoExtractionError.requestTimedOut
+            }
+            throw error
         }
-        guard httpResponse.statusCode == 200 else {
-            let msg = String(data: data, encoding: .utf8) ?? ""
-            throw LLMError.apiError(statusCode: httpResponse.statusCode, message: msg)
+    }
+
+    private static func logDiagnostics(_ state: ResponseState, elapsed: TimeInterval) {
+        // 不记录用户文本、思考内容、API Key 或后端原始错误。
+        logger.debug("待办请求诊断 elapsed=\(Int(elapsed), privacy: .public)s finish=\(state.finishReason ?? "nil", privacy: .public) textLength=\(state.text.count, privacy: .public) reasoningLength=\(state.reasoningCharacters, privacy: .public) completionTokens=\(state.completionTokens ?? -1, privacy: .public) reasoningTokens=\(state.reasoningTokens ?? -1, privacy: .public)")
+    }
+
+    static func shouldRetryWithoutSchema(status: Int, message: String, usedSchema: Bool) -> Bool {
+        guard usedSchema, [400, 422, 501].contains(status) else { return false }
+        let lower = message.lowercased()
+        return ["response_format", "json_schema", "structured output", "json schema"].contains(where: lower.contains)
+    }
+
+    static var responseFormat: [String: Any] {
+        let properties: [String: Any] = [
+            "title": ["type": "string", "minLength": 1],
+            "notes": ["type": ["string", "null"]],
+            "url": ["type": ["string", "null"]],
+            "priority": ["type": ["string", "null"], "enum": ["high", "medium", "low", NSNull()]],
+            "dueDate": ["type": ["string", "null"]],
+            "alarmOffsetMinutes": ["type": ["integer", "null"], "minimum": 1, "maximum": 43_200]
+        ]
+        return ["type": "json_schema", "json_schema": [
+            "name": "todo_extraction", "strict": true,
+            "schema": ["type": "object", "additionalProperties": false, "required": ["items"],
+                       "properties": ["items": ["type": "array", "items": [
+                        "type": "object", "additionalProperties": false,
+                        "properties": properties, "required": properties.keys.sorted()
+                       ]]]]
+        ]]
+    }
+
+    /// 仅累计正文与思考长度，不缓存思考原文；流式与非流式共享归因规则。
+    struct ResponseState {
+        private var pieces: [String] = []
+        private(set) var reasoningCharacters = 0
+        private(set) var finishReason: String?
+        private(set) var completionTokens: Int?
+        private(set) var reasoningTokens: Int?
+        private(set) var progress: Progress?
+        var sawDone = false
+        var text: String { pieces.joined() }
+
+        mutating func receive(payload: String, streaming: Bool) throws {
+            guard let data = payload.data(using: .utf8),
+                  let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  json["error"] == nil else { throw LLMError.parseError }
+            if let usage = json["usage"] as? [String: Any] {
+                completionTokens = usage["completion_tokens"] as? Int
+                reasoningTokens = (usage["completion_tokens_details"] as? [String: Any])?["reasoning_tokens"] as? Int
+            }
+            guard let choices = json["choices"] as? [[String: Any]] else { throw LLMError.parseError }
+            guard let choice = choices.first else {
+                if streaming { return } // include_usage 的尾块可以不带 choice
+                throw LLMError.parseError
+            }
+            if let reason = choice["finish_reason"] as? String { finishReason = reason }
+            guard let message = choice[streaming ? "delta" : "message"] as? [String: Any] else {
+                if streaming, finishReason != nil { return }
+                throw LLMError.parseError
+            }
+            if let content = message["content"] as? String, !content.isEmpty {
+                pieces.append(content)
+                progress = .generating
+            }
+            let reasoning = message["reasoning_content"] as? String ?? message["reasoning"] as? String ?? ""
+            reasoningCharacters += reasoning.count
+            if progress == nil, !reasoning.isEmpty { progress = .thinking }
         }
 
-        // 解析 OpenAI 兼容响应：choices[0].message.content
-        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let choices = json["choices"] as? [[String: Any]],
-              let message = choices.first?["message"] as? [String: Any],
-              let contentStr = message["content"] as? String else {
-            logger.error("LLM 响应解析失败：无法找到 choices[0].message.content")
-            throw LLMError.parseError
+        func document(model: String, source: String) throws -> TodoDocument {
+            if finishReason == "length" {
+                if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, reasoningCharacters > 0 {
+                    throw LLMError.outputBudgetExhausted
+                }
+                throw TodoExtractionError.truncatedResult
+            }
+            guard finishReason == nil || finishReason == "stop" else { throw LLMError.invalidResponse }
+            // 兼容把 <think> 放进正文的旧服务；绝不把思考中举例的 JSON 当作最终待办。
+            var content = text.trimmingCharacters(in: .whitespacesAndNewlines)
+            var hadThinkingBlock = false
+            while content.hasPrefix("<think>") {
+                hadThinkingBlock = true
+                guard let end = content.range(of: "</think>") else { throw TodoExtractionError.reasoningOnly }
+                content = String(content[end.upperBound...]).trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            guard !content.isEmpty else {
+                throw reasoningCharacters > 0 || hadThinkingBlock ? TodoExtractionError.reasoningOnly : TodoExtractionError.emptyResponse
+            }
+            return try parseTodoItems(from: content, model: model, source: source)
         }
-
-        return try parseTodoItems(from: contentStr, model: config.modelName, source: source)
     }
 
     // MARK: - JSON 解析
@@ -221,7 +415,7 @@ enum TodoExtractionService {
                let parsedFallback = try? JSONSerialization.jsonObject(with: extractedData) {
                 return try buildTodoDocument(from: parsedFallback, model: model, source: source)
             }
-            logger.error("LLM 返回内容不是合法 JSON：\(contentStr.prefix(200))")
+            logger.error("LLM 返回内容不是合法待办 JSON，textLength=\(contentStr.count, privacy: .public)")
             throw TodoExtractionError.invalidJSON
         }
 
@@ -466,14 +660,24 @@ enum TodoExtractionService {
 
 // MARK: - 错误类型
 
-enum TodoExtractionError: LocalizedError {
+enum TodoExtractionError: LocalizedError, Equatable {
     case invalidJSON
     case emptyResult
+    case emptyResponse
+    case reasoningOnly
+    case truncatedResult
+    case reasoningTimedOut
+    case requestTimedOut
 
     var errorDescription: String? {
         switch self {
         case .invalidJSON:   return String(localized: "LLM 返回的内容无法解析为待办列表，请稍后重试或更换模型")
         case .emptyResult:   return String(localized: "未能从内容中提取到待办事项")
+        case .emptyResponse: return String(localized: "模型返回了空正文，请检查模型设置后重试。")
+        case .reasoningOnly: return String(localized: "模型只返回了思考内容，尚未生成待办。请在本地服务中关闭思考模式后重试。")
+        case .truncatedResult: return String(localized: "待办输出已被截断，未保存不完整结果。请缩短输入或调整模型输出上限后重试。")
+        case .reasoningTimedOut: return String(localized: "模型持续思考，待办生成已超时。请在本地服务中关闭思考模式后重试。")
+        case .requestTimedOut: return String(localized: "待办生成超时，请检查模型服务或缩短输入后重试。")
         }
     }
 }
