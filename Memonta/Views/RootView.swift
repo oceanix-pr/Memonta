@@ -32,15 +32,26 @@ struct RootView: View {
     @State private var showSettings = false
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var isDragTargeted = false
-    @State private var recordingToDelete: AudioRecording?
-    @State private var showDeleteConfirmation = false
+    /// 删除确认载荷（单选录音 / 单选快捷笔记 / 批量混合）
+    ///
+    /// 旧实现是三个布尔量 + 三个 confirmationDialog：混合选中时两个 isPresented
+    /// 同帧置位会让 SwiftUI 只弹一个，另一类条目被静默跳过。改为单载荷后，
+    /// 「同一时刻只有一个删除确认框」由类型保证，展示与否也由载荷派生
+    /// （详见 Views/Root/RootDeletionRequest.swift）。
+    @State private var pendingDeletion: RootDeletionRequest?
+
+    /// 批量删除的目标集合（仅 pendingDeletion 的 kind 为 .batch 时有意义）
     @State private var recordingsToDelete: [AudioRecording] = []
-    @State private var showBatchDeleteConfirmation = false
-    @State private var quickNoteToDelete: QuickNote?
-    @State private var showQuickNoteDeleteConfirmation = false
-    // 批量删除确认对话框状态：录音与快捷笔记共用同一个对话框，
-    // 避免混合选中时两个 confirmationDialog 同帧竞争、只弹出一个导致另一类被静默跳过
     @State private var quickNotesToDelete: [QuickNote] = []
+
+    /// 把「有待删除载荷」翻译成 confirmationDialog 需要的 isPresented；
+    /// 关闭时统一清空载荷，杜绝「标记还在、载荷已空」这类中间态
+    private var isShowingDeletionConfirmation: Binding<Bool> {
+        Binding(
+            get: { pendingDeletion != nil },
+            set: { if !$0 { pendingDeletion = nil } }
+        )
+    }
     @State private var showCreateQuickNote = false
     @State private var showMediaImporter = false
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
@@ -148,12 +159,13 @@ struct RootView: View {
     @State private var showScreenshotErrorAlert = false
     @State private var screenshotErrorMessage = ""
 
-    // 解密失败一次性提示（EncryptionService 检测到疑似密文解密失败时通知，每次启动最多一条）
-    @State private var showDecryptionFailureAlert = false
-    /// 加密失败一次性提示（加密抛错且调用点回退明文时通知）
-    @State private var showEncryptionFailureAlert = false
-    /// SwiftData 保存失败提示（每启动最多一次）：不弹就会变成“界面已改、重启回退”且无任何线索
-    @State private var showSaveFailureAlert = false
+    /// 一次性系统提示统一载荷（解密失败 / 加密未生效 / 保存失败）
+    ///
+    /// 三条提示此前各持一个布尔量 + 一份结构完全相同的 `.alert`，属于同一类
+    /// 「必须看到、不会自动消失」的阻塞层。合并为单一通道后，展示与否由
+    /// `systemNotice != nil` 派生，标题与正文集中在 `SystemNotice` 里统一校对
+    /// （详见 Views/Root/SystemNotice.swift）。
+    @State private var systemNotice: SystemNotice?
 
     // 磁盘同步结果反馈：顶部非模态横幅（手动刷新始终展示，启动同步仅展示有内容的场景）
     @State private var syncBannerText: String?
@@ -229,45 +241,33 @@ struct RootView: View {
             onSyncResult: { handleSyncResult($0, isManualRefresh: false) }
         ))
         .task { installPersistence() }
-        // 解密失败一次性提示条：不改变现有布局，仅在检测到密钥异常时弹出说明
+        // 一次性系统提示统一走 SystemNotice 通道（阻塞层，见 Views/Root/SystemNotice.swift），
+        // 三条提示的标题与正文集中在枚举里，这里只负责把通知翻译成载荷
+        // 解密失败：仅在检测到密钥异常时弹出，不改变现有布局
         .onReceive(
             NotificationCenter.default
                 .publisher(for: EncryptionService.decryptionFailureNotification)
                 .receive(on: RunLoop.main)
         ) { _ in
-            showDecryptionFailureAlert = true
+            systemNotice = .decryptionFailed
         }
-        .alert("数据解密失败", isPresented: $showDecryptionFailureAlert) {
-            Button("知道了", role: .cancel) {}
-        } message: {
-            Text("部分加密内容无法解密，加密密钥可能已更改或 Keychain 中的密钥被删除。对应内容将显示为空，但原始数据仍保留在磁盘与数据库中。请勿删除 Keychain 中的密钥，否则已加密的数据将无法恢复。")
-        }
-        // 加密失败提示：避免“UI 显示已加密、磁盘实为明文”静默发生
+        // 加密失败：避免“UI 显示已加密、磁盘实为明文”静默发生
         .onReceive(
             NotificationCenter.default
                 .publisher(for: EncryptionService.encryptionFailureNotification)
                 .receive(on: RunLoop.main)
         ) { _ in
-            showEncryptionFailureAlert = true
+            systemNotice = .encryptionIneffective
         }
-        .alert("加密保护未生效", isPresented: $showEncryptionFailureAlert) {
-            Button("知道了", role: .cancel) {}
-        } message: {
-            Text("本次运行中有内容加密失败（Keychain 不可用或被锁定），为避免丢数据已以明文保存，这些内容仍可正常读写但不受加密保护。请确认钥匙串访问正常后重新启动应用。")
-        }
-        // 保存失败提示：写库异常原先被 `try?` 吞掉，界面看起来已经成功，重启才回退
+        // 保存失败：写库异常原先被 `try?` 吞掉，界面看起来已经成功，重启才回退
         .onReceive(
             NotificationCenter.default
                 .publisher(for: PersistenceReporting.saveFailureNotification)
                 .receive(on: RunLoop.main)
         ) { _ in
-            showSaveFailureAlert = true
+            systemNotice = .saveFailed
         }
-        .alert("部分改动未能保存", isPresented: $showSaveFailureAlert) {
-            Button("知道了", role: .cancel) {}
-        } message: {
-            Text("保存到本地数据库时出错（常见原因是磁盘已写满）。当前界面上的改动可能在重启后丢失，请检查磁盘剩余空间后重试；本次运行的详细原因已记入应用日志（category: Persistence）。")
-        }
+        .systemNoticeLayer($systemNotice)
     }
 
     /// 视图层 1：主布局 + 文件导入 + 通知监听 + 首屏引导
@@ -447,85 +447,62 @@ struct RootView: View {
     /// 视图层 3：删除确认对话框 + 新建笔记 Sheet + 错误提示
     private var dialogLayers: some View {
         sheetAndAlertLayers
+        // 删除确认唯一出口：单选录音 / 单选笔记 / 批量混合各给对应按钮，
+        // 标题与正文来自载荷（提出请求时已固定），动作按 kind 分流。
+        // 旧实现三个 isPresented 并存，混合选中时会静默跳过一类条目。
         .confirmationDialog(
-            "确认删除录音？",
-            isPresented: $showDeleteConfirmation,
-            titleVisibility: .visible
-        ) {
-            Button("删除", role: .destructive) {
-                guard !blockWriteIfPersistenceUnavailable(.deleteEntry) else {
-                    recordingToDelete = nil
-                    return
-                }
-                if let recording = recordingToDelete {
+            Text(pendingDeletion?.title ?? ""),
+            isPresented: isShowingDeletionConfirmation,
+            titleVisibility: .visible,
+            presenting: pendingDeletion
+        ) { request in
+            switch request.kind {
+            case .recording(let recording):
+                Button("删除", role: .destructive) {
+                    guard !blockWriteIfPersistenceUnavailable(.deleteEntry) else {
+                        pendingDeletion = nil
+                        return
+                    }
                     viewModel.deleteRecording(recording, context: modelContext)
                     // 从多选集合中移除被删除的录音
                     selectedListItems = selectedListItems.filter { item in
                         if case .recording(let selected) = item { return selected.id != recording.id }
                         return true
                     }
-                    recordingToDelete = nil
+                    pendingDeletion = nil
                 }
-            }
-            Button("取消", role: .cancel) {
-                recordingToDelete = nil
-            }
-        } message: {
-            if let recording = recordingToDelete {
-                Text("确定要删除「\(recording.fileName)」吗？\n录音文件和转写记录将一并删除，删除后无法恢复。")
-            }
-        }
-        // 录音与快捷笔记共用同一个批量删除确认对话框：混合选中时按类型各给一个
-        // 破坏性按钮。旧的「两个 isPresented 同时置位」会让 SwiftUI 只呈现一个，
-        // 另一类条目被静默跳过（用户以为都删了）
-        .confirmationDialog(
-            batchDeleteTitle,
-            isPresented: $showBatchDeleteConfirmation,
-            titleVisibility: .visible
-        ) {
-            if !recordingsToDelete.isEmpty {
-                Button("删除 \(recordingsToDelete.count) 个录音", role: .destructive) {
-                    deleteSelectedRecordings()
-                }
-            }
-            if !quickNotesToDelete.isEmpty {
-                Button("删除 \(quickNotesToDelete.count) 个快捷笔记", role: .destructive) {
-                    deleteSelectedQuickNotes()
-                }
-            }
-            Button("取消", role: .cancel) {
-                clearBatchDeleteSelection()
-            }
-        } message: {
-            Text(batchDeleteMessage)
-        }
-        .confirmationDialog(
-            "确认删除快捷笔记？",
-            isPresented: $showQuickNoteDeleteConfirmation,
-            titleVisibility: .visible
-        ) {
-            Button("删除", role: .destructive) {
-                guard !blockWriteIfPersistenceUnavailable(.deleteEntry) else {
-                    quickNoteToDelete = nil
-                    return
-                }
-                if let note = quickNoteToDelete {
+            case .quickNote(let note):
+                Button("删除", role: .destructive) {
+                    guard !blockWriteIfPersistenceUnavailable(.deleteEntry) else {
+                        pendingDeletion = nil
+                        return
+                    }
                     quickNoteVM.deleteQuickNote(note, context: modelContext)
                     // 从多选集合中移除被删除的笔记
                     selectedListItems = selectedListItems.filter { item in
                         if case .quickNote(let selected) = item { return selected.id != note.id }
                         return true
                     }
-                    quickNoteToDelete = nil
+                    pendingDeletion = nil
+                }
+            case .batch:
+                // 混合选中时按类型各给一个破坏性按钮，两个都执行也不会互相顶掉
+                if !recordingsToDelete.isEmpty {
+                    Button("删除 \(recordingsToDelete.count) 个录音", role: .destructive) {
+                        deleteSelectedRecordings()
+                    }
+                }
+                if !quickNotesToDelete.isEmpty {
+                    Button("删除 \(quickNotesToDelete.count) 个快捷笔记", role: .destructive) {
+                        deleteSelectedQuickNotes()
+                    }
                 }
             }
             Button("取消", role: .cancel) {
-                quickNoteToDelete = nil
+                clearBatchDeleteSelection()
             }
-        } message: {
-            if let note = quickNoteToDelete {
-                Text("确定要删除「\(note.title)」吗？\n笔记内容和相关待办将一并删除，删除后无法恢复。")
-            }
+        } message: { request in
+            Text(request.message)
         }
         .sheet(isPresented: $showCreateQuickNote) {
             CreateQuickNoteSheet { text in
@@ -572,12 +549,10 @@ struct RootView: View {
                 ScreenshotManager.shared.startCapture(mode: effectiveScreenshotMode())
             },
             onDeleteRecording: { recording in
-                recordingToDelete = recording
-                showDeleteConfirmation = true
+                pendingDeletion = .recording(recording)
             },
             onDeleteQuickNote: { note in
-                quickNoteToDelete = note
-                showQuickNoteDeleteConfirmation = true
+                pendingDeletion = .quickNote(note)
             },
             onRecordingTitleChange: { recording, newTitle in
                 viewModel.updateRecordingTitle(recording, newTitle: newTitle, context: modelContext)
@@ -975,8 +950,7 @@ struct RootView: View {
                 }
 
                 Button(role: .destructive) {
-                    recordingToDelete = recording
-                    showDeleteConfirmation = true
+                    pendingDeletion = .recording(recording)
                 } label: {
                     Label("删除", systemImage: "trash")
                 }
@@ -1050,8 +1024,7 @@ struct RootView: View {
                 }
 
                 Button(role: .destructive) {
-                    quickNoteToDelete = note
-                    showQuickNoteDeleteConfirmation = true
+                    pendingDeletion = .quickNote(note)
                 } label: {
                     Label("删除", systemImage: "trash")
                 }
@@ -1080,41 +1053,23 @@ struct RootView: View {
                       systemImage: allHidden ? "eye" : "eye.slash")
             }
 
-            // 多选删除：录音与快捷笔记共用同一个确认对话框（见批量删除 MARK）
+            // 多选删除：录音与快捷笔记走同一个确认载荷（见批量删除 MARK）
             Button(role: .destructive) {
                 recordingsToDelete = recordingItems
                 quickNotesToDelete = quickNoteItems
                 guard !recordingsToDelete.isEmpty || !quickNotesToDelete.isEmpty else { return }
-                showBatchDeleteConfirmation = true
+                pendingDeletion = .batch(recordings: recordingsToDelete, quickNotes: quickNotesToDelete)
             } label: {
                 Label("删除选中的 \(items.count) 个条目", systemImage: "trash")
             }
         }
     }
 
-    // MARK: - 批量删除（录音 + 快捷笔记共用同一确认对话框）
+    // MARK: - 批量删除（录音 + 快捷笔记共用同一确认载荷）
 
-    private var batchDeleteTitle: String {
-        switch (recordingsToDelete.isEmpty, quickNotesToDelete.isEmpty) {
-        case (false, true):
-            return String(localized: "确认删除选中的录音？")
-        case (true, false):
-            return String(localized: "确认删除选中的快捷笔记？")
-        default:
-            return String(localized: "确认删除选中的条目？")
-        }
-    }
-
-    private var batchDeleteMessage: String {
-        switch (recordingsToDelete.isEmpty, quickNotesToDelete.isEmpty) {
-        case (false, true):
-            return String(localized: "选中的录音及其录音文件将一并删除，删除后无法恢复。")
-        case (true, false):
-            return String(localized: "选中的快捷笔记及其文件和待办将一并删除，删除后无法恢复。")
-        default:
-            return String(localized: "选中的录音与快捷笔记及其文件和待办将一并删除，删除后无法恢复。")
-        }
-    }
+    // 批量删除的标题与正文已随载荷在「提出请求」时算好
+    // （见 RootDeletionRequest.batch(recordings:quickNotes:)）：
+    // 动作执行会清空目标集合，若文案届时再重算会落到默认分支。
 
     private func deleteSelectedRecordings() {
         guard !blockWriteIfPersistenceUnavailable(.deleteEntry) else {
@@ -1153,9 +1108,11 @@ struct RootView: View {
         quickNotesToDelete = []
     }
 
+    /// 清空批量删除目标并收起确认框（取消、临时模式拦截旁路、动作完成都收口到这里）
     private func clearBatchDeleteSelection() {
         recordingsToDelete = []
         quickNotesToDelete = []
+        pendingDeletion = nil
     }
 
     // MARK: - 后台构建可导出文本

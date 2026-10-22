@@ -242,6 +242,17 @@ enum TodoExtractionService {
         session: URLSession, onProgress: @escaping @Sendable (Progress) -> Void
     ) async throws -> TodoDocument {
         try Task.checkCancellation()
+        // 在实际发送前统一补充系统时间，覆盖文字、OCR 与图片，也覆盖云端重试和
+        // Schema 协商重试。放在自定义模板之后，避免模板中的示例日期充当「现在」。
+        guard var messages = body["messages"] as? [[String: Any]],
+              messages.first?["role"] as? String == "system",
+              let prompt = messages.first?["content"] as? String else {
+            throw LLMError.parseError
+        }
+        messages[0]["content"] = prompt + "\n\n" + CurrentTimeService.promptContext()
+        var requestBody = body
+        requestBody["messages"] = messages
+
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -249,7 +260,7 @@ enum TodoExtractionService {
             request.setValue("Bearer \(config.apiKey)", forHTTPHeaderField: "Authorization")
         }
         request.timeoutInterval = config.isLocal ? 180 : 120
-        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
 
         var state = ResponseState()
         let started = Date()
@@ -649,12 +660,7 @@ enum TodoExtractionService {
     static var systemPrompt: String { PromptTemplateKind.todoExtraction.defaultText }
 
     private static func userPrompt(content: String) -> String {
-        // 注入当前时间，供 LLM 将「明天/下周五」等相对时间换算为具体日期
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "zh_CN")
-        formatter.dateFormat = "yyyy-MM-dd HH:mm EEEE"
-        let now = formatter.string(from: Date())
-        return "当前时间：\(now)\n\n请从以下内容中提取待办事项，并把其中提到的截止日期/时间解析为 dueDate：\n\n<<<待处理内容开始>>>\n\(content)\n<<<待处理内容结束>>>"
+        "请从以下内容中提取待办事项，并把其中提到的截止日期/时间解析为 dueDate：\n\n<<<待处理内容开始>>>\n\(content)\n<<<待处理内容结束>>>"
     }
 }
 

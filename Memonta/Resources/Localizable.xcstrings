@@ -1,916 +1,6 @@
 {
   "sourceLanguage" : "zh-Hans",
   "strings" : {
-    "AI 正在思考待办..." : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "يفكر الذكاء الاصطناعي في المهام…"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "KI denkt über Aufgaben nach…"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI is thinking about tasks…"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La IA está analizando las tareas…"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L’IA réfléchit aux tâches…"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI कार्यों पर विचार कर रहा है…"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI sedang memikirkan tugas…"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L’IA sta analizzando le attività…"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI がタスクを検討中…"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI가 할 일을 검토 중…"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI denkt na over taken…"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI analizuje zadania…"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A IA está analisando as tarefas…"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ИИ обдумывает задачи…"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI analyserar uppgifter…"
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI กำลังพิจารณางาน…"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yapay zekâ görevleri değerlendiriyor…"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ШІ обмірковує завдання…"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI đang suy nghĩ về các công việc…"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI 正在思考待办..."
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI 正在思考待辦…"
-          }
-        }
-      }
-    },
-    "AI 正在生成待办..." : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ينشئ الذكاء الاصطناعي المهام…"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "KI erstellt Aufgaben…"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI is generating tasks…"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La IA está generando tareas…"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L’IA génère les tâches…"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI कार्य बना रहा है…"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI sedang membuat tugas…"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L’IA sta generando le attività…"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI がタスクを生成中…"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI가 할 일을 생성 중…"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI maakt taken aan…"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI tworzy zadania…"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A IA está gerando tarefas…"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ИИ создаёт задачи…"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI skapar uppgifter…"
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI กำลังสร้างงาน…"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yapay zekâ görevleri oluşturuyor…"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ШІ створює завдання…"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI đang tạo công việc…"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI 正在生成待办..."
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI 正在產生待辦…"
-          }
-        }
-      }
-    },
-    "待办生成超时，请检查模型服务或缩短输入后重试。" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "انتهت مهلة إنشاء المهام. تحقق من خدمة النموذج أو اختصر المدخلات وحاول مجددًا."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die Aufgabenerstellung hat das Zeitlimit überschritten. Prüfe den Modelldienst oder kürze die Eingabe und versuche es erneut."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Task generation timed out. Check the model service or shorten the input and try again."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se agotó el tiempo de generación de tareas. Revisa el servicio del modelo o acorta la entrada y vuelve a intentarlo."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La génération des tâches a expiré. Vérifiez le service du modèle ou raccourcissez l’entrée, puis réessayez."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "कार्य बनाने का समय समाप्त हो गया। मॉडल सेवा जाँचें या इनपुट छोटा करके फिर कोशिश करें।"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pembuatan tugas kehabisan waktu. Periksa layanan model atau persingkat masukan lalu coba lagi."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La generazione delle attività è scaduta. Controlla il servizio del modello o riduci l’input e riprova."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "タスク生成がタイムアウトしました。モデルサービスを確認するか入力を短くして再試行してください。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "할 일 생성 시간이 초과되었습니다. 모델 서비스를 확인하거나 입력을 줄이고 다시 시도하세요."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Het aanmaken van taken duurde te lang. Controleer de modelservice of verkort de invoer en probeer het opnieuw."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upłynął czas tworzenia zadań. Sprawdź usługę modelu lub skróć dane wejściowe i spróbuj ponownie."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A geração de tarefas expirou. Verifique o serviço do modelo ou reduza a entrada e tente novamente."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Время создания задач истекло. Проверьте сервис модели или сократите ввод и повторите попытку."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tiden för uppgiftsgenerering gick ut. Kontrollera modelltjänsten eller korta inmatningen och försök igen."
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "การสร้างงานหมดเวลา โปรดตรวจสอบบริการโมเดลหรือลดความยาวข้อมูลแล้วลองอีกครั้ง"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Görev oluşturma zaman aşımına uğradı. Model hizmetini kontrol edin veya girdiyi kısaltıp yeniden deneyin."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Час створення завдань вичерпано. Перевірте службу моделі або скоротіть вхідні дані та повторіть спробу."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quá thời gian tạo công việc. Hãy kiểm tra dịch vụ mô hình hoặc rút ngắn đầu vào rồi thử lại."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "待办生成超时，请检查模型服务或缩短输入后重试。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "待辦產生逾時，請檢查模型服務或縮短輸入後重試。"
-          }
-        }
-      }
-    },
-    "待办输出已被截断，未保存不完整结果。请缩短输入或调整模型输出上限后重试。" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "تم اقتطاع ناتج المهام ولم تُحفظ النتائج غير المكتملة. اختصر المدخلات أو عدّل حد المخرجات وحاول مجددًا."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die Aufgabenausgabe wurde abgeschnitten. Unvollständige Ergebnisse wurden nicht gespeichert. Kürze die Eingabe oder passe das Ausgabelimit an und versuche es erneut."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Task output was truncated. Incomplete results were not saved. Shorten the input or adjust the output limit and try again."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La salida de tareas se truncó. No se guardaron resultados incompletos. Acorta la entrada o ajusta el límite de salida y vuelve a intentarlo."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La sortie des tâches a été tronquée. Les résultats incomplets n’ont pas été enregistrés. Raccourcissez l’entrée ou ajustez la limite de sortie, puis réessayez."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "कार्यों का आउटपुट अधूरा रह गया। अधूरे परिणाम सहेजे नहीं गए। इनपुट छोटा करें या आउटपुट सीमा बदलकर फिर कोशिश करें।"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keluaran tugas terpotong. Hasil yang tidak lengkap tidak disimpan. Persingkat masukan atau sesuaikan batas keluaran lalu coba lagi."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L’output delle attività è stato troncato. I risultati incompleti non sono stati salvati. Riduci l’input o modifica il limite di output e riprova."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "タスクの出力が途中で切れたため、不完全な結果は保存していません。入力を短くするか出力上限を調整して再試行してください。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "할 일 출력이 잘렸습니다. 불완전한 결과는 저장하지 않았습니다. 입력을 줄이거나 출력 한도를 조정하고 다시 시도하세요."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "De taakuitvoer is afgekapt. Onvolledige resultaten zijn niet opgeslagen. Verkort de invoer of pas de uitvoerlimiet aan en probeer het opnieuw."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wynik zadań został ucięty. Niepełne wyniki nie zostały zapisane. Skróć dane wejściowe lub zmień limit wyjścia i spróbuj ponownie."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A saída de tarefas foi truncada. Os resultados incompletos não foram salvos. Reduza a entrada ou ajuste o limite de saída e tente novamente."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вывод задач обрезан. Неполные результаты не сохранены. Сократите ввод или измените лимит вывода и повторите попытку."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uppgiftsutdata klipptes av. Ofullständiga resultat sparades inte. Korta inmatningen eller justera utdatagränsen och försök igen."
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ผลลัพธ์งานถูกตัดทอน จึงไม่ได้บันทึกผลลัพธ์ที่ไม่สมบูรณ์ โปรดลดความยาวข้อมูลหรือปรับขีดจำกัดผลลัพธ์แล้วลองอีกครั้ง"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Görev çıktısı kesildi. Eksik sonuçlar kaydedilmedi. Girdiyi kısaltın veya çıktı sınırını ayarlayıp yeniden deneyin."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вивід завдань обрізано. Неповні результати не збережено. Скоротіть вхідні дані або змініть ліміт виводу та повторіть спробу."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kết quả công việc bị cắt ngắn. Kết quả chưa đầy đủ không được lưu. Hãy rút ngắn đầu vào hoặc điều chỉnh giới hạn đầu ra rồi thử lại."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "待办输出已被截断，未保存不完整结果。请缩短输入或调整模型输出上限后重试。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "待辦輸出已遭截斷，未儲存不完整結果。請縮短輸入或調整模型輸出上限後重試。"
-          }
-        }
-      }
-    },
-    "模型只返回了思考内容，尚未生成待办。请在本地服务中关闭思考模式后重试。" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "أعاد النموذج تفكيرًا فقط دون مهام. عطّل وضع التفكير في الخدمة المحلية وحاول مجددًا."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das Modell hat nur Überlegungen und keine Aufgaben ausgegeben. Deaktiviere den Denkmodus im lokalen Dienst und versuche es erneut."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The model returned only reasoning and no tasks. Disable thinking mode in the local service and try again."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El modelo solo devolvió razonamiento, sin tareas. Desactiva el modo de razonamiento en el servicio local y vuelve a intentarlo."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le modèle a renvoyé uniquement son raisonnement, sans tâches. Désactivez le mode réflexion du service local et réessayez."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "मॉडल ने केवल विचार प्रक्रिया लौटाई, कार्य नहीं बनाए। स्थानीय सेवा में विचार मोड बंद करके फिर कोशिश करें।"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Model hanya mengembalikan penalaran, tanpa tugas. Nonaktifkan mode berpikir di layanan lokal dan coba lagi."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il modello ha restituito solo il ragionamento, senza attività. Disattiva la modalità di ragionamento nel servizio locale e riprova."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "モデルは思考内容のみを返し、タスクを生成しませんでした。ローカルサービスの思考モードを無効にして再試行してください。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "모델이 추론 내용만 반환하고 할 일을 생성하지 않았습니다. 로컬 서비스에서 사고 모드를 끄고 다시 시도하세요."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Het model gaf alleen redeneerstappen, zonder taken. Schakel de denkmodus in de lokale service uit en probeer het opnieuw."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Model zwrócił tylko rozumowanie, bez zadań. Wyłącz tryb myślenia w usłudze lokalnej i spróbuj ponownie."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O modelo retornou apenas raciocínio, sem tarefas. Desative o modo de raciocínio no serviço local e tente novamente."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Модель вернула только рассуждения, без задач. Отключите режим рассуждения в локальном сервисе и повторите попытку."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modellen returnerade bara resonemang, utan uppgifter. Stäng av tänkläget i den lokala tjänsten och försök igen."
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "โมเดลส่งกลับเฉพาะการคิดโดยยังไม่ได้สร้างงาน โปรดปิดโหมดการคิดในบริการภายในเครื่องแล้วลองอีกครั้ง"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Model yalnızca akıl yürütme döndürdü, görev oluşturmadı. Yerel hizmette düşünme modunu kapatıp yeniden deneyin."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Модель повернула лише міркування, без завдань. Вимкніть режим мислення в локальній службі та повторіть спробу."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mô hình chỉ trả về suy luận, chưa tạo công việc. Hãy tắt chế độ suy nghĩ trong dịch vụ cục bộ và thử lại."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "模型只返回了思考内容，尚未生成待办。请在本地服务中关闭思考模式后重试。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "模型只傳回思考內容，尚未產生待辦。請在本機服務中關閉思考模式後重試。"
-          }
-        }
-      }
-    },
-    "模型持续思考，待办生成已超时。请在本地服务中关闭思考模式后重试。" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "استمر النموذج في التفكير وانتهت مهلة إنشاء المهام. عطّل وضع التفكير في الخدمة المحلية وحاول مجددًا."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das Modell hat weiter nachgedacht und die Aufgabenerstellung hat das Zeitlimit überschritten. Deaktiviere den Denkmodus im lokalen Dienst und versuche es erneut."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The model kept reasoning and task generation timed out. Disable thinking mode in the local service and try again."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El modelo siguió razonando y se agotó el tiempo de generación. Desactiva el modo de razonamiento en el servicio local y vuelve a intentarlo."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le modèle a continué à réfléchir et la génération des tâches a expiré. Désactivez le mode réflexion du service local et réessayez."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "मॉडल विचार करता रहा और कार्य बनाने का समय समाप्त हो गया। स्थानीय सेवा में विचार मोड बंद करके फिर कोशिश करें।"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Model terus menalar hingga pembuatan tugas kehabisan waktu. Nonaktifkan mode berpikir di layanan lokal dan coba lagi."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il modello ha continuato a ragionare e la generazione delle attività è scaduta. Disattiva la modalità di ragionamento nel servizio locale e riprova."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "モデルの思考が続き、タスク生成がタイムアウトしました。ローカルサービスの思考モードを無効にして再試行してください。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "모델이 계속 추론하여 할 일 생성 시간이 초과되었습니다. 로컬 서비스에서 사고 모드를 끄고 다시 시도하세요."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Het model bleef redeneren en het aanmaken van taken duurde te lang. Schakel de denkmodus in de lokale service uit en probeer het opnieuw."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Model nadal rozumował i upłynął czas tworzenia zadań. Wyłącz tryb myślenia w usłudze lokalnej i spróbuj ponownie."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O modelo continuou raciocinando e a geração de tarefas expirou. Desative o modo de raciocínio no serviço local e tente novamente."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Модель продолжала рассуждать, и время создания задач истекло. Отключите режим рассуждения в локальном сервисе и повторите попытку."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modellen fortsatte resonera och tiden för uppgiftsgenerering gick ut. Stäng av tänkläget i den lokala tjänsten och försök igen."
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "โมเดลยังคงคิดจนการสร้างงานหมดเวลา โปรดปิดโหมดการคิดในบริการภายในเครื่องแล้วลองอีกครั้ง"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Model düşünmeye devam etti ve görev oluşturma zaman aşımına uğradı. Yerel hizmette düşünme modunu kapatıp yeniden deneyin."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Модель продовжувала міркувати, і час створення завдань вичерпано. Вимкніть режим мислення в локальній службі та повторіть спробу."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mô hình tiếp tục suy luận và quá thời gian tạo công việc. Hãy tắt chế độ suy nghĩ trong dịch vụ cục bộ và thử lại."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "模型持续思考，待办生成已超时。请在本地服务中关闭思考模式后重试。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "模型持續思考，待辦產生已逾時。請在本機服務中關閉思考模式後重試。"
-          }
-        }
-      }
-    },
-    "模型返回了空正文，请检查模型设置后重试。" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "أعاد النموذج استجابة فارغة. تحقق من إعدادات النموذج وحاول مجددًا."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das Modell hat eine leere Antwort zurückgegeben. Prüfe die Modelleinstellungen und versuche es erneut."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The model returned an empty response. Check the model settings and try again."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El modelo devolvió una respuesta vacía. Revisa su configuración e inténtalo de nuevo."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le modèle a renvoyé une réponse vide. Vérifiez ses réglages et réessayez."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "मॉडल ने खाली उत्तर दिया। मॉडल की सेटिंग जाँचें और फिर कोशिश करें।"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Model mengembalikan respons kosong. Periksa pengaturan model dan coba lagi."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il modello ha restituito una risposta vuota. Controlla le impostazioni e riprova."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "モデルの応答本文が空です。モデル設定を確認して再試行してください。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "모델이 빈 응답을 반환했습니다. 모델 설정을 확인하고 다시 시도하세요."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Het model gaf een leeg antwoord. Controleer de modelinstellingen en probeer het opnieuw."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Model zwrócił pustą odpowiedź. Sprawdź jego ustawienia i spróbuj ponownie."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O modelo retornou uma resposta vazia. Verifique as configurações e tente novamente."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Модель вернула пустой ответ. Проверьте настройки модели и повторите попытку."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modellen returnerade ett tomt svar. Kontrollera modellinställningarna och försök igen."
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "โมเดลส่งคำตอบว่างกลับมา โปรดตรวจสอบการตั้งค่าโมเดลแล้วลองอีกครั้ง"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Model boş yanıt döndürdü. Model ayarlarını kontrol edip yeniden deneyin."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Модель повернула порожню відповідь. Перевірте налаштування моделі та повторіть спробу."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mô hình trả về nội dung trống. Hãy kiểm tra cài đặt mô hình và thử lại."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "模型返回了空正文，请检查模型设置后重试。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "模型傳回空白正文，請檢查模型設定後重試。"
-          }
-        }
-      }
-    },
     "" : {
       "localizations" : {
         "ar" : {
@@ -7164,6 +6254,266 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "AI 拆解出的待辦事項將寫入此處選擇的提醒事項列表。授權被拒時，待辦僅在 App 內展示，無法寫入系統提醒事項。"
+          }
+        }
+      }
+    },
+    "AI 正在思考待办..." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يفكر الذكاء الاصطناعي في المهام…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "KI denkt über Aufgaben nach…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI is thinking about tasks…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La IA está analizando las tareas…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’IA réfléchit aux tâches…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI कार्यों पर विचार कर रहा है…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI sedang memikirkan tugas…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’IA sta analizzando le attività…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI がタスクを検討中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI가 할 일을 검토 중…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI denkt na over taken…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI analizuje zadania…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A IA está analisando as tarefas…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ИИ обдумывает задачи…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI analyserar uppgifter…"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI กำลังพิจารณางาน…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yapay zekâ görevleri değerlendiriyor…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ШІ обмірковує завдання…"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI đang suy nghĩ về các công việc…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 正在思考待办..."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 正在思考待辦…"
+          }
+        }
+      }
+    },
+    "AI 正在生成待办..." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ينشئ الذكاء الاصطناعي المهام…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "KI erstellt Aufgaben…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI is generating tasks…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La IA está generando tareas…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’IA génère les tâches…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI कार्य बना रहा है…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI sedang membuat tugas…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’IA sta generando le attività…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI がタスクを生成中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI가 할 일을 생성 중…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI maakt taken aan…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI tworzy zadania…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A IA está gerando tarefas…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ИИ создаёт задачи…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI skapar uppgifter…"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI กำลังสร้างงาน…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yapay zekâ görevleri oluşturuyor…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ШІ створює завдання…"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI đang tạo công việc…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 正在生成待办..."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 正在產生待辦…"
           }
         }
       }
@@ -25905,6 +25255,7 @@
       }
     },
     "保存到本地数据库时出错（常见原因是磁盘已写满）。当前界面上的改动可能在重启后丢失，请检查磁盘剩余空间后重试；本次运行的详细原因已记入应用日志（category: Persistence）。" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -37354,6 +36705,7 @@
       }
     },
     "加密保护未生效" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -77948,6 +77300,266 @@
         }
       }
     },
+    "待办生成超时，请检查模型服务或缩短输入后重试。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انتهت مهلة إنشاء المهام. تحقق من خدمة النموذج أو اختصر المدخلات وحاول مجددًا."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Aufgabenerstellung hat das Zeitlimit überschritten. Prüfe den Modelldienst oder kürze die Eingabe und versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Task generation timed out. Check the model service or shorten the input and try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se agotó el tiempo de generación de tareas. Revisa el servicio del modelo o acorta la entrada y vuelve a intentarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La génération des tâches a expiré. Vérifiez le service du modèle ou raccourcissez l’entrée, puis réessayez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कार्य बनाने का समय समाप्त हो गया। मॉडल सेवा जाँचें या इनपुट छोटा करके फिर कोशिश करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pembuatan tugas kehabisan waktu. Periksa layanan model atau persingkat masukan lalu coba lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La generazione delle attività è scaduta. Controlla il servizio del modello o riduci l’input e riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タスク生成がタイムアウトしました。モデルサービスを確認するか入力を短くして再試行してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "할 일 생성 시간이 초과되었습니다. 모델 서비스를 확인하거나 입력을 줄이고 다시 시도하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het aanmaken van taken duurde te lang. Controleer de modelservice of verkort de invoer en probeer het opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upłynął czas tworzenia zadań. Sprawdź usługę modelu lub skróć dane wejściowe i spróbuj ponownie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A geração de tarefas expirou. Verifique o serviço do modelo ou reduza a entrada e tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время создания задач истекло. Проверьте сервис модели или сократите ввод и повторите попытку."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiden för uppgiftsgenerering gick ut. Kontrollera modelltjänsten eller korta inmatningen och försök igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "การสร้างงานหมดเวลา โปรดตรวจสอบบริการโมเดลหรือลดความยาวข้อมูลแล้วลองอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görev oluşturma zaman aşımına uğradı. Model hizmetini kontrol edin veya girdiyi kısaltıp yeniden deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Час створення завдань вичерпано. Перевірте службу моделі або скоротіть вхідні дані та повторіть спробу."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quá thời gian tạo công việc. Hãy kiểm tra dịch vụ mô hình hoặc rút ngắn đầu vào rồi thử lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "待办生成超时，请检查模型服务或缩短输入后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "待辦產生逾時，請檢查模型服務或縮短輸入後重試。"
+          }
+        }
+      }
+    },
+    "待办输出已被截断，未保存不完整结果。请缩短输入或调整模型输出上限后重试。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم اقتطاع ناتج المهام ولم تُحفظ النتائج غير المكتملة. اختصر المدخلات أو عدّل حد المخرجات وحاول مجددًا."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Aufgabenausgabe wurde abgeschnitten. Unvollständige Ergebnisse wurden nicht gespeichert. Kürze die Eingabe oder passe das Ausgabelimit an und versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Task output was truncated. Incomplete results were not saved. Shorten the input or adjust the output limit and try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La salida de tareas se truncó. No se guardaron resultados incompletos. Acorta la entrada o ajusta el límite de salida y vuelve a intentarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La sortie des tâches a été tronquée. Les résultats incomplets n’ont pas été enregistrés. Raccourcissez l’entrée ou ajustez la limite de sortie, puis réessayez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कार्यों का आउटपुट अधूरा रह गया। अधूरे परिणाम सहेजे नहीं गए। इनपुट छोटा करें या आउटपुट सीमा बदलकर फिर कोशिश करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keluaran tugas terpotong. Hasil yang tidak lengkap tidak disimpan. Persingkat masukan atau sesuaikan batas keluaran lalu coba lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’output delle attività è stato troncato. I risultati incompleti non sono stati salvati. Riduci l’input o modifica il limite di output e riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タスクの出力が途中で切れたため、不完全な結果は保存していません。入力を短くするか出力上限を調整して再試行してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "할 일 출력이 잘렸습니다. 불완전한 결과는 저장하지 않았습니다. 입력을 줄이거나 출력 한도를 조정하고 다시 시도하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De taakuitvoer is afgekapt. Onvolledige resultaten zijn niet opgeslagen. Verkort de invoer of pas de uitvoerlimiet aan en probeer het opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wynik zadań został ucięty. Niepełne wyniki nie zostały zapisane. Skróć dane wejściowe lub zmień limit wyjścia i spróbuj ponownie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A saída de tarefas foi truncada. Os resultados incompletos não foram salvos. Reduza a entrada ou ajuste o limite de saída e tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вывод задач обрезан. Неполные результаты не сохранены. Сократите ввод или измените лимит вывода и повторите попытку."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uppgiftsutdata klipptes av. Ofullständiga resultat sparades inte. Korta inmatningen eller justera utdatagränsen och försök igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ผลลัพธ์งานถูกตัดทอน จึงไม่ได้บันทึกผลลัพธ์ที่ไม่สมบูรณ์ โปรดลดความยาวข้อมูลหรือปรับขีดจำกัดผลลัพธ์แล้วลองอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görev çıktısı kesildi. Eksik sonuçlar kaydedilmedi. Girdiyi kısaltın veya çıktı sınırını ayarlayıp yeniden deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вивід завдань обрізано. Неповні результати не збережено. Скоротіть вхідні дані або змініть ліміт виводу та повторіть спробу."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kết quả công việc bị cắt ngắn. Kết quả chưa đầy đủ không được lưu. Hãy rút ngắn đầu vào hoặc điều chỉnh giới hạn đầu ra rồi thử lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "待办输出已被截断，未保存不完整结果。请缩短输入或调整模型输出上限后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "待辦輸出已遭截斷，未儲存不完整結果。請縮短輸入或調整模型輸出上限後重試。"
+          }
+        }
+      }
+    },
     "待续跑的任务" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -96038,6 +95650,7 @@
       }
     },
     "数据解密失败" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -109963,6 +109576,7 @@
       }
     },
     "本次运行中有内容加密失败（Keychain 不可用或被锁定），为避免丢数据已以明文保存，这些内容仍可正常读写但不受加密保护。请确认钥匙串访问正常后重新启动应用。" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -114124,6 +113738,136 @@
         }
       }
     },
+    "模型只返回了思考内容，尚未生成待办。请在本地服务中关闭思考模式后重试。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أعاد النموذج تفكيرًا فقط دون مهام. عطّل وضع التفكير في الخدمة المحلية وحاول مجددًا."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Modell hat nur Überlegungen und keine Aufgaben ausgegeben. Deaktiviere den Denkmodus im lokalen Dienst und versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The model returned only reasoning and no tasks. Disable thinking mode in the local service and try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo solo devolvió razonamiento, sin tareas. Desactiva el modo de razonamiento en el servicio local y vuelve a intentarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le modèle a renvoyé uniquement son raisonnement, sans tâches. Désactivez le mode réflexion du service local et réessayez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मॉडल ने केवल विचार प्रक्रिया लौटाई, कार्य नहीं बनाए। स्थानीय सेवा में विचार मोड बंद करके फिर कोशिश करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model hanya mengembalikan penalaran, tanpa tugas. Nonaktifkan mode berpikir di layanan lokal dan coba lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il modello ha restituito solo il ragionamento, senza attività. Disattiva la modalità di ragionamento nel servizio locale e riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モデルは思考内容のみを返し、タスクを生成しませんでした。ローカルサービスの思考モードを無効にして再試行してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모델이 추론 내용만 반환하고 할 일을 생성하지 않았습니다. 로컬 서비스에서 사고 모드를 끄고 다시 시도하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het model gaf alleen redeneerstappen, zonder taken. Schakel de denkmodus in de lokale service uit en probeer het opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model zwrócił tylko rozumowanie, bez zadań. Wyłącz tryb myślenia w usłudze lokalnej i spróbuj ponownie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O modelo retornou apenas raciocínio, sem tarefas. Desative o modo de raciocínio no serviço local e tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Модель вернула только рассуждения, без задач. Отключите режим рассуждения в локальном сервисе и повторите попытку."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modellen returnerade bara resonemang, utan uppgifter. Stäng av tänkläget i den lokala tjänsten och försök igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "โมเดลส่งกลับเฉพาะการคิดโดยยังไม่ได้สร้างงาน โปรดปิดโหมดการคิดในบริการภายในเครื่องแล้วลองอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model yalnızca akıl yürütme döndürdü, görev oluşturmadı. Yerel hizmette düşünme modunu kapatıp yeniden deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Модель повернула лише міркування, без завдань. Вимкніть режим мислення в локальній службі та повторіть спробу."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mô hình chỉ trả về suy luận, chưa tạo công việc. Hãy tắt chế độ suy nghĩ trong dịch vụ cục bộ và thử lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "模型只返回了思考内容，尚未生成待办。请在本地服务中关闭思考模式后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "模型只傳回思考內容，尚未產生待辦。請在本機服務中關閉思考模式後重試。"
+          }
+        }
+      }
+    },
     "模型名称" : {
       "localizations" : {
         "ar" : {
@@ -114510,6 +114254,136 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模型已就緒"
+          }
+        }
+      }
+    },
+    "模型持续思考，待办生成已超时。请在本地服务中关闭思考模式后重试。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استمر النموذج في التفكير وانتهت مهلة إنشاء المهام. عطّل وضع التفكير في الخدمة المحلية وحاول مجددًا."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Modell hat weiter nachgedacht und die Aufgabenerstellung hat das Zeitlimit überschritten. Deaktiviere den Denkmodus im lokalen Dienst und versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The model kept reasoning and task generation timed out. Disable thinking mode in the local service and try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo siguió razonando y se agotó el tiempo de generación. Desactiva el modo de razonamiento en el servicio local y vuelve a intentarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le modèle a continué à réfléchir et la génération des tâches a expiré. Désactivez le mode réflexion du service local et réessayez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मॉडल विचार करता रहा और कार्य बनाने का समय समाप्त हो गया। स्थानीय सेवा में विचार मोड बंद करके फिर कोशिश करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model terus menalar hingga pembuatan tugas kehabisan waktu. Nonaktifkan mode berpikir di layanan lokal dan coba lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il modello ha continuato a ragionare e la generazione delle attività è scaduta. Disattiva la modalità di ragionamento nel servizio locale e riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モデルの思考が続き、タスク生成がタイムアウトしました。ローカルサービスの思考モードを無効にして再試行してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모델이 계속 추론하여 할 일 생성 시간이 초과되었습니다. 로컬 서비스에서 사고 모드를 끄고 다시 시도하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het model bleef redeneren en het aanmaken van taken duurde te lang. Schakel de denkmodus in de lokale service uit en probeer het opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model nadal rozumował i upłynął czas tworzenia zadań. Wyłącz tryb myślenia w usłudze lokalnej i spróbuj ponownie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O modelo continuou raciocinando e a geração de tarefas expirou. Desative o modo de raciocínio no serviço local e tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Модель продолжала рассуждать, и время создания задач истекло. Отключите режим рассуждения в локальном сервисе и повторите попытку."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modellen fortsatte resonera och tiden för uppgiftsgenerering gick ut. Stäng av tänkläget i den lokala tjänsten och försök igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "โมเดลยังคงคิดจนการสร้างงานหมดเวลา โปรดปิดโหมดการคิดในบริการภายในเครื่องแล้วลองอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model düşünmeye devam etti ve görev oluşturma zaman aşımına uğradı. Yerel hizmette düşünme modunu kapatıp yeniden deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Модель продовжувала міркувати, і час створення завдань вичерпано. Вимкніть режим мислення в локальній службі та повторіть спробу."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mô hình tiếp tục suy luận và quá thời gian tạo công việc. Hãy tắt chế độ suy nghĩ trong dịch vụ cục bộ và thử lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "模型持续思考，待办生成已超时。请在本地服务中关闭思考模式后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "模型持續思考，待辦產生已逾時。請在本機服務中關閉思考模式後重試。"
           }
         }
       }
@@ -115160,6 +115034,136 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模型檔位"
+          }
+        }
+      }
+    },
+    "模型返回了空正文，请检查模型设置后重试。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أعاد النموذج استجابة فارغة. تحقق من إعدادات النموذج وحاول مجددًا."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Modell hat eine leere Antwort zurückgegeben. Prüfe die Modelleinstellungen und versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The model returned an empty response. Check the model settings and try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo devolvió una respuesta vacía. Revisa su configuración e inténtalo de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le modèle a renvoyé une réponse vide. Vérifiez ses réglages et réessayez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मॉडल ने खाली उत्तर दिया। मॉडल की सेटिंग जाँचें और फिर कोशिश करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model mengembalikan respons kosong. Periksa pengaturan model dan coba lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il modello ha restituito una risposta vuota. Controlla le impostazioni e riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モデルの応答本文が空です。モデル設定を確認して再試行してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모델이 빈 응답을 반환했습니다. 모델 설정을 확인하고 다시 시도하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het model gaf een leeg antwoord. Controleer de modelinstellingen en probeer het opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model zwrócił pustą odpowiedź. Sprawdź jego ustawienia i spróbuj ponownie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O modelo retornou uma resposta vazia. Verifique as configurações e tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Модель вернула пустой ответ. Проверьте настройки модели и повторите попытку."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modellen returnerade ett tomt svar. Kontrollera modellinställningarna och försök igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "โมเดลส่งคำตอบว่างกลับมา โปรดตรวจสอบการตั้งค่าโมเดลแล้วลองอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model boş yanıt döndürdü. Model ayarlarını kontrol edip yeniden deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Модель повернула порожню відповідь. Перевірте налаштування моделі та повторіть спробу."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mô hình trả về nội dung trống. Hãy kiểm tra cài đặt mô hình và thử lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "模型返回了空正文，请检查模型设置后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "模型傳回空白正文，請檢查模型設定後重試。"
           }
         }
       }
@@ -161629,6 +161633,7 @@
       }
     },
     "部分加密内容无法解密，加密密钥可能已更改或 Keychain 中的密钥被删除。对应内容将显示为空，但原始数据仍保留在磁盘与数据库中。请勿删除 Keychain 中的密钥，否则已加密的数据将无法恢复。" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -162411,6 +162416,7 @@
       }
     },
     "部分改动未能保存" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {

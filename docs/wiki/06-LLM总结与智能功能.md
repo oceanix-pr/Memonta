@@ -61,6 +61,8 @@ SSE 解析：`URLSession.shared.bytes` 逐行读取 → 识别 `data:` 前缀 �
 | 输出解析 | JSON → `[TodoItem]` → `TodoDocument`（持久化为录音文件夹内 todos.json，加密） |
 | 接入点 | 录音总结页"拆解待办" / 快捷笔记待办提取 / 截图待办（预留路径） |
 
+文字、OCR 与图片待办请求在实际发送前统一由 [CurrentTimeService.swift](../../Memonta/Services/CurrentTimeService.swift) 从 macOS 系统时钟与当前本地时区生成时间上下文，追加到 system prompt（自定义模板也保留）。上下文包含带 UTC 偏移的 ISO 8601 当前时间、公历日期、星期和时区标识；重试时重新读取，不缓存启动时刻。模型据此解析「明天 / 下周五」等相对时间，并输出带截止日期对应时区偏移的 `dueDate`，不以训练日期或格式示例猜测「现在」。时间准确性以设备系统时钟与时区设置为准，不额外联网校时。
+
 本地待办请求（文字与图片）使用 SSE 接收，正文完整且未截断时才构造待办文档；界面按条目分别显示「思考」与「生成」阶段。兼容忽略 `stream` 并返回完整 JSON 的服务。请求空闲超时为 180 秒，总资源超时为 600 秒，取消会中断能力探测与推理连接；云端保持非流式与 120 秒超时。
 
 `LocalLLMCapabilities` 先尝试同一服务的 LM Studio 原生 `GET /api/v1/models`（3 秒超时），精确匹配模型 key、量化变体或已加载实例 ID。只有服务声明支持关闭思考时才发送 `reasoning_effort: "none"`（原生能力列表中的 `off` 必须转换成 OpenAI 兼容端点接受的 `none`，直接传 `off` 会返回 HTTP 400）；确认 LM Studio 的 GGUF / MLX 模型后附加待办 JSON Schema。旧服务探测不可用时沿用通用参数；服务明确拒绝格式参数时，只移除 Schema 协商重试一次，保留关闭思考设置。其余本地错误不自动重试。

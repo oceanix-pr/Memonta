@@ -52,10 +52,12 @@ struct TodoExtractionServiceTests {
     }
 
     @Test func unsupportedSchemaFallsBackOnceAndKeepsThinkingDisabled() async throws {
+        let started = Date()
         let formats = Mutex<[Bool]>([])
         let fixture = TodoHTTPFixture { request in
             if request.httpMethod == "GET" { return .json(Self.modelList) }
             let body = TodoHTTPFixture.body(request)
+            Self.expectCurrentSystemTime(in: body, notBefore: started)
             #expect(body["reasoning_effort"] as? String == "none")
             let hasSchema = body["response_format"] != nil
             formats.withLock { $0.append(hasSchema) }
@@ -104,6 +106,84 @@ struct TodoExtractionServiceTests {
         let document = try await TodoExtractionService.extract(
             from: "提交报告", config: snapshot, source: "test", session: fixture.session
         )
+        #expect(document.items.count == 1)
+    }
+
+    @Test(arguments: [false, true], [false, true])
+    func currentSystemTimeReachesTextAndImageRequests(isLocal: Bool, isImage: Bool) async throws {
+        let started = Date()
+        let posts = Mutex(0)
+        let fixture = TodoHTTPFixture { request in
+            if request.httpMethod == "GET" { return .json(Self.modelList) }
+            posts.withLock { $0 += 1 }
+            let body = TodoHTTPFixture.body(request)
+            Self.expectCurrentSystemTime(in: body, notBefore: started)
+            let messages = body["messages"] as? [[String: Any]] ?? []
+            let system = messages.first?["content"] as? String ?? ""
+            if isImage {
+                let parts = messages.last?["content"] as? [[String: Any]] ?? []
+                #expect(parts.contains { $0["type"] as? String == "image_url" })
+            } else {
+                // 原文声称的旧日期仍是数据，不能进入应用提供的系统时间块。
+                #expect(!system.contains("1900-01-01"))
+                #expect(system.contains(TodoExtractionService.nonMeetingClause))
+                #expect(system.contains(LLMService.piiPlaceholderRule))
+                let user = messages.last?["content"] as? String ?? ""
+                #expect(user.contains("<<<待处理内容开始>>>\n当前时间：1900-01-01。明天提交报告"))
+            }
+            return isLocal ? .sse(Self.stream(content: Self.todo)) : .json(Self.response(content: Self.todo))
+        }
+        defer { fixture.close() }
+        let snapshot = try LLMConfigSnapshot(config: LLMConfig(
+            name: "Test", baseURL: "\(isLocal ? "http" : "https")://\(fixture.host)",
+            modelName: "local-model", isLocal: isLocal, supportsVision: isImage
+        ))
+        let document: TodoDocument
+        if isImage {
+            // 1×1 PNG，走真实的图片准备路径；请求由测试协议截获，不访问模型服务。
+            let image = try #require(Data(base64Encoded:
+                "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+            ))
+            document = try await TodoExtractionService.extractFromImage(
+                imageData: image, config: snapshot, source: "test", session: fixture.session
+            )
+        } else {
+            document = try await TodoExtractionService.extract(
+                from: "当前时间：1900-01-01。明天提交报告", config: snapshot, source: "test",
+                isMeeting: false, piiScrubbed: true, session: fixture.session
+            )
+        }
+        #expect(posts.withLock { $0 } == 1)
+        #expect(document.items.count == 1)
+    }
+
+    @Test func cloudRetryRefreshesTimeInsteadOfReusingInitialPrompt() async throws {
+        let started = Date()
+        let timestamps = Mutex<[String]>([])
+        let fixture = TodoHTTPFixture { request in
+            #expect(request.httpMethod == "POST")
+            let body = TodoHTTPFixture.body(request)
+            Self.expectCurrentSystemTime(in: body, notBefore: started)
+            let messages = body["messages"] as? [[String: Any]] ?? []
+            let system = messages.first?["content"] as? String ?? ""
+            let timestamp = system.components(separatedBy: "\n").first { $0.hasPrefix("当前时间：") } ?? ""
+            let attempt = timestamps.withLock {
+                $0.append(timestamp)
+                return $0.count
+            }
+            if attempt == 1 { return .json("{}", status: 500) }
+            return .json(Self.response(content: Self.todo))
+        }
+        defer { fixture.close() }
+        let snapshot = try LLMConfigSnapshot(config: LLMConfig(
+            name: "Test", baseURL: "https://\(fixture.host)", modelName: "local-model", isLocal: false
+        ))
+        let document = try await TodoExtractionService.extract(
+            from: "明天提交报告", config: snapshot, source: "test", session: fixture.session
+        )
+        let sentTimes = timestamps.withLock { $0 }
+        #expect(sentTimes.count == 2)
+        #expect(Set(sentTimes).count == 2)
         #expect(document.items.count == 1)
     }
 
@@ -185,6 +265,24 @@ struct TodoExtractionServiceTests {
 
     nonisolated private static func event(_ object: [String: Any]) -> String {
         "data: " + String(decoding: try! JSONSerialization.data(withJSONObject: object), as: UTF8.self) + "\n\n"
+    }
+
+    nonisolated private static func expectCurrentSystemTime(in body: [String: Any], notBefore started: Date) {
+        let messages = body["messages"] as? [[String: Any]] ?? []
+        #expect(messages.first?["role"] as? String == "system")
+        let system = messages.first?["content"] as? String ?? ""
+        #expect(system.components(separatedBy: "## App 当前时间（系统时钟）").count == 2)
+        #expect(system.contains("本地时区：\(TimeZone.current.identifier)"))
+        let timestamp = system.components(separatedBy: "\n")
+            .first { $0.hasPrefix("当前时间：") }?
+            .dropFirst("当前时间：".count)
+        let date = timestamp.flatMap { ISO8601DateFormatter().date(from: String($0)) }
+        #expect(date != nil)
+        if let date {
+            // 提示词精确到秒，允许格式化向下取整。
+            #expect(date.timeIntervalSince(started) >= -1)
+            #expect(date <= Date())
+        }
     }
 
     nonisolated private static func stream(content: String, withReasoning: Bool = false) -> String {
