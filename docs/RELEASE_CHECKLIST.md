@@ -2,7 +2,7 @@
 
 仅在发布或开源任务中读取。本清单保留历史审查的待核查事项，不代表已完成安全、许可证或商店审核。
 
-GitHub 自动更新及未来商店分发的方案、改造顺序与验收见 [GitHub 自动更新与 Mac App Store 分发准备](GITHUB_AUTO_UPDATE_AND_APP_STORE_PLAN.md)（分析建议，尚未实施）。
+GitHub 自动更新及未来商店分发的方案、改造顺序与验收见 [GitHub 自动更新与 Mac App Store 分发准备](GITHUB_AUTO_UPDATE_AND_APP_STORE_PLAN.md)（历史分析）；当前实现与配置步骤见 [GitHub 发布操作](GITHUB_RELEASE.md)。
 
 ## 隐私与合规
 
@@ -26,7 +26,7 @@ GitHub 自动更新及未来商店分发的方案、改造顺序与验收见 [Gi
 - [ ] 评估 ATS 例外。移除 `NSAllowsArbitraryLoads` 前同时核对应用层 URL 校验与局域网 HTTP 使用需求，不承诺仅改 plist 即可支持或禁止某端点。
 - [ ] 若计划 Mac App Store 分发，核查 Sandbox 与自定义存储目录访问方案。
 - [ ] 实测包体积与模型资源引用；当前 `project.yml` 排除 `Resources/Models/**`，不再以旧“内置四档模型约 2GB”作为现状。
-- [ ] 发布时用 `Scripts/bump_version.sh` 调整营销版本；Release 自动递增构建号，详见 [构建说明](wiki/13-构建与运行.md)。
+- [ ] 发布时用 `Scripts/bump_version.sh` 调整营销版本；发布前手动分配递增构建号，构建期间只读版本，详见 [构建说明](wiki/13-构建与运行.md)。
 
 ## 公开仓库准备
 

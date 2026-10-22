@@ -123,6 +123,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// 其他实例请求显示主窗口的分布式通知观察者（需持有，释放后监听会失效）
     private var showWindowObserver: NSObjectProtocol?
+    private var terminationInProgress = false
 
     /// 单实例守卫兜底：正常情况下重复实例已在 App 初始化阶段（SingleInstanceGuard）退出，
     /// 此处作为防御性备份（例如未来启动顺序变化时仍能拦截）。
@@ -224,6 +225,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// 收尾完成后由 completeTerminationFlow 直接结束进程（跳过 `exit()` 的静态析构）
     nonisolated func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         MainActor.assumeOnMainThread {
+            guard !terminationInProgress else { return .terminateLater }
+            terminationInProgress = true
+            if AppUpdateService.shared.installationRequested {
+                Task { @MainActor in
+                    guard await AppUpdateService.shared.prepareForTermination() else {
+                        self.terminationInProgress = false
+                        sender.reply(toApplicationShouldTerminate: false)
+                        return
+                    }
+                    // 更新退出不生成旧 worker；已落盘队列由新版启动后恢复。
+                    if WhisperLocalService.shared.hasLoadedModel {
+                        await WhisperLocalService.shared.unloadModel()
+                    }
+                    ProcessLimits.exitSkippingStaticDestructors(0)
+                }
+                return .terminateLater
+            }
             if MeetingRecorderService.shared.isMerging {
                 let waitSeconds = Self.mergeWaitSeconds()
                 Self.logger.notice("合并进行中，等待合并完成后再退出（按看门狗同源预计最多 \(Int(waitSeconds))s）")
@@ -445,6 +463,11 @@ struct MemontaApp: App {
                     NotificationCenter.default.post(name: .menuBarOpenSettings, object: nil)
                 }
                 .commandShortcut(AppCommandCatalog.descriptor(for: .openSettings).shortcut)
+            }
+            CommandGroup(after: .appInfo) {
+                Button("检查更新…") { AppUpdateService.shared.checkForUpdates() }
+                    .disabled(!AppUpdateService.shared.canCheckForUpdates
+                              || AppUpdateService.shared.isPreparingToInstall)
             }
             // 帮助菜单
             CommandGroup(replacing: .help) {

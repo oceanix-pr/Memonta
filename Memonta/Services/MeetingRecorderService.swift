@@ -197,6 +197,12 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// mixed 模式：合并后的最终文件 URL（停止录音时生成）
     private var pendingMergeFinalURL: URL?
 
+    /// 按资源存在判定，覆盖启动失败或标志提前复位的异常态。
+    var hasResourcesPreventingUpdate: Bool {
+        isStarting || isRecording || isMerging || isStoppingCapture || isRotating
+            || segmentFolderDir != nil || micCapture.isCapturing || systemCapture.hasResourcesPreventingUpdate
+    }
+
     /// 当前活动录音的文件夹名集合（周期巡检/手动刷新时排除：
     /// 静音/睡眠间隙可能使活动分片 mtime 变旧，避免把正在写入的分片误判为崩溃遗留）
     var activeRecordingFolderNames: Set<String> {
@@ -350,6 +356,10 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// - Parameter config: 录音配置
     /// - Returns: 录音文件 URL（mixed 模式下为合并后的最终文件，录音停止后才生成）
     func startRecording(config: RecordingConfig) async throws -> URL {
+        guard !AppUpdateService.shared.isPreparingToInstall else {
+            throw NSError(domain: "com.oceanix.Memonta.Updates", code: 2,
+                          userInfo: [NSLocalizedDescriptionKey: String(localized: "请稍后重试更新。")])
+        }
         guard !isRecording, !isStarting else { throw MeetingRecorderError.alreadyRecording }
         // 进入即占用“启动中”：并发第二次调用直接失败，避免其失败分支的清理
         //（stopAllCaptures/resetSegmentState）误伤第一个会话已建立的分片与采集

@@ -22,6 +22,7 @@ struct LifecycleTasksModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .disabled(AppUpdateService.shared.isPreparingToInstall)
             .task(id: privacyAccepted) {
                 guard !AppRuntime.isRunningTests else { return }
                 guard privacyAccepted else { return }
@@ -61,6 +62,8 @@ struct LifecycleTasksModifier: ViewModifier {
                    !BackgroundWorker.isWorkerRunning() {
                     await BackgroundWorker.drainQueue(context: modelContext)
                 }
+                guard !isTransientMode, !Task.isCancelled, !result.saveFailed else { return }
+                AppUpdateService.shared.start(context: modelContext, hasActiveFileOperation: { viewModel.isImporting })
             }
             .task(id: privacyAccepted) {
                 guard !AppRuntime.isRunningTests else { return }

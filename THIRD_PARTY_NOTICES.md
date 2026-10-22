@@ -7,6 +7,7 @@ Memonta 的源代码采用 MIT License，但以下第三方组件、数据文件
 | 组件 | 锁定版本 | 许可证 | 权利人或项目 |
 |---|---:|---|---|
 | [argmax-oss-swift / WhisperKit](https://github.com/argmaxinc/argmax-oss-swift) | 0.18.0 | MIT | Copyright (c) 2024 argmax, inc. |
+| [Sparkle](https://github.com/sparkle-project/Sparkle) | 2.10.0 | MIT 及附带第三方条款 | Sparkle Project contributors；完整声明随 App 分发于 `Sparkle-LICENSE.txt` |
 | [KeychainAccess](https://github.com/kishikawakatsumi/KeychainAccess) | 4.2.2 | MIT | Copyright (c) 2014 kishikawa katsumi |
 | [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) | revision `1cb484a` | Apache-2.0 | sherpa-onnx contributors |
 | [onnxruntime-libs](https://github.com/csukuangfj/onnxruntime-libs) | 1.27.1 | MIT（所分发 ONNX Runtime 二进制） | Microsoft Corporation and contributors |

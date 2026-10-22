@@ -79,6 +79,9 @@ enum FileSyncService {
     @MainActor
     private static var isScanning = false
 
+    @MainActor
+    static var hasResourcesPreventingUpdate: Bool { isScanning }
+
     /// 本次运行已探测过时长的损坏条目文件夹（duration<=0）：
     /// AVURLAsset 探测开销大，文件确实损坏时每轮刷新重试只会空转；
     /// 仅 MainActor 的 syncFromDisk 访问，无需加锁
@@ -259,7 +262,7 @@ enum FileSyncService {
     @MainActor
     static func syncFromDisk(context: ModelContext, excludeFolderNames: Set<String> = []) async -> SyncResult {
         // 扫描互斥：已有扫描在运行时直接跳过本次调用（下轮刷新/重启会补上）
-        guard !isScanning else {
+        guard !isScanning, !AppUpdateService.shared.isPreparingToInstall else {
             logger.info("磁盘同步已在进行中，跳过本次调用")
             return .empty
         }

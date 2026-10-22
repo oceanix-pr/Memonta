@@ -1,0 +1,103 @@
+name: Release direct distribution
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '已提交版本对应的 tag，例如 v9.4.0-preview.1'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: memonta-direct-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: xcode-27
+    environment: release
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+    steps:
+      - name: Validate release tag and key availability
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-preview\.[0-9]+)?$ ]] || exit 1
+          if [ -z "$SPARKLE_PRIVATE_KEY" ]; then
+            echo '::error::请在 release 环境配置 SPARKLE_PRIVATE_KEY；preview 不需要 Apple 证书。'
+            exit 1
+          fi
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+          persist-credentials: false
+      - name: Prepare tools and verify source
+        run: |
+          brew install xcodegen
+          xcodegen generate
+          python3 Scripts/check_l10n.py --quiet
+      - name: Run unit tests
+        run: >-
+          xcodebuild -skipPackageUpdates -project Memonta.xcodeproj -scheme Memonta
+          -configuration Debug -destination 'platform=macOS'
+          -derivedDataPath "${RUNNER_TEMP}/memonta-release/DerivedData"
+          CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=
+          ENABLE_HARDENED_RUNTIME=NO test -only-testing:MemontaTests
+      - name: Import formal distribution credentials
+        if: ${{ !contains(env.RELEASE_TAG, '-preview.') }}
+        env:
+          CERTIFICATE: ${{ secrets.DEVELOPER_ID_P12_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
+          NOTARY_API_KEY: ${{ secrets.NOTARY_API_KEY_P8 }}
+        run: |
+          test -n "$CERTIFICATE" && test -n "$NOTARY_API_KEY"
+          keychain="$RUNNER_TEMP/memonta-release.keychain-db"
+          password="$(openssl rand -base64 32)"
+          printf '%s' "$CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/developer-id.p12"
+          printf '%s' "$NOTARY_API_KEY" > "$RUNNER_TEMP/notary.p8"
+          chmod 600 "$RUNNER_TEMP/developer-id.p12" "$RUNNER_TEMP/notary.p8"
+          security create-keychain -p "$password" "$keychain"
+          security set-keychain-settings -lut 7200 "$keychain"
+          security unlock-keychain -p "$password" "$keychain"
+          security import "$RUNNER_TEMP/developer-id.p12" -P "$CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$keychain"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -k "$password" "$keychain"
+          security list-keychains -d user -s "$keychain" "$HOME/Library/Keychains/login.keychain-db"
+      - name: Package and sign update
+        id: package
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+          NOTARY_KEY_ID: ${{ vars.NOTARY_KEY_ID }}
+          NOTARY_ISSUER_ID: ${{ vars.NOTARY_ISSUER_ID }}
+          NOTARY_KEY_FILE: ${{ runner.temp }}/notary.p8
+          RELEASE_WORK_DIR: ${{ runner.temp }}/memonta-release
+        run: |
+          if [[ "$RELEASE_TAG" == *-preview.* ]]; then mode=preview; else mode=notarized; fi
+          bash Scripts/release_direct.sh "$mode"
+      - name: Upload complete draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DIRECTORY: ${{ steps.package.outputs.directory }}
+        run: |
+          args=()
+          if [[ "$RELEASE_TAG" == *-preview.* ]]; then args+=(--prerelease); fi
+          gh release create "$RELEASE_TAG" "$DIRECTORY"/*.zip "$DIRECTORY/appcast.xml" "$DIRECTORY/SHA256SUMS" \
+            --repo "$GITHUB_REPOSITORY" --verify-tag --draft "${args[@]}" \
+            --title "Memonta $RELEASE_TAG" --notes-file "$DIRECTORY"/*.md
+          echo '草稿附件已上传。完成两版本升级实测后发布；preview 请勿设为 latest。'
+      - name: Clean signing material
+        if: always()
+        run: |
+          security delete-keychain "$RUNNER_TEMP/memonta-release.keychain-db" 2>/dev/null || true
+          rm -f "$RUNNER_TEMP/developer-id.p12" "$RUNNER_TEMP/notary.p8"

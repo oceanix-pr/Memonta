@@ -37,6 +37,10 @@ final class ScreenshotManager {
         RegionSelectionController.shared.isIdle
     }
 
+    var hasResourcesPreventingUpdate: Bool {
+        !isIdle || isCapturingDirect || isRequestingPermission
+    }
+
     /// 当前是否为重新标注会话
     private var isReannotating = false
 
@@ -67,6 +71,7 @@ final class ScreenshotManager {
 
     /// 直接全屏截图（无悬浮层）：立即捕获鼠标所在屏幕并入库为图片笔记
     func captureFullScreenDirect() {
+        guard !AppUpdateService.shared.isPreparingToInstall else { return }
         guard FeaturePolicy(experience: AppExperiencePreference.resolved()).allows(.advancedCapture) else {
             Self.logger.debug("普通模式忽略全屏直拍请求")
             return
@@ -228,6 +233,7 @@ final class ScreenshotManager {
     ///   - mode: 捕获模式
     ///   - intent: .record 时选定目标后自动进入录制倒计时（菜单/工具栏「录选区/录窗口」直达）
     func startCapture(mode: CaptureMode, intent: CaptureIntent = .screenshot) {
+        guard !AppUpdateService.shared.isPreparingToInstall else { return }
         let effectiveIntent: CaptureIntent = FeaturePolicy(
             experience: AppExperiencePreference.resolved()
         ).allows(.screenRecording) ? intent : .screenshot

@@ -1787,6 +1787,7 @@ struct SettingsView: View {
             Text("Memonta").font(.largeTitle).fontWeight(.bold)
             Text("闻墨达会议备忘录").font(.title3).foregroundStyle(.secondary)
             Text(appVersion).font(.caption).foregroundStyle(.tertiary)
+            AppUpdateSettingsView()
 
             VStack(alignment: .leading, spacing: 8) {
                 Toggle("专业模式", isOn: Binding(

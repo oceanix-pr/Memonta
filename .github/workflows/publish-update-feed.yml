@@ -1,0 +1,72 @@
+name: Publish update feed
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: memonta-direct-release
+  cancel-in-progress: false
+
+jobs:
+  publish-feed:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+      IS_PRERELEASE: ${{ github.event.release.prerelease }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Download published feed
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-preview\.[0-9]+)?$ ]] || exit 1
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern appcast.xml --dir "$RUNNER_TEMP/published-feed"
+      - name: Update the matching channel after assets are public
+        shell: bash
+        run: |
+          channel=stable
+          if [[ "$RELEASE_TAG" == *-preview.* ]]; then
+            test "$IS_PRERELEASE" = true
+            channel=preview
+          else
+            test "$IS_PRERELEASE" = false
+          fi
+          if git ls-remote --exit-code --heads origin updates; then
+            git fetch origin updates
+            git checkout -B updates FETCH_HEAD
+          else
+            git checkout --orphan updates
+            git rm -rf .
+          fi
+          export FEED_CHANNEL="$channel"
+          python3 - <<'PYFEED'
+          import os, pathlib, urllib.request, xml.etree.ElementTree as E
+          incoming=pathlib.Path(os.environ['RUNNER_TEMP'])/'published-feed/appcast.xml'
+          target=pathlib.Path(os.environ['FEED_CHANNEL'])/'appcast.xml'
+          ns='{http://www.andymatuschak.org/xml-namespaces/sparkle}'
+          item=E.parse(incoming).find('channel/item')
+          assert item is not None, 'empty release feed'
+          build=int(item.findtext(ns+'version'))
+          if target.exists():
+              previous=E.parse(target).find('channel/item')
+              if previous is not None:
+                  assert build > int(previous.findtext(ns+'version')), 'feed cannot move backwards or replace a published build'
+          enclosure=item.find('enclosure')
+          assert enclosure is not None and enclosure.get(ns+'edSignature'), 'unsigned update'
+          url=enclosure.get('url','')
+          prefix='https://github.com/'+os.environ['GITHUB_REPOSITORY']+'/releases/download/'+os.environ['RELEASE_TAG']+'/'
+          assert url.startswith(prefix), 'asset must reference the exact published release'
+          with urllib.request.urlopen(urllib.request.Request(url,method='HEAD')) as r:
+              assert r.status==200
+              assert int(r.headers['Content-Length'])==int(enclosure.get('length'))
+          target.parent.mkdir(exist_ok=True)
+          target.write_bytes(incoming.read_bytes())
+          PYFEED
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add "$channel/appcast.xml"
+          git commit -m "Publish $channel feed for $RELEASE_TAG"
+          git push origin HEAD:updates

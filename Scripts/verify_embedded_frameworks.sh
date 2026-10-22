@@ -103,12 +103,16 @@ if [ "${CODE_SIGNING_ALLOWED:-YES}" != "NO" ]; then
             done
         fi
 
+        timestamp_option="--timestamp=none"
+        if [ "${CONFIGURATION:-}" = "Release" ] && [ "$signing_identity" != "-" ]; then
+            timestamp_option="--timestamp"
+        fi
         for product_framework in "$BUILD_PRODUCTS/SherpaOnnxC.framework" \
                                  "$BUILD_PRODUCTS/onnxruntime.framework" \
                                  "$APP/Contents/Frameworks/SherpaOnnxC.framework"; do
             [ -d "$product_framework" ] || continue
             if ! /usr/bin/codesign --force --sign "$signing_identity" \
-                --options runtime --timestamp=none "$product_framework"; then
+                --options runtime "$timestamp_option" "$product_framework"; then
                 echo "error: 无法重签构建产物中的动态框架：$product_framework" >&2
                 exit 1
             fi

@@ -260,6 +260,11 @@ final class RecordingViewModel {
     // MARK: - 导入录音
 
     func importAudio(from sourceURL: URL, context: ModelContext) async {
+        guard !AppUpdateService.shared.isPreparingToInstall else {
+            errorMessage = String(localized: "请稍后重试更新。")
+            showError = true
+            return
+        }
         guard !rejectWriteIfReadOnly(.importMedia) else { return }
         isImporting = true
         defer { isImporting = false }

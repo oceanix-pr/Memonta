@@ -93,6 +93,12 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
     }
 
     private var _state: CaptureState = .idle
+
+    var hasResourcesPreventingUpdate: Bool {
+        stateLock.lock(); defer { stateLock.unlock() }
+        if case .idle = _state { return _stream != nil || _writer != nil }
+        return true
+    }
     /// 写入会话是否已开始（首包到达时以其 PTS 为起点，保证时间戳从 0 开始）
     private var _timeline: RecordingSegmentTimelineStore?
     private var _sessionStartTime: TimeInterval?

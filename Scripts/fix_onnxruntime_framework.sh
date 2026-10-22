@@ -26,6 +26,11 @@ add_root() {
     roots+=("$candidate")
 }
 
+# 发布脚本显式传入的本次 SwiftPM 路径；不扫描其他项目的缓存。
+if [ -n "${MEMONTA_PACKAGE_CACHE_PATH:-}" ]; then
+    add_root "$MEMONTA_PACKAGE_CACHE_PATH/artifacts"
+fi
+
 # 仓库内产物（构建时指定 -packageCachePath .packages 的场景）
 add_root "${SRCROOT:-}/.packages/artifacts"
 # 本次构建的 DerivedData：BUILD_DIR / BUILD_ROOT 指向 …/Build/Products，

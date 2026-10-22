@@ -10,7 +10,7 @@
 		00932F546CE540F580C133D0 /* LLMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F678CDFACEB0B6700058222 /* LLMService.swift */; };
 		01483C26C9A120679F11F9CE /* HotkeySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0877D9FD208D7C986F2DC7 /* HotkeySettingsView.swift */; };
 		01D562560D4893BE8C35DBA0 /* AppCommandCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F54F3D63DFDE52741D7ED8 /* AppCommandCatalogTests.swift */; };
-		034FD338C793A06305668772 /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 979844683C78548F5EBAFCED /* WhisperKit */; };
+		034FD338C793A06305668772 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = C1F173E3DC4D46A8D8A2C1C4 /* Sparkle */; };
 		03AB9DCA87921A0A37C584D9 /* NoteSpeechTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEBD6E9CC04E16F0B0D17E4 /* NoteSpeechTests.swift */; };
 		05B85D8B05C57AAA3F3EF08B /* LocalLLMCapabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C426D700A5E8B0BA20E21C /* LocalLLMCapabilities.swift */; };
 		08FF1E4712E676B0915D4BE3 /* GlobalHotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5786ADED6FA719DFD8FBDF72 /* GlobalHotkeyManager.swift */; };
@@ -24,6 +24,7 @@
 		13AFD006B1000DF7A2830799 /* WhisperModelDownloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C8720929A8CE42D0A1F712 /* WhisperModelDownloadTests.swift */; };
 		17C5924857423ED59C342D56 /* TaskCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75017E437D1A6533986C40AE /* TaskCenter.swift */; };
 		1B759CB99A155E68CFA12C1C /* MicCaptureFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B0CEE16DFF0A57619EC33 /* MicCaptureFileStore.swift */; };
+		1C15B0B552ECBDE60ADEEA48 /* AppUpdateSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E287679DA6284E534EFF7319 /* AppUpdateSettingsView.swift */; };
 		1CF7583772C2C03D3BCE3473 /* QueuePanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8630EDC36FD68889D1992048 /* QueuePanelView.swift */; };
 		1E96F83A572FF3DA00243EF0 /* BackgroundTaskQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0438590B1DF40FD0DE1F488C /* BackgroundTaskQueueTests.swift */; };
 		1FA3B8129B00959C55FDA076 /* SystemAudioCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59329C6BB99E85E3E474FAD1 /* SystemAudioCaptureService.swift */; };
@@ -58,6 +59,7 @@
 		4AF137EBEB629D4567F59FBB /* VoiceprintLibraryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4802806EC17AC22A3BC84B9D /* VoiceprintLibraryViews.swift */; };
 		500D1CDFE70FD951032D2838 /* AccessibilityAuditUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FD426D45E40230A5D9091E /* AccessibilityAuditUITests.swift */; };
 		5031682AD606E4997ABE91EB /* TimeInterval+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87EE074DE242F28EBFDDF49 /* TimeInterval+Formatting.swift */; };
+		50A4AC50BFF7DF1FBC22D57B /* UpdateInstallationCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF35ABDF200E58E548BBE4AA /* UpdateInstallationCoordinatorTests.swift */; };
 		50F42EADB9670EB78161B22B /* MarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883672F44A35500FDC689990 /* MarkdownView.swift */; };
 		5223D848553CB3DFDBC24771 /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C612A9053890574B6C628836 /* MenuBarController.swift */; };
 		535FB2043C45068257E7589B /* LLMConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462E934A035AB1A93BA71BA8 /* LLMConfig.swift */; };
@@ -92,7 +94,7 @@
 		8A756976252B12265593F1E8 /* TSCharacters.txt in Resources */ = {isa = PBXBuildFile; fileRef = 251249FE64301317C5E93455 /* TSCharacters.txt */; };
 		8CC1D2AD1EF299594EB84E18 /* MemontaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC57F8EB75730E259185CEBF /* MemontaApp.swift */; };
 		9080A2E3A7D4E57B6DE9BF2C /* AppExperience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F5334B13FFBE78E18CC42F /* AppExperience.swift */; };
-		92278244B3670CC8A782C426 /* sherpa-onnx-shared in Frameworks */ = {isa = PBXBuildFile; productRef = 0D90099C36C236781418FF64 /* sherpa-onnx-shared */; };
+		92278244B3670CC8A782C426 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = E7A449851EAC141427D928C9 /* KeychainAccess */; };
 		92ACB01A6C03EBA31C39237D /* VoiceprintStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47EE89729812D8398993A68 /* VoiceprintStore.swift */; };
 		938531313478CAA5D9FF8C48 /* RecordingConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12294D93472D291CA1F723B8 /* RecordingConfig.swift */; };
 		938745C66705D4D517D53216 /* RecordCountdownPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91DB8731EB31CD1723498E8 /* RecordCountdownPanel.swift */; };
@@ -101,18 +103,22 @@
 		987D98E5991CC53860134A94 /* QuickNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A51779B483BEF6ED4712967 /* QuickNoteViewModel.swift */; };
 		98BD51859CC6E3B3A0D2C646 /* VideoUnderstandingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C3CD283C8DD4687AF1E01F /* VideoUnderstandingService.swift */; };
 		99CC3E5B326E5E5A710617F2 /* OverlayAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6570C11DB00A6A465DA706F4 /* OverlayAnnotationView.swift */; };
+		9A3C6FB8C29E12CC47055385 /* UpdateInstallationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8827390778830AD1079954 /* UpdateInstallationCoordinator.swift */; };
 		9CE503A2C6FDF04C215CC9F4 /* TaskCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273E13CD8547491E4B92377E /* TaskCenterTests.swift */; };
 		9DF6AE4D23186D0791C30A66 /* TodoExtractionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03422960E06512CB62F57D6 /* TodoExtractionService.swift */; };
 		A0BBDAF5BFCC46EF0F9585AC /* STPhrases.txt in Resources */ = {isa = PBXBuildFile; fileRef = 35889CF37201F3BB9ED045F4 /* STPhrases.txt */; };
 		A13CDAD92423C34DAB78A76E /* NativeSpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88BC84F971D52DB16C1719 /* NativeSpeechService.swift */; };
 		A228A6B42C7D99E0547BC341 /* LLMConfigDraftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9447E809793443BB7B27E32A /* LLMConfigDraftTests.swift */; };
 		A731687576153BFA80F0A093 /* QuickNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B2FB1DDDAA00FC1A2602C /* QuickNote.swift */; };
-		A801F97F53849B6BBA5D9A7C /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = E7A449851EAC141427D928C9 /* KeychainAccess */; };
+		A74EDBB2EB4177074E2BC618 /* sherpa-onnx-shared in Frameworks */ = {isa = PBXBuildFile; productRef = 0D90099C36C236781418FF64 /* sherpa-onnx-shared */; };
+		A801F97F53849B6BBA5D9A7C /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 979844683C78548F5EBAFCED /* WhisperKit */; };
 		AA9E9051CE711F88FDDE242F /* VisionOCRLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9603F549999BD7F646443D0A /* VisionOCRLanguageTests.swift */; };
 		AD3C5AEB3270D3D9CE9B99E3 /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1A95F7B65BA718FBE7EABB /* TodoItem.swift */; };
 		AF8FC3A73BDAF8BA663D2CEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1977F8EE6DCDF26B64B400E7 /* Assets.xcassets */; };
+		AF97AE7F5E46F9E994913D94 /* AppUpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90A754F37A51078A0411921 /* AppUpdateService.swift */; };
 		B0B07C7E822597DE00AD8E2E /* PrivacyPolicyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE309DEC8A3B141056BA63BB /* PrivacyPolicyDetailView.swift */; };
 		B3412E622EA8551A5543E164 /* ChineseConverterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CF7A04C32B31279E3013C /* ChineseConverterService.swift */; };
+		B37FB2F4874D9EC92308F8CC /* Sparkle-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 040F5C076E9E3D046E19E56B /* Sparkle-LICENSE.txt */; };
 		B3EFA270B557CC88F759EC84 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8BFB3CC913BD996D7F4C2C /* SettingsView.swift */; };
 		B41ED02F0146DB6C17ED94FC /* DiarizationSegmentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D13796CEB17EB01B2BD7E09 /* DiarizationSegmentationTests.swift */; };
 		B5CB2F348266C394419DF0EC /* CloudSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DDDD13CDEC8BAEA863576 /* CloudSyncService.swift */; };
@@ -191,6 +197,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		040F5C076E9E3D046E19E56B /* Sparkle-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Sparkle-LICENSE.txt"; sourceTree = "<group>"; };
 		0438590B1DF40FD0DE1F488C /* BackgroundTaskQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskQueueTests.swift; sourceTree = "<group>"; };
 		04708F940CA024780A26B973 /* ExportModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportModifiers.swift; sourceTree = "<group>"; };
 		07A0F8CE74AAE593586E2DCB /* StorageSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageSessionTests.swift; sourceTree = "<group>"; };
@@ -200,6 +207,7 @@
 		10C34108F637D6E5100C1860 /* VideoCleanupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCleanupTests.swift; sourceTree = "<group>"; };
 		12294D93472D291CA1F723B8 /* RecordingConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingConfig.swift; sourceTree = "<group>"; };
 		13FD426D45E40230A5D9091E /* AccessibilityAuditUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityAuditUITests.swift; sourceTree = "<group>"; };
+		150F924E42FBC037B152D766 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		158535A62372F2C47EB3A256 /* PersistenceReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceReporting.swift; sourceTree = "<group>"; };
 		15F5334B13FFBE78E18CC42F /* AppExperience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppExperience.swift; sourceTree = "<group>"; };
 		1977F8EE6DCDF26B64B400E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -301,11 +309,13 @@
 		A2AA4BEDAC1E291ACCDBBC5C /* RecordingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingListView.swift; sourceTree = "<group>"; };
 		A5601B1C9F2A56061704CEA7 /* TranscriptSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptSegment.swift; sourceTree = "<group>"; };
 		A848D9B766E93793274DCFCA /* MicMuteMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicMuteMonitor.swift; sourceTree = "<group>"; };
+		A90A754F37A51078A0411921 /* AppUpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateService.swift; sourceTree = "<group>"; };
 		AB615F4CD00EFC5E2EE0CA14 /* UITestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSupport.swift; sourceTree = "<group>"; };
 		AC3BC74F10E8DA7049410B98 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		ACB609D584755408625641DE /* TranscriptDictionaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptDictionaryService.swift; sourceTree = "<group>"; };
 		ACEBD6E9CC04E16F0B0D17E4 /* NoteSpeechTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSpeechTests.swift; sourceTree = "<group>"; };
 		AE309DEC8A3B141056BA63BB /* PrivacyPolicyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyDetailView.swift; sourceTree = "<group>"; };
+		AE8827390778830AD1079954 /* UpdateInstallationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateInstallationCoordinator.swift; sourceTree = "<group>"; };
 		AEEFB1A6E2ADB9D3F30C674F /* SystemTranscriptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemTranscriptionService.swift; sourceTree = "<group>"; };
 		B3ED4175EDBFE9225B3ED922 /* TSPhrases.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = TSPhrases.txt; sourceTree = "<group>"; };
 		B41B6F3CC0B7347D873FAB03 /* ScreenVideoRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenVideoRecorder.swift; sourceTree = "<group>"; };
@@ -340,6 +350,7 @@
 		DDC8EEBFAF3E400FD413FA03 /* PinnedOCRTextPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedOCRTextPanel.swift; sourceTree = "<group>"; };
 		E03422960E06512CB62F57D6 /* TodoExtractionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoExtractionService.swift; sourceTree = "<group>"; };
 		E1AB3584F8A12FE99BF6AA7D /* TranscriptionProgressEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionProgressEstimator.swift; sourceTree = "<group>"; };
+		E287679DA6284E534EFF7319 /* AppUpdateSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateSettingsView.swift; sourceTree = "<group>"; };
 		E4571647E37CED274A6E4051 /* DiarizationCalibrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarizationCalibrator.swift; sourceTree = "<group>"; };
 		E7B459D3DA8227EE44DD998E /* RecordingElapsedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingElapsedLabel.swift; sourceTree = "<group>"; };
 		E8BA0990A78654B88B74951A /* RemindersURLDiagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersURLDiagnostic.swift; sourceTree = "<group>"; };
@@ -356,6 +367,7 @@
 		F260BE9D46A6554344E1B1D6 /* StabilityRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StabilityRegressionTests.swift; sourceTree = "<group>"; };
 		FC96DBFE97F1CD5CAAD7FEF0 /* Memonta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Memonta.entitlements; sourceTree = "<group>"; };
 		FD3BF65D6865CFC0F830D5B9 /* SpeechTextPreparer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTextPreparer.swift; sourceTree = "<group>"; };
+		FF35ABDF200E58E548BBE4AA /* UpdateInstallationCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateInstallationCoordinatorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -363,9 +375,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				034FD338C793A06305668772 /* WhisperKit in Frameworks */,
-				A801F97F53849B6BBA5D9A7C /* KeychainAccess in Frameworks */,
-				92278244B3670CC8A782C426 /* sherpa-onnx-shared in Frameworks */,
+				034FD338C793A06305668772 /* Sparkle in Frameworks */,
+				A801F97F53849B6BBA5D9A7C /* WhisperKit in Frameworks */,
+				92278244B3670CC8A782C426 /* KeychainAccess in Frameworks */,
+				A74EDBB2EB4177074E2BC618 /* sherpa-onnx-shared in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,10 +492,12 @@
 			isa = PBXGroup;
 			children = (
 				1977F8EE6DCDF26B64B400E7 /* Assets.xcassets */,
+				150F924E42FBC037B152D766 /* Info.plist */,
 				BAE165E47B08C2873D2E989D /* InfoPlist.xcstrings */,
 				9DBEB77E6786D91D9C7927AD /* Localizable.xcstrings */,
 				FC96DBFE97F1CD5CAAD7FEF0 /* Memonta.entitlements */,
 				F0115F630825D9CE63CDE4F3 /* PrivacyInfo.xcprivacy */,
+				040F5C076E9E3D046E19E56B /* Sparkle-LICENSE.txt */,
 				885BE845475D25C8E61F4578 /* ChineseDictionary */,
 			);
 			path = Resources;
@@ -502,6 +517,7 @@
 		9251EDEF793D420DB52BED07 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				E287679DA6284E534EFF7319 /* AppUpdateSettingsView.swift */,
 				520EBE564BF5E7E53760630A /* DictionarySettingsViews.swift */,
 				8E39DD28BDCFC3DAF38F45C0 /* FeedbackView.swift */,
 				2D0877D9FD208D7C986F2DC7 /* HotkeySettingsView.swift */,
@@ -526,6 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				791E74BCD8C51E5D42C4627D /* AppMuteDetector.swift */,
+				A90A754F37A51078A0411921 /* AppUpdateService.swift */,
 				68A6DB48E5C6FFC3DB21771D /* AudioConverter.swift */,
 				47110F3FA92D02A98B8C7974 /* BackgroundTaskQueue.swift */,
 				63425E7F3BDEDA9E33843EB5 /* BackgroundWorker.swift */,
@@ -574,6 +591,7 @@
 				63759B6031B2C843BFF20165 /* TranscriptCache.swift */,
 				ACB609D584755408625641DE /* TranscriptDictionaryService.swift */,
 				E1AB3584F8A12FE99BF6AA7D /* TranscriptionProgressEstimator.swift */,
+				AE8827390778830AD1079954 /* UpdateInstallationCoordinator.swift */,
 				94C3CD283C8DD4687AF1E01F /* VideoUnderstandingService.swift */,
 				4767809C035BC23279D6778F /* VisionOCRService.swift */,
 				B47EE89729812D8398993A68 /* VoiceprintStore.swift */,
@@ -625,6 +643,7 @@
 				273E13CD8547491E4B92377E /* TaskCenterTests.swift */,
 				0D53606B3C33E85E58958AC0 /* TodoExtractionServiceTests.swift */,
 				9896C65742B195F28BB24B37 /* TransientModeReadOnlyTests.swift */,
+				FF35ABDF200E58E548BBE4AA /* UpdateInstallationCoordinatorTests.swift */,
 				10C34108F637D6E5100C1860 /* VideoCleanupTests.swift */,
 				9603F549999BD7F646443D0A /* VisionOCRLanguageTests.swift */,
 				CF28F84B6BBC6AE6965239E3 /* VoiceprintMergeTests.swift */,
@@ -709,7 +728,6 @@
 			buildPhases = (
 				1D98BC35093AAE7C3E5EDE70 /* Fix Onnxruntime Framework Layout */,
 				9239E3E59CFA90D4A7B74EB1 /* Sources */,
-				C34CFD7A798AD2BA58B02636 /* Bump Build Number */,
 				3527ED728C91DD5AB9A63171 /* Resources */,
 				A46EE3D7FE06A31EF1A84002 /* Frameworks */,
 				EF180A48C0755CE3EFC6402D /* Verify Embedded Frameworks */,
@@ -720,6 +738,7 @@
 			);
 			name = Memonta;
 			packageProductDependencies = (
+				C1F173E3DC4D46A8D8A2C1C4 /* Sparkle */,
 				979844683C78548F5EBAFCED /* WhisperKit */,
 				E7A449851EAC141427D928C9 /* KeychainAccess */,
 				0D90099C36C236781418FF64 /* sherpa-onnx-shared */,
@@ -781,6 +800,7 @@
 			packageReferences = (
 				ACD80C39F70BF43A94DA0A19 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				685104B81990B990F232293C /* XCRemoteSwiftPackageReference "sherpa-onnx" */,
+				728FFD8E0DE8AB4D89319CE0 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				4F963E471008A304223A7069 /* XCRemoteSwiftPackageReference "argmax-oss-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -806,6 +826,7 @@
 				7701974D6D4405A46179F7FC /* PrivacyInfo.xcprivacy in Resources */,
 				D65DF6DE6FBF58BB0E734DD2 /* STCharacters.txt in Resources */,
 				A0BBDAF5BFCC46EF0F9585AC /* STPhrases.txt in Resources */,
+				B37FB2F4874D9EC92308F8CC /* Sparkle-LICENSE.txt in Resources */,
 				8A756976252B12265593F1E8 /* TSCharacters.txt in Resources */,
 				971CA2C93194E181D0F65131 /* TSPhrases.txt in Resources */,
 			);
@@ -839,26 +860,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n# 修复 sherpa-onnx shared 产物的两个上游打包问题（构建前执行，幂等）：\n# 1. csukuangfj/onnxruntime-libs 的 shared xcframework 用实体目录/文件复制代替标准\n#    符号链接（Versions/Current 为实体目录、顶层存在重复的二进制与 Info.plist），\n#    Xcode 嵌入后 codesign --verify --strict 会报 \"invalid Info.plist\"；\n# 2. SherpaOnnxC 二进制引用 @rpath/libonnxruntime.dylib，而实际嵌入的是\n#    onnxruntime.framework（install name 为 @rpath/onnxruntime.framework/Versions/A/onnxruntime），\n#    导致启动时 dyld 报 Library missing 崩溃。\n#\n# 产物目录只定位「本次构建所用的」DerivedData：BUILD_DIR / BUILD_ROOT 均为\n# …/DerivedData/<工程>/Build/Products（**不含**配置目录），故 SourcePackages/artifacts\n# 是其兄弟目录，路径为 ../../SourcePackages/artifacts。旧实现写 ../../../、多退一级后\n# 落到 DerivedData 根，自定义 DerivedData 与 CI 上会静默找不到产物（应用照旧嵌错引用），\n# 当时靠遍历 ~/Library/Developer/Xcode/DerivedData/* 兜底，代价是会扫描并改写其他工程的\n# 产物，现改为只认本次构建目录 + 仓库内 .packages（-packageCachePath 场景）。\nset -u\nshopt -s nullglob\n\nroots=()\nadd_root() {\n    local candidate=\"$1\"\n    [ -n \"$candidate\" ] && [ -d \"$candidate\" ] || return 0\n    for existing in \"${roots[@]:-}\"; do\n        [ \"$existing\" = \"$candidate\" ] && return 0\n    done\n    roots+=(\"$candidate\")\n}\n\n# 仓库内产物（构建时指定 -packageCachePath .packages 的场景）\nadd_root \"${SRCROOT:-}/.packages/artifacts\"\n# 本次构建的 DerivedData：BUILD_DIR / BUILD_ROOT 指向 …/Build/Products，\n# OBJROOT 指向 …/Build/Intermediates.noindex，两者上溯两级即 DerivedData 工程目录\nadd_root \"${BUILD_DIR:-}/../../SourcePackages/artifacts\"\nadd_root \"${BUILD_ROOT:-}/../../SourcePackages/artifacts\"\nadd_root \"${OBJROOT:-}/../../SourcePackages/artifacts\"\n\nif [ \"${#roots[@]}\" -eq 0 ]; then\n    echo \"WARNING: 未找到 SourcePackages/artifacts 产物目录，跳过产物修复；后续 'Verify Embedded Frameworks' 阶段会校验嵌入结果\" >&2\nfi\n\nlayout_fixed=0\ndylib_fixed=0\ndylib_failed=0\n\nfor root in \"${roots[@]:-}\"; do\n    for fw in \"$root\"/onnxruntime-libs/*/onnxruntime.xcframework/*/onnxruntime.framework \\\n              \"$root\"/extract/onnxruntime-libs/*/onnxruntime.xcframework/*/onnxruntime.framework; do\n        [ -d \"$fw/Versions/A\" ] || continue\n        changed=0\n        if [ ! -L \"$fw/Versions/Current\" ]; then\n            rm -rf \"$fw/Versions/Current\"\n            ln -s A \"$fw/Versions/Current\"\n            changed=1\n        fi\n        for name in onnxruntime Headers Resources Modules; do\n            # 上游的 Modules 只在 framework 根目录，而其他内容可能在\n            # 根目录和 Versions/A 同时存在。先把唯一副本移入 A，再统一建立符号链接。\n            if [ -e \"$fw/$name\" ] && [ ! -L \"$fw/$name\" ]; then\n                if [ ! -e \"$fw/Versions/A/$name\" ]; then\n                    mv \"$fw/$name\" \"$fw/Versions/A/$name\"\n                else\n                    rm -rf \"$fw/$name\"\n                fi\n                changed=1\n            fi\n            if [ -e \"$fw/Versions/A/$name\" ]; then\n                if [ ! -L \"$fw/$name\" ]; then\n                    rm -rf \"$fw/$name\"\n                    ln -s \"Versions/Current/$name\" \"$fw/$name\"\n                    changed=1\n                fi\n            fi\n        done\n        if [ \"$changed\" -eq 1 ]; then\n            layout_fixed=$((layout_fixed + 1))\n            echo \"Normalized framework layout: $fw\"\n        fi\n    done\n\n    # 修复 SherpaOnnxC 对 libonnxruntime.dylib 的错误引用（指向 onnxruntime.framework 的真实路径）\n    for fw in \"$root\"/sherpa-onnx/*/sherpa-onnx.xcframework/*/SherpaOnnxC.framework \\\n              \"$root\"/extract/sherpa-onnx/*/sherpa-onnx.xcframework/*/SherpaOnnxC.framework; do\n        bin=\"$fw/Versions/A/SherpaOnnxC\"\n        [ -f \"$bin\" ] || continue\n        if otool -L \"$bin\" 2>/dev/null | grep -q \"libonnxruntime.dylib\"; then\n            if install_name_tool -change \"@rpath/libonnxruntime.dylib\" \\\n                \"@rpath/onnxruntime.framework/Versions/A/onnxruntime\" \"$bin\" 2>/dev/null; then\n                dylib_fixed=$((dylib_fixed + 1))\n                echo \"Fixed dylib reference: $bin\"\n            else\n                # 改不动就必须让构建失败：继续下去会产出一个启动即崩溃的 App，\n                # 旧实现只打 WARNING 并 exit 0\n                echo \"error: install_name_tool 修复失败，产物仍引用 libonnxruntime.dylib: $bin\" >&2\n                dylib_failed=$((dylib_failed + 1))\n            fi\n        fi\n    done\ndone\n\nif [ \"$dylib_failed\" -gt 0 ]; then\n    echo \"error: $dylib_failed 个 SherpaOnnxC 产物的 dylib 引用未能修复，中止构建\" >&2\n    exit 1\nfi\n\necho \"onnxruntime 产物修复完成：规范布局 $layout_fixed 个，dylib 引用 $dylib_fixed 个，产物目录 ${#roots[@]} 个\"\n\n# 注意：这里**不再删除** App 内嵌副本。\n# 实测 Xcode 的「Embed Frameworks」不会仅仅因为该文件被删除就重新拷贝（它认为输出已是\n# 最新，Debug 使用 debug dylib 时尤其明显），删除反而会让 App 缺失 SherpaOnnxC、\n# 启动即 “Library not loaded”。内嵌副本的刷新与重签统一交给构建末段的\n# Verify Embedded Frameworks 阶段处理（那里能拿到签名身份，也能一并做校验）。\n\nexit 0\n";
-		};
-		C34CFD7A798AD2BA58B02636 /* Bump Build Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Bump Build Number";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n# 构建号自增脚本（构建阶段自动执行，仅 Release 配置）\n#\n# 职责边界：\n# - 只递增构建号 CURRENT_PROJECT_VERSION（CFBundleVersion），保证每次打包的构建唯一可辨\n# - 绝不触碰营销版本号 MARKETING_VERSION——那是发布语义，由 Scripts/bump_version.sh 手动管理\n# - project.yml 是构建号的唯一事实源；构建产物 Info.plist 用 sed 整段替换\n#   （历史教训：PlistBuddy 对 XML plist 的写回会破坏格式，导致版本号被逐次拼接成脏值）\n\n# 仅 Release 配置时执行\nif [ \"$CONFIGURATION\" != \"Release\" ]; then\n    exit 0\nfi\n\nif [ -z \"$SRCROOT\" ]; then\n    SRCROOT=\"$(cd \"$(dirname \"$0\")/..\" && pwd)\"\nfi\nPROJECT_YML=\"${SRCROOT}/project.yml\"\n\n# 读取当前构建号\nCURRENT=$(sed -n 's/.*CURRENT_PROJECT_VERSION: \"\\([0-9]*\\)\".*/\\1/p' \"$PROJECT_YML\" | head -1)\nCURRENT=${CURRENT:-0}\nNEW_BUILD=$((CURRENT + 1))\n\n# 写回 project.yml（下次 xcodegen generate 后工程文件同步更新）\nsed -i '' \"s/CURRENT_PROJECT_VERSION: \\\"[0-9]*\\\"/CURRENT_PROJECT_VERSION: \\\"${NEW_BUILD}\\\"/\" \"$PROJECT_YML\"\n\n# 更新构建产物的 Info.plist，使当前构建立即携带新构建号\n# （编译时工程文件里还是旧值，需事后补丁；sed 按 <string> 整段替换，幂等不破坏格式）\nif [ -n \"$BUILT_PRODUCTS_DIR\" ] && [ -n \"$INFOPLIST_PATH\" ]; then\n    INFOPLIST=\"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}\"\n    if [ -f \"$INFOPLIST\" ]; then\n        sed -i '' -E \"/CFBundleVersion/{n;s#(<string>)[^<]*(</string>)#\\1${NEW_BUILD}\\2#;}\" \"$INFOPLIST\"\n    fi\nfi\n\necho \"Build number bumped: ${CURRENT} → ${NEW_BUILD}\"\n";
+			shellScript = "#!/bin/bash\n# 修复 sherpa-onnx shared 产物的两个上游打包问题（构建前执行，幂等）：\n# 1. csukuangfj/onnxruntime-libs 的 shared xcframework 用实体目录/文件复制代替标准\n#    符号链接（Versions/Current 为实体目录、顶层存在重复的二进制与 Info.plist），\n#    Xcode 嵌入后 codesign --verify --strict 会报 \"invalid Info.plist\"；\n# 2. SherpaOnnxC 二进制引用 @rpath/libonnxruntime.dylib，而实际嵌入的是\n#    onnxruntime.framework（install name 为 @rpath/onnxruntime.framework/Versions/A/onnxruntime），\n#    导致启动时 dyld 报 Library missing 崩溃。\n#\n# 产物目录只定位「本次构建所用的」DerivedData：BUILD_DIR / BUILD_ROOT 均为\n# …/DerivedData/<工程>/Build/Products（**不含**配置目录），故 SourcePackages/artifacts\n# 是其兄弟目录，路径为 ../../SourcePackages/artifacts。旧实现写 ../../../、多退一级后\n# 落到 DerivedData 根，自定义 DerivedData 与 CI 上会静默找不到产物（应用照旧嵌错引用），\n# 当时靠遍历 ~/Library/Developer/Xcode/DerivedData/* 兜底，代价是会扫描并改写其他工程的\n# 产物，现改为只认本次构建目录 + 仓库内 .packages（-packageCachePath 场景）。\nset -u\nshopt -s nullglob\n\nroots=()\nadd_root() {\n    local candidate=\"$1\"\n    [ -n \"$candidate\" ] && [ -d \"$candidate\" ] || return 0\n    for existing in \"${roots[@]:-}\"; do\n        [ \"$existing\" = \"$candidate\" ] && return 0\n    done\n    roots+=(\"$candidate\")\n}\n\n# 发布脚本显式传入的本次 SwiftPM 路径；不扫描其他项目的缓存。\nif [ -n \"${MEMONTA_PACKAGE_CACHE_PATH:-}\" ]; then\n    add_root \"$MEMONTA_PACKAGE_CACHE_PATH/artifacts\"\nfi\n\n# 仓库内产物（构建时指定 -packageCachePath .packages 的场景）\nadd_root \"${SRCROOT:-}/.packages/artifacts\"\n# 本次构建的 DerivedData：BUILD_DIR / BUILD_ROOT 指向 …/Build/Products，\n# OBJROOT 指向 …/Build/Intermediates.noindex，两者上溯两级即 DerivedData 工程目录\nadd_root \"${BUILD_DIR:-}/../../SourcePackages/artifacts\"\nadd_root \"${BUILD_ROOT:-}/../../SourcePackages/artifacts\"\nadd_root \"${OBJROOT:-}/../../SourcePackages/artifacts\"\n\nif [ \"${#roots[@]}\" -eq 0 ]; then\n    echo \"WARNING: 未找到 SourcePackages/artifacts 产物目录，跳过产物修复；后续 'Verify Embedded Frameworks' 阶段会校验嵌入结果\" >&2\nfi\n\nlayout_fixed=0\ndylib_fixed=0\ndylib_failed=0\n\nfor root in \"${roots[@]:-}\"; do\n    for fw in \"$root\"/onnxruntime-libs/*/onnxruntime.xcframework/*/onnxruntime.framework \\\n              \"$root\"/extract/onnxruntime-libs/*/onnxruntime.xcframework/*/onnxruntime.framework; do\n        [ -d \"$fw/Versions/A\" ] || continue\n        changed=0\n        if [ ! -L \"$fw/Versions/Current\" ]; then\n            rm -rf \"$fw/Versions/Current\"\n            ln -s A \"$fw/Versions/Current\"\n            changed=1\n        fi\n        for name in onnxruntime Headers Resources Modules; do\n            # 上游的 Modules 只在 framework 根目录，而其他内容可能在\n            # 根目录和 Versions/A 同时存在。先把唯一副本移入 A，再统一建立符号链接。\n            if [ -e \"$fw/$name\" ] && [ ! -L \"$fw/$name\" ]; then\n                if [ ! -e \"$fw/Versions/A/$name\" ]; then\n                    mv \"$fw/$name\" \"$fw/Versions/A/$name\"\n                else\n                    rm -rf \"$fw/$name\"\n                fi\n                changed=1\n            fi\n            if [ -e \"$fw/Versions/A/$name\" ]; then\n                if [ ! -L \"$fw/$name\" ]; then\n                    rm -rf \"$fw/$name\"\n                    ln -s \"Versions/Current/$name\" \"$fw/$name\"\n                    changed=1\n                fi\n            fi\n        done\n        if [ \"$changed\" -eq 1 ]; then\n            layout_fixed=$((layout_fixed + 1))\n            echo \"Normalized framework layout: $fw\"\n        fi\n    done\n\n    # 修复 SherpaOnnxC 对 libonnxruntime.dylib 的错误引用（指向 onnxruntime.framework 的真实路径）\n    for fw in \"$root\"/sherpa-onnx/*/sherpa-onnx.xcframework/*/SherpaOnnxC.framework \\\n              \"$root\"/extract/sherpa-onnx/*/sherpa-onnx.xcframework/*/SherpaOnnxC.framework; do\n        bin=\"$fw/Versions/A/SherpaOnnxC\"\n        [ -f \"$bin\" ] || continue\n        if otool -L \"$bin\" 2>/dev/null | grep -q \"libonnxruntime.dylib\"; then\n            if install_name_tool -change \"@rpath/libonnxruntime.dylib\" \\\n                \"@rpath/onnxruntime.framework/Versions/A/onnxruntime\" \"$bin\" 2>/dev/null; then\n                dylib_fixed=$((dylib_fixed + 1))\n                echo \"Fixed dylib reference: $bin\"\n            else\n                # 改不动就必须让构建失败：继续下去会产出一个启动即崩溃的 App，\n                # 旧实现只打 WARNING 并 exit 0\n                echo \"error: install_name_tool 修复失败，产物仍引用 libonnxruntime.dylib: $bin\" >&2\n                dylib_failed=$((dylib_failed + 1))\n            fi\n        fi\n    done\ndone\n\nif [ \"$dylib_failed\" -gt 0 ]; then\n    echo \"error: $dylib_failed 个 SherpaOnnxC 产物的 dylib 引用未能修复，中止构建\" >&2\n    exit 1\nfi\n\necho \"onnxruntime 产物修复完成：规范布局 $layout_fixed 个，dylib 引用 $dylib_fixed 个，产物目录 ${#roots[@]} 个\"\n\n# 注意：这里**不再删除** App 内嵌副本。\n# 实测 Xcode 的「Embed Frameworks」不会仅仅因为该文件被删除就重新拷贝（它认为输出已是\n# 最新，Debug 使用 debug dylib 时尤其明显），删除反而会让 App 缺失 SherpaOnnxC、\n# 启动即 “Library not loaded”。内嵌副本的刷新与重签统一交给构建末段的\n# Verify Embedded Frameworks 阶段处理（那里能拿到签名身份，也能一并做校验）。\n\nexit 0\n";
 		};
 		EF180A48C0755CE3EFC6402D /* Verify Embedded Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -877,7 +879,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n# 动态框架产物收尾与校验（构建后执行）：\n# 1. 使用与 App 一致的身份重签构建产物目录下的动态 framework。Xcode 运行/测试时\n#    会把 CONFIGURATION_BUILD_DIR 注入 DYLD_LIBRARY_PATH，优先加载这里的副本；\n#    pre-build 的 install_name_tool 会使上游签名失效，如果只签 App 内的嵌入副本，\n#    测试宿主会在建立 XCTest 连接前被 AMFI 终止。\n# 2. 确认所有可能被加载的 SherpaOnnxC 不再引用\n#    @rpath/libonnxruntime.dylib，且它引用的 onnxruntime.framework 确实存在。\n#\n# 背景：上游产物引用 libonnxruntime.dylib，若 Scripts/fix_onnxruntime_framework.sh\n# 没找到产物目录（或 install_name_tool 失败），构建照样成功，但应用启动即\n# “Library not loaded: @rpath/libonnxruntime.dylib” 崩溃——只有在跑测试/装包时才发现。\n# 这里把校验放在构建链末段：宁可构建失败，也不要产出不可启动的 App。\n#\n# 注意：SwiftPM 会同时产生 CONFIGURATION_BUILD_DIR 副本与 App 嵌入副本。\n# 普通启动主要使用 App 内副本，Xcode 调试/测试可能由 DYLD_LIBRARY_PATH 优先加载\n# 构建目录副本，因此存在的两份都必须检查。\nset -u\n\nBUILD_PRODUCTS=\"${CONFIGURATION_BUILD_DIR:-}\"\nif [ -z \"$BUILD_PRODUCTS\" ]; then\n    BUILD_PRODUCTS=\"${BUILD_DIR:-}/${CONFIGURATION:-Debug}\"\nfi\nAPP=\"$BUILD_PRODUCTS/Memonta.app\"\n\n# 非 App 构建（仅编译依赖等）无需校验\nif [ ! -d \"$APP\" ]; then\n    exit 0\nfi\n\n# 就地修复「构建产物目录」里可能陈旧的 SherpaOnnxC dylib 引用。\n#\n# 背景：预构建脚本修补的是 SourcePackages/artifacts 里的**源产物**；但 Xcode 认为\n# Build/Products/<Config>/SherpaOnnxC.framework 已经是「最新构建产物」，不会因为源被改\n# 而重新拷贝（它的 time check 不一定覆盖这种修改），于是这里会长期残留对\n# @rpath/libonnxruntime.dylib 的旧引用——应用启动即 \"Library not loaded\" 崩溃。\n# 预构建脚本只能删「App 内嵌副本」（它在链接之后才生成）；此处这个副本由包目标先产出，\n# 在我们的预构建阶段删除会导致链接缺输入，因此只能在这一步就地重写引用。\n# 重写成功后再由下面的重签逻辑恢复签名；若改不动，紧随其后的链接校验仍会失败。\nif [ -f \"$BUILD_PRODUCTS/SherpaOnnxC.framework/Versions/A/SherpaOnnxC\" ] &&\n   otool -L \"$BUILD_PRODUCTS/SherpaOnnxC.framework/Versions/A/SherpaOnnxC\" 2>/dev/null \\\n       | grep -q \"libonnxruntime\\.dylib\"; then\n    if install_name_tool -change \"@rpath/libonnxruntime.dylib\" \\\n        \"@rpath/onnxruntime.framework/Versions/A/onnxruntime\" \\\n        \"$BUILD_PRODUCTS/SherpaOnnxC.framework/Versions/A/SherpaOnnxC\" 2>/dev/null; then\n        echo \"Repaired stale SherpaOnnxC dylib reference in build products\"\n    else\n        echo \"error: 无法修复构建产物中 SherpaOnnxC 的 libonnxruntime.dylib 引用\" >&2\n        exit 1\n    fi\nfi\n\n# 确保 App 内嵌副本存在且引用正确。\n# Xcode 的「Embed Frameworks」不会因为上游产物被改写而重新拷贝（它认为输出已是最新），\n# 预构建阶段删掉旧副本后也不会自动补回（Debug 使用 debug dylib 时尤其明显），\n# 结果是 App 缺失 SherpaOnnxC、启动即 “Library not loaded”。这里直接从已修正的\n# 构建产物副本整体覆盖，保证 bundle 完整。\nAPP_FW=\"$APP/Contents/Frameworks/SherpaOnnxC.framework\"\nPROD_FW=\"$BUILD_PRODUCTS/SherpaOnnxC.framework\"\nif [ -d \"$PROD_FW\" ]; then\n    need_copy=0\n    if [ ! -f \"$APP_FW/Versions/A/SherpaOnnxC\" ]; then\n        need_copy=1\n    elif otool -L \"$APP_FW/Versions/A/SherpaOnnxC\" 2>/dev/null | grep -q \"libonnxruntime\\.dylib\"; then\n        need_copy=1\n    fi\n    if [ \"$need_copy\" -eq 1 ]; then\n        rm -rf \"$APP_FW\"\n        if /usr/bin/ditto \"$PROD_FW\" \"$APP_FW\"; then\n            echo \"Refreshed embedded SherpaOnnxC.framework in app bundle\"\n        else\n            echo \"error: 无法刷新 App 内嵌的 SherpaOnnxC.framework\" >&2\n            exit 1\n        fi\n    fi\nfi\n\n# 修改过 Mach-O 后上游签名已失效。App 内副本由 Xcode 自动重签，但构建目录副本不会；\n# 后者却会在 Xcode Run/Test 时被优先加载，所以必须显式重签。\nif [ \"${CODE_SIGNING_ALLOWED:-YES}\" != \"NO\" ]; then\n    signing_identity=\"${EXPANDED_CODE_SIGN_IDENTITY:-${CODE_SIGN_IDENTITY:-}}\"\n    if [ -n \"$signing_identity\" ]; then\n        # ProcessXCFramework 有时早于应用 target 的 pre-build 脚本执行，因此当次的\n        # 构建目录副本仍可能保留上游的根目录 Modules。在签名前再幂等地规范一次。\n        runtime_framework=\"$BUILD_PRODUCTS/onnxruntime.framework\"\n        if [ -d \"$runtime_framework/Versions/A\" ]; then\n            if [ ! -L \"$runtime_framework/Versions/Current\" ]; then\n                rm -rf \"$runtime_framework/Versions/Current\"\n                ln -s A \"$runtime_framework/Versions/Current\"\n            fi\n            for name in onnxruntime Headers Resources Modules; do\n                if [ -e \"$runtime_framework/$name\" ] && [ ! -L \"$runtime_framework/$name\" ]; then\n                    if [ ! -e \"$runtime_framework/Versions/A/$name\" ]; then\n                        mv \"$runtime_framework/$name\" \"$runtime_framework/Versions/A/$name\"\n                    else\n                        rm -rf \"$runtime_framework/$name\"\n                    fi\n                fi\n                if [ -e \"$runtime_framework/Versions/A/$name\" ] && [ ! -L \"$runtime_framework/$name\" ]; then\n                    rm -rf \"$runtime_framework/$name\"\n                    ln -s \"Versions/Current/$name\" \"$runtime_framework/$name\"\n                fi\n            done\n        fi\n\n        for product_framework in \"$BUILD_PRODUCTS/SherpaOnnxC.framework\" \\\n                                 \"$BUILD_PRODUCTS/onnxruntime.framework\" \\\n                                 \"$APP/Contents/Frameworks/SherpaOnnxC.framework\"; do\n            [ -d \"$product_framework\" ] || continue\n            if ! /usr/bin/codesign --force --sign \"$signing_identity\" \\\n                --options runtime --timestamp=none \"$product_framework\"; then\n                echo \"error: 无法重签构建产物中的动态框架：$product_framework\" >&2\n                exit 1\n            fi\n        done\n    else\n        echo \"error: 已启用代码签名，但未获得 EXPANDED_CODE_SIGN_IDENTITY/CODE_SIGN_IDENTITY\" >&2\n        exit 1\n    fi\nfi\n\nsherpa_frameworks=()\nfor candidate in \"$APP/Contents/Frameworks/SherpaOnnxC.framework\" \\\n                 \"$BUILD_PRODUCTS/SherpaOnnxC.framework\"; do\n    [ -f \"$candidate/Versions/A/SherpaOnnxC\" ] && sherpa_frameworks+=(\"$candidate\")\ndone\n\nif [ \"${#sherpa_frameworks[@]}\" -eq 0 ]; then\n    cat >&2 <<EOF\nerror: 未找到 SherpaOnnxC.framework（已查找 ${APP}/Contents/Frameworks 与 ${BUILD_PRODUCTS}）：\n       说话人分离将不可用，应用也可能无法启动。\n       请检查 sherpa-onnx 依赖是否解析成功、preBuildScripts 是否被跳过。\nEOF\n    exit 1\nfi\n\nfor framework in \"${sherpa_frameworks[@]}\"; do\n    BIN=\"$framework/Versions/A/SherpaOnnxC\"\n    links=\"$(otool -L \"$BIN\" 2>/dev/null || true)\"\n\n    if printf '%s\\n' \"$links\" | grep -q \"libonnxruntime\\.dylib\"; then\n        cat >&2 <<EOF\nerror: SherpaOnnxC 仍引用 @rpath/libonnxruntime.dylib（${BIN}），应用启动会因\n       \"Library not loaded\" 崩溃。\n       请检查构建日志中 \"Fix Onnxruntime Framework Layout\" 阶段是否输出\n       \"Fixed dylib reference\"，以及 Scripts/fix_onnxruntime_framework.sh 是否能\n       在本次 DerivedData 的 SourcePackages/artifacts 下找到产物。\nEOF\n        exit 1\n    fi\n\n    # 引用 onnxruntime.framework 时，同一加载位置必须有对应框架。\n    if printf '%s\\n' \"$links\" | grep -q \"@rpath/onnxruntime\\.framework\"; then\n        if [[ \"$framework\" == \"$APP/Contents/Frameworks/\"* ]]; then\n            runtime=\"$APP/Contents/Frameworks/onnxruntime.framework/Versions/A/onnxruntime\"\n        else\n            runtime=\"$BUILD_PRODUCTS/onnxruntime.framework/Versions/A/onnxruntime\"\n        fi\n        if [ ! -f \"$runtime\" ]; then\n            echo \"error: SherpaOnnxC 引用 @rpath/onnxruntime.framework，但同一加载位置没有该框架（${BIN}）\" >&2\n            exit 1\n        fi\n    fi\n\n    if [ \"${CODE_SIGNING_ALLOWED:-YES}\" != \"NO\" ] && \\\n       ! /usr/bin/codesign --verify --strict \"$framework\"; then\n        echo \"error: 动态框架签名无效：$framework\" >&2\n        exit 1\n    fi\n\n    echo \"Verified dynamic framework: SherpaOnnxC linkage and signature OK (${framework})\"\ndone\n\n# AVKit 加载命令校验（防回归）：\n# SwiftUI VideoPlayer 的实现位于 _AVKit_SwiftUI 垫片框架，其表示类型的 ObjC 父类在 AVKit；\n# macOS 27 SDK 起仅 import AVKit 不再自动链接 AVKit.framework，若加载命令缺失，首帧构建\n# VideoPlayer 时 Swift 运行时在 getSuperclassMetadata 解析不到父类而 fatalError abort\n#（见 BUG.txt）。这里断言主可执行文件带有 AVKit 加载命令，避免构建参数改动后“修好又改回去”。\n# Debug 构建下 Contents/MacOS/Memonta 只是 Xcode 的 debug dylib 桩（仅链接\n# Memonta.debug.dylib），真正包含应用代码与框架依赖的是 Memonta.debug.dylib；\n# Release 才把代码放进主可执行文件。因此检查「含代码的那个二进制」。\nAPP_EXEC=\"$APP/Contents/MacOS/Memonta\"\n[ -f \"$APP/Contents/MacOS/Memonta.debug.dylib\" ] && APP_EXEC=\"$APP/Contents/MacOS/Memonta.debug.dylib\"\nif [ -f \"$APP_EXEC\" ]; then\n    app_links=\"$(otool -L \"$APP_EXEC\" 2>/dev/null || true)\"\n    avkit_lines=\"$(printf '%s\\n' \"$app_links\" | grep -i -E \"AVKit\" || true)\"\n    echo \"----- AVKit-related dependencies of ${APP_EXEC} -----\"\n    printf '%s\\n' \"${avkit_lines:-(none)}\"\n    echo \"-----------------------------------------------------\"\n\n    if ! printf '%s\\n' \"$avkit_lines\" | grep -q \"AVKit\\.framework\"; then\n        if printf '%s\\n' \"$app_links\" | grep -q \"_AVKit_SwiftUI\\.framework\"; then\n            cat >&2 <<EOF\nerror: 应用代码未链接 AVKit.framework（${APP_EXEC}），但仍链接了 _AVKit_SwiftUI。\n       说明产物里仍是 SwiftUI VideoPlayer（它由 _AVKit_SwiftUI 垫片实现，运行时才需要\n       AVKit 的父类元数据）。即本次构建没有产出「画面」页改用 AVPlayerView 后的二进制，\n       通常是增量构建复用了陈旧产物。请 clean 后重建：\n         DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \\\n           -project Memonta.xcodeproj -scheme Memonta -configuration Debug \\\n           -destination 'platform=macOS' clean build\nEOF\n        else\n            cat >&2 <<EOF\nerror: 应用代码未链接 AVKit.framework（${APP_EXEC}）。\n       上方已打印实际依赖列表。若 AVKit 与 _AVKit_SwiftUI 均未出现，说明链接参数未生效，请确认：\n       1) 已运行 xcodegen generate（OTHER_LDFLAGS 在生成时才写入工程）；\n       2) project.yml 的 OTHER_LDFLAGS 含 \"-Xlinker -needed_framework -Xlinker AVKit\"\n          （注意：Swift 目标的链接驱动是 swiftc，它不接受 clang 的 \"-Wl,\" 写法）；\n       3) 已 clean 重建。\nEOF\n        fi\n        exit 1\n    fi\n    echo \"Verified AVKit linkage: OK (${APP_EXEC})\"\nfi\n";
+			shellScript = "#!/bin/bash\n# 动态框架产物收尾与校验（构建后执行）：\n# 1. 使用与 App 一致的身份重签构建产物目录下的动态 framework。Xcode 运行/测试时\n#    会把 CONFIGURATION_BUILD_DIR 注入 DYLD_LIBRARY_PATH，优先加载这里的副本；\n#    pre-build 的 install_name_tool 会使上游签名失效，如果只签 App 内的嵌入副本，\n#    测试宿主会在建立 XCTest 连接前被 AMFI 终止。\n# 2. 确认所有可能被加载的 SherpaOnnxC 不再引用\n#    @rpath/libonnxruntime.dylib，且它引用的 onnxruntime.framework 确实存在。\n#\n# 背景：上游产物引用 libonnxruntime.dylib，若 Scripts/fix_onnxruntime_framework.sh\n# 没找到产物目录（或 install_name_tool 失败），构建照样成功，但应用启动即\n# “Library not loaded: @rpath/libonnxruntime.dylib” 崩溃——只有在跑测试/装包时才发现。\n# 这里把校验放在构建链末段：宁可构建失败，也不要产出不可启动的 App。\n#\n# 注意：SwiftPM 会同时产生 CONFIGURATION_BUILD_DIR 副本与 App 嵌入副本。\n# 普通启动主要使用 App 内副本，Xcode 调试/测试可能由 DYLD_LIBRARY_PATH 优先加载\n# 构建目录副本，因此存在的两份都必须检查。\nset -u\n\nBUILD_PRODUCTS=\"${CONFIGURATION_BUILD_DIR:-}\"\nif [ -z \"$BUILD_PRODUCTS\" ]; then\n    BUILD_PRODUCTS=\"${BUILD_DIR:-}/${CONFIGURATION:-Debug}\"\nfi\nAPP=\"$BUILD_PRODUCTS/Memonta.app\"\n\n# 非 App 构建（仅编译依赖等）无需校验\nif [ ! -d \"$APP\" ]; then\n    exit 0\nfi\n\n# 就地修复「构建产物目录」里可能陈旧的 SherpaOnnxC dylib 引用。\n#\n# 背景：预构建脚本修补的是 SourcePackages/artifacts 里的**源产物**；但 Xcode 认为\n# Build/Products/<Config>/SherpaOnnxC.framework 已经是「最新构建产物」，不会因为源被改\n# 而重新拷贝（它的 time check 不一定覆盖这种修改），于是这里会长期残留对\n# @rpath/libonnxruntime.dylib 的旧引用——应用启动即 \"Library not loaded\" 崩溃。\n# 预构建脚本只能删「App 内嵌副本」（它在链接之后才生成）；此处这个副本由包目标先产出，\n# 在我们的预构建阶段删除会导致链接缺输入，因此只能在这一步就地重写引用。\n# 重写成功后再由下面的重签逻辑恢复签名；若改不动，紧随其后的链接校验仍会失败。\nif [ -f \"$BUILD_PRODUCTS/SherpaOnnxC.framework/Versions/A/SherpaOnnxC\" ] &&\n   otool -L \"$BUILD_PRODUCTS/SherpaOnnxC.framework/Versions/A/SherpaOnnxC\" 2>/dev/null \\\n       | grep -q \"libonnxruntime\\.dylib\"; then\n    if install_name_tool -change \"@rpath/libonnxruntime.dylib\" \\\n        \"@rpath/onnxruntime.framework/Versions/A/onnxruntime\" \\\n        \"$BUILD_PRODUCTS/SherpaOnnxC.framework/Versions/A/SherpaOnnxC\" 2>/dev/null; then\n        echo \"Repaired stale SherpaOnnxC dylib reference in build products\"\n    else\n        echo \"error: 无法修复构建产物中 SherpaOnnxC 的 libonnxruntime.dylib 引用\" >&2\n        exit 1\n    fi\nfi\n\n# 确保 App 内嵌副本存在且引用正确。\n# Xcode 的「Embed Frameworks」不会因为上游产物被改写而重新拷贝（它认为输出已是最新），\n# 预构建阶段删掉旧副本后也不会自动补回（Debug 使用 debug dylib 时尤其明显），\n# 结果是 App 缺失 SherpaOnnxC、启动即 “Library not loaded”。这里直接从已修正的\n# 构建产物副本整体覆盖，保证 bundle 完整。\nAPP_FW=\"$APP/Contents/Frameworks/SherpaOnnxC.framework\"\nPROD_FW=\"$BUILD_PRODUCTS/SherpaOnnxC.framework\"\nif [ -d \"$PROD_FW\" ]; then\n    need_copy=0\n    if [ ! -f \"$APP_FW/Versions/A/SherpaOnnxC\" ]; then\n        need_copy=1\n    elif otool -L \"$APP_FW/Versions/A/SherpaOnnxC\" 2>/dev/null | grep -q \"libonnxruntime\\.dylib\"; then\n        need_copy=1\n    fi\n    if [ \"$need_copy\" -eq 1 ]; then\n        rm -rf \"$APP_FW\"\n        if /usr/bin/ditto \"$PROD_FW\" \"$APP_FW\"; then\n            echo \"Refreshed embedded SherpaOnnxC.framework in app bundle\"\n        else\n            echo \"error: 无法刷新 App 内嵌的 SherpaOnnxC.framework\" >&2\n            exit 1\n        fi\n    fi\nfi\n\n# 修改过 Mach-O 后上游签名已失效。App 内副本由 Xcode 自动重签，但构建目录副本不会；\n# 后者却会在 Xcode Run/Test 时被优先加载，所以必须显式重签。\nif [ \"${CODE_SIGNING_ALLOWED:-YES}\" != \"NO\" ]; then\n    signing_identity=\"${EXPANDED_CODE_SIGN_IDENTITY:-${CODE_SIGN_IDENTITY:-}}\"\n    if [ -n \"$signing_identity\" ]; then\n        # ProcessXCFramework 有时早于应用 target 的 pre-build 脚本执行，因此当次的\n        # 构建目录副本仍可能保留上游的根目录 Modules。在签名前再幂等地规范一次。\n        runtime_framework=\"$BUILD_PRODUCTS/onnxruntime.framework\"\n        if [ -d \"$runtime_framework/Versions/A\" ]; then\n            if [ ! -L \"$runtime_framework/Versions/Current\" ]; then\n                rm -rf \"$runtime_framework/Versions/Current\"\n                ln -s A \"$runtime_framework/Versions/Current\"\n            fi\n            for name in onnxruntime Headers Resources Modules; do\n                if [ -e \"$runtime_framework/$name\" ] && [ ! -L \"$runtime_framework/$name\" ]; then\n                    if [ ! -e \"$runtime_framework/Versions/A/$name\" ]; then\n                        mv \"$runtime_framework/$name\" \"$runtime_framework/Versions/A/$name\"\n                    else\n                        rm -rf \"$runtime_framework/$name\"\n                    fi\n                fi\n                if [ -e \"$runtime_framework/Versions/A/$name\" ] && [ ! -L \"$runtime_framework/$name\" ]; then\n                    rm -rf \"$runtime_framework/$name\"\n                    ln -s \"Versions/Current/$name\" \"$runtime_framework/$name\"\n                fi\n            done\n        fi\n\n        timestamp_option=\"--timestamp=none\"\n        if [ \"${CONFIGURATION:-}\" = \"Release\" ] && [ \"$signing_identity\" != \"-\" ]; then\n            timestamp_option=\"--timestamp\"\n        fi\n        for product_framework in \"$BUILD_PRODUCTS/SherpaOnnxC.framework\" \\\n                                 \"$BUILD_PRODUCTS/onnxruntime.framework\" \\\n                                 \"$APP/Contents/Frameworks/SherpaOnnxC.framework\"; do\n            [ -d \"$product_framework\" ] || continue\n            if ! /usr/bin/codesign --force --sign \"$signing_identity\" \\\n                --options runtime \"$timestamp_option\" \"$product_framework\"; then\n                echo \"error: 无法重签构建产物中的动态框架：$product_framework\" >&2\n                exit 1\n            fi\n        done\n    else\n        echo \"error: 已启用代码签名，但未获得 EXPANDED_CODE_SIGN_IDENTITY/CODE_SIGN_IDENTITY\" >&2\n        exit 1\n    fi\nfi\n\nsherpa_frameworks=()\nfor candidate in \"$APP/Contents/Frameworks/SherpaOnnxC.framework\" \\\n                 \"$BUILD_PRODUCTS/SherpaOnnxC.framework\"; do\n    [ -f \"$candidate/Versions/A/SherpaOnnxC\" ] && sherpa_frameworks+=(\"$candidate\")\ndone\n\nif [ \"${#sherpa_frameworks[@]}\" -eq 0 ]; then\n    cat >&2 <<EOF\nerror: 未找到 SherpaOnnxC.framework（已查找 ${APP}/Contents/Frameworks 与 ${BUILD_PRODUCTS}）：\n       说话人分离将不可用，应用也可能无法启动。\n       请检查 sherpa-onnx 依赖是否解析成功、preBuildScripts 是否被跳过。\nEOF\n    exit 1\nfi\n\nfor framework in \"${sherpa_frameworks[@]}\"; do\n    BIN=\"$framework/Versions/A/SherpaOnnxC\"\n    links=\"$(otool -L \"$BIN\" 2>/dev/null || true)\"\n\n    if printf '%s\\n' \"$links\" | grep -q \"libonnxruntime\\.dylib\"; then\n        cat >&2 <<EOF\nerror: SherpaOnnxC 仍引用 @rpath/libonnxruntime.dylib（${BIN}），应用启动会因\n       \"Library not loaded\" 崩溃。\n       请检查构建日志中 \"Fix Onnxruntime Framework Layout\" 阶段是否输出\n       \"Fixed dylib reference\"，以及 Scripts/fix_onnxruntime_framework.sh 是否能\n       在本次 DerivedData 的 SourcePackages/artifacts 下找到产物。\nEOF\n        exit 1\n    fi\n\n    # 引用 onnxruntime.framework 时，同一加载位置必须有对应框架。\n    if printf '%s\\n' \"$links\" | grep -q \"@rpath/onnxruntime\\.framework\"; then\n        if [[ \"$framework\" == \"$APP/Contents/Frameworks/\"* ]]; then\n            runtime=\"$APP/Contents/Frameworks/onnxruntime.framework/Versions/A/onnxruntime\"\n        else\n            runtime=\"$BUILD_PRODUCTS/onnxruntime.framework/Versions/A/onnxruntime\"\n        fi\n        if [ ! -f \"$runtime\" ]; then\n            echo \"error: SherpaOnnxC 引用 @rpath/onnxruntime.framework，但同一加载位置没有该框架（${BIN}）\" >&2\n            exit 1\n        fi\n    fi\n\n    if [ \"${CODE_SIGNING_ALLOWED:-YES}\" != \"NO\" ] && \\\n       ! /usr/bin/codesign --verify --strict \"$framework\"; then\n        echo \"error: 动态框架签名无效：$framework\" >&2\n        exit 1\n    fi\n\n    echo \"Verified dynamic framework: SherpaOnnxC linkage and signature OK (${framework})\"\ndone\n\n# AVKit 加载命令校验（防回归）：\n# SwiftUI VideoPlayer 的实现位于 _AVKit_SwiftUI 垫片框架，其表示类型的 ObjC 父类在 AVKit；\n# macOS 27 SDK 起仅 import AVKit 不再自动链接 AVKit.framework，若加载命令缺失，首帧构建\n# VideoPlayer 时 Swift 运行时在 getSuperclassMetadata 解析不到父类而 fatalError abort\n#（见 BUG.txt）。这里断言主可执行文件带有 AVKit 加载命令，避免构建参数改动后“修好又改回去”。\n# Debug 构建下 Contents/MacOS/Memonta 只是 Xcode 的 debug dylib 桩（仅链接\n# Memonta.debug.dylib），真正包含应用代码与框架依赖的是 Memonta.debug.dylib；\n# Release 才把代码放进主可执行文件。因此检查「含代码的那个二进制」。\nAPP_EXEC=\"$APP/Contents/MacOS/Memonta\"\n[ -f \"$APP/Contents/MacOS/Memonta.debug.dylib\" ] && APP_EXEC=\"$APP/Contents/MacOS/Memonta.debug.dylib\"\nif [ -f \"$APP_EXEC\" ]; then\n    app_links=\"$(otool -L \"$APP_EXEC\" 2>/dev/null || true)\"\n    avkit_lines=\"$(printf '%s\\n' \"$app_links\" | grep -i -E \"AVKit\" || true)\"\n    echo \"----- AVKit-related dependencies of ${APP_EXEC} -----\"\n    printf '%s\\n' \"${avkit_lines:-(none)}\"\n    echo \"-----------------------------------------------------\"\n\n    if ! printf '%s\\n' \"$avkit_lines\" | grep -q \"AVKit\\.framework\"; then\n        if printf '%s\\n' \"$app_links\" | grep -q \"_AVKit_SwiftUI\\.framework\"; then\n            cat >&2 <<EOF\nerror: 应用代码未链接 AVKit.framework（${APP_EXEC}），但仍链接了 _AVKit_SwiftUI。\n       说明产物里仍是 SwiftUI VideoPlayer（它由 _AVKit_SwiftUI 垫片实现，运行时才需要\n       AVKit 的父类元数据）。即本次构建没有产出「画面」页改用 AVPlayerView 后的二进制，\n       通常是增量构建复用了陈旧产物。请 clean 后重建：\n         DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \\\n           -project Memonta.xcodeproj -scheme Memonta -configuration Debug \\\n           -destination 'platform=macOS' clean build\nEOF\n        else\n            cat >&2 <<EOF\nerror: 应用代码未链接 AVKit.framework（${APP_EXEC}）。\n       上方已打印实际依赖列表。若 AVKit 与 _AVKit_SwiftUI 均未出现，说明链接参数未生效，请确认：\n       1) 已运行 xcodegen generate（OTHER_LDFLAGS 在生成时才写入工程）；\n       2) project.yml 的 OTHER_LDFLAGS 含 \"-Xlinker -needed_framework -Xlinker AVKit\"\n          （注意：Swift 目标的链接驱动是 swiftc，它不接受 clang 的 \"-Wl,\" 写法）；\n       3) 已 clean 重建。\nEOF\n        fi\n        exit 1\n    fi\n    echo \"Verified AVKit linkage: OK (${APP_EXEC})\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -911,6 +913,7 @@
 				9CE503A2C6FDF04C215CC9F4 /* TaskCenterTests.swift in Sources */,
 				2E486CE91F6FAA31302310DF /* TodoExtractionServiceTests.swift in Sources */,
 				FCCF9A7EFA182E83C5B4049E /* TransientModeReadOnlyTests.swift in Sources */,
+				50A4AC50BFF7DF1FBC22D57B /* UpdateInstallationCoordinatorTests.swift in Sources */,
 				28F36894E87371E4ED2059D4 /* VideoCleanupTests.swift in Sources */,
 				AA9E9051CE711F88FDDE242F /* VisionOCRLanguageTests.swift in Sources */,
 				86D9F0FBB657046EA2AB5FEB /* VoiceprintMergeTests.swift in Sources */,
@@ -929,6 +932,8 @@
 				2591CE2FC88D832F10859407 /* AppCommand.swift in Sources */,
 				9080A2E3A7D4E57B6DE9BF2C /* AppExperience.swift in Sources */,
 				0BA7869E937C2FC2C8E90F2B /* AppMuteDetector.swift in Sources */,
+				AF97AE7F5E46F9E994913D94 /* AppUpdateService.swift in Sources */,
+				1C15B0B552ECBDE60ADEEA48 /* AppUpdateSettingsView.swift in Sources */,
 				1052EBF4AA72F131F236D3E3 /* AudioConverter.swift in Sources */,
 				D02B6188760856DDD8A5768D /* AudioImportValidator.swift in Sources */,
 				DFB7C7D5E33F0988CFB33788 /* AudioRecording.swift in Sources */,
@@ -1032,6 +1037,7 @@
 				3E1E31055169FA8F365E51FF /* TranscriptSegment.swift in Sources */,
 				F9CCB5DDEDC61052EFE20572 /* TranscriptView.swift in Sources */,
 				F149AEF6CFEE0EF09AFFF0C0 /* TranscriptionProgressEstimator.swift in Sources */,
+				9A3C6FB8C29E12CC47055385 /* UpdateInstallationCoordinator.swift in Sources */,
 				98BD51859CC6E3B3A0D2C646 /* VideoUnderstandingService.swift in Sources */,
 				DA32215EFCFB0989B9780879 /* VideoUnderstandingView.swift in Sources */,
 				B707B9101C7FEBD597E8DB4E /* VisionOCRService.swift in Sources */,
@@ -1080,6 +1086,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Memonta/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Memonta;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSAppTransportSecurity_NSAllowsArbitraryLoads = YES;
@@ -1088,6 +1095,9 @@
 				INFOPLIST_KEY_NSRemindersUsageDescription = "Memonta 需要访问提醒事项以将 AI 拆解的待办写入系统提醒事项";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Memonta 需要访问语音识别以在本地将会议录音转成文字";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/Frameworks";
+				MEMONTA_UNNOTARIZED_PREVIEW = NO;
+				MEMONTA_UPDATE_FEED_URL = "https://raw.githubusercontent.com/oceanix-pr/Memonta/updates/stable/appcast.xml";
+				MEMONTA_UPDATE_PUBLIC_KEY = "IixvTkNz6P7bWMnZhap/1nSns9CJDAjlMhGxUO/2BtI=";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -1172,7 +1182,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 139;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1189,7 +1199,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOG = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 9.3.0;
+				MARKETING_VERSION = 9.4.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1237,7 +1247,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 136;
+				CURRENT_PROJECT_VERSION = 139;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1260,7 +1270,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOG = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 9.3.0;
+				MARKETING_VERSION = 9.4.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1283,6 +1293,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Memonta/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Memonta;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSAppTransportSecurity_NSAllowsArbitraryLoads = YES;
@@ -1291,6 +1302,9 @@
 				INFOPLIST_KEY_NSRemindersUsageDescription = "Memonta 需要访问提醒事项以将 AI 拆解的待办写入系统提醒事项";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Memonta 需要访问语音识别以在本地将会议录音转成文字";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/Frameworks";
+				MEMONTA_UNNOTARIZED_PREVIEW = NO;
+				MEMONTA_UPDATE_FEED_URL = "https://raw.githubusercontent.com/oceanix-pr/Memonta/updates/stable/appcast.xml";
+				MEMONTA_UPDATE_PUBLIC_KEY = "IixvTkNz6P7bWMnZhap/1nSns9CJDAjlMhGxUO/2BtI=";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -1398,6 +1412,14 @@
 				revision = 1cb484af5e69d3c7803c1eb0b3b5ab8041e0e911;
 			};
 		};
+		728FFD8E0DE8AB4D89319CE0 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = exactVersion;
+				version = 2.10.0;
+			};
+		};
 		ACD80C39F70BF43A94DA0A19 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
@@ -1418,6 +1440,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F963E471008A304223A7069 /* XCRemoteSwiftPackageReference "argmax-oss-swift" */;
 			productName = WhisperKit;
+		};
+		C1F173E3DC4D46A8D8A2C1C4 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 728FFD8E0DE8AB4D89319CE0 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 		E7A449851EAC141427D928C9 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;

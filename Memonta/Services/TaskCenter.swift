@@ -601,7 +601,10 @@ final class TaskCenter {
         }
     }
 
+    func resumeAfterUpdatePreparation() { pump() }
+
     private func pump() {
+        guard !AppUpdateService.shared.isPreparingToInstall else { return }
         while runningJobIDs.count < Self.maxConcurrentJobs,
               let idx = jobs.firstIndex(where: { $0.state == .queued }) {
             startJob(at: idx)

@@ -590,6 +590,10 @@ final class ScreenVideoRecorder: NSObject, SCStreamOutput, SCStreamDelegate, @un
         recorderRegistry.unregister(recorder)
     }
 
+    static var hasResourcesPreventingUpdate: Bool {
+        recorderRegistry.activeSnapshot().contains { $0.hasPendingResources() }
+    }
+
     /// 应用退出收尾：把所有仍有未收尾资源的实例有界收尾。
     ///
     /// 碎片化 mp4 不 `finishWriting` 也可播放，这里优先尝试补写 moov 以得到完整可播文件；

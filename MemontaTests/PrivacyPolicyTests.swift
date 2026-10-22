@@ -39,14 +39,14 @@ struct PrivacyPolicyTests {
 
     @Test("同主版本的次版本修订不重复打扰用户")
     func minorRevisionDoesNotReask() {
-        #expect(!MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "2.0"))
-        #expect(!MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "2.7"))
+        #expect(!MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: MemontaPrivacyPolicy.version))
+        #expect(!MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: MemontaPrivacyPolicy.majorVersion(of: MemontaPrivacyPolicy.version) + ".7"))
     }
 
     @Test("主版本升级必须重新同意")
     func majorRevisionNeedsConsent() {
         #expect(MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "1.9"))
-        #expect(MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "3.0"))
+        #expect(MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "2.0"))
     }
 
     @Test("主版本号解析")
