@@ -3,6 +3,9 @@
 # 私钥从 Keychain 或 SPARKLE_PRIVATE_KEY（经 stdin）读取，绝不进入仓库或命令参数。
 set -euo pipefail
 umask 077
+# 私钥只交给最后的签名工具；Xcode/构建脚本不能继承它或把它写进构建日志。
+sparkle_private_key="${SPARKLE_PRIVATE_KEY:-}"
+unset SPARKLE_PRIVATE_KEY
 root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$root"
 mode="${1:-preview}"
@@ -113,8 +116,10 @@ if [ ! -x "$sparkle_bin/generate_appcast" ]; then
 fi
 args=(--maximum-deltas 0 --download-url-prefix "https://github.com/$repository/releases/download/$RELEASE_TAG/"
       --embed-release-notes "$out")
-if [ -n "${SPARKLE_PRIVATE_KEY:-}" ]; then
-    printf '%s' "$SPARKLE_PRIVATE_KEY" | "$sparkle_bin/generate_appcast" --ed-key-file - "${args[@]}"
+if [ -n "${SPARKLE_PRIVATE_KEY_FILE:-}" ]; then
+    "$sparkle_bin/generate_appcast" --ed-key-file "$SPARKLE_PRIVATE_KEY_FILE" "${args[@]}"
+elif [ -n "$sparkle_private_key" ]; then
+    printf '%s' "$sparkle_private_key" | "$sparkle_bin/generate_appcast" --ed-key-file - "${args[@]}"
 else
     "$sparkle_bin/generate_appcast" --account com.oceanix.Memonta.sparkle "${args[@]}"
 fi

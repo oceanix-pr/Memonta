@@ -17,7 +17,7 @@ Sparkle EdDSA 私钥与 Apple 证书相互独立。公钥位于 `project.yml`，
 
 自动发布需要在仓库的 `release` environment 中配置 `SPARKLE_PRIVATE_KEY` Secret。使用锁定 Sparkle 版本附带的 `generate_keys --account com.oceanix.Memonta.sparkle -x <受控临时文件>` 导出后，可由 `gh secret set SPARKLE_PRIVATE_KEY --env release < <受控临时文件>` 上传，随后安全移除临时文件。不要把私钥粘贴到聊天、日志或仓库。
 
-本机生成包不需要导出私钥：`release_direct.sh` 默认直接使用上述 Keychain account。CI 通过标准输入将 Secret 传给 Sparkle 工具，普通 PR/测试步骤不获得此 Secret。
+本机生成包不需要导出私钥：`release_direct.sh` 默认直接使用上述 Keychain account。CI 通过标准输入将 Secret 传给 Sparkle 工具；发布脚本在启动 Xcode 前会移除该环境变量，普通 PR/测试步骤不获得此 Secret。本机也支持 `SPARKLE_PRIVATE_KEY_FILE` 指向权限受控的临时密钥文件，完成后由调用方删除。
 
 ## 没有 Apple 分发证书时
 
