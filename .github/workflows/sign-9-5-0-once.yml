@@ -1,0 +1,57 @@
+name: Sign the approved 9.5.0 archive once
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: memonta-direct-release
+  cancel-in-progress: false
+
+jobs:
+  sign:
+    if: github.repository == 'oceanix-pr/Memonta'
+    runs-on: macos-15
+    environment: release
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Fetch only the approved draft archive
+        shell: bash
+        run: |
+          test "$(gh release view v9.5.0 --repo oceanix-pr/Memonta --json isDraft --jq .isDraft)" = true
+          gh release download v9.5.0 --repo oceanix-pr/Memonta \
+            --pattern Memonta-v9.5.0-140-macOS.zip --pattern Memonta-v9.5.0-140-macOS.md \
+            --dir "$RUNNER_TEMP/updates"
+          printf '%s  %s\n' 31e4fed82e7f1558312143d4d68683e59b37e150544f1fbdfc7fb80f9346bb75 \
+            "$RUNNER_TEMP/updates/Memonta-v9.5.0-140-macOS.zip" | shasum -a 256 -c -
+      - name: Verify the pinned official Sparkle signing tool
+        shell: bash
+        run: |
+          curl --fail --location --retry 3 \
+            https://github.com/sparkle-project/Sparkle/releases/download/2.10.0/Sparkle-for-Swift-Package-Manager.zip \
+            --output "$RUNNER_TEMP/Sparkle.zip"
+          printf '%s  %s\n' 17e28312b8e18ab7cdbbe09a6fb28cc55a5479ec6c371dbc07cdecd2a14fd959 \
+            "$RUNNER_TEMP/Sparkle.zip" | shasum -a 256 -c -
+          ditto -x -k "$RUNNER_TEMP/Sparkle.zip" "$RUNNER_TEMP/sparkle"
+      - name: Sign the fixed archive without exporting the key
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          test -n "$SPARKLE_PRIVATE_KEY"
+          signer="$(find "$RUNNER_TEMP/sparkle" -path '*/bin/generate_appcast' -type f -print -quit)"
+          test -x "$signer"
+          printf '%s' "$SPARKLE_PRIVATE_KEY" | "$signer" --ed-key-file - --maximum-deltas 0 \
+            --download-url-prefix https://github.com/oceanix-pr/Memonta/releases/download/v9.5.0/ \
+            --embed-release-notes "$RUNNER_TEMP/updates"
+          (cd "$RUNNER_TEMP/updates" && shasum -a 256 Memonta-v9.5.0-140-macOS.zip appcast.xml > SHA256SUMS)
+      - name: Attach metadata only while the release is a draft
+        shell: bash
+        run: |
+          test "$(gh release view v9.5.0 --repo oceanix-pr/Memonta --json isDraft --jq .isDraft)" = true
+          gh release upload v9.5.0 --repo oceanix-pr/Memonta --clobber \
+            "$RUNNER_TEMP/updates/appcast.xml" "$RUNNER_TEMP/updates/SHA256SUMS"
