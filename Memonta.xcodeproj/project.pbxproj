@@ -1111,6 +1111,7 @@
 				INFOPLIST_KEY_NSRemindersUsageDescription = "Memonta 需要访问提醒事项以将 AI 拆解的待办写入系统提醒事项";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Memonta 需要访问语音识别以在本地将会议录音转成文字";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/Frameworks";
+				MEMONTA_UNNOTARIZED_BUILD = NO;
 				MEMONTA_UPDATE_FEED_URL = "https://raw.githubusercontent.com/oceanix-pr/Memonta/updates/stable/appcast.xml";
 				MEMONTA_UPDATE_PUBLIC_KEY = "IixvTkNz6P7bWMnZhap/1nSns9CJDAjlMhGxUO/2BtI=";
 				OTHER_LDFLAGS = (
@@ -1317,6 +1318,7 @@
 				INFOPLIST_KEY_NSRemindersUsageDescription = "Memonta 需要访问提醒事项以将 AI 拆解的待办写入系统提醒事项";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Memonta 需要访问语音识别以在本地将会议录音转成文字";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/Frameworks";
+				MEMONTA_UNNOTARIZED_BUILD = NO;
 				MEMONTA_UPDATE_FEED_URL = "https://raw.githubusercontent.com/oceanix-pr/Memonta/updates/stable/appcast.xml";
 				MEMONTA_UPDATE_PUBLIC_KEY = "IixvTkNz6P7bWMnZhap/1nSns9CJDAjlMhGxUO/2BtI=";
 				OTHER_LDFLAGS = (

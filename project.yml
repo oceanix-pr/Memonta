@@ -65,6 +65,7 @@ targets:
         SUAllowsAutomaticUpdates: false
         SUAutomaticallyUpdate: false
         SUEnableSystemProfiling: false
+        MemontaUnnotarizedBuild: "$(MEMONTA_UNNOTARIZED_BUILD)"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.oceanix.Memonta
@@ -110,6 +111,7 @@ targets:
         CODE_SIGN_ENTITLEMENTS: Memonta/Resources/Memonta.entitlements
         MEMONTA_UPDATE_FEED_URL: "https://raw.githubusercontent.com/oceanix-pr/Memonta/updates/stable/appcast.xml"
         MEMONTA_UPDATE_PUBLIC_KEY: "IixvTkNz6P7bWMnZhap/1nSns9CJDAjlMhGxUO/2BtI="
+        MEMONTA_UNNOTARIZED_BUILD: NO
     preBuildScripts:
       # 上游 onnxruntime shared xcframework 布局非标准（实体目录替代符号链接），
       # 构建前规范为标准 framework 布局，否则嵌入后签名严格校验失败

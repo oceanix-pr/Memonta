@@ -21,9 +21,11 @@ Sparkle EdDSA 私钥与 Apple 证书相互独立。公钥位于 `project.yml`，
 
 ## 正式分发要求
 
-正式包必须完成 Developer ID 签名与 Apple 公证，不使用 ad-hoc 或 Apple Development 签名代替正式分发签名。缺少正式证书或公证凭据时应明确停止发布。
+默认发布模式为 `notarized`，必须完成 Developer ID 签名与 Apple 公证，不使用 ad-hoc 或 Apple Development 签名代替正式分发签名。缺少正式证书或公证凭据时，默认模式明确停止发布。
 
-发布保留 Hardened Runtime。适用 macOS 系统版本与 CPU 架构以包内实际产物为准；Release 遵循 Xcode 的架构设置，发布前检查实际包内架构；本机运行验收不能替代 Intel Mac 验证。
+用户明确同意未公证更新测试后，可在本机显式运行 `release_direct.sh unnotarized-test`。该模式仍使用 `vX.Y.Z` 与唯一 stable 频道，保留 Sparkle 签名，并在 App 关于页和发布说明标注未公证；不会恢复预览频道。9.5.0（140）使用此次经用户确认的测试方式。
+
+公证发布保留 Hardened Runtime；未公证测试模式仅对该构建关闭它，以允许 ad-hoc App 加载上游签名框架。首次安装可能被 Gatekeeper 阻止，系统权限可能需要重新授予。适用 macOS 系统版本与 CPU 架构以包内实际产物为准；Release 遵循 Xcode 的架构设置，发布前检查实际包内架构；本机运行验收不能替代 Intel Mac 验证。
 
 ## 发布流程
 
@@ -60,6 +62,6 @@ RELEASE_TAG=v9.5.0 \
 | Variable | NOTARY_KEY_ID | 公证 API Key ID |
 | Variable | NOTARY_ISSUER_ID | 公证 API Issuer ID |
 
-本机也可使用 `NOTARY_KEYCHAIN_PROFILE` 代替公证 API 文件。正式包经 archive/export、签名验证、公证 Accepted、staple 后才重新压缩并生成 Sparkle 签名。脚本会拒绝未经公证的正式 tag；保留现有 ONNX 修复与 Verify Embedded Frameworks，不放宽校验。
+本机也可使用 `NOTARY_KEYCHAIN_PROFILE` 代替公证 API 文件。默认公证包经 archive/export、签名验证、公证 Accepted、staple 后才重新压缩并生成 Sparkle 签名。显式未公证测试模式不需要 Apple 凭据，但仍保留现有 ONNX 修复、Verify Embedded Frameworks 与 Sparkle 签名校验。
 
 建议保护发布 tag、工作流和 release environment；自托管签名 runner 不执行不受信 PR。运行器当前沿用工程的 `xcode-27` 标签，发布前检查实际 Xcode/SDK 可用性。首次接入前后应实测 Release 包体积；Sparkle 为 MIT，附带第三方声明已随 App 分发于 `Sparkle-LICENSE.txt`。

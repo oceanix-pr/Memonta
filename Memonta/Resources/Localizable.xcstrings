@@ -177387,133 +177387,133 @@
         }
       }
     },
-    "此预览版未经 Apple 公证。" : {
+    "此版本未经 Apple 公证。" : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لم يتم توثيق هذه النسخة التجريبية من Apple."
+            "value" : "لم يتم توثيق هذا الإصدار من Apple."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese Vorschau wurde nicht von Apple notarisiert."
+            "value" : "Diese Version wurde nicht von Apple notarisiert."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This preview has not been notarized by Apple."
+            "value" : "This build has not been notarized by Apple."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta versión preliminar no está notarizada por Apple."
+            "value" : "Esta versión no está notarizada por Apple."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cet aperçu n’a pas été notarié par Apple."
+            "value" : "Cette version n’a pas été notariée par Apple."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "इस पूर्वावलोकन को Apple ने नोटराइज़ नहीं किया है।"
+            "value" : "इस संस्करण को Apple ने नोटराइज़ नहीं किया है।"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pratinjau ini belum dinotarisasi oleh Apple."
+            "value" : "Versi ini belum dinotarisasi oleh Apple."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Questa anteprima non è stata autenticata da Apple."
+            "value" : "Questa versione non è stata autenticata da Apple."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "このプレビュー版は Apple の公証を受けていません。"
+            "value" : "このバージョンは Apple の公証を受けていません。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이 미리 보기 버전은 Apple 공증을 받지 않았습니다."
+            "value" : "이 버전은 Apple 공증을 받지 않았습니다."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deze preview is niet door Apple genotariseerd."
+            "value" : "Deze versie is niet door Apple genotariseerd."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ta wersja podglądowa nie została notaryzowana przez Apple."
+            "value" : "Ta wersja nie została notaryzowana przez Apple."
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta prévia não foi autenticada pela Apple."
+            "value" : "Esta versão não foi autenticada pela Apple."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Эта предварительная версия не нотарифицирована Apple."
+            "value" : "Эта версия не нотарифицирована Apple."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denna förhandsversion är inte notariserad av Apple."
+            "value" : "Denna version är inte notariserad av Apple."
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "รุ่นตัวอย่างนี้ยังไม่ได้รับการรับรองจาก Apple"
+            "value" : "รุ่นนี้ยังไม่ได้รับการรับรองจาก Apple"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu önizleme Apple tarafından noter onaylı değildir."
+            "value" : "Bu sürüm Apple tarafından noter onaylı değildir."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Цю попередню версію не нотаризовано Apple."
+            "value" : "Цю версію не нотаризовано Apple."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bản xem trước này chưa được Apple chứng thực."
+            "value" : "Phiên bản này chưa được Apple chứng thực."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "此预览版未经 Apple 公证。"
+            "value" : "此版本未经 Apple 公证。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "此預覽版未經 Apple 公證。"
+            "value" : "此版本未經 Apple 公證。"
           }
         }
       }
