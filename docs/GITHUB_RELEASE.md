@@ -2,10 +2,10 @@
 
 当前代码接入 Sparkle 2.10.0。首次安装仍需手动下载 App；之后可从应用菜单或「设置 → 关于」检查更新。自动检查默认关闭，安装始终需要用户确认。
 
-## 频道与安装保护
+## 唯一正式频道与安装保护
 
 - 正式版读取 `https://raw.githubusercontent.com/oceanix-pr/Memonta/updates/stable/appcast.xml`。
-- 未公证预览包读取同一 `updates` 分支的 `preview/appcast.xml`。源码仓库保持公开才能匿名读取这些地址；客户端不携带 GitHub Token。
+- 只保留正式频道，不再生成预览包或预览 tag。正式 feed 发布成功时，工作流同时移除 `updates` 分支上的历史 `preview/` 目录；已有预览 Release 仅作为历史归档。源码仓库保持公开才能匿名读取更新地址；客户端不携带 GitHub Token。
 - 更新归档放在明确 tag 的 GitHub Release 中；模型继续走原有下载渠道。首版仅全量更新。
 - 录音启动/采集/合并、未收尾的视频资源、截图会话、媒体导入、磁盘对账、活动任务和未退出的孤儿执行体都会阻止安装。结束任务后，可在 Sparkle 中重试安装。
 - 安装前保存共享 ModelContext、停止旧 worker、等待 EntryMirrorStore.flush，并在异步屏障后再次确认空闲。失败会取消本次退出并恢复界面。更新退出不再启动旧 worker，新版按既有启动协议恢复磁盘任务。
@@ -19,32 +19,35 @@ Sparkle EdDSA 私钥与 Apple 证书相互独立。公钥位于 `project.yml`，
 
 本机生成包不需要导出私钥：`release_direct.sh` 默认直接使用上述 Keychain account。CI 通过标准输入将 Secret 传给 Sparkle 工具；发布脚本在启动 Xcode 前会移除该环境变量，普通 PR/测试步骤不获得此 Secret。本机也支持 `SPARKLE_PRIVATE_KEY_FILE` 指向权限受控的临时密钥文件，完成后由调用方删除。
 
-## 没有 Apple 分发证书时
+## 正式分发要求
 
-仍可生成带 Sparkle 更新签名的未公证预览包。它使用 ad-hoc 代码签名，不能通过正常的 Developer ID/Gatekeeper 分发验证，首次打开可能被系统阻止；系统录音、屏幕录制等权限也可能需要重新授予。
+正式包必须完成 Developer ID 签名与 Apple 公证，不使用 ad-hoc 或 Apple Development 签名代替正式分发签名。缺少正式证书或公证凭据时应明确停止发布。
 
-预览构建单独关闭 Hardened Runtime，以允许没有 Team ID 的 App 加载上游签名的 Sparkle；正式工程默认仍开启。不要把预览包标为正式发行版。预览更新与正式更新完全分频道，不能将预览设为 Latest。适用 macOS 系统版本与 CPU 架构以包内实际产物为准；Release 遵循 Xcode 的架构设置，发布前检查实际包内架构；本机运行验收不能替代 Intel Mac 验证。
+发布保留 Hardened Runtime。适用 macOS 系统版本与 CPU 架构以包内实际产物为准；Release 遵循 Xcode 的架构设置，发布前检查实际包内架构；本机运行验收不能替代 Intel Mac 验证。
 
 ## 发布流程
 
-1. 在 `project.yml` 固定营销版本和递增构建号。`Scripts/bump_build_number.sh [新编号]` 现在只在发布前手动运行；任何 build/test/archive 都不再自增编号。两个频道共用全局递增编号，避免从测试频道迁移时发生降级。
-2. `xcodegen generate`，检查锁文件、运行测试并提交，然后创建与营销版本对应的 tag，例如 `v9.4.0-preview.1` 或 `v9.4.0`。工作区未提交内容不会出现在 tag 中。
-3. 推送 tag 触发 `release-direct.yml`；也可手动选择已存在 tag。预览版只需要 Sparkle Secret；正式版另需下述 Apple 凭据。
+1. 在 `project.yml` 固定营销版本和递增构建号。`Scripts/bump_build_number.sh [新编号]` 只在发布前手动运行；任何 build/test/archive 都不再自增编号。
+2. `xcodegen generate`，检查锁文件、运行测试并提交，然后创建与营销版本对应的正式 tag，例如 `v9.5.0`。工作区未提交内容不会出现在 tag 中。
+3. 推送 tag 触发 `release-direct.yml`；也可手动选择已存在的正式 tag。工作流只接受 `vX.Y.Z`，需要 Sparkle Secret 和下述 Apple 凭据。
 4. 流水线创建附带 ZIP、appcast.xml 与 SHA256SUMS 的 **draft Release**。先用具体包验证升级、录音保护、worker 交接、保存失败和重启，再发布草稿。草稿阶段不会影响现有 feed。
-5. 用户发布 Release 后，`publish-update-feed.yml` 才会验证公开包地址、长度、签名字段及递增构建号，将 appcast 提交到 `updates` 分支对应频道。发布旧构建不能覆盖较新 feed。
+5. 用户或经授权的本机 GitHub CLI 发布 Release 后，`publish-update-feed.yml` 才会验证公开包地址、长度、签名字段及递增构建号，将 appcast 提交到 `updates` 分支的 `stable/appcast.xml`，并移除历史预览频道。发布旧构建不能覆盖较新 feed。
+6. 确认正式 feed 可匿名读取，再从旧版本测试发现更新、安装确认和重启；更新后核对版本、数据与系统权限连续性。
 
 Release 附件应保持不可变。修复已发布版本时发布更高构建号，不能把 feed 改回旧包期待客户端自动降级。GitHub Token 自动触发事件存在限制：通过另一个 Actions 的 GITHUB_TOKEN 发布 Release 时，不能假定会触发 `release:published`；本流程保留由用户发布草稿的最终步骤。
 
 本机打包示例（工具路径和缓存路径按本机设置）：
 
 ```sh
-RELEASE_TAG=v9.4.0-preview.1 \
+RELEASE_TAG=v9.5.0 \
+  APPLE_TEAM_ID=YOUR_TEAM_ID \
+  NOTARY_KEYCHAIN_PROFILE=YOUR_EXISTING_PROFILE \
   SPARKLE_BIN_DIR=/path/to/Sparkle/bin \
   PACKAGE_CACHE_PATH=/path/to/SourcePackages \
-  bash Scripts/release_direct.sh preview
+  bash Scripts/release_direct.sh notarized
 ```
 
-## 正式公证版额外配置
+## 正式发布凭据
 
 在 `release` environment 配置：
 

@@ -4,11 +4,6 @@ import SwiftUI
 struct AppUpdateSettingsView: View {
     private let updates = AppUpdateService.shared
 
-    private var isUnnotarizedPreview: Bool {
-        let value = Bundle.main.object(forInfoDictionaryKey: "MemontaUnnotarizedPreview")
-        return value as? Bool == true || value as? String == "YES"
-    }
-
     var body: some View {
         VStack(spacing: 8) {
             Button("检查更新…") { updates.checkForUpdates() }
@@ -22,10 +17,6 @@ struct AppUpdateSettingsView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-            if isUnnotarizedPreview {
-                Text("此预览版未经 Apple 公证。")
-                    .font(.caption).foregroundStyle(.orange)
-            }
         }
         .frame(maxWidth: 360)
     }
