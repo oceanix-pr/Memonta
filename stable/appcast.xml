@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Memonta</title>
+        <item>
+            <title>9.5.0</title>
+            <pubDate>Sat, 24 Oct 2026 09:14:06 +0000</pubDate>
+            <sparkle:version>140</sparkle:version>
+            <sparkle:shortVersionString>9.5.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <description sparkle:format="markdown"><![CDATA[Memonta 9.5.0（140）
+
+此版本未经 Apple 公证。本次经用户确认，发布到 stable 频道用于验证自动更新。
+
+- 更新分发统一为正式频道，移除预览频道。
+- 通过「检查更新…」或已开启的自动检查，从 9.4.0（139）发现本次更新。
+- 安装仍需确认；录音、录屏或处理任务进行中请稍后安装。
+
+此版本未经 Apple 公证，仅用于用户已同意的更新测试；首次安装可能被系统阻止，系统权限可能需要重新授予。
+]]></description>
+            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.5.0/Memonta-v9.5.0-140-macOS.zip" length="35545748" type="application/octet-stream" sparkle:edSignature="snSt0aY/ph+KkdHcQkOfj2K0B/IRB5REfScWzXzJ/YWoMzif5tbjlq1llS8SUO/q1gELboRjCRbFHR53bPCGAA=="/>
+        </item>
+    </channel>
+</rss>
