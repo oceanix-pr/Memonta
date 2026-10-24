@@ -103,7 +103,7 @@ UI 测试需要有图形界面的 macOS 会话和相应系统权限，因此不�
 - `Memonta/Services/`：音频、转写、LLM、截图、同步与安全服务
 - `Memonta/ViewModels/`、`Memonta/Views/`：业务编排与 SwiftUI 界面
 - `MemontaTests/`：Swift Testing 单元测试
-- [产品需求](PRD.md) · [开发实践](DEVELOPMENT_GUIDE.md) · [项目 Wiki](docs/wiki/Home.md) · [发布检查](docs/RELEASE_CHECKLIST.md)
+- [产品需求](PRD.md) · [开发实践](DEVELOPMENT_GUIDE.md) · [项目 Wiki](https://github.com/oceanix-pr/Memonta/wiki/zh-CN-Home) · [发布检查](docs/RELEASE_CHECKLIST.md)
 
 ### 许可证
 
@@ -194,7 +194,7 @@ UI 測試需要有圖形介面的 macOS 工作階段及相應系統權限，因�
 - `Memonta/Services/`：音訊、轉錄、LLM、截圖、同步與安全服務
 - `Memonta/ViewModels/`、`Memonta/Views/`：業務流程協調與 SwiftUI 介面
 - `MemontaTests/`：Swift Testing 單元測試
-- [產品需求](PRD.md) · [開發實務](DEVELOPMENT_GUIDE.md) · [專案 Wiki](docs/wiki/Home.md) · [發佈檢查](docs/RELEASE_CHECKLIST.md)
+- [產品需求](PRD.md) · [開發實務](DEVELOPMENT_GUIDE.md) · [專案 Wiki](https://github.com/oceanix-pr/Memonta/wiki/zh-TW-Home) · [發佈檢查](docs/RELEASE_CHECKLIST.md)
 
 ### 授權條款
 
@@ -285,7 +285,7 @@ UI tests require a graphical macOS session and the relevant system permissions, 
 - `Memonta/Services/`: audio, transcription, LLM, screenshot, sync, and security services
 - `Memonta/ViewModels/`, `Memonta/Views/`: business orchestration and SwiftUI interface
 - `MemontaTests/`: Swift Testing unit tests
-- [Product Requirements](PRD.md) · [Development Guide](DEVELOPMENT_GUIDE.md) · [Project Wiki](docs/wiki/Home.md) · [Release Checklist](docs/RELEASE_CHECKLIST.md)
+- [Product Requirements](PRD.md) · [Development Guide](DEVELOPMENT_GUIDE.md) · [Project Wiki](https://github.com/oceanix-pr/Memonta/wiki/en-Home) · [Release Checklist](docs/RELEASE_CHECKLIST.md)
 
 ### License
 
@@ -376,7 +376,7 @@ Las pruebas de interfaz requieren una sesión gráfica de macOS y los permisos c
 - `Memonta/Services/`: servicios de audio, transcripción, LLM, capturas, sincronización y seguridad
 - `Memonta/ViewModels/`, `Memonta/Views/`: coordinación de la lógica e interfaz SwiftUI
 - `MemontaTests/`: pruebas unitarias con Swift Testing
-- [Requisitos del producto](PRD.md) · [Guía de desarrollo](DEVELOPMENT_GUIDE.md) · [Wiki del proyecto](docs/wiki/Home.md) · [Lista de publicación](docs/RELEASE_CHECKLIST.md)
+- [Requisitos del producto](PRD.md) · [Guía de desarrollo](DEVELOPMENT_GUIDE.md) · [Wiki del proyecto](https://github.com/oceanix-pr/Memonta/wiki/en-Home) · [Lista de publicación](docs/RELEASE_CHECKLIST.md)
 
 ### Licencia
 
@@ -467,7 +467,7 @@ Les tests d’interface nécessitent une session graphique macOS et les autorisa
 - `Memonta/Services/` : services audio, transcription, LLM, capture d’écran, synchronisation et sécurité
 - `Memonta/ViewModels/`, `Memonta/Views/` : orchestration métier et interface SwiftUI
 - `MemontaTests/` : tests unitaires avec Swift Testing
-- [Exigences produit](PRD.md) · [Guide de développement](DEVELOPMENT_GUIDE.md) · [Wiki du projet](docs/wiki/Home.md) · [Liste de vérification avant publication](docs/RELEASE_CHECKLIST.md)
+- [Exigences produit](PRD.md) · [Guide de développement](DEVELOPMENT_GUIDE.md) · [Wiki du projet](https://github.com/oceanix-pr/Memonta/wiki/en-Home) · [Liste de vérification avant publication](docs/RELEASE_CHECKLIST.md)
 
 ### Licence
 

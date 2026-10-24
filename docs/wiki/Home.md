@@ -8,7 +8,7 @@
 Memonta 使用 Swift 6、SwiftUI、SwiftData，核心链路为：
 
 ```text
-录音 / 导入音视频 → 本地 WhisperKit 或云端 Whisper 转写
+录音 / 导入音视频 → 系统语音识别 / 本地 WhisperKit / 云端 Whisper 转写
 → 说话人分离 / 声纹识别 → 繁简归一 / 词典纠正
 → 加密保存 → LLM 总结 → 可编辑待办 → 用户确认写入提醒事项
 ```
@@ -31,7 +31,7 @@ Memonta 使用 Swift 6、SwiftUI、SwiftData，核心链路为：
 | [06 智能功能](06-LLM总结与智能功能.md) | SSE、总结、视频理解、待办、PII |
 | [07 截图与 OCR](07-截图与OCR.md) | 选择、标注、钉住、图片笔记 |
 | [08 同步与安全](08-数据同步与安全.md) | 文件恢复、加密、删除、CloudKit 边界 |
-| [09 系统集成](09-系统集成服务.md) | 菜单栏、热键、窗口与权限 |
+| [09 系统集成](09-系统集成服务.md) | 菜单栏、热键、窗口、权限与应用更新 |
 | [10 ViewModel](10-ViewModel层.md) | 业务编排与状态绑定 |
 | [11 视图](11-视图层.md) | 页面入口、交互与 UI 组件 |
 | [12 依赖](12-依赖关系.md) | SPM、系统框架与依赖图 |
@@ -45,3 +45,5 @@ Memonta 使用 Swift 6、SwiftUI、SwiftData，核心链路为：
 只更新受改动影响的篇章；每条事实只维护一个主要位置，其余放链接。
 使用文件名与符号定位，不维护源码行数、固定行号和构建号快照。
 实现说明与待办分开；功能改动同步对应 PRD 验收，不把历史审查“已通过”沿用为当前验证结果。
+
+英文版源文档位于 `en/`，繁中版位于 `zh-Hant/`（由简中转换，保留代码与路径）。用 `python3 docs/wiki/publish_wiki.py --output <Wiki仓库目录> --refresh-traditional` 生成 GitHub Wiki 页面；刷新繁中需要 `opencc-python-reimplemented`。生成器校验本地引用、页面链接和代码围栏，生成三语导航，但不自动提交或推送。检查差异后分别提交主仓库文档与 Wiki 仓库；首次使用 Wiki 需先在 GitHub 网页创建首页。

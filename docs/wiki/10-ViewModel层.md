@@ -4,11 +4,11 @@
 
 三个业务 ViewModel，全部为 `@MainActor @Observable final class`（Swift 6 并发标注），服务依赖以单例引用方式注入。
 
-| ViewModel | 行数 | 职责域 |
-|-----------|------|--------|
-| [RecordingViewModel](../../Memonta/ViewModels/RecordingViewModel.swift) | 1510 | 录音/转写/总结/待办全链路（核心枢纽） |
-| [QuickNoteViewModel](../../Memonta/ViewModels/QuickNoteViewModel.swift) | 698 | 快捷笔记（文字/图片/剪贴板）+ OCR + 总结 + 待办 |
-| [SettingsViewModel](../../Memonta/ViewModels/SettingsViewModel.swift) | 330 | 全部设置项持久化 + LLM 配置管理 |
+| ViewModel | 职责域 |
+|-----------|--------|
+| [RecordingViewModel](../../Memonta/ViewModels/RecordingViewModel.swift) | 录音/转写/总结/待办全链路（核心枢纽） |
+| [QuickNoteViewModel](../../Memonta/ViewModels/QuickNoteViewModel.swift) | 快捷笔记（文字/图片/剪贴板）+ OCR + 总结 + 待办 |
+| [SettingsViewModel](../../Memonta/ViewModels/SettingsViewModel.swift) | 全部设置项持久化 + LLM 配置管理 |
 
 ## 1. RecordingViewModel — 核心业务枢纽
 
@@ -27,7 +27,7 @@
 
 | 方法 | 职责 |
 |------|------|
-| `startTranscription` | 单条转写入口：置 `.processing` → 校验音频 → 本地（WhisperLocalService）/云端（WhisperAPIService）分流 → 更新进度 |
+| `startTranscription` | 单条转写入口：置 `.processing` → 校验音频 → 系统（SystemTranscription / SystemTranscriptionService，macOS 26+）、本地（WhisperLocalService）或云端（WhisperAPIService）分流 → 更新进度 |
 | 转写后处理链 | 固定顺序：说话人分离（可选）→ 繁简归一化 → 词典纠正 → 加密 → 创建 `TranscriptSegment[]` → 转写文件落盘 → 状态 `.completed/.failed`（详见 [05-语音转写与说话人分离](05-语音转写与说话人分离.md) §9） |
 | `cancelTranscription` | 取消入口，转发到推理与串行门 |
 | `resetStaleProcessingStates` | 启动时把崩溃遗留的 `.processing` 重置为 `.pending`；覆盖 `transcriptionStatus / summaryStatus / visualStatus / todoStatus` 与 `QuickNote` 的 `summaryStatus / todoStatus` |
@@ -97,7 +97,7 @@ extractTodos：summary → [PII scrub] → TodoExtractionService.extract
 
 | 分组 | 内容 |
 |------|------|
-| STT | 模式（本地/云端）、模型文件夹（默认 `~/Documents/Memonta/WhisperModel`）、云端 API URL/Key、语言 |
+| STT | 模式（系统/本地/云端，系统模式仅在支持时显示）、模型文件夹（默认 `~/Documents/Memonta/WhisperModel`）、云端 API URL/Key、语言 |
 | 说话人分离 | 开关、模型路径（默认 `DiarizationModel`）、声纹识别开关 |
 | 词典 | 纠正开关、PII 脱敏开关 |
 | LLM | 多套配置 CRUD、当前生效配置 |

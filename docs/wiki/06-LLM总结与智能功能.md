@@ -82,11 +82,11 @@ SSE 解析：`URLSession.shared.bytes` 逐行读取 → 识别 `data:` 前缀 �
 | `title` | `title` |
 | `notes` | `notes`（追加 URL 等） |
 | `url` | `url`（日历提醒事项 URL 字段） |
-| `dueDate` + `reminderOffsetMinutes` | `dueDateComponents` + 闹钟 |
+| `dueDate` + `alarmOffsetMinutes` | `dueDateComponents` + 闹钟 |
 | `priority` | `priority` 映射 |
-| 写入结果 | 回填 `remindersID` + `status`（.written/.failed） |
+| 写入结果 | 回填 `reminderIdentifier` + `status`（.written/.failed） |
 
-支持默认列表/用户指定列表选择。写入后 `remidersID` 记录在 TodoDocument，**删除录音时先于删文件夹加载 TodoDocument**，用于清理提醒事项中的残留（防止数据库删了、提醒事项还在）。
+支持默认列表/用户指定列表选择。写入后 `reminderIdentifier` 记录在 TodoDocument，**删除录音时先于删文件夹加载 TodoDocument**，用于清理提醒事项中的残留（防止数据库删了、提醒事项还在）。
 
 ## 4. RemindersURLDiagnostic — 提醒事项 URL 诊断
 
@@ -163,7 +163,7 @@ TodoExtractionService.extract → TodoDocument（JSON）
   ↓ [云端 LLM 且开启 PII] restore(TodoDocument, mapping)
 todos.json 加密落盘
   ↓ 用户确认
-RemindersService → EKReminder（回填 remindersID/status）
+RemindersService → EKReminder（回填 reminderIdentifier/status）
 ```
 
 ## 8. 画面要点（视频关键帧，B 档能力）
