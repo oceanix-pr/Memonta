@@ -3,22 +3,30 @@
     <channel>
         <title>Memonta</title>
         <item>
-            <title>9.5.0</title>
-            <pubDate>Sat, 24 Oct 2026 09:14:06 +0000</pubDate>
-            <sparkle:version>140</sparkle:version>
-            <sparkle:shortVersionString>9.5.0</sparkle:shortVersionString>
+            <title>9.5.1</title>
+            <pubDate>Mon, 26 Oct 2026 20:29:12 +0800</pubDate>
+            <sparkle:version>141</sparkle:version>
+            <sparkle:shortVersionString>9.5.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[Memonta 9.5.0（140）
+            <description sparkle:format="markdown"><![CDATA[Memonta 9.5.1（141）
 
-此版本未经 Apple 公证。本次经用户确认，发布到 stable 频道用于验证自动更新。
+- 新菜单栏标识：紧凑截图框、麦克风与文稿组成单色矢量符号，适配深浅色菜单栏。
+- 更新使用帮助与首次使用提示，说明系统语音识别、普通/专业模式截图入口、手动静音、声纹单独同意与更新安装确认。
+- 隐私政策升级为 4.0（2026-10-26）：澄清总结与待办使用所配置的智能服务，补充原始媒体、导出文件、旧版明文与加密失败回退的保护边界，修正正文版本和日期。
+- 新增帮助与引导文案覆盖全部 21 种界面语言；隐私政策正文继续以简体中文版本为准。
 
-- 更新分发统一为正式频道，移除预览频道。
-- 通过「检查更新…」或已开启的自动检查，从 9.4.0（139）发现本次更新。
-- 安装仍需确认；录音、录屏或处理任务进行中请稍后安装。
+升级后需重新阅读并同意隐私政策。9.5.x 的补丁更新不会重复展示完整新手引导。原应用图标、已有录音与笔记格式保持不变。
+
+English
+
+- Adds a compact monochrome capture-frame, microphone and transcript menu bar symbol with light and dark appearance support.
+- Refreshes help and onboarding to match system speech recognition, capture modes, manual mute, separate voiceprint consent and update confirmation.
+- Updates the privacy policy to version 4.0, effective October 26, 2026, clarifying configured AI services and the encryption boundaries for media, exports, legacy plaintext and encryption failures. Renewed consent is required.
+- Translates the new help and onboarding messages into all 21 interface languages. The authoritative privacy policy remains in Simplified Chinese.
 
 此版本未经 Apple 公证，仅用于用户已同意的更新测试；首次安装可能被系统阻止，系统权限可能需要重新授予。
 ]]></description>
-            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.5.0/Memonta-v9.5.0-140-macOS.zip" length="35545748" type="application/octet-stream" sparkle:edSignature="snSt0aY/ph+KkdHcQkOfj2K0B/IRB5REfScWzXzJ/YWoMzif5tbjlq1llS8SUO/q1gELboRjCRbFHR53bPCGAA=="/>
+            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.5.1/Memonta-v9.5.1-141-macOS.zip" length="35548262" type="application/octet-stream" sparkle:edSignature="5BnFF9PvMfDCfZDsZRDnvuQTNVgMNLcfUKCb4xAKTAj7KwcVTwRFqvMl/FlZefZu/g5Icj36a579Xbsl8KP4BQ=="/>
         </item>
     </channel>
 </rss>
