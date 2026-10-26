@@ -2590,6 +2590,147 @@ final class RecordingViewModel {
         )
     }
 
+    // MARK: - 合并录音
+
+    /// 创建时间相同则以稳定 ID 决定顺序，避免 Set 的枚举顺序改变合并目标。
+    static func orderedMergeCandidates(_ recordings: [AudioRecording]) -> [AudioRecording]? {
+        guard recordings.count >= 2, Set(recordings.map(\.id)).count == recordings.count,
+              recordings.allSatisfy({ !$0.isVideoRecording }) else { return nil }
+        return recordings.sorted {
+            if $0.createdAt != $1.createdAt { return $0.createdAt < $1.createdAt }
+            return $0.id.uuidString < $1.id.uuidString
+        }
+    }
+
+    /// 仅在用户确认合并并删除原录音后调用。先保存完整新条目，再逐笔删除较早原件。
+    func mergeRecordings(_ recordings: [AudioRecording], context: ModelContext) async -> AudioRecording? {
+        guard !rejectWriteIfReadOnly(.deleteEntry),
+              let ordered = Self.orderedMergeCandidates(recordings), let latest = ordered.last else { return nil }
+        guard !RecordingMergeActivity.shared.isRunning, !FileSyncService.hasResourcesPreventingUpdate,
+              !AppUpdateService.shared.isPreparingToInstall, !isImporting, !isTranscribing,
+              summarizingRecordingIDs.isEmpty, extractingTodoIDs.isEmpty, titleTasks.isEmpty,
+              !isGeneratingVisualNotes, !isWritingTodos, !isCleaningUpVideo,
+              !meetingRecorder.hasResourcesPreventingUpdate, !TaskCenter.shared.hasActiveWork,
+              TaskCenter.shared.stoppingResourceClasses.isEmpty,
+              TaskCenter.shared.restartRequiredResourceClasses.isEmpty,
+              !BackgroundTaskQueue.hasEntries(),
+              ordered.allSatisfy({ $0.modelContext === context
+                  && $0.transcriptionStatus != .processing && $0.summaryStatus != .processing
+                  && $0.todoStatus != .processing && $0.visualStatus != .processing }) else {
+            showErrorMessage(String(localized: "请等待录音、处理任务和磁盘同步完成后再合并。"))
+            return nil
+        }
+        RecordingMergeActivity.shared.isRunning = true
+        defer { RecordingMergeActivity.shared.isRunning = false }
+        do {
+            try context.save()
+            // 等待串行解密队列先提交镜像，再等待镜像落盘，防止迟到的旧镜像覆盖合并结果。
+            await withCheckedContinuation { continuation in
+                transcriptMirrorQueue.async { continuation.resume() }
+            }
+            let flush = await EntryMirrorStore.shared.flush()
+            guard flush.remaining.isEmpty, flush.errors.isEmpty else { throw RecordingMergeService.MergeError() }
+            let snapshots = ordered.map {
+                RecordingMergeService.Input(id: $0.id, folderName: $0.folderName, folderURL: $0.folderURL,
+                    audioURL: $0.fileURL, title: $0.fileName, segments: $0.transcriptSnapshot,
+                    summary: $0.summary, isHidden: $0.isHidden,
+                    transcriptionComplete: $0.transcriptionStatus == .completed)
+            }
+            let dedicatedFolders = snapshots.filter { !$0.folderName.isEmpty }.map(\.folderURL)
+            guard Set(snapshots.map(\.audioURL)).count == snapshots.count,
+                  Set(dedicatedFolders).count == dedicatedFolders.count else { throw RecordingMergeService.MergeError() }
+            // 旧式根目录音频也可合并；最新条目按既有原子分配规则获得独立目录。
+            let newFolderName: String?
+            if latest.folderName.isEmpty {
+                guard let allocated = AudioRecording.createUniqueFolder(from: latest.createdAt) else {
+                    throw RecordingMergeService.MergeError()
+                }
+                newFolderName = allocated
+            } else { newFolderName = nil }
+            let destination = newFolderName.map { AudioRecording.resolveFolderURL(forFolderName: $0) } ?? latest.folderURL
+            var preserveDestination = newFolderName == nil
+            defer { if !preserveDestination { RecordingMergeService.removeStaging(destination) } }
+            let prepared = try await RecordingMergeService().prepare(snapshots, destinationURL: destination)
+            var shouldRemoveStaging = true
+            defer { if shouldRemoveStaging { RecordingMergeService.removeStaging(prepared.stagingURL) } }
+            try Task.checkCancellation()
+            try RecordingMergeService.swap(prepared)
+            preserveDestination = true
+            do {
+                for old in latest.segments { context.delete(old) }
+                latest.segments = zip(prepared.segments, prepared.encryptedTexts).map { item, encrypted in
+                    let segment = TranscriptSegment(startTime: item.startTime, endTime: item.endTime,
+                                                    speaker: item.speaker, text: encrypted)
+                    segment.recording = latest
+                    return segment
+                }
+                latest.storedFileName = prepared.audioName
+                if let newFolderName { latest.folderName = newFolderName }
+                latest.fileExtension = "m4a"
+                latest.duration = prepared.duration
+                latest.transcriptionStatus = ordered.allSatisfy { $0.transcriptionStatus == .completed } ? .completed : .pending
+                latest.transcriptModifiedAt = Date()
+                latest.summary = prepared.encryptedSummary
+                latest.summaryGeneratedAt = prepared.encryptedSummary == nil ? nil : Date()
+                latest.summaryStatus = prepared.encryptedSummary == nil ? .pending : .completed
+                latest.todoStatus = prepared.hasTodos ? .completed : .pending
+                latest.isMeeting = nil
+                latest.meetingJudgedBy = nil
+                latest.meetingJudgedAt = nil
+                latest.errorMessage = nil
+                try context.save()
+            } catch {
+                // 此处尚未删除任何源录音。恢复整个旧条目后回滚本次索引修改。
+                do {
+                    try RecordingMergeService.swap(prepared)
+                    preserveDestination = newFolderName == nil
+                }
+                catch {
+                    // 无法回滚时保留 staging 中的旧原件，不能由 defer 清除。
+                    shouldRemoveStaging = false
+                    recordingFailureFolder = prepared.stagingURL
+                    PersistenceReporting.reportSaveFailure(error)
+                }
+                context.rollback()
+                throw error
+            }
+            invalidateTranscriptCache(latest)
+            // 合并保留所有待办及 reminderIdentifier；删除源条目不能清理已转移的提醒事项。
+            var deletionFailed = false
+            for recording in ordered.dropLast() {
+                do {
+                    let original = recording.folderName.isEmpty ? recording.fileURL : recording.folderURL
+                    try FileManager.default.removeItem(at: original)
+                    context.delete(recording)
+                    try context.save()
+                } catch {
+                    context.rollback()
+                    PersistenceReporting.reportSaveFailure(error)
+                    deletionFailed = true
+                    break
+                }
+            }
+            if newFolderName != nil, let original = snapshots.last?.audioURL {
+                do { try FileManager.default.removeItem(at: original) }
+                catch {
+                    PersistenceReporting.reportSaveFailure(error)
+                    deletionFailed = true
+                }
+            }
+            selectedRecording = latest
+            loadTodoDocument(for: latest)
+            TodoDocument.postDidChange(folder: latest.folderURL)
+            if deletionFailed {
+                showErrorMessage(String(localized: "音频已合并，部分原录音未能删除。请删除剩余的原录音，勿重复合并。"))
+            }
+            return latest
+        } catch {
+            PersistenceReporting.reportSaveFailure(error)
+            showErrorMessage(String(localized: "合并录音失败：\(UserFacingError.summary(for: error))"))
+            return nil
+        }
+    }
+
     // MARK: - 删除
 
     /// 删除录音：同时删除数据库记录和磁盘上的录音文件

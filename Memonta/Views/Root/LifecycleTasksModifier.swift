@@ -22,7 +22,7 @@ struct LifecycleTasksModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .disabled(AppUpdateService.shared.isPreparingToInstall)
+            .disabled(AppUpdateService.shared.isPreparingToInstall || RecordingMergeActivity.shared.isRunning)
             .task(id: privacyAccepted) {
                 guard !AppRuntime.isRunningTests else { return }
                 guard privacyAccepted else { return }

@@ -71,6 +71,7 @@ extractTodos：summary → [PII scrub] → TodoExtractionService.extract
 
 - **导入**：拖拽（RootView handleDrop，`AudioImportValidator` 校验扩展名+真实音频类型）、文件选择
 - **删除**：先加载 TodoDocument 清理提醒事项残留 → 先删磁盘文件夹 → 后删 DB 记录（文件删除失败保留记录防"复活"）；单删/批删均弹确认
+- **合并录音**：`orderedMergeCandidates` 校验至少两笔纯录音并按创建时间排序（同时间用 ID 稳定排序）；`mergeRecordings` 在用户确认后把完整快照交给 `RecordingMergeService`。实际音轨时长决定拼接点与转写偏移，总结按顺序拼接、待办保留提醒事项标识。暂存完整目标目录，经镜像成功与音频校验后原子交换；索引保存失败回滚，成功后才删较早条目。删除失败保留剩余条目并提示，目标内的合并来源 ID 防止重复拼接。旧式根目录录音可参与合并；最新条目若无独立目录，用 `createUniqueFolder` 原子分配并迁入月份目录。
 - **编辑**：segment 文本编辑、说话人改名（声纹注册入口）、`invalidateTranscriptCache` 失效缓存
 - **导出**：转写/总结导出 txt/md（ExportDocuments）、录音文件分享（NSSharingServicePicker 锚定主窗口弹出）
 

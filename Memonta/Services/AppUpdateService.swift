@@ -67,7 +67,7 @@ final class AppUpdateService: NSObject, SPUUpdaterDelegate {
     }
 
     private var isBusy: Bool {
-        hasActiveFileOperation() || FileSyncService.hasResourcesPreventingUpdate
+        hasActiveFileOperation() || RecordingMergeActivity.shared.isRunning || FileSyncService.hasResourcesPreventingUpdate
             || MeetingRecorderService.shared.hasResourcesPreventingUpdate
             || ScreenVideoRecorder.hasResourcesPreventingUpdate
             || ScreenshotManager.shared.hasResourcesPreventingUpdate

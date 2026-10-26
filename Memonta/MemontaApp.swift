@@ -242,6 +242,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 }
                 return .terminateLater
             }
+            if RecordingMergeActivity.shared.isRunning {
+                Task { @MainActor in
+                    // 导出本身由有界看门狗保护；等待事务完成，避免提交/删除中途退出。
+                    while RecordingMergeActivity.shared.isRunning {
+                        try? await Task.sleep(for: .milliseconds(200))
+                    }
+                    Self.completeTerminationFlow()
+                }
+                return .terminateLater
+            }
             if MeetingRecorderService.shared.isMerging {
                 let waitSeconds = Self.mergeWaitSeconds()
                 Self.logger.notice("合并进行中，等待合并完成后再退出（按看门狗同源预计最多 \(Int(waitSeconds))s）")

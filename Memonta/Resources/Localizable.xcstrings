@@ -179464,6 +179464,1046 @@
           }
         }
       }
+    },
+    "合并录音" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合并录音"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合併錄音"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge Recordings"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "録音を結合"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹음 병합"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fusionner les enregistrements"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufnahmen zusammenführen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Combinar grabaciones"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unisci registrazioni"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesclar gravações"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Объединить записи"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "دمج التسجيلات"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रिकॉर्डिंग मर्ज करें"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รวมการบันทึก"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hợp nhất bản ghi"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gabungkan rekaman"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kayıtları birleştir"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnamen samenvoegen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Połącz nagrania"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Об’єднати записи"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slå ihop inspelningar"
+          }
+        }
+      }
+    },
+    "合并录音失败：%@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合并录音失败：%@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合併錄音失敗：%@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to merge recordings: %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "録音の結合に失敗しました：%@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹음 병합 실패: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec de la fusion : %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufnahmen konnten nicht zusammengeführt werden: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron combinar las grabaciones: %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unione delle registrazioni non riuscita: %@"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falha ao mesclar gravações: %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось объединить записи: %@"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فشل دمج التسجيلات: %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रिकॉर्डिंग मर्ज नहीं हुई: %@"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รวมการบันทึกไม่สำเร็จ: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể hợp nhất bản ghi: %@"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gagal menggabungkan rekaman: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kayıtlar birleştirilemedi: %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samenvoegen mislukt: %@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udało się połączyć nagrań: %@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося об’єднати записи: %@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det gick inte att slå ihop inspelningarna: %@"
+          }
+        }
+      }
+    },
+    "合并录音？" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合并录音？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合併錄音？"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge recordings?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "録音を結合しますか？"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹음을 병합할까요?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fusionner les enregistrements ?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufnahmen zusammenführen?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Combinar grabaciones?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unire le registrazioni?"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesclar gravações?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Объединить записи?"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هل تريد دمج التسجيلات؟"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रिकॉर्डिंग मर्ज करें?"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รวมการบันทึกหรือไม่?"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hợp nhất các bản ghi?"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gabungkan rekaman?"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kayıtlar birleştirilsin mi?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnamen samenvoegen?"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Połączyć nagrania?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Об’єднати записи?"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slå ihop inspelningar?"
+          }
+        }
+      }
+    },
+    "将选中的 %lld 笔录音按时间从早到晚合并到最新的「%@」。保留转写、总结和待办，随后删除较早的录音。此操作无法撤销。" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将选中的 %lld 笔录音按时间从早到晚合并到最新的「%@」。保留转写、总结和待办，随后删除较早的录音。此操作无法撤销。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "將選中的 %lld 筆錄音按時間從早到晚合併到最新的「%@」。保留轉寫、總結和待辦，隨後刪除較早的錄音。此操作無法復原。"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merge the %lld selected recordings from oldest to newest into the latest, “%@”. Transcripts, summaries, and todos are preserved, then older recordings are deleted. This cannot be undone."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択した %lld 件の録音を古い順に最新の「%@」へ結合します。文字起こし、要約、タスクを保持し、古い録音を削除します。この操作は取り消せません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택한 녹음 %lld개를 시간순으로 최신 “%@”에 병합합니다. 전사, 요약 및 할 일을 보존한 후 이전 녹음을 삭제합니다. 이 작업은 되돌릴 수 없습니다."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fusionner les %lld enregistrements sélectionnés du plus ancien au plus récent dans « %@ ». Transcriptions, résumés et tâches seront conservés, puis les anciens enregistrements supprimés. Action irréversible."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die %lld ausgewählten Aufnahmen werden chronologisch in der neuesten Aufnahme „%@“ zusammengeführt. Transkripte, Zusammenfassungen und Aufgaben bleiben erhalten, ältere Aufnahmen werden gelöscht. Dies kann nicht rückgängig gemacht werden."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Combina las %lld grabaciones seleccionadas de la más antigua a la más reciente en “%@”. Se conservan transcripciones, resúmenes y tareas, y se eliminan las grabaciones anteriores. No se puede deshacer."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unisci le %lld registrazioni selezionate in ordine cronologico nella più recente, “%@”. Trascrizioni, riepiloghi e attività saranno conservati, poi le registrazioni precedenti verranno eliminate. Operazione irreversibile."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mescle as %lld gravações selecionadas em ordem cronológica na mais recente, “%@”. Transcrições, resumos e tarefas serão preservados e as gravações anteriores serão excluídas. Não é possível desfazer."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Объединить выбранные записи (%lld) от старых к новым в последнюю «%@». Расшифровки, сводки и задачи сохранятся, а старые записи будут удалены. Это нельзя отменить."
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سيتم دمج التسجيلات المحددة البالغ عددها %lld من الأقدم إلى الأحدث في «%@». ستُحفظ النصوص والملخصات والمهام، ثم تُحذف التسجيلات الأقدم. لا يمكن التراجع."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चुनी गई %lld रिकॉर्डिंग को पुराने से नए क्रम में नवीनतम “%@” में मर्ज करें। ट्रांसक्रिप्ट, सारांश और कार्य सुरक्षित रहेंगे, फिर पुरानी रिकॉर्डिंग हटेंगी। इसे पूर्ववत नहीं किया जा सकता।"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รวมการบันทึกที่เลือก %lld รายการจากเก่าไปใหม่ลงในรายการล่าสุด “%@” เก็บข้อความถอดเสียง สรุป และงานไว้ แล้วลบการบันทึกเก่า การดำเนินการนี้ย้อนกลับไม่ได้"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hợp nhất %lld bản ghi đã chọn từ cũ đến mới vào bản mới nhất “%@”. Giữ bản chép, tóm tắt và việc cần làm, sau đó xóa các bản ghi cũ. Không thể hoàn tác."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gabungkan %lld rekaman terpilih dari terlama ke terbaru ke dalam rekaman terbaru “%@”. Transkrip, ringkasan, dan tugas dipertahankan, lalu rekaman lama dihapus. Tindakan ini tidak dapat dibatalkan."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçilen %lld kaydı eskiden yeniye en son “%@” kaydında birleştirin. Dökümler, özetler ve görevler korunur, eski kayıtlar silinir. Bu işlem geri alınamaz."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voeg de %lld geselecteerde opnamen chronologisch samen in de nieuwste, “%@”. Transcripties, samenvattingen en taken blijven behouden; oudere opnamen worden verwijderd. Dit kan niet ongedaan worden gemaakt."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Połącz %lld wybranych nagrań od najstarszego do najnowszego w najnowszym „%@”. Transkrypcje, podsumowania i zadania zostaną zachowane, a starsze nagrania usunięte. Tej operacji nie można cofnąć."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Об’єднати %lld вибраних записів від старих до нових у найновіший «%@». Транскрипції, підсумки та завдання збережуться, а старі записи буде видалено. Це неможливо скасувати."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slå ihop de %lld valda inspelningarna från äldst till nyast i den senaste, ”%@”. Transkriptioner, sammanfattningar och uppgifter bevaras, sedan tas äldre inspelningar bort. Detta kan inte ångras."
+          }
+        }
+      }
+    },
+    "无法安全合并录音。请检查音频、条目文件和磁盘空间后重试。" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法安全合并录音。请检查音频、条目文件和磁盘空间后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法安全合併錄音。請檢查音訊、項目檔案和磁碟空間後重試。"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to merge safely. Check the audio, entry files, and disk space, then try again."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "録音を安全に結合できません。音声、項目ファイル、ディスク容量を確認して再試行してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹음을 안전하게 병합할 수 없습니다. 오디오, 항목 파일 및 디스크 공간을 확인하고 다시 시도하세요."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fusion sécurisée impossible. Vérifiez l’audio, les fichiers et l’espace disque, puis réessayez."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sicheres Zusammenführen nicht möglich. Prüfen Sie Audio, Eintragsdateien und Speicherplatz und versuchen Sie es erneut."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede combinar de forma segura. Revisa el audio, los archivos y el espacio libre, e inténtalo de nuevo."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile unire in sicurezza. Controlla audio, file e spazio su disco, poi riprova."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível mesclar com segurança. Verifique o áudio, os arquivos e o espaço em disco e tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Безопасное объединение невозможно. Проверьте аудио, файлы записей и место на диске и повторите попытку."
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر الدمج بأمان. تحقق من الصوت وملفات العناصر ومساحة القرص، ثم أعد المحاولة."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सुरक्षित रूप से मर्ज नहीं हो सका। ऑडियो, फ़ाइलों और डिस्क स्थान की जाँच करके फिर प्रयास करें।"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ไม่สามารถรวมอย่างปลอดภัยได้ โปรดตรวจสอบเสียง ไฟล์รายการ และพื้นที่ดิสก์ แล้วลองอีกครั้ง"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể hợp nhất an toàn. Kiểm tra âm thanh, tệp mục và dung lượng ổ đĩa rồi thử lại."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak dapat menggabungkan dengan aman. Periksa audio, berkas entri, dan ruang disk, lalu coba lagi."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Güvenli birleştirme yapılamadı. Sesi, kayıt dosyalarını ve disk alanını kontrol edip yeniden deneyin."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veilig samenvoegen is niet mogelijk. Controleer audio, bestanden en schijfruimte en probeer opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie można bezpiecznie połączyć nagrań. Sprawdź dźwięk, pliki i miejsce na dysku, a następnie spróbuj ponownie."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося безпечно об’єднати. Перевірте аудіо, файли та місце на диску й повторіть спробу."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det gick inte att slå ihop säkert. Kontrollera ljud, filer och diskutrymme och försök igen."
+          }
+        }
+      }
+    },
+    "正在合并录音…" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在合并录音…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在合併錄音…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merging recordings…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "録音を結合中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹음 병합 중…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fusion des enregistrements…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aufnahmen werden zusammengeführt…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Combinando grabaciones…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unione delle registrazioni…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesclando gravações…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Объединение записей…"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ دمج التسجيلات…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रिकॉर्डिंग मर्ज की जा रही हैं…"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "กำลังรวมการบันทึก…"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đang hợp nhất bản ghi…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menggabungkan rekaman…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kayıtlar birleştiriliyor…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnamen samenvoegen…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Łączenie nagrań…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Об’єднання записів…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slår ihop inspelningar…"
+          }
+        }
+      }
+    },
+    "请等待录音、处理任务和磁盘同步完成后再合并。" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请等待录音、处理任务和磁盘同步完成后再合并。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請等待錄音、處理工作和磁碟同步完成後再合併。"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wait for recording, processing tasks, and disk sync to finish before merging."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "録音、処理タスク、ディスク同期が完了してから結合してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹음, 처리 작업 및 디스크 동기화가 완료된 후 병합하세요."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attendez la fin de l’enregistrement, des traitements et de la synchronisation avant de fusionner."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warten Sie vor dem Zusammenführen, bis Aufnahme, Verarbeitung und Datenträgersynchronisierung beendet sind."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Espera a que terminen la grabación, las tareas y la sincronización antes de combinar."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attendi il completamento della registrazione, delle attività e della sincronizzazione prima di unire."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aguarde a conclusão da gravação, das tarefas e da sincronização antes de mesclar."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перед объединением дождитесь завершения записи, обработки и синхронизации диска."
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انتظر اكتمال التسجيل ومهام المعالجة ومزامنة القرص قبل الدمج."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मर्ज करने से पहले रिकॉर्डिंग, प्रोसेसिंग कार्य और डिस्क सिंक पूरा होने दें।"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "โปรดรอให้การบันทึก งานประมวลผล และการซิงค์ดิสก์เสร็จก่อนรวม"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hãy đợi ghi âm, xử lý và đồng bộ ổ đĩa hoàn tất trước khi hợp nhất."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tunggu perekaman, tugas pemrosesan, dan sinkronisasi disk selesai sebelum menggabungkan."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Birleştirmeden önce kayıt, işleme ve disk eşitlemesinin bitmesini bekleyin."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wacht tot de opname, verwerking en schijfsynchronisatie zijn voltooid."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przed połączeniem poczekaj na zakończenie nagrywania, przetwarzania i synchronizacji dysku."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перед об’єднанням дочекайтеся завершення запису, обробки та синхронізації диска."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vänta tills inspelning, bearbetning och disksynkronisering är klara innan du slår ihop."
+          }
+        }
+      }
+    },
+    "音频已合并，部分原录音未能删除。请删除剩余的原录音，勿重复合并。" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "音频已合并，部分原录音未能删除。请删除剩余的原录音，勿重复合并。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "音訊已合併，部分原錄音未能刪除。請刪除剩餘的原錄音，勿重複合併。"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio was merged, but some originals could not be deleted. Delete the remaining originals; do not merge them again."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "音声は結合されましたが、一部の元の録音を削除できませんでした。残った元の録音を削除し、再度結合しないでください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오디오는 병합되었지만 일부 원본을 삭제하지 못했습니다. 남은 원본을 삭제하고 다시 병합하지 마세요."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’audio a été fusionné, mais certains originaux n’ont pas pu être supprimés. Supprimez-les sans les fusionner à nouveau."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio wurde zusammengeführt, einige Originale konnten jedoch nicht gelöscht werden. Löschen Sie diese und führen Sie sie nicht erneut zusammen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El audio se combinó, pero no se pudieron eliminar algunos originales. Elimínalos sin volver a combinarlos."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio unito, ma alcuni originali non sono stati eliminati. Elimina gli originali rimanenti senza unirli di nuovo."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O áudio foi mesclado, mas alguns originais não puderam ser excluídos. Exclua os restantes sem mesclá-los novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Аудио объединено, но некоторые оригиналы не удалены. Удалите оставшиеся оригиналы, не объединяя их повторно."
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم دمج الصوت، لكن تعذّر حذف بعض النسخ الأصلية. احذف النسخ المتبقية ولا تدمجها مجددًا."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ऑडियो मर्ज हुआ, लेकिन कुछ मूल रिकॉर्डिंग हटाई नहीं जा सकीं। बची मूल रिकॉर्डिंग हटाएँ; दोबारा मर्ज न करें।"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รวมเสียงแล้ว แต่ลบต้นฉบับบางรายการไม่ได้ โปรดลบต้นฉบับที่เหลือและอย่ารวมซ้ำ"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã hợp nhất âm thanh nhưng chưa xóa được một số bản gốc. Hãy xóa các bản gốc còn lại, không hợp nhất lần nữa."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio telah digabungkan, tetapi beberapa rekaman asli tidak dapat dihapus. Hapus sisanya; jangan gabungkan lagi."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ses birleştirildi ancak bazı asıllar silinemedi. Kalan asılları silin; yeniden birleştirmeyin."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio is samengevoegd, maar sommige originelen konden niet worden verwijderd. Verwijder ze en voeg ze niet opnieuw samen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dźwięk połączono, ale nie usunięto części oryginałów. Usuń pozostałe oryginały; nie łącz ich ponownie."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Аудіо об’єднано, але деякі оригінали не видалено. Видаліть решту оригіналів і не об’єднуйте їх повторно."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ljudet har slagits ihop, men vissa original kunde inte tas bort. Radera de återstående originalen utan att slå ihop dem igen."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

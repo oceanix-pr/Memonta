@@ -225,7 +225,7 @@ struct RecordingDetailView: View {
         #if os(macOS)
         .navigationSubtitle("")
         #endif
-        .task(id: recording.id) {
+        .task(id: recording.fileURL) {
             prepareForRecordingSwitch()
         }
         .onChange(of: viewModel.captureReportRequestedFolder) { _, folder in

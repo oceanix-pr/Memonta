@@ -199,6 +199,7 @@ enum FileSyncService {
         let visualExists: Bool
         let visualDate: Date?
         let visualPendingMarker: Bool
+        var committedMerge: RecordingMergeService.CommittedMedia? = nil
     }
 
     struct NoteMirrorTarget: Sendable {
@@ -232,7 +233,8 @@ enum FileSyncService {
             summaryPendingMarker: EntryMirrorStore.hasPendingMarker(for: target.summaryURL),
             visualExists: FileManager.default.fileExists(atPath: target.visualURL.path),
             visualDate: modificationDate(of: target.visualURL),
-            visualPendingMarker: EntryMirrorStore.hasPendingMarker(for: target.visualURL)
+            visualPendingMarker: EntryMirrorStore.hasPendingMarker(for: target.visualURL),
+            committedMerge: RecordingMergeService.committedMedia(in: target.transcriptURL.deletingLastPathComponent())
         )
     }
 
@@ -262,7 +264,8 @@ enum FileSyncService {
     @MainActor
     static func syncFromDisk(context: ModelContext, excludeFolderNames: Set<String> = []) async -> SyncResult {
         // 扫描互斥：已有扫描在运行时直接跳过本次调用（下轮刷新/重启会补上）
-        guard !isScanning, !AppUpdateService.shared.isPreparingToInstall else {
+        guard !isScanning, !AppUpdateService.shared.isPreparingToInstall,
+              !RecordingMergeActivity.shared.isRunning else {
             logger.info("磁盘同步已在进行中，跳过本次调用")
             return .empty
         }
@@ -397,6 +400,14 @@ enum FileSyncService {
             let folderName = recording.folderName
             guard !folderName.isEmpty else { continue }
             guard let mirrorState = recordingMirrorStates[folderName] else { continue }
+
+            if let media = mirrorState.committedMerge, recording.storedFileName != media.audioName {
+                recording.storedFileName = media.audioName
+                recording.fileExtension = "m4a"
+                recording.duration = media.duration
+                recording.transcriptionStatus = media.transcriptionComplete ? .completed : .pending
+                restoredDatabaseFromMirrors = true
+            }
 
             let transcriptMirrorExists = mirrorState.transcriptExists
             let transcriptFileDate = mirrorState.transcriptDate

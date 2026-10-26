@@ -60,6 +60,16 @@ enum EncryptionService {
             return cached
         }
 
+        #if DEBUG
+        // 显式隔离的测试进程不访问用户 Keychain；Release 不编译此分支。
+        if AppRuntime.isRunningTests,
+           ProcessInfo.processInfo.environment["MEMONTA_EPHEMERAL_TEST_ENCRYPTION"] == "1" {
+            let key = SymmetricKey(size: .bits256)
+            keyBox.key = key
+            return key
+        }
+        #endif
+
         let keychain = Keychain(service: keychainService).accessibility(.afterFirstUnlock)
 
         // 尝试从 Keychain 读取

@@ -39,6 +39,7 @@ struct RootView: View {
     /// 「同一时刻只有一个删除确认框」由类型保证，展示与否也由载荷派生
     /// （详见 Views/Root/RootDeletionRequest.swift）。
     @State private var pendingDeletion: RootDeletionRequest?
+    @State private var pendingMerge: RecordingMergeRequest?
 
     /// 批量删除的目标集合（仅 pendingDeletion 的 kind 为 .batch 时有意义）
     @State private var recordingsToDelete: [AudioRecording] = []
@@ -447,6 +448,22 @@ struct RootView: View {
     /// 视图层 3：删除确认对话框 + 新建笔记 Sheet + 错误提示
     private var dialogLayers: some View {
         sheetAndAlertLayers
+        .confirmationDialog("合并录音？", isPresented: Binding(
+            get: { pendingMerge != nil },
+            set: { if !$0 { pendingMerge = nil } }
+        ), titleVisibility: .visible, presenting: pendingMerge) { request in
+            Button("合并录音", role: .destructive) {
+                pendingMerge = nil
+                Task {
+                    if let merged = await viewModel.mergeRecordings(request.recordings, context: modelContext) {
+                        selectedListItems = [.recording(merged)]
+                    }
+                }
+            }
+            Button("取消", role: .cancel) { pendingMerge = nil }
+        } message: { request in
+            Text(request.message)
+        }
         // 删除确认唯一出口：单选录音 / 单选笔记 / 批量混合各给对应按钮，
         // 标题与正文来自载荷（提出请求时已固定），动作按 kind 分流。
         // 旧实现三个 isPresented 并存，混合选中时会静默跳过一类条目。
@@ -1030,6 +1047,15 @@ struct RootView: View {
                 }
             }
         } else if !items.isEmpty && experienceStore.policy.allows(.batchOperations) {
+            if quickNoteItems.isEmpty,
+               let ordered = RecordingViewModel.orderedMergeCandidates(recordingItems) {
+                Button {
+                    pendingMerge = RecordingMergeRequest(recordings: ordered)
+                } label: {
+                    Label("合并录音", systemImage: "waveform.path.badge.plus")
+                }
+                Divider()
+            }
             // 多选：隐藏/删除
             Button {
                 for item in items {
@@ -1485,7 +1511,14 @@ struct RootView: View {
     /// 会留下半成品文件，故只提示、不提供取消。
     @ViewBuilder
     private var mergingAudioOverlay: some View {
-        if viewModel.isMergingAudio {
+        if RecordingMergeActivity.shared.isRunning {
+            HStack(spacing: 10) {
+                ProgressView().controlSize(.small)
+                Text("正在合并录音…").font(.caption)
+            }
+            .padding(12)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+        } else if viewModel.isMergingAudio {
             HStack(spacing: 10) {
                 ProgressView()
                     .controlSize(.small)
