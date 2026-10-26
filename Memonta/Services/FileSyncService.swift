@@ -407,6 +407,13 @@ enum FileSyncService {
                 recording.duration = media.duration
                 recording.transcriptionStatus = media.transcriptionComplete ? .completed : .pending
                 restoredDatabaseFromMirrors = true
+                // 完整目录已原子提交：此时磁盘镜像是权威源，不能被普通的 1 秒时间容差
+                // 跳过，也不能让旧索引重新补写覆盖刚合并的内容。
+                let transcriptLoaded = await loadTranscriptIfNeeded(for: recording, context: context, replaceExisting: true)
+                if transcriptLoaded {
+                    recording.transcriptionStatus = media.transcriptionComplete ? .completed : .pending
+                }
+                _ = await loadSummaryIfNeeded(for: recording, context: context, replaceExisting: true)
             }
 
             let transcriptMirrorExists = mirrorState.transcriptExists

@@ -55,6 +55,8 @@ jobs:
           xcodegen generate
           python3 Scripts/check_l10n.py --quiet
       - name: Run unit tests
+        env:
+          TEST_RUNNER_MEMONTA_EPHEMERAL_TEST_ENCRYPTION: '1'
         run: >-
           xcodebuild -skipPackageUpdates -project Memonta.xcodeproj -scheme Memonta
           -configuration Debug -destination 'platform=macOS'

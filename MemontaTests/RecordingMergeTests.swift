@@ -212,11 +212,19 @@ struct RecordingMergeTests {
         merged.storedFileName = "missing-old-audio.wav"
         merged.fileExtension = "wav"
         merged.duration = 99
+        for segment in merged.segments { context.delete(segment) }
+        merged.segments = [TranscriptSegment(startTime: 0.1, endTime: 0.4,
+                                             text: try EncryptionService.encrypt("旧索引中的最新一笔转写"))]
+        merged.transcriptModifiedAt = Date()
+        merged.summary = try EncryptionService.encrypt("旧索引中的最新一笔总结")
+        merged.summaryGeneratedAt = Date()
         try context.save()
         _ = await FileSyncService.syncFromDisk(context: context)
         #expect(merged.storedFileName == committedName)
         #expect(merged.fileExtension == "m4a")
         #expect(abs(merged.duration - 1.5) < 0.05)
+        #expect(merged.segments.count == 3, "完整提交的转写必须覆盖旧索引，不受 1 秒时间容差影响")
+        #expect(merged.decryptedSummary.contains("总结 20261027010000"))
         #expect(try context.fetchCount(FetchDescriptor<AudioRecording>()) == 1, "磁盘对账不应复活较早录音")
         #expect(abs(try frequency(of: merged.fileURL, at: 0.15) - 400) < 35)
         #expect(abs(try frequency(of: merged.fileURL, at: 1.15) - 1400) < 35)
