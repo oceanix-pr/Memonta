@@ -90,6 +90,8 @@ final class MenuBarController: NSObject {
     /// 拦截静默失效（点红点仍然销毁窗口），且被替换下来的原委托也随之失去引用。
     /// key = 委托自身标识；随目标窗口销毁在 `pruneHideOnCloseDelegates()` 中清理，不会无界增长。
     private var hideOnCloseDelegates: [ObjectIdentifier: HideOnCloseWindowDelegate] = [:]
+    /// 取消过期的异步显示/隐藏请求，避免退出全屏后的回调再次藏起刚恢复的窗口。
+    private var windowVisibilityRequest: UInt = 0
 
     // MARK: - 启动
 
@@ -891,11 +893,16 @@ final class MenuBarController: NSObject {
 
     /// 显示主窗口，并恢复 Dock 图标
     func showMainWindow() {
+        windowVisibilityRequest &+= 1
+        let request = windowVisibilityRequest
+        for window in mainWindows {
+            (window.delegate as? HideOnCloseWindowDelegate)?.cancelPendingHide()
+        }
         // 先恢复 Dock 图标，再显示窗口（避免 accessory 模式下窗口无法成为 key）
         NSApp.setActivationPolicy(.regular)
         // 给 run loop 一点时间让 policy 生效
         DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
+            guard let self, self.windowVisibilityRequest == request else { return }
             // 覆盖 SwiftUI 可能新建的窗口（首次启动/被销毁重建后），保证关闭即隐藏始终生效
             self.attachHideOnCloseDelegates()
             let windows = self.mainWindows
@@ -927,12 +934,21 @@ final class MenuBarController: NSObject {
 
     /// 隐藏主窗口，并同时隐藏 Dock 图标（避免在共享屏幕时暴露）
     func hideMainWindow() {
-        // 先隐藏所有窗口，再切换 policy（避免 policy 变化触发 SwiftUI 重新管理窗口）
-        for window in mainWindows {
-            window.orderOut(nil)
+        windowVisibilityRequest &+= 1
+        let request = windowVisibilityRequest
+        attachHideOnCloseDelegates()
+        let finish: @MainActor () -> Void = { [weak self] in
+            guard let self, self.windowVisibilityRequest == request else { return }
+            // 全屏 Space 必须先退出，才能隐藏 Dock；中途失败时保留可恢复的窗口。
+            guard self.mainWindows.allSatisfy({ !$0.isVisible && !$0.styleMask.contains(.fullScreen) }) else { return }
+            NSApp.setActivationPolicy(.accessory)
+            NSApp.deactivate()
         }
-        NSApp.setActivationPolicy(.accessory)
-        NSApp.deactivate()
+        let windows = mainWindows
+        if windows.isEmpty { finish() }
+        for window in windows {
+            (window.delegate as? HideOnCloseWindowDelegate)?.hide(window, completion: finish)
+        }
     }
 
     /// 为所有主窗口挂“关闭即隐藏”委托（幂等：已挂过的跳过）。
@@ -969,31 +985,114 @@ final class MenuBarController: NSObject {
 /// 主窗口关闭拦截：点红色关闭按钮时只隐藏不销毁，保持与菜单栏「隐藏主窗口」同构。
 /// 窗口对象始终存活，点 Dock 图标/reopen 总能拉回窗口；
 /// 其余委托方法原样转发给原有委托（如有），不改变其它窗口行为。
-private final class HideOnCloseWindowDelegate: NSObject, NSWindowDelegate {
+@MainActor
+final class HideOnCloseWindowDelegate: NSObject, NSWindowDelegate {
+    private static let logger = Logger(subsystem: "com.oceanix.Memonta", category: "WindowVisibility")
+
     weak var forwardTo: NSWindowDelegate?
 
     /// 所服务窗口的弱引用：供控制器清理「窗口已销毁」的委托条目（不改变窗口所有权）
     weak var attachedWindow: NSWindow?
 
+    private enum FullScreenTransition { case entering, exiting }
+    private var fullScreenTransition: FullScreenTransition?
+    private var hideRequested = false
+    private var hideCompletions: [@MainActor () -> Void] = []
+
     /// 未显式实现的 NSWindowDelegate 回调一律转发给原委托。
     /// `responds(to:)` 必须同时重写：ObjC 运行时默认只看本类方法表，
     /// 否则 AppKit 会认为「委托不实现该回调」而跳过转发，SwiftUI 依赖的
     /// 其余回调（窗口变主窗口、工具栏/全屏相关等）会静默丢失。
-    override func responds(to aSelector: Selector!) -> Bool {
-        super.responds(to: aSelector) || (forwardTo?.responds(to: aSelector) ?? false)
+    override nonisolated func responds(to aSelector: Selector!) -> Bool {
+        // 此代理仅供主线程的 AppKit 窗口委托查询，沿用工程的主线程桥接。
+        MainActor.assumeOnMainThread {
+            super.responds(to: aSelector) || (forwardTo?.responds(to: aSelector) ?? false)
+        }
     }
 
-    override func forwardingTarget(for aSelector: Selector!) -> Any? {
-        forwardTo
+    override nonisolated func forwardingTarget(for aSelector: Selector!) -> Any? {
+        MainActor.assumeOnMainThread { forwardTo }
     }
 
-    /// 返回 false 阻止关闭（销毁），改为 orderOut 隐藏
+    /// 返回 false 阻止销毁；全屏时先退出 Space，再隐藏保留的窗口。
     func windowShouldClose(_ sender: NSWindow) -> Bool {
-        sender.orderOut(nil)
+        hide(sender)
         return false
     }
 
+    func hide(_ window: NSWindow, completion: (@MainActor () -> Void)? = nil) {
+        hideRequested = true
+        if let completion { hideCompletions.append(completion) }
+        completeHideWhenWindowed(window)
+    }
+
+    func cancelPendingHide() {
+        hideRequested = false
+        hideCompletions.removeAll()
+        // AppKit 的动画仍在进行，保留 transition，供下一次请求等待其完成。
+    }
+
+    private func completeHideWhenWindowed(_ window: NSWindow) {
+        guard hideRequested, fullScreenTransition == nil else { return }
+        if window.styleMask.contains(.fullScreen) {
+            fullScreenTransition = .exiting
+            window.toggleFullScreen(nil)
+            return
+        }
+        hideRequested = false
+        window.orderOut(nil)
+        let completions = hideCompletions
+        hideCompletions.removeAll()
+        for completion in completions { completion() }
+    }
+
+    private func resumePendingHide(_ window: NSWindow) {
+        // 给 AppKit/SwiftUI 完成 Space 与窗口样式收尾的机会；恢复操作可在此期间取消隐藏。
+        DispatchQueue.main.async { [weak self, weak window] in
+            guard let self, let window else { return }
+            self.completeHideWhenWindowed(window)
+        }
+    }
+
+    func windowWillEnterFullScreen(_ notification: Notification) {
+        fullScreenTransition = .entering
+        forwardTo?.windowWillEnterFullScreen?(notification)
+    }
+
+    func windowDidEnterFullScreen(_ notification: Notification) {
+        fullScreenTransition = nil
+        forwardTo?.windowDidEnterFullScreen?(notification)
+        if let window = notification.object as? NSWindow { resumePendingHide(window) }
+    }
+
+    func windowWillExitFullScreen(_ notification: Notification) {
+        fullScreenTransition = .exiting
+        forwardTo?.windowWillExitFullScreen?(notification)
+    }
+
+    func windowDidExitFullScreen(_ notification: Notification) {
+        fullScreenTransition = nil
+        forwardTo?.windowDidExitFullScreen?(notification)
+        if let window = notification.object as? NSWindow { resumePendingHide(window) }
+    }
+
+    func windowDidFailToEnterFullScreen(_ window: NSWindow) {
+        fullScreenTransition = nil
+        forwardTo?.windowDidFailToEnterFullScreen?(window)
+        resumePendingHide(window)
+    }
+
+    func windowDidFailToExitFullScreen(_ window: NSWindow) {
+        fullScreenTransition = nil
+        if hideRequested {
+            Self.logger.error("退出全屏失败，取消隐藏请求并保留窗口")
+            cancelPendingHide()
+        }
+        forwardTo?.windowDidFailToExitFullScreen?(window)
+    }
+
     func windowWillClose(_ notification: Notification) {
+        cancelPendingHide()
         forwardTo?.windowWillClose?(notification)
     }
 

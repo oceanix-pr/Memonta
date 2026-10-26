@@ -23,7 +23,7 @@ Sparkle EdDSA 私钥与 Apple 证书相互独立。公钥位于 `project.yml`，
 
 默认发布模式为 `notarized`，必须完成 Developer ID 签名与 Apple 公证，不使用 ad-hoc 或 Apple Development 签名代替正式分发签名。缺少正式证书或公证凭据时，默认模式明确停止发布。
 
-用户明确同意未公证更新测试后，可在本机显式运行 `release_direct.sh unnotarized-test`。该模式仍使用 `vX.Y.Z` 与唯一 stable 频道，保留 Sparkle 签名，并在 App 关于页和发布说明标注未公证；不会恢复预览频道。9.5.0（140）与 9.5.1（141）均经用户明确确认采用此方式。
+用户明确同意未公证更新测试后，可在本机显式运行 `release_direct.sh unnotarized-test`。该模式仍使用 `vX.Y.Z` 与唯一 stable 频道，保留 Sparkle 签名，并在 App 关于页和发布说明标注未公证；不会恢复预览频道。9.5.0（140）、9.5.1（141）与 9.5.2（142）均经用户明确确认采用此方式。
 
 公证发布保留 Hardened Runtime；未公证测试模式仅对该构建关闭它，以允许 ad-hoc App 加载上游签名框架。首次安装可能被 Gatekeeper 阻止，系统权限可能需要重新授予。适用 macOS 系统版本与 CPU 架构以包内实际产物为准；Release 遵循 Xcode 的架构设置，发布前检查实际包内架构；本机运行验收不能替代 Intel Mac 验证。
 
