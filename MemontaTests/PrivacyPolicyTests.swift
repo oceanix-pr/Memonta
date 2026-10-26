@@ -47,6 +47,7 @@ struct PrivacyPolicyTests {
     func majorRevisionNeedsConsent() {
         #expect(MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "1.9"))
         #expect(MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "2.0"))
+        #expect(MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "3.0"))
     }
 
     @Test("主版本号解析")
@@ -120,6 +121,9 @@ struct PrivacyPolicyTests {
     func versionLineIsVerifiable() {
         #expect(MemontaPrivacyPolicy.versionLine.contains(MemontaPrivacyPolicy.version))
         #expect(MemontaPrivacyPolicy.versionLine.contains(MemontaPrivacyPolicy.effectiveDate))
+        let changes = MemontaPrivacyPolicy.sections.first { $0.id == "changes" }
+        #expect(changes?.body.contains(MemontaPrivacyPolicy.version) == true)
+        #expect(changes?.body.contains(MemontaPrivacyPolicy.effectiveDate) == true)
     }
 
     // MARK: - 合规披露
@@ -144,7 +148,9 @@ struct PrivacyPolicyTests {
             "反馈信息",
             "个人信息保护法",
             "feedback@Memonta.app",
-            "投诉"
+            "投诉",
+            "原始音频、视频、图片",
+            "加密失败"
         ]
         for keyword in required {
             #expect(policyText.contains(keyword), "隐私政策缺少关键披露：\(keyword)")

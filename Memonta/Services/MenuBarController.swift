@@ -25,6 +25,22 @@ final class MenuBarController: NSObject {
 
     private static let logger = Logger(subsystem: "com.oceanix.Memonta", category: "MenuBar")
 
+    /// 应用标识的单色自定义 Symbol；由系统负责菜单栏明暗与高亮颜色。
+    private static let menuBarImage: NSImage? = {
+        let source: NSImage?
+        if let symbol = NSImage(named: "MemontaMenuBar") {
+            source = symbol
+        } else {
+            logger.error("菜单栏自定义符号资源缺失，回退为系统波形图标")
+            source = NSImage(systemSymbolName: "waveform.circle.fill", accessibilityDescription: "Memonta")
+        }
+        let configuration = NSImage.SymbolConfiguration(pointSize: 18, weight: .regular)
+        let image = source?.withSymbolConfiguration(configuration)
+        image?.isTemplate = true
+        image?.accessibilityDescription = "Memonta"
+        return image
+    }()
+
     /// 菜单栏退出前等待统一停止流程（封存 + 合并 + 入库）的上限。
     /// 与退出时等待合并的量级一致，避免这里先放弃、造成「退出等待到期 → 强退 →
     /// 合并半成品」的旧事故；实际会在服务停止且合并结束时立即返回
@@ -387,18 +403,9 @@ final class MenuBarController: NSObject {
         guard signature != lastRefreshSignature else { return }
         lastRefreshSignature = signature
 
-        // 1) 菜单栏图标：固定使用 waveform.circle.fill，**系统负责颜色，应用负责形状**。
-        // 图标始终是模板图（isTemplate = true），黑/白由系统按菜单栏明暗自动处理，
-        // 全屏深色蒙层、菜单展开高亮、增强对比度、不同壁纸的对比度也一并由系统负责；
-        // 录音/静音等状态不再切换为其他图标（状态信息由菜单项文本表达）。
-        // 通过 SymbolConfiguration 放大图标（菜单栏默认约 14pt，放大到 18pt）
-        let symbolConfig = NSImage.SymbolConfiguration(pointSize: 18, weight: .regular)
-        let image = NSImage(
-            systemSymbolName: "waveform.circle.fill",
-            accessibilityDescription: "Memonta"
-        )?.withSymbolConfiguration(symbolConfig)
-        image?.isTemplate = true
-        statusItem.button?.image = image
+        // 1) 固定使用截图框 + 麦克风文稿的自定义 Symbol（18pt、单色模板）。
+        // 系统负责菜单栏明暗、菜单展开高亮与对比度；录音/静音状态仍由菜单文本表达。
+        statusItem.button?.image = Self.menuBarImage
         // 颜色交给系统：不设 contentTintColor，保持模板图的标准主题效果
         statusItem.button?.contentTintColor = nil
         // 不在菜单栏按钮上显示文字

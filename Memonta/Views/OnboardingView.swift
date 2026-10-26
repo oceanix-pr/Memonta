@@ -14,7 +14,7 @@ struct OnboardingView: View {
             icon: "waveform.circle.fill",
             title: String(localized: "欢迎使用 Memonta"),
             subtitle: String(localized: "会议录音转写与智能总结工具"),
-            description: String(localized: "录制会议音频或导入录音文件，自动生成转写文本和结构化总结。数据本地加密存储，界面跟随系统语言，支持 20 余种语言。")
+            description: String(localized: "默认在本机录音和转写。总结与待办由你配置的智能服务生成；使用云端服务会发送相应内容。")
         ),
         OnboardingPage(
             icon: "record.circle.fill",
@@ -32,7 +32,7 @@ struct OnboardingView: View {
             icon: "menubar.rectangle",
             title: String(localized: "菜单栏控制"),
             subtitle: String(localized: "共享屏幕时不被看到"),
-            description: String(localized: "会议中共享屏幕前，点击菜单栏图标「隐藏主窗口」即可隐藏界面和 Dock 图标。录音在后台继续运行，还可直接从菜单栏开始/停止录音、发起截图或从剪贴板新建待办。菜单栏会区分显示「录音中」与「录屏中」。")
+            description: String(localized: "菜单栏使用「截图框 + 麦克风文稿」图标，可控制录音、捕获屏幕和显示主窗口。共享屏幕时可隐藏主窗口与 Dock 图标。")
         ),
         OnboardingPage(
             icon: "arrow.down.circle.fill",
@@ -50,13 +50,13 @@ struct OnboardingView: View {
             icon: "text.bubble.fill",
             title: String(localized: "语音转写"),
             subtitle: String(localized: "本地或云端转写"),
-            description: String(localized: "使用本地 WhisperKit 模型离线转写（模型放在指定文件夹，支持简体中文、繁体中文等多语言），或配置 OpenAI API 进行云端转写。转写可分段编辑保存。")
+            description: String(localized: "macOS 26 及以上默认使用系统语音识别；专业模式可选择 WhisperKit 或云端转写。")
         ),
         OnboardingPage(
             icon: "person.wave.2",
             title: String(localized: "声纹识别"),
             subtitle: String(localized: "自动认出老朋友"),
-            description: String(localized: "转写时自动区分不同说话人并标注“说话人 N”。为说话人标记真实姓名后自动注册声纹，后续录音自动标注真实姓名，完全本地运行。")
+            description: String(localized: "需单独同意后才能注册和比对声纹。声纹仅保存在本机，可在「设置 → 声纹库」删除。")
         ),
         OnboardingPage(
             icon: "text.pad.header.badge.plus",
@@ -92,7 +92,7 @@ struct OnboardingView: View {
                 icon: "waveform.circle.fill",
                 title: String(localized: "欢迎使用 Memonta"),
                 subtitle: String(localized: "从录音到待办，一步完成"),
-                description: String(localized: "录制或导入会议后，Memonta 会帮你生成转写、总结和待办。语音转写与说话人区分都在本机完成，音频不会上传；数据保存在本机并加密保护。")
+                description: String(localized: "默认在本机录音和转写。总结与待办由你配置的智能服务生成；使用云端服务会发送相应内容。")
             ),
             OnboardingPage(
                 icon: "record.circle.fill",
@@ -116,7 +116,7 @@ struct OnboardingView: View {
                 icon: "camera.viewfinder",
                 title: String(localized: "区域截图"),
                 subtitle: String(localized: "截图、标注并归档"),
-                description: String(localized: "按 ⌃⌘S 或点击“捕获”，框选要保存的内容。截图会自动归档为图片笔记。")
+                description: String(localized: "从菜单栏「捕获屏幕」或全局快捷键启动截图；专业模式另提供窗口、全屏与录屏。")
             ),
             OnboardingPage(
                 icon: "brain.head.profile.fill",

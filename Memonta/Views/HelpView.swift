@@ -29,7 +29,7 @@ struct HelpView: View {
                         items: [
                             String(localized: "点击工具栏「开始会议录音」按钮开始录音，支持麦克风和系统音频同时录制"),
                             String(localized: "录音过程中可在顶部工具栏查看时长和静音状态"),
-                            String(localized: "支持智能静音检测：会议软件（Teams/Zoom/腾讯会议）静音时自动暂停麦克风采集，解除静音后自动恢复"),
+                            String(localized: "当前不自动跟随会议软件静音，请在 Memonta 中手动静音或解除静音。"),
                             String(localized: "也可在录音界面手动静音/解除静音"),
                             String(localized: "可在「设置 → 录音 → 输入设备」开启「录音开始时静音麦克风」，之后每次开始录音或录屏都先静音麦克风，录音中可随时解除；菜单栏与录制工具栏的麦克风菜单读写同一份偏好"),
                             String(localized: "录音结束后，文件自动保存到数据文件夹中"),
@@ -95,7 +95,7 @@ struct HelpView: View {
                         items: [
                             String(localized: "选中录音后，点击工具栏「转写」按钮开始语音识别"),
                             String(localized: "转写支持 Markdown 渲染和直接编辑"),
-                            String(localized: "可在设置中选择本地 WhisperKit 或云端 OpenAI API"),
+                            String(localized: "macOS 26 及以上默认使用系统语音识别；专业模式可选择 WhisperKit 或云端转写。"),
                             String(localized: "支持简体中文、繁体中文和多语言转写"),
                             String(localized: "支持说话人分离，自动标注“说话人 N”，并可与声纹库比对标注真实姓名"),
                             String(localized: "长会议（超过约 30 分钟）的说话人区分分段处理，进度会显示当前段号"),
@@ -160,7 +160,7 @@ struct HelpView: View {
                         title: String(localized: "智能截图"),
                         icon: "camera.viewfinder",
                         items: [
-                            String(localized: "通过工具栏「捕获」按钮、菜单栏「截图」子菜单或全局热键（默认 ⌃⌘S，可在设置中修改）启动；⌃⌘W 可直接全屏截图入库"),
+                            String(localized: "从菜单栏「捕获屏幕」或全局快捷键启动截图；专业模式另提供窗口、全屏与录屏。"),
                             String(localized: "截图现场自由选择模式：拖拽框选区域、悬停点击截取窗口、按空格截取全屏；多显示器环境自动覆盖所有屏幕"),
                             String(localized: "支持延时截图：菜单栏选择 3 秒或 5 秒倒计时，方便截取菜单、弹窗等瞬态界面"),
                             String(localized: "框选后可标注：矩形、椭圆、箭头、画笔、文字、马赛克，支持撤销（⌘Z）/重做（⇧⌘Z）"),
@@ -180,6 +180,7 @@ struct HelpView: View {
                         title: String(localized: "菜单栏与后台录音"),
                         icon: "menubar.rectangle",
                         items: [
+                            String(localized: "菜单栏使用「截图框 + 麦克风文稿」图标，自动适配深浅色。"),
                             String(localized: "会议中共享屏幕前，点菜单栏图标「隐藏主窗口」，界面与 Dock 图标一并隐藏，录音在后台继续运行"),
                             String(localized: "无需打开主窗口，可直接从菜单栏开始/停止录音，或发起区域/窗口/全屏截图"),
                             String(localized: "菜单栏实时显示录音/录屏状态（录音中/录屏中/静音），录屏时停止项显示「停止录制」"),
@@ -210,8 +211,16 @@ struct HelpView: View {
                         items: [
                             String(localized: "转写文本和总结默认加密存储"),
                             String(localized: "首次启动会执行加密迁移，旧数据自动升级"),
-                            String(localized: "所有数据保存在本地，可在设置中查看存储用量"),
-                            String(localized: "去标识化：送入云端大模型前自动把敏感词替换为占位符，返回后自动还原，词典与开关在「设置 → 数据管理」配置"),
+                            String(localized: "原始音频、视频、图片与导出文件不额外加密，请妥善保护数据文件夹。"),
+                            String(localized: "云端文本请求会先在本机去标识化；音频、截图和视频帧不做文本脱敏。"),
+                        ]
+                    )
+
+                    helpSection(
+                        title: String(localized: "检查更新…"),
+                        icon: "arrow.down.circle",
+                        items: [
+                            String(localized: "可在「设置 → 关于」检查更新；安装须确认，录音或处理任务进行中会延后。"),
                         ]
                     )
 
