@@ -3,36 +3,36 @@
     <channel>
         <title>Memonta</title>
         <item>
-            <title>9.5.3</title>
-            <pubDate>Mon, 26 Oct 2026 18:11:12 +0000</pubDate>
-            <sparkle:version>143</sparkle:version>
-            <sparkle:shortVersionString>9.5.3</sparkle:shortVersionString>
+            <title>9.6.0</title>
+            <pubDate>Fri, 30 Oct 2026 14:12:59 +0000</pubDate>
+            <sparkle:version>144</sparkle:version>
+            <sparkle:shortVersionString>9.6.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[Memonta 9.5.3（143）
+            <description sparkle:format="markdown"><![CDATA[Memonta 9.6.0（144）
 
-- 专业模式多选至少两笔纯录音后，右键新增「合并录音」。视频、录屏、笔记或混合选中时不显示此功能。
-- 确认后按创建时间从早到晚连续拼接到最新一笔，保留最新录音的 ID、标题和创建时间，再删除较早录音。
-- 转写时间戳按实际音轨时长顺延；总结按顺序合并，待办及已有提醒事项关联保留。兼容旧式根目录录音。
-- 先导出并校验完整新文件，再保存和删除原件。失败时保留原件；目录交换支持回滚，删除失败可见提示并防止重复拼入。
-- 合并时显示进度并阻止磁盘对账与更新安装冲突；完成后刷新播放器。新增文案支持 21 种界面语言。
+- 新增可选的本机只读 MCP，在「设置 → MCP 集成」启用后，可向已授权的 AI 客户端共享录音、笔记、总结、转写、OCR、画面要点与待办。
+- 支持全文关键词检索、带时间位置的转写查询与分页读取，提供本机 HTTP 接口和随 App 分发的 stdio 连接工具。使用时需保持 Memonta 运行。
+- MCP 默认关闭。每个客户端独立授权，可限制共享日期并随时撤销；默认脱敏，隐藏条目始终不共享。外部客户端可能将读取的内容发送至其使用的云端模型。
+- 为条目补齐稳定的磁盘身份，重建索引后仍可使用同一条目 ID；兼容旧目录与元数据。MCP 查询在磁盘对账、录音合并或更新安装期间暂停。
+- 新增 MCP 文案覆盖全部 21 种界面语言。隐私政策更新为 5.0，升级后需要重新确认。
+- 包含 9.5.3 的录音合并、磁盘恢复与全屏窗口修复。
 
-验证：455 项单元测试回归通过；另在隔离数据上实测新旧目录的完整合并、最新条目身份保留、较早录音删除和磁盘对账。实际音频校验包括内容顺序、不同采样率、转写偏移、加密镜像、待办关联、原子回滚、提交后旧索引恢复及缺失音频/损坏待办时保留原件。未进行 Intel 真机与完整升级安装实测。
+验证：本机 461 项单元测试通过，5 项按条件跳过；包含真实回环 HTTP 与内嵌 stdio 工具查询、凭据撤销、授权范围、脱敏、元数据兼容、录音合并和窗口回归。多语言检查无错误，框架嵌入校验通过。未进行第三方客户端界面、Intel 真机及完整升级安装验证。
 
 English
 
-- Adds “Merge Recordings” to the Pro context menu when selecting at least two audio recordings. Videos, notes, and mixed selections are excluded.
-- Concatenates audio chronologically into the newest recording, retaining its identity, title, and creation date, then removes the older recordings after successful saving.
-- Adjusts transcript timestamps using actual audio durations, combines summaries, and preserves todos and existing reminder associations. Legacy root-level audio is supported.
-- Validates staged audio and encrypted mirrors before committing. Atomic directory swaps support rollback; interrupted commits recover audio pointers and complete merged transcripts/summaries from disk. Failed deletion is reported and duplicate inclusion is prevented.
-- Shows merge progress, coordinates disk sync and update installation, reloads playback, and includes translations for all 21 UI languages.
+- Adds optional local, read-only MCP access. Enable it in Settings → MCP Integration to share recordings, notes, summaries, transcripts, OCR, visual notes and todos with authorized AI clients.
+- Supports full-text keyword search, timestamped transcript queries and pagination through local HTTP or the bundled stdio helper. Memonta must remain running.
+- MCP is off by default. Each client has separate authorization, an optional date limit and immediate revocation. Shared text is redacted by default; hidden entries are excluded. External clients may send retrieved content to their cloud models.
+- Persists stable entry identities across index rebuilding while preserving legacy storage compatibility. Queries pause during disk reconciliation, recording merges and update installation.
+- Includes MCP translations for all 21 UI languages. Privacy policy 5.0 requires renewed consent after upgrading.
+- Includes the recording merge, disk recovery and full-screen window fixes from 9.5.3.
 
-Validation: 455 unit tests passed, plus isolated end-to-end merge/deletion checks for current and legacy storage layouts and real-audio content checks. Intel hardware and a complete upgrade installation were not tested.
+Validation: 461 local unit tests passed and 5 conditional tests were skipped, including HTTP and bundled stdio integration coverage, access control, redaction, legacy metadata, recording merges and window regressions. Localization and embedded-framework checks passed. Third-party client UI, Intel hardware and a complete upgrade installation were not tested.
 
-此版本沿用 9.5.1、9.5.2 的未公证分发方式，保留 Sparkle 更新签名。未经 Apple 公证，首次安装可能被 macOS 阻止，系统权限可能需要重新授予。
-
-This release follows the same non-notarized distribution method as 9.5.1 and 9.5.2, with a Sparkle update signature. Initial installation may be blocked by macOS, and system permissions may need to be granted again.
+此版本未经 Apple 公证，仅用于用户已同意的更新测试；首次安装可能被系统阻止，系统权限可能需要重新授予。
 ]]></description>
-            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.5.3/Memonta-v9.5.3-143-macOS.zip" length="35715295" type="application/octet-stream" sparkle:edSignature="6Ds1yMbwKc1o+j6L9eB8UeoqA8ckQ3q0h7/hjNrzcEX9wgd8KIKb4q2/K6bMY7n6L6DbcYH30KvyikWEei84Dw=="/>
+            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.6.0/Memonta-v9.6.0-144-macOS.zip" length="44360270" type="application/octet-stream" sparkle:edSignature="mwkKjJmJ95M94EnPXgwNnNhcCOzgUAwL0MsLRPfhW5eG2tFQWuEIsxzorUwYg98eH88aQZIky9K/b9+EnvQxDg=="/>
         </item>
     </channel>
 </rss>
