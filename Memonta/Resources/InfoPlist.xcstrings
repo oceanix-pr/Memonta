@@ -25,6 +25,136 @@
         }
       }
     },
+    "NSAudioCaptureUsageDescription" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحتاج Memonta إلى الوصول إلى صوت النظام لتسجيل صوت الاجتماعات."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta benötigt Zugriff auf Systemaudio, um den Ton von Besprechungen aufzunehmen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta needs access to system audio to record meeting sound."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta necesita acceder al audio del sistema para grabar el sonido de las reuniones."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta a besoin d’accéder au son système pour enregistrer les réunions."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta को मीटिंग की आवाज़ रिकॉर्ड करने के लिए सिस्टम ऑडियो तक पहुँच चाहिए।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta memerlukan akses audio sistem untuk merekam suara rapat."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta richiede l’accesso all’audio di sistema per registrare il suono delle riunioni."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta は会議の音声を録音するためにシステム音声へのアクセスが必要です。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta는 회의 소리를 녹음하기 위해 시스템 오디오 접근 권한이 필요합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta heeft toegang tot systeemaudio nodig om het geluid van vergaderingen op te nemen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta wymaga dostępu do dźwięku systemowego, aby nagrywać dźwięk spotkań."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Memonta precisa de acesso ao áudio do sistema para gravar o som das reuniões."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta нужен доступ к системному звуку для записи звука встреч."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta behöver tillgång till systemljud för att spela in mötesljud."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta ต้องเข้าถึงเสียงระบบเพื่อบันทึกเสียงการประชุม"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta, toplantı seslerini kaydetmek için sistem sesine erişim iznine ihtiyaç duyar."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta потрібен доступ до системного звуку, щоб записувати звук зустрічей."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta cần truy cập âm thanh hệ thống để ghi lại âm thanh cuộc họp."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta 需要捕获系统音频以录制会议声音"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta 需要擷取系統音訊以錄製會議聲音"
+          }
+        }
+      }
+    },
     "NSMicrophoneUsageDescription" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -283,6 +413,136 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Memonta 需要存取提醒事項以將 AI 拆解的待辦寫入系統提醒事項"
+          }
+        }
+      }
+    },
+    "NSScreenCaptureUsageDescription" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحتاج Memonta إلى إذن تسجيل الشاشة لالتقاط صوت النظام ولقطات الشاشة وتسجيلات الشاشة."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta benötigt Zugriff auf die Bildschirmaufnahme, um Systemaudio, Bildschirmfotos und Bildschirmvideos aufzunehmen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta needs screen recording access to capture system audio, screenshots and screen recordings."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta necesita permiso de grabación de pantalla para capturar audio del sistema, capturas de pantalla y vídeos de la pantalla."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta a besoin de l’accès à l’enregistrement de l’écran pour capturer le son système, des captures d’écran et des vidéos de l’écran."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta को सिस्टम ऑडियो, स्क्रीनशॉट और स्क्रीन रिकॉर्डिंग कैप्चर करने के लिए स्क्रीन रिकॉर्डिंग की अनुमति चाहिए।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta memerlukan izin perekaman layar untuk menangkap audio sistem, tangkapan layar, dan rekaman layar."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta richiede l’accesso alla registrazione dello schermo per acquisire audio di sistema, schermate e video dello schermo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta はシステム音声、スクリーンショット、画面録画を取得するために画面収録の許可が必要です。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta는 시스템 오디오, 스크린샷 및 화면 녹화를 캡처하기 위해 화면 기록 권한이 필요합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta heeft toestemming voor schermopname nodig om systeemaudio, schermafbeeldingen en schermvideo’s vast te leggen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta wymaga zgody na nagrywanie ekranu, aby przechwytywać dźwięk systemowy, zrzuty i nagrania ekranu."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Memonta precisa de acesso à gravação do ecrã para captar áudio do sistema, capturas de ecrã e vídeos do ecrã."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta нужен доступ к записи экрана для захвата системного звука, снимков и видео экрана."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta behöver tillgång till skärminspelning för att fånga systemljud, skärmbilder och skärmvideor."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta ต้องใช้สิทธิ์บันทึกหน้าจอเพื่อจับเสียงระบบ ภาพหน้าจอ และวิดีโอหน้าจอ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta, sistem sesini, ekran görüntülerini ve ekran videolarını yakalamak için ekran kaydı iznine ihtiyaç duyar."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta потрібен дозвіл на запис екрана для захоплення системного звуку, знімків і відео екрана."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta cần quyền ghi màn hình để thu âm thanh hệ thống, chụp ảnh và quay màn hình."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta 需要录制屏幕以捕获系统音频、截图和录屏"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memonta 需要錄製螢幕以擷取系統音訊、截圖和錄影"
           }
         }
       }

@@ -29,6 +29,12 @@ Sparkle EdDSA 私钥与 Apple 证书相互独立。公钥位于 `project.yml`，
 
 公证发布保留 Hardened Runtime；未公证测试模式仅对该构建关闭它，以允许 ad-hoc App 加载上游签名框架。首次安装可能被 Gatekeeper 阻止，系统权限可能需要重新授予。适用 macOS 系统版本与 CPU 架构以包内实际产物为准；Release 遵循 Xcode 的架构设置，发布前检查实际包内架构；本机运行验收不能替代 Intel Mac 验证。
 
+### 更新后权限已开启却仍报未授权
+
+ad-hoc 签名的 designated requirement 与单个构建的代码哈希绑定，Sparkle 更新签名不会使其成为稳定的 Apple 代码身份。系统可能仍显示旧开关已开启，但 TCC 日志报 `Failed to match existing code requirement`。完整退出应用后，在系统设置移除旧授权并添加当前应用；单纯关闭再开启可能只修改旧记录。明确排障时可手动针对本应用执行 `tccutil reset ScreenCapture com.oceanix.Memonta`，然后通过系统弹窗重新授权；麦克风如有同样的旧签名错误，也需单独重新授权。应用本身不自动清理权限，也不将 UserDefaults 中的历史同意当成当前系统授权。
+
+跨版本保留代码身份需要稳定的 Developer ID 签名。不能通过固定 Bundle ID、修改 Sparkle 公钥或放宽 designated requirement 来替代。原理见 Apple [TN3127](https://developer.apple.com/documentation/technotes/tn3127-inside-code-signing-requirements)。
+
 ## 发布流程
 
 1. 在 `project.yml` 固定营销版本和递增构建号。`Scripts/bump_build_number.sh [新编号]` 只在发布前手动运行；任何 build/test/archive 都不再自增编号。

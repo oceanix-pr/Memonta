@@ -2604,6 +2604,136 @@
         }
       }
     },
+    "屏幕录制授权等待超时，请完成系统授权后重试。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انتهت مهلة انتظار إذن تسجيل الشاشة. أكمل إذن النظام ثم أعد المحاولة."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeitüberschreitung bei der Erlaubnis zur Bildschirmaufnahme. Erteile die Systemberechtigung und versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen recording authorization timed out. Complete the system authorization and try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La autorización para grabar la pantalla ha agotado el tiempo de espera. Completa la autorización del sistema e inténtalo de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le délai d’autorisation de l’enregistrement de l’écran a expiré. Accordez l’autorisation système et réessayez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्क्रीन रिकॉर्डिंग की अनुमति के इंतज़ार का समय समाप्त हो गया। सिस्टम की अनुमति दें और दोबारा कोशिश करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waktu tunggu izin perekaman layar habis. Selesaikan izin sistem dan coba lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’attesa dell’autorizzazione alla registrazione dello schermo è scaduta. Completa l’autorizzazione di sistema e riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画面収録の許可待ちがタイムアウトしました。システムで許可してから再試行してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면 기록 권한 대기 시간이 초과되었습니다. 시스템 권한을 허용한 후 다시 시도하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het wachten op toestemming voor schermopname is verlopen. Geef systeemtoestemming en probeer het opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upłynął czas oczekiwania na zgodę na nagrywanie ekranu. Udziel zgody w systemie i spróbuj ponownie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O tempo de espera da autorização para gravar o ecrã expirou. Conclua a autorização do sistema e tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время ожидания разрешения на запись экрана истекло. Предоставьте системное разрешение и повторите попытку."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidsgränsen för tillstånd till skärminspelning har löpt ut. Ge systemtillstånd och försök igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "หมดเวลารอสิทธิ์บันทึกหน้าจอ โปรดอนุญาตในระบบแล้วลองอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekran kaydı izni bekleme süresi doldu. Sistem iznini tamamlayıp yeniden deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Час очікування дозволу на запис екрана вичерпано. Надайте системний дозвіл і повторіть спробу."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã hết thời gian chờ cấp quyền ghi màn hình. Hãy hoàn tất cấp quyền hệ thống rồi thử lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "屏幕录制授权等待超时，请完成系统授权后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "螢幕錄製授權等候逾時，請完成系統授權後重試。"
+          }
+        }
+      }
+    },
     "已关闭" : {
       "localizations" : {
         "ar" : {
@@ -3120,6 +3250,136 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "授權並複製連線設定"
+          }
+        }
+      }
+    },
+    "更新后若权限已开启仍报错，请完全退出 Memonta，从系统设置的屏幕录制列表移除 Memonta，再添加当前应用并开启权限，最后重新打开。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إذا كان الوصول مفعلاً واستمر الخطأ بعد التحديث، أغلق Memonta تماماً وأزله من قائمة تسجيل الشاشة في إعدادات النظام، ثم أضف التطبيق الحالي وفعّل الوصول وأعد فتحه."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wenn der Zugriff nach einem Update trotz aktivierter Berechtigung fehlschlägt, beende Memonta vollständig. Entferne es in den Systemeinstellungen aus der Liste zur Bildschirmaufnahme, füge die aktuelle App erneut hinzu, erlaube den Zugriff und öffne sie wieder."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If access is enabled but still fails after an update, quit Memonta completely, remove it from the Screen Recording list in System Settings, add the current app again and enable access, then reopen it."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si el acceso está activado pero falla tras actualizar, cierra Memonta por completo, elimínalo de la lista de grabación de pantalla de Ajustes del Sistema, añade la app actual y activa el acceso, y vuelve a abrirla."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si l’accès est activé mais échoue après une mise à jour, quittez complètement Memonta, retirez-le de la liste Enregistrement de l’écran dans Réglages Système, ajoutez l’application actuelle et autorisez-la, puis rouvrez-la."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपडेट के बाद पहुँच चालू होने पर भी त्रुटि आए, तो Memonta पूरी तरह बंद करें। सिस्टम सेटिंग्स की स्क्रीन रिकॉर्डिंग सूची से इसे हटाएँ, मौजूदा ऐप को दोबारा जोड़कर पहुँच चालू करें और फिर खोलें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jika akses aktif tetapi tetap gagal setelah pembaruan, keluar sepenuhnya dari Memonta, hapus dari daftar Perekaman Layar di Pengaturan Sistem, tambahkan aplikasi saat ini dan aktifkan akses, lalu buka kembali."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se l’accesso è attivo ma non funziona dopo un aggiornamento, esci completamente da Memonta. Rimuovilo dall’elenco Registrazione schermo nelle Impostazioni di Sistema, aggiungi di nuovo l’app attuale, abilita l’accesso e riaprila."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更新後、権限がオンでもエラーが出る場合は、Memonta を完全に終了し、システム設定の画面収録リストから削除してください。現在のアプリを追加し直して権限を有効にし、再度起動してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "업데이트 후 권한이 켜져 있는데도 오류가 발생하면 Memonta를 완전히 종료하고 시스템 설정의 화면 기록 목록에서 제거하세요. 현재 앱을 다시 추가하여 권한을 켠 다음 앱을 다시 여세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Als toegang na een update ondanks ingeschakelde toestemming mislukt, sluit Memonta volledig af. Verwijder het uit de lijst Schermopname in Systeeminstellingen, voeg de huidige app opnieuw toe, schakel toegang in en open de app weer."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeśli po aktualizacji dostęp jest włączony, ale błąd nadal występuje, całkowicie zamknij Memonta. Usuń aplikację z listy nagrywania ekranu w Ustawieniach systemowych, dodaj bieżącą aplikację, włącz dostęp i uruchom ją ponownie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se o acesso estiver ativo mas falhar após uma atualização, saia completamente do Memonta, remova-o da lista de gravação do ecrã nas Definições do Sistema, adicione a aplicação atual e ative o acesso, e volte a abri-la."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Если после обновления доступ включён, но ошибка остаётся, полностью закройте Memonta. Удалите его из списка записи экрана в Системных настройках, добавьте текущую версию приложения, включите доступ и откройте его снова."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Om åtkomst är aktiverad men fortfarande misslyckas efter en uppdatering, avsluta Memonta helt. Ta bort appen från listan för skärminspelning i Systeminställningar, lägg till den aktuella appen, aktivera åtkomst och öppna den igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "หากเปิดสิทธิ์แล้วแต่ยังเกิดข้อผิดพลาดหลังอัปเดต ให้ปิด Memonta โดยสมบูรณ์ นำออกจากรายการบันทึกหน้าจอในการตั้งค่าระบบ จากนั้นเพิ่มแอปเวอร์ชันปัจจุบัน เปิดสิทธิ์ แล้วเปิดแอปอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Güncellemeden sonra erişim açıkken hata sürerse Memonta’dan tamamen çıkın. Sistem Ayarları’ndaki Ekran Kaydı listesinden kaldırın, mevcut uygulamayı yeniden ekleyip erişimi açın ve tekrar başlatın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Якщо після оновлення доступ увімкнено, але помилка лишається, повністю закрийте Memonta. Видаліть його зі списку запису екрана в Системних параметрах, додайте поточну програму, увімкніть доступ і відкрийте знову."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nếu quyền đã bật nhưng vẫn lỗi sau khi cập nhật, hãy thoát hẳn Memonta, xóa khỏi danh sách Ghi màn hình trong Cài đặt hệ thống, thêm lại ứng dụng hiện tại và bật quyền, rồi mở lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更新后若权限已开启仍报错，请完全退出 Memonta，从系统设置的屏幕录制列表移除 Memonta，再添加当前应用并开启权限，最后重新打开。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更新後若權限已開啟仍報錯，請完全退出 Memonta，從系統設定的螢幕錄製列表移除 Memonta，再加入目前應用程式並開啟權限，最後重新開啟。"
           }
         }
       }

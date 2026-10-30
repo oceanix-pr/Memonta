@@ -50,6 +50,7 @@
 		2F9D4864D60B722BB4D0DEB2 /* WhisperModelCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4C8ACC88B0F8114CF4DDA5 /* WhisperModelCatalog.swift */; };
 		2FF04E751C343E98C75FC59F /* ScreenshotManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966920D8F70C5A6B175284A3 /* ScreenshotManager.swift */; };
 		300E245E151A49735BF02D6E /* CurrentTimeServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8199CE71A65699E34A353452 /* CurrentTimeServiceTests.swift */; };
+		33781C03BBDE7BFFFF0DD702 /* ScreenCaptureAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46FAE10E38B44218357759E /* ScreenCaptureAuthorization.swift */; };
 		3459D3950842C4444F391DFC /* KeyframeExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696C5424AA9709B46B99B13D /* KeyframeExtractorTests.swift */; };
 		374A98D871FF3099447F9FB7 /* MCP in Frameworks */ = {isa = PBXBuildFile; productRef = 606956E99F330C9E52D543DC /* MCP */; };
 		38D3BAF8D111CEBB6F03F2E8 /* PromptSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC6A44D0ECD14A85ADA6467 /* PromptSettingsView.swift */; };
@@ -157,6 +158,7 @@
 		C2A531E68665A69C4E8E8367 /* MicMuteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FE77757A658F8456291CA3 /* MicMuteCommand.swift */; };
 		C34174E3296B7BE176778D18 /* WindowPickOrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DDE7DA226510973F8FEF1B /* WindowPickOrderTests.swift */; };
 		C3FB1BCE0ADD6270B2646941 /* SpeechSynthesisOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE22D5CF12A705E6C0BA9AA1 /* SpeechSynthesisOptions.swift */; };
+		C436BC862AE65B5027EE60B0 /* ScreenCaptureAuthorizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F060D1895716A3F4C809632 /* ScreenCaptureAuthorizationTests.swift */; };
 		C46C5C4ABB724A1EA5DCC5A4 /* MainActor+AssumeOnMainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7209964B0DDEAF2DDEE98693 /* MainActor+AssumeOnMainThread.swift */; };
 		C49EB71A92BA5223C9BC3CC7 /* SpeechTextPreparer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3BF65D6865CFC0F830D5B9 /* SpeechTextPreparer.swift */; };
 		C687BFB5CD58D47F82773E38 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BAE165E47B08C2873D2E989D /* InfoPlist.xcstrings */; };
@@ -234,6 +236,7 @@
 		07A0F8CE74AAE593586E2DCB /* StorageSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageSessionTests.swift; sourceTree = "<group>"; };
 		089E50AA1F8BC950C8AE48D4 /* RecordingCaptureHealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCaptureHealth.swift; sourceTree = "<group>"; };
 		0D53606B3C33E85E58958AC0 /* TodoExtractionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoExtractionServiceTests.swift; sourceTree = "<group>"; };
+		0F060D1895716A3F4C809632 /* ScreenCaptureAuthorizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureAuthorizationTests.swift; sourceTree = "<group>"; };
 		106A6875BE03EBF6A461B58C /* RemindersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersService.swift; sourceTree = "<group>"; };
 		10C34108F637D6E5100C1860 /* VideoCleanupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCleanupTests.swift; sourceTree = "<group>"; };
 		12294D93472D291CA1F723B8 /* RecordingConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingConfig.swift; sourceTree = "<group>"; };
@@ -376,6 +379,7 @@
 		C10DCBA033FC938DC5C39A50 /* RecordingProgressStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingProgressStatus.swift; sourceTree = "<group>"; };
 		C1DDDBEE808A88B1A98C5DE0 /* AudioRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecording.swift; sourceTree = "<group>"; };
 		C2DF448CB60C72E3285F426F /* CurrentTimeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTimeService.swift; sourceTree = "<group>"; };
+		C46FAE10E38B44218357759E /* ScreenCaptureAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureAuthorization.swift; sourceTree = "<group>"; };
 		C4FF4C17653928136B1880A6 /* AnnotationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationModel.swift; sourceTree = "<group>"; };
 		C612A9053890574B6C628836 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
 		C790B433E478226D7E1EDD36 /* MemontaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemontaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -677,6 +681,7 @@
 				106A6875BE03EBF6A461B58C /* RemindersService.swift */,
 				E8BA0990A78654B88B74951A /* RemindersURLDiagnostic.swift */,
 				590412AF3B08D86FCA01111A /* RuntimeVerification.swift */,
+				C46FAE10E38B44218357759E /* ScreenCaptureAuthorization.swift */,
 				966920D8F70C5A6B175284A3 /* ScreenshotManager.swift */,
 				757D1C126644B85D772AF690 /* ScreenshotNotifications.swift */,
 				B41B6F3CC0B7347D873FAB03 /* ScreenVideoRecorder.swift */,
@@ -741,6 +746,7 @@
 				4487C510A3F23164E51C99A9 /* RecordingCaptureReportTests.swift */,
 				32FACC4BCA873C14681C5D34 /* RecordingMergeTests.swift */,
 				F20AEA0492EC2E69874A67ED /* RecordingSegmentTimelineTests.swift */,
+				0F060D1895716A3F4C809632 /* ScreenCaptureAuthorizationTests.swift */,
 				F260BE9D46A6554344E1B1D6 /* StabilityRegressionTests.swift */,
 				8E22AE429C3DEB202470A61D /* StartupBootstrapTests.swift */,
 				07A0F8CE74AAE593586E2DCB /* StorageSessionTests.swift */,
@@ -1068,6 +1074,7 @@
 				595D7554BDC5FB3A857AD083 /* RecordingCaptureReportTests.swift in Sources */,
 				12EBC0473D642A875968C096 /* RecordingMergeTests.swift in Sources */,
 				4995D243EA8159CA684A4DF2 /* RecordingSegmentTimelineTests.swift in Sources */,
+				C436BC862AE65B5027EE60B0 /* ScreenCaptureAuthorizationTests.swift in Sources */,
 				FD4AB10770E5C299606125E6 /* StabilityRegressionTests.swift in Sources */,
 				BEA048610CBCA6F407CC76B7 /* StartupBootstrapTests.swift in Sources */,
 				F9756602F5DA894C298B32B6 /* StorageSessionTests.swift in Sources */,
@@ -1183,6 +1190,7 @@
 				23895F57B2DF4A72D02D82A8 /* RootView.swift in Sources */,
 				C131839BD8FADCCAF596BA70 /* RuntimeVerification.swift in Sources */,
 				412C88A9A5F10637A3B12643 /* STTConfig.swift in Sources */,
+				33781C03BBDE7BFFFF0DD702 /* ScreenCaptureAuthorization.swift in Sources */,
 				8A551E3CB74854C9775E9EE5 /* ScreenVideoRecorder.swift in Sources */,
 				2FF04E751C343E98C75FC59F /* ScreenshotManager.swift in Sources */,
 				D075E37891EB1D647AA9A052 /* ScreenshotNotifications.swift in Sources */,
@@ -1403,7 +1411,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 145;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1420,7 +1428,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOG = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 9.6.0;
+				MARKETING_VERSION = 9.6.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1468,7 +1476,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 144;
+				CURRENT_PROJECT_VERSION = 145;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1491,7 +1499,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOG = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 9.6.0;
+				MARKETING_VERSION = 9.6.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

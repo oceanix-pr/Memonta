@@ -445,11 +445,6 @@ final class MeetingRecorderService: @unchecked Sendable {
             case .systemAudio:
                 micSegmentURLs = []
                 #if os(macOS)
-                // 先预检权限，未授权则阻止录音启动（不触发 SCShareableContent）
-                guard SystemAudioCaptureService.preflightPermission() else {
-                    _ = SystemAudioCaptureService.requestPermission()
-                    throw SystemAudioError.permissionNotGranted
-                }
                 sysSegmentURLs = [Self.sysSegmentURL(folderDir: folderDir, baseName: baseName, index: 1)]
                 try await startSystemCapture(url: sysSegmentURLs[0])
                 #else
@@ -462,16 +457,17 @@ final class MeetingRecorderService: @unchecked Sendable {
                 // mixed 模式：先检查系统音频权限，未授权则阻止录音启动
                 // 避免出现"麦克风已开始录但系统音频权限未决"的竞态
                 #if os(macOS)
-                guard SystemAudioCaptureService.preflightPermission() else {
-                    _ = SystemAudioCaptureService.requestPermission()
-                    throw SystemAudioError.permissionNotGranted
-                }
+                let authorizedContent: SCShareableContent
+                do { authorizedContent = try await ScreenCaptureAuthorization.content() }
+                catch ScreenCaptureAuthorization.Failure.denied { throw SystemAudioError.permissionNotGranted }
+                try Task.checkCancellation()
                 #endif
                 // 权限已确认，启动麦克风 + 系统音频（分别写入分片，停止时拼接合并）
                 try await startMicCapture(url: firstMicURL)
                 #if os(macOS)
                 sysSegmentURLs = [Self.sysSegmentURL(folderDir: folderDir, baseName: baseName, index: 1)]
-                try await startSystemCapture(url: sysSegmentURLs[0])
+                try await systemCapture.start(to: sysSegmentURLs[0], timeline: segmentTimeline,
+                                              authorizedContent: authorizedContent)
                 #endif
             }
 

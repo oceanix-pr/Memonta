@@ -36,8 +36,8 @@ options:
 settings:
   base:
     SWIFT_VERSION: "6.0"
-    MARKETING_VERSION: "9.6.0"
-    CURRENT_PROJECT_VERSION: "144"
+    MARKETING_VERSION: "9.6.1"
+    CURRENT_PROJECT_VERSION: "145"
     DEVELOPMENT_TEAM: "B35SN74F9U"
     CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: YES
     DEAD_CODE_STRIPPING: YES
@@ -66,6 +66,8 @@ targets:
         SUAutomaticallyUpdate: false
         SUEnableSystemProfiling: false
         MemontaUnnotarizedBuild: "$(MEMONTA_UNNOTARIZED_BUILD)"
+        NSScreenCaptureUsageDescription: "Memonta 需要录制屏幕以捕获系统音频、截图和录屏"
+        NSAudioCaptureUsageDescription: "Memonta 需要捕获系统音频以录制会议声音"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.oceanix.Memonta

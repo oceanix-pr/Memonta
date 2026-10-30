@@ -20,6 +20,10 @@
 	<string>1</string>
 	<key>MemontaUnnotarizedBuild</key>
 	<string>$(MEMONTA_UNNOTARIZED_BUILD)</string>
+	<key>NSAudioCaptureUsageDescription</key>
+	<string>Memonta 需要捕获系统音频以录制会议声音</string>
+	<key>NSScreenCaptureUsageDescription</key>
+	<string>Memonta 需要录制屏幕以捕获系统音频、截图和录屏</string>
 	<key>SUAllowsAutomaticUpdates</key>
 	<false/>
 	<key>SUAutomaticallyUpdate</key>

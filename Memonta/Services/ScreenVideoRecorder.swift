@@ -130,6 +130,7 @@ final class ScreenVideoRecorder: NSObject, SCStreamOutput, SCStreamDelegate, @un
                 return String(localized: "已有录屏在进行，请先停止。")
             case .permissionDenied:
                 return String(localized: "缺少屏幕录制权限，请在「系统设置 → 隐私与安全性 → 屏幕录制」中允许 Memonta。")
+                    + "\n\n" + ScreenCaptureAuthorization.recoveryAdvice
             case .displayUnavailable:
                 return String(localized: "未找到目标显示屏（可能刚被拔出），请重试。")
             case .windowUnavailable:
@@ -259,11 +260,6 @@ final class ScreenVideoRecorder: NSObject, SCStreamOutput, SCStreamDelegate, @un
             throw ScreenRecordingError.alreadyRecording
         }
 
-        // 权限预检不弹窗（弹窗由下方 SCShareableContent 首呼走系统流程），与截图链路同一语义
-        guard CGPreflightScreenCaptureAccess() else {
-            throw ScreenRecordingError.permissionDenied
-        }
-
         // 磁盘预检：至少留出「2GB 或 半小时预估量」取大
         let floor = max(2_000_000_000, quality.bytesPerHour / 2)
         if let free = Self.availableCapacity(for: url), free < floor {
@@ -273,9 +269,10 @@ final class ScreenVideoRecorder: NSObject, SCStreamOutput, SCStreamDelegate, @un
             ))
         }
 
-        let content = try await SCShareableContent.excludingDesktopWindows(
-            false, onScreenWindowsOnly: true
-        )
+        let content: SCShareableContent
+        do { content = try await ScreenCaptureAuthorization.content(onScreenWindowsOnly: true) }
+        catch ScreenCaptureAuthorization.Failure.denied { throw ScreenRecordingError.permissionDenied }
+        try Task.checkCancellation()
 
         // 目标解析 + 几何计算（sourceRect 用显示屏内 points，输出宽高用目标像素）
         let config = SCStreamConfiguration()

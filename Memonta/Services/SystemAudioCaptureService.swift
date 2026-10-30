@@ -59,6 +59,14 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
     }
 
     private let logger = Logger(subsystem: "com.oceanix.Memonta", category: "SystemAudioCapture")
+    private let loadContent: @Sendable () async throws -> SCShareableContent
+
+    init(loadContent: @escaping @Sendable () async throws -> SCShareableContent = {
+        try await ScreenCaptureAuthorization.content()
+    }) {
+        self.loadContent = loadContent
+        super.init()
+    }
 
     /// 静态方法（createWriter/finalizeWriter）使用的日志器
     private static let staticLogger = Logger(subsystem: "com.oceanix.Memonta", category: "SystemAudioCapture")
@@ -185,64 +193,29 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
         CGPreflightScreenCaptureAccess()
     }
 
-    /// 请求屏幕录制权限（触发系统弹窗，但不阻塞）
-    /// - Returns: true=已授权（之前已授权），false=未授权/未决定/被拒绝
-    /// - Note: 首次调用会触发 TCC 弹窗，但函数立即返回 false，
-    ///   用户在系统设置中授权后需重启 app 才能生效
-    static func requestPermission() -> Bool {
-        #if DEBUG
-        // 仅开发构建：清理可能残留的 TCC 条目（开发签名下每次编译 CDHash 变化会积累残留条目）。
-        // 发布版绝不能自动抹掉用户已有的屏幕录制授权。
-        resetScreenCaptureTCC()
-        #endif
-        // 然后请求权限（触发全新的 TCC 弹窗）
-        return CGRequestScreenCaptureAccess()
-    }
-
-    #if DEBUG
-    /// 清理当前 app 的屏幕录制 TCC 条目（仅限 DEBUG 构建）
-    /// 使用 tccutil reset，不需要 root 权限（仅影响当前用户）
-    private static func resetScreenCaptureTCC() {
-        guard let bundleID = Bundle.main.bundleIdentifier else { return }
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/tccutil")
-        process.arguments = ["reset", "ScreenCapture", bundleID]
-        // 标准输出/错误重定向到 nil，避免污染 app 的输出
-        process.standardOutput = FileHandle(forWritingAtPath: "/dev/null")
-        process.standardError = FileHandle(forWritingAtPath: "/dev/null")
-        do {
-            try process.run()
-            process.waitUntilExit()
-        } catch {
-            // 清理失败不影响后续流程，继续请求权限
-        }
-    }
-    #endif
-
     /// 开始采集系统音频
     /// - Parameter url: 目标文件 URL（m4a）
-    func start(to url: URL, timeline: RecordingSegmentTimelineStore? = nil) async throws {
+    func start(to url: URL, timeline: RecordingSegmentTimelineStore? = nil,
+               authorizedContent: SCShareableContent? = nil) async throws {
         // 在第一个 await 前原子占用 idle→starting，避免两个并发 start 都通过检查。
-        guard reserveStart() else {
+        guard let startID = reserveStart() else {
             logger.warning("系统音频采集已在启动、运行或收尾，拒绝重复启动")
             throw SystemAudioError.alreadyCapturing
         }
         var resourcesInstalled = false
         defer {
-            if !resourcesInstalled { releaseStartReservation() }
+            if !resourcesInstalled { releaseStartReservation(matching: startID) }
         }
 
-        // 1. 预检查屏幕录制权限（避免在权限未决时触发 SCShareableContent 的模糊行为）
-        guard Self.preflightPermission() else {
-            // 触发 TCC 弹窗（非阻塞，返回的是触发前的状态）
-            _ = Self.requestPermission()
+        let content: SCShareableContent
+        do {
+            if let authorizedContent { content = authorizedContent }
+            else { content = try await loadContent() }
+        } catch ScreenCaptureAuthorization.Failure.denied {
             throw SystemAudioError.permissionNotGranted
         }
-
-        // 2. 获取可捕获内容（权限已确认，不会触发弹窗）
-        let content = try await SCShareableContent.excludingDesktopWindows(
-            false, onScreenWindowsOnly: false
-        )
+        try Task.checkCancellation()
+        guard isCurrentStart(startID) else { throw SystemAudioError.startInterrupted }
         guard let display = content.displays.first else {
             throw SystemAudioError.noDisplayFound
         }
@@ -271,7 +244,8 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
 
         // 6. 赋值到共享状态（同步辅助方法内持锁，NSLock 不能在 async 上下文直接使用）
         // 状态进入 starting：资源已存在但尚未开始采集
-        guard installCaptureState(stream: newStream, writer: newWriter, endpoint: newEndpoint, timeline: timeline) else {
+        guard installCaptureState(stream: newStream, writer: newWriter, endpoint: newEndpoint,
+                                  timeline: timeline, startID: startID) else {
             await Self.finalizeWriter(writer: newWriter, endpoint: newEndpoint, on: writeQueue)
             throw SystemAudioError.startInterrupted
         }
@@ -602,16 +576,21 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
         _state = state
     }
 
-    private func reserveStart() -> Bool {
+    private func reserveStart() -> UUID? {
         stateLock.lock(); defer { stateLock.unlock() }
-        guard _state == .idle, _stream == nil, _writer == nil else { return false }
+        guard _state == .idle, _stream == nil, _writer == nil else { return nil }
+        _captureID = UUID()
         _state = .starting
-        return true
+        return _captureID
     }
 
-    private func releaseStartReservation() {
+    private func isCurrentStart(_ id: UUID) -> Bool {
+        stateLock.withLock { _captureID == id && _state == .starting }
+    }
+
+    private func releaseStartReservation(matching id: UUID) {
         stateLock.lock(); defer { stateLock.unlock() }
-        if _state == .starting, _stream == nil, _writer == nil { _state = .idle }
+        if _captureID == id, _state == .starting, _stream == nil, _writer == nil { _state = .idle }
     }
 
     private func markRunningIfCurrent(_ stream: SCStream) -> Bool {
@@ -628,10 +607,11 @@ final class SystemAudioCaptureService: NSObject, SCStreamOutput, SCStreamDelegat
     }
 
     private func installCaptureState(
-        stream: SCStream, writer: AVAssetWriter, endpoint: WriterEndpoint, timeline: RecordingSegmentTimelineStore?
+        stream: SCStream, writer: AVAssetWriter, endpoint: WriterEndpoint, timeline: RecordingSegmentTimelineStore?,
+        startID: UUID
     ) -> Bool {
         stateLock.lock(); defer { stateLock.unlock() }
-        guard _state == .starting, _stream == nil, _writer == nil else { return false }
+        guard _captureID == startID, _state == .starting, _stream == nil, _writer == nil else { return false }
         _stream = stream
         _timeline = timeline
         _captureID = UUID()
@@ -824,6 +804,7 @@ enum SystemAudioError: LocalizedError {
         switch self {
         case .permissionNotGranted:
             return String(localized: "系统音频采集需要「屏幕录制」权限。请到「系统设置 → 隐私与安全性 → 屏幕录制」中授权 Memonta，然后重新开始录音。授权后需重启应用生效。\n如不需要录制系统音频，可在「设置 → 录音」中切换为「仅麦克风」模式。")
+                + "\n\n" + ScreenCaptureAuthorization.recoveryAdvice
         case .noDisplayFound:
             return String(localized: "未找到可捕获的显示器")
         case .writerSetupFailed:
