@@ -3,36 +3,30 @@
     <channel>
         <title>Memonta</title>
         <item>
-            <title>9.6.0</title>
-            <pubDate>Fri, 30 Oct 2026 14:12:59 +0000</pubDate>
-            <sparkle:version>144</sparkle:version>
-            <sparkle:shortVersionString>9.6.0</sparkle:shortVersionString>
+            <title>9.6.1</title>
+            <pubDate>Fri, 30 Oct 2026 22:05:40 +0000</pubDate>
+            <sparkle:version>145</sparkle:version>
+            <sparkle:shortVersionString>9.6.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[Memonta 9.6.0（144）
+            <description sparkle:format="markdown"><![CDATA[Memonta 9.6.1（145）
 
-- 新增可选的本机只读 MCP，在「设置 → MCP 集成」启用后，可向已授权的 AI 客户端共享录音、笔记、总结、转写、OCR、画面要点与待办。
-- 支持全文关键词检索、带时间位置的转写查询与分页读取，提供本机 HTTP 接口和随 App 分发的 stdio 连接工具。使用时需保持 Memonta 运行。
-- MCP 默认关闭。每个客户端独立授权，可限制共享日期并随时撤销；默认脱敏，隐藏条目始终不共享。外部客户端可能将读取的内容发送至其使用的云端模型。
-- 为条目补齐稳定的磁盘身份，重建索引后仍可使用同一条目 ID；兼容旧目录与元数据。MCP 查询在磁盘对账、录音合并或更新安装期间暂停。
-- 新增 MCP 文案覆盖全部 21 种界面语言。隐私政策更新为 5.0，升级后需要重新确认。
-- 包含 9.5.3 的录音合并、磁盘恢复与全屏窗口修复。
+- 修复系统音频和混合录音在权限申请尚未完成时立即报「未授权」的问题。启动等待 ScreenCaptureKit 的实际授权结果，混合录音在授权完成后才启动麦克风。
+- 录屏沿用同一授权流程；保留系统权限校验，并增加授权等待超时、取消和迟到结果防护。
+- 补齐屏幕录制与系统音频的权限用途说明，新增文案支持全部 21 种界面语言。
+- 更新后若系统设置显示权限已开启却仍报错，提示重建当前版本的授权。
 
-验证：本机 461 项单元测试通过，5 项按条件跳过；包含真实回环 HTTP 与内嵌 stdio 工具查询、凭据撤销、授权范围、脱敏、元数据兼容、录音合并和窗口回归。多语言检查无错误，框架嵌入校验通过。未进行第三方客户端界面、Intel 真机及完整升级安装验证。
+此版本仍使用未公证分发方式。临时签名不能保证跨版本保留 macOS 授权；系统要求时需要重新授权。长期保留权限需要稳定的 Developer ID 签名。
 
 English
 
-- Adds optional local, read-only MCP access. Enable it in Settings → MCP Integration to share recordings, notes, summaries, transcripts, OCR, visual notes and todos with authorized AI clients.
-- Supports full-text keyword search, timestamped transcript queries and pagination through local HTTP or the bundled stdio helper. Memonta must remain running.
-- MCP is off by default. Each client has separate authorization, an optional date limit and immediate revocation. Shared text is redacted by default; hidden entries are excluded. External clients may send retrieved content to their cloud models.
-- Persists stable entry identities across index rebuilding while preserving legacy storage compatibility. Queries pause during disk reconciliation, recording merges and update installation.
-- Includes MCP translations for all 21 UI languages. Privacy policy 5.0 requires renewed consent after upgrading.
-- Includes the recording merge, disk recovery and full-screen window fixes from 9.5.3.
+- Fixes system-audio and mixed recording reporting denied access before authorization finishes. Startup waits for the actual ScreenCaptureKit result; mixed recording starts the microphone only after authorization succeeds.
+- Applies the same authorization flow to screen recording, retaining system access checks and adding timeout, cancellation and late-result protection.
+- Adds screen-capture and system-audio purpose strings, with translations for all 21 UI languages.
+- Explains how to renew authorization if System Settings shows enabled access but the current app is still denied after an update.
 
-Validation: 461 local unit tests passed and 5 conditional tests were skipped, including HTTP and bundled stdio integration coverage, access control, redaction, legacy metadata, recording merges and window regressions. Localization and embedded-framework checks passed. Third-party client UI, Intel hardware and a complete upgrade installation were not tested.
-
-此版本未经 Apple 公证，仅用于用户已同意的更新测试；首次安装可能被系统阻止，系统权限可能需要重新授予。
+This release remains non-notarized. Ad-hoc signing cannot guarantee macOS authorization continuity across versions; reauthorization may be required. A stable Developer ID signing identity is needed for long-term continuity.
 ]]></description>
-            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.6.0/Memonta-v9.6.0-144-macOS.zip" length="44360270" type="application/octet-stream" sparkle:edSignature="mwkKjJmJ95M94EnPXgwNnNhcCOzgUAwL0MsLRPfhW5eG2tFQWuEIsxzorUwYg98eH88aQZIky9K/b9+EnvQxDg=="/>
+            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.6.1/Memonta-v9.6.1-145-macOS.zip" length="44501817" type="application/octet-stream" sparkle:edSignature="tAmg4ljpCgmMByBDUQFqvXtwLmpqKMzGDOPErhmpG4Jh+ZaD126rgRy5+fCKRTSjMN+t3yWhX9PTVvl1TOwEAA=="/>
         </item>
     </channel>
 </rss>
