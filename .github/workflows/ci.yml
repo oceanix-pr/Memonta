@@ -17,6 +17,7 @@ jobs:
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      MEMONTA_CI_DERIVED_DATA: ${{ runner.temp }}/memonta-ci/DerivedData
       TEST_RUNNER_MEMONTA_EPHEMERAL_TEST_ENCRYPTION: '1'
     steps:
       - name: Check out repository
@@ -31,6 +32,14 @@ jobs:
       - name: Check localization resources
         run: python3 Scripts/check_l10n.py
 
+      - name: Prepare package binary frameworks before build planning
+        run: |
+          xcodebuild -resolvePackageDependencies -onlyUsePackageVersionsFromResolvedFile -skipPackageUpdates \
+            -project Memonta.xcodeproj -scheme Memonta \
+            -derivedDataPath "$MEMONTA_CI_DERIVED_DATA"
+          MEMONTA_PACKAGE_CACHE_PATH="$MEMONTA_CI_DERIVED_DATA/SourcePackages" \
+            bash Scripts/fix_onnxruntime_framework.sh
+
       - name: Build
         run: >-
           xcodebuild
@@ -38,6 +47,7 @@ jobs:
           -scheme Memonta
           -configuration Debug
           -destination 'platform=macOS'
+          -derivedDataPath "$MEMONTA_CI_DERIVED_DATA"
           CODE_SIGNING_ALLOWED=NO
           CODE_SIGNING_REQUIRED=NO
           DEVELOPMENT_TEAM=
@@ -50,6 +60,7 @@ jobs:
           -scheme Memonta
           -configuration Debug
           -destination 'platform=macOS'
+          -derivedDataPath "$MEMONTA_CI_DERIVED_DATA"
           CODE_SIGN_IDENTITY=-
           CODE_SIGN_STYLE=Manual
           DEVELOPMENT_TEAM=

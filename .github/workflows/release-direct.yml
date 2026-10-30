@@ -71,6 +71,13 @@ jobs:
           brew install xcodegen
           xcodegen generate
           python3 Scripts/check_l10n.py --quiet
+      - name: Prepare package binary frameworks before build planning
+        run: |
+          xcodebuild -resolvePackageDependencies -onlyUsePackageVersionsFromResolvedFile -skipPackageUpdates \
+            -project Memonta.xcodeproj -scheme Memonta \
+            -derivedDataPath "${RUNNER_TEMP}/memonta-release/DerivedData"
+          MEMONTA_PACKAGE_CACHE_PATH="${RUNNER_TEMP}/memonta-release/DerivedData/SourcePackages" \
+            bash Scripts/fix_onnxruntime_framework.sh
       - name: Run unit tests
         env:
           TEST_RUNNER_MEMONTA_EPHEMERAL_TEST_ENCRYPTION: '1'

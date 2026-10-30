@@ -40,6 +40,8 @@ Sparkle EdDSA 私钥与 Apple 证书相互独立。公钥位于 `project.yml`，
 
 Release 附件应保持不可变。修复已发布版本时发布更高构建号，不能把 feed 改回旧包期待客户端自动降级。GitHub Token 自动触发事件存在限制：通过另一个 Actions 的 GITHUB_TOKEN 发布 Release 时，不能假定会触发 `release:published`；本流程保留由用户发布草稿的最终步骤。
 
+CI 与发布任务会先按锁文件解析依赖，再规范本次缓存中的 ONNX framework，最后运行 build/test。这让框架布局在 Xcode 规划复制任务前保持稳定，避免干净运行器上 `Versions/Current` 目录转换为符号链接时与复制任务竞争；构建后的 Verify Embedded Frameworks 继续检查实际嵌入文件。
+
 本机打包示例（工具路径和缓存路径按本机设置）：
 
 ```sh
