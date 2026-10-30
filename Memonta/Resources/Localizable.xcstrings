@@ -783,6 +783,3907 @@
         }
       }
     },
+    "MCP 启动失败，请检查端口、数据文件夹或钥匙串权限后重试。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذر بدء MCP. تحقق من المنفذ ومجلد البيانات وأذونات سلسلة المفاتيح ثم أعد المحاولة."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP konnte nicht gestartet werden. Prüfe Port, Datenordner und Schlüsselbundberechtigungen und versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP could not start. Check the port, data folder and Keychain permissions, then retry."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo iniciar MCP. Comprueba el puerto, la carpeta de datos y los permisos del llavero e inténtalo de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de démarrer MCP. Vérifiez le port, le dossier de données et les autorisations du trousseau, puis réessayez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP शुरू नहीं हो सका। पोर्ट, डेटा फ़ोल्डर और कीचेन की अनुमतियाँ जाँचें, फिर दोबारा कोशिश करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP tidak dapat dimulai. Periksa port, folder data, dan izin Rantai Kunci, lalu coba lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile avviare MCP. Controlla porta, cartella dei dati e autorizzazioni del Portachiavi, quindi riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP を起動できません。ポート、データフォルダ、キーチェーンの権限を確認して再試行してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP를 시작할 수 없습니다. 포트, 데이터 폴더 및 키체인 권한을 확인한 후 다시 시도하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP kon niet worden gestart. Controleer de poort, gegevensmap en sleutelhangerrechten en probeer het opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie można uruchomić MCP. Sprawdź port, folder danych i uprawnienia Pęku kluczy, a następnie spróbuj ponownie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível iniciar o MCP. Verifique a porta, a pasta de dados e as permissões do Porta-chaves e tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось запустить MCP. Проверьте порт, папку данных и разрешения Связки ключей, затем повторите попытку."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP kunde inte startas. Kontrollera port, datamapp och nyckelringsbehörigheter och försök igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เริ่ม MCP ไม่สำเร็จ ตรวจสอบพอร์ต โฟลเดอร์ข้อมูล และสิทธิ์พวงกุญแจ แล้วลองอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP başlatılamadı. Bağlantı noktasını, veri klasörünü ve Anahtar Zinciri izinlerini kontrol edip yeniden deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося запустити MCP. Перевірте порт, папку даних і дозволи В’язки ключів, а потім повторіть спробу."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể khởi động MCP. Hãy kiểm tra cổng, thư mục dữ liệu và quyền truy cập Chuỗi khóa, rồi thử lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP 启动失败，请检查端口、数据文件夹或钥匙串权限后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP 啟動失敗，請檢查連接埠、資料資料夾或鑰匙圈權限後重試。"
+          }
+        }
+      }
+    },
+    "MCP 设置失败" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذر حفظ إعدادات MCP"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP-Einstellungen konnten nicht gespeichert werden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP settings could not be saved"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo guardar la configuración de MCP"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible d’enregistrer les réglages MCP"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP सेटिंग्स सहेजी नहीं जा सकीं"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pengaturan MCP tidak dapat disimpan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile salvare le impostazioni MCP"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP 設定を保存できませんでした"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP 설정을 저장하지 못했습니다"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP-instellingen konden niet worden bewaard"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie można zapisać ustawień MCP"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível guardar as definições do MCP"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось сохранить настройки MCP"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP-inställningarna kunde inte sparas"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "บันทึกการตั้งค่า MCP ไม่สำเร็จ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP ayarları kaydedilemedi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося зберегти налаштування MCP"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể lưu cài đặt MCP"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP 设置失败"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP 設定失敗"
+          }
+        }
+      }
+    },
+    "MCP 集成" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تكامل MCP"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP-Integration"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP Integration"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Integración MCP"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intégration MCP"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP एकीकरण"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Integrasi MCP"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Integrazione MCP"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP 連携"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP 연동"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP-integratie"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Integracja MCP"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Integração MCP"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Интеграция MCP"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP-integration"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "การเชื่อมต่อ MCP"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP entegrasyonu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Інтеграція MCP"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tích hợp MCP"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP 集成"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP 整合"
+          }
+        }
+      }
+    },
+    "临时模式下无法启用 MCP。请重新连接持久化数据库。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يتوفر MCP في الوضع المؤقت. أعد توصيل قاعدة البيانات الدائمة أولاً."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP ist im temporären Modus nicht verfügbar. Verbinde zuerst die dauerhafte Datenbank erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP is unavailable in temporary mode. Reconnect the persistent database first."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP no está disponible en modo temporal. Vuelve a conectar la base de datos persistente."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP est indisponible en mode temporaire. Reconnectez d’abord la base de données persistante."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अस्थायी मोड में MCP उपलब्ध नहीं है। पहले स्थायी डेटाबेस से दोबारा कनेक्ट करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP tidak tersedia dalam mode sementara. Sambungkan kembali database persisten terlebih dahulu."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP non è disponibile in modalità temporanea. Ricollega prima il database persistente."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一時モードでは MCP を利用できません。永続データベースに再接続してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "임시 모드에서는 MCP를 사용할 수 없습니다. 영구 데이터베이스에 다시 연결하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP is niet beschikbaar in de tijdelijke modus. Verbind eerst opnieuw met de permanente database."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP jest niedostępny w trybie tymczasowym. Najpierw połącz ponownie trwałą bazę danych."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O MCP não está disponível no modo temporário. Volte a ligar a base de dados persistente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP недоступен во временном режиме. Сначала подключите постоянную базу данных."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP är inte tillgängligt i tillfälligt läge. Anslut först den beständiga databasen igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP ใช้งานไม่ได้ในโหมดชั่วคราว โปรดเชื่อมต่อฐานข้อมูลถาวรอีกครั้งก่อน"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP geçici modda kullanılamaz. Önce kalıcı veritabanına yeniden bağlanın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP недоступний у тимчасовому режимі. Спочатку знову підключіть постійну базу даних."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP không khả dụng trong chế độ tạm thời. Trước tiên, hãy kết nối lại cơ sở dữ liệu lưu trữ lâu dài."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "临时模式下无法启用 MCP。请重新连接持久化数据库。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暫存模式下無法啟用 MCP。請重新連接持久化資料庫。"
+          }
+        }
+      }
+    },
+    "允许你授权的本机 AI 客户端查询录音、笔记、总结、转写和待办。外部客户端可能将读取的内容发送到其使用的云端模型。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اسمح لعملاء الذكاء الاصطناعي المعتمدين على هذا الـ Mac بالاستعلام عن التسجيلات والملاحظات والملخصات والنصوص والمهام. قد يرسل العملاء الخارجيون المحتوى المقروء إلى نماذجهم السحابية."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erlaube autorisierten KI-Clients auf diesem Mac, Aufnahmen, Notizen, Zusammenfassungen, Transkripte und Aufgaben abzufragen. Externe Clients können gelesene Inhalte an ihre Cloud-Modelle senden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow authorized AI clients on this Mac to query recordings, notes, summaries, transcripts and todos. External clients may send retrieved content to the cloud models they use."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permite que los clientes de IA autorizados en este Mac consulten grabaciones, notas, resúmenes, transcripciones y tareas. Los clientes externos pueden enviar el contenido leído a sus modelos en la nube."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorisez des clients IA sur ce Mac à consulter les enregistrements, notes, résumés, transcriptions et tâches. Les clients externes peuvent envoyer le contenu lu à leurs modèles cloud."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस Mac पर अधिकृत AI क्लाइंट को रिकॉर्डिंग, नोट, सारांश, ट्रांसक्रिप्ट और कार्य देखने दें। बाहरी क्लाइंट पढ़ी गई सामग्री अपने क्लाउड मॉडल को भेज सकते हैं।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izinkan klien AI yang Anda otorisasi di Mac ini menelusuri rekaman, catatan, ringkasan, transkrip, dan tugas. Klien eksternal dapat mengirim konten yang dibaca ke model cloud yang digunakannya."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consenti ai client IA autorizzati su questo Mac di consultare registrazioni, note, riepiloghi, trascrizioni e attività. I client esterni possono inviare i contenuti letti ai loro modelli cloud."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この Mac で許可した AI クライアントが、録音、メモ、要約、文字起こし、ToDo を検索できます。外部クライアントが取得した内容をクラウドモデルに送信する場合があります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 Mac에서 승인한 AI 클라이언트가 녹음, 메모, 요약, 전사 및 할 일을 조회할 수 있습니다. 외부 클라이언트는 읽은 내용을 사용하는 클라우드 모델로 보낼 수 있습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laat gemachtigde AI-clients op deze Mac opnamen, notities, samenvattingen, transcripties en taken opvragen. Externe clients kunnen gelezen inhoud naar hun cloudmodellen sturen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zezwól autoryzowanym klientom AI na tym Macu na odczyt nagrań, notatek, podsumowań, transkrypcji i zadań. Klienci zewnętrzni mogą wysyłać odczytane treści do swoich modeli w chmurze."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permita que os clientes de IA autorizados neste Mac consultem gravações, notas, resumos, transcrições e tarefas. Os clientes externos podem enviar o conteúdo lido para os seus modelos na nuvem."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разрешите авторизованным ИИ-клиентам на этом Mac запрашивать записи, заметки, сводки, расшифровки и задачи. Внешние клиенты могут отправлять прочитанное своим облачным моделям."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Låt auktoriserade AI-klienter på denna Mac läsa inspelningar, anteckningar, sammanfattningar, transkriptioner och uppgifter. Externa klienter kan skicka läst innehåll till sina molnmodeller."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "อนุญาตให้ไคลเอนต์ AI ที่คุณอนุมัติบน Mac เครื่องนี้ค้นดูเสียงบันทึก โน้ต สรุป ข้อความถอดเสียง และงาน ไคลเอนต์ภายนอกอาจส่งเนื้อหาที่อ่านไปยังโมเดลบนคลาวด์ที่ใช้งาน"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu Mac’te yetkilendirdiğiniz yapay zekâ istemcilerinin kayıtları, notları, özetleri, dökümleri ve görevleri sorgulamasına izin verin. Harici istemciler okudukları içeriği kullandıkları bulut modellerine gönderebilir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дозвольте авторизованим ШІ-клієнтам на цьому Mac читати записи, нотатки, підсумки, розшифрування й завдання. Зовнішні клієнти можуть надсилати прочитане своїм хмарним моделям."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cho phép các ứng dụng AI được bạn cấp quyền trên máy Mac này truy vấn bản ghi, ghi chú, tóm tắt, bản chép lời và việc cần làm. Ứng dụng bên ngoài có thể gửi nội dung đã đọc đến mô hình đám mây của mình."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "允许你授权的本机 AI 客户端查询录音、笔记、总结、转写和待办。外部客户端可能将读取的内容发送到其使用的云端模型。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "允許你授權的本機 AI 用戶端查詢錄音、筆記、總結、轉寫和待辦。外部用戶端可能將讀取的內容傳送到其使用的雲端模型。"
+          }
+        }
+      }
+    },
+    "全部可见条目" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جميع العناصر المرئية"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle sichtbaren Einträge"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All visible entries"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las entradas visibles"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toutes les entrées visibles"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सभी दिखाई देने वाली प्रविष्टियाँ"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semua entri yang terlihat"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutte le voci visibili"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "表示されているすべての項目"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "표시된 모든 항목"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle zichtbare items"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wszystkie widoczne wpisy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas as entradas visíveis"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Все видимые записи"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alla synliga poster"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รายการที่มองเห็นทั้งหมด"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüm görünür öğeler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усі видимі записи"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tất cả mục hiển thị"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全部可见条目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "所有可見項目"
+          }
+        }
+      }
+    },
+    "共享起始日期" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مشاركة العناصر منذ"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einträge teilen ab"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share entries since"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir entradas desde"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager les entrées depuis le"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस तारीख से प्रविष्टियाँ साझा करें"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bagikan entri sejak"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condividi voci a partire dal"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有する項目の開始日"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유 시작 날짜"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deel items vanaf"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępniaj wpisy od"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partilhar entradas desde"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть доступ к записям с"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dela poster från"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "แชร์รายการตั้งแต่วันที่"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu tarihten itibaren paylaş"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поширювати записи від"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chia sẻ các mục từ ngày"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享起始日期"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享起始日期"
+          }
+        }
+      }
+    },
+    "原文" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "النص الأصلي"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Originaltext"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original text"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Texto original"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Texte original"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मूल पाठ"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teks asli"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testo originale"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "原文"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "원문"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oorspronkelijke tekst"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekst oryginalny"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Texto original"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Исходный текст"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ursprunglig text"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ข้อความต้นฉบับ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özgün metin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Початковий текст"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Văn bản gốc"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "原文"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "原文"
+          }
+        }
+      }
+    },
+    "启用本机 MCP（只读）" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تفعيل MCP المحلي (للقراءة فقط)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokales MCP aktivieren (nur Lesen)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable local MCP (read only)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar MCP local (solo lectura)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activer MCP local (lecture seule)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्थानीय MCP चालू करें (केवल पढ़ने के लिए)"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktifkan MCP lokal (hanya baca)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita MCP locale (sola lettura)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ローカル MCP を有効にする（読み取り専用）"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로컬 MCP 활성화(읽기 전용)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokale MCP inschakelen (alleen lezen)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Włącz lokalny MCP (tylko odczyt)"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar MCP local (só de leitura)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включить локальный MCP (только чтение)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivera lokal MCP (skrivskyddad)"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เปิดใช้ MCP ในเครื่อง (อ่านอย่างเดียว)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yerel MCP’yi etkinleştir (salt okunur)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увімкнути локальний MCP (лише читання)"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bật MCP cục bộ (chỉ đọc)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用本机 MCP（只读）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用本機 MCP（唯讀）"
+          }
+        }
+      }
+    },
+    "复制连接配置" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نسخ إعدادات الاتصال"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbindungskonfiguration kopieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy connection configuration"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar configuración de conexión"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier la configuration de connexion"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कनेक्शन कॉन्फ़िगरेशन कॉपी करें"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salin konfigurasi koneksi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia configurazione di connessione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接続設定をコピー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연결 설정 복사"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbindingsconfiguratie kopiëren"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj konfigurację połączenia"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar configuração de ligação"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скопировать настройки подключения"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiera anslutningskonfiguration"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "คัดลอกการตั้งค่าการเชื่อมต่อ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlantı yapılandırmasını kopyala"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скопіювати налаштування підключення"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sao chép cấu hình kết nối"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "复制连接配置"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "複製連線設定"
+          }
+        }
+      }
+    },
+    "外部 AI 访问（MCP，可选）" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "وصول الذكاء الاصطناعي الخارجي (MCP، اختياري)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Externer KI-Zugriff (MCP, optional)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "External AI access (MCP, optional)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceso de IA externa (MCP, opcional)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accès IA externe (MCP, facultatif)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बाहरी AI पहुँच (MCP, वैकल्पिक)"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akses AI eksternal (MCP, opsional)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accesso IA esterna (MCP, facoltativo)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "外部 AI アクセス（MCP、任意）"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "외부 AI 접근(MCP, 선택 사항)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Externe AI-toegang (MCP, optioneel)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dostęp zewnętrznej AI (MCP, opcjonalnie)"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acesso de IA externa (MCP, opcional)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Доступ внешнего ИИ (MCP, необязательно)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extern AI-åtkomst (MCP, valfritt)"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "การเข้าถึง AI ภายนอก (MCP, ไม่บังคับ)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Harici yapay zekâ erişimi (MCP, isteğe bağlı)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Доступ зовнішнього ШІ (MCP, необов’язково)"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Truy cập AI bên ngoài (MCP, tùy chọn)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "外部 AI 访问（MCP，可选）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "外部 AI 存取（MCP，選用）"
+          }
+        }
+      }
+    },
+    "客户端名称" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اسم العميل"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clientname"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Client name"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre del cliente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom du client"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "क्लाइंट का नाम"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama klien"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome del client"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クライアント名"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "클라이언트 이름"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clientnaam"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nazwa klienta"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome do cliente"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Название клиента"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klientnamn"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ชื่อไคลเอนต์"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İstemci adı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Назва клієнта"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tên ứng dụng khách"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "客户端名称"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用戶端名稱"
+          }
+        }
+      }
+    },
+    "对输出文本脱敏" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حجب البيانات الحساسة في النص المشترك"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensible Daten im geteilten Text schwärzen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redact shared text"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar datos sensibles del texto compartido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer les données sensibles du texte partagé"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "साझा पाठ में संवेदनशील जानकारी छिपाएँ"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samarkan data sensitif dalam teks bersama"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oscura i dati sensibili nel testo condiviso"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有テキストを匿名化"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유 텍스트 비식별화"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gevoelige gegevens in gedeelde tekst verbergen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukrywaj dane wrażliwe w udostępnianym tekście"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar dados sensíveis no texto partilhado"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скрывать конфиденциальные данные в тексте"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dölj känsliga uppgifter i delad text"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ปกปิดข้อมูลอ่อนไหวในข้อความที่แชร์"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşılan metindeki hassas verileri gizle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приховувати конфіденційні дані в тексті"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ẩn dữ liệu nhạy cảm trong văn bản chia sẻ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "对输出文本脱敏"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "對輸出文字去識別化"
+          }
+        }
+      }
+    },
+    "尚未授权客户端" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يوجد عملاء معتمدون"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine autorisierten Clients"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No authorized clients"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay clientes autorizados"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun client autorisé"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कोई अधिकृत क्लाइंट नहीं"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belum ada klien yang diotorisasi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun client autorizzato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "許可済みクライアントはありません"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "승인된 클라이언트가 없습니다"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen gemachtigde clients"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak autoryzowanych klientów"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sem clientes autorizados"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет авторизованных клиентов"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inga auktoriserade klienter"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ยังไม่มีไคลเอนต์ที่ได้รับอนุญาต"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yetkilendirilmiş istemci yok"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немає авторизованих клієнтів"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chưa có ứng dụng khách được cấp quyền"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "尚未授权客户端"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "尚未授權用戶端"
+          }
+        }
+      }
+    },
+    "已关闭" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "متوقف"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Off"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactivé"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बंद"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nonaktif"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disattivato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オフ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "꺼짐"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uit"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyłączono"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativado"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выключено"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Av"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ปิด"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapalı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вимкнено"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã tắt"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已关闭"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已關閉"
+          }
+        }
+      }
+    },
+    "已授权客户端" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "العملاء المعتمدون"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorisierte Clients"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Authorized clients"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clientes autorizados"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clients autorisés"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अधिकृत क्लाइंट"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klien yang diotorisasi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Client autorizzati"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "許可済みクライアント"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "승인된 클라이언트"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gemachtigde clients"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoryzowani klienci"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clientes autorizados"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Авторизованные клиенты"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auktoriserade klienter"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ไคลเอนต์ที่ได้รับอนุญาต"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yetkilendirilmiş istemciler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Авторизовані клієнти"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ứng dụng khách được cấp quyền"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已授权客户端"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已授權用戶端"
+          }
+        }
+      }
+    },
+    "授权客户端" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اعتماد عميل"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Client autorisieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Authorize a client"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorizar un cliente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoriser un client"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "क्लाइंट को अधिकृत करें"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otorisasi klien"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorizza un client"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クライアントを許可"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "클라이언트 승인"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een client machtigen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoryzuj klienta"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorizar um cliente"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Авторизовать клиента"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auktorisera en klient"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "อนุญาตไคลเอนต์"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İstemciyi yetkilendir"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Авторизувати клієнта"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cấp quyền cho ứng dụng khách"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "授权客户端"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "授權用戶端"
+          }
+        }
+      }
+    },
+    "授权并复制连接配置" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اعتماد ونسخ إعدادات الاتصال"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorisieren und Verbindungskonfiguration kopieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Authorize and copy connection configuration"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorizar y copiar configuración"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoriser et copier la configuration"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अधिकृत करें और कनेक्शन कॉन्फ़िगरेशन कॉपी करें"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otorisasi dan salin konfigurasi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorizza e copia configurazione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "許可して接続設定をコピー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "승인 및 연결 설정 복사"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Machtigen en configuratie kopiëren"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoryzuj i kopiuj konfigurację"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorizar e copiar configuração"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Авторизовать и скопировать настройки"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auktorisera och kopiera konfiguration"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "อนุญาตและคัดลอกการตั้งค่าการเชื่อมต่อ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yetkilendir ve yapılandırmayı kopyala"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Авторизувати й скопіювати налаштування"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cấp quyền và sao chép cấu hình"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "授权并复制连接配置"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "授權並複製連線設定"
+          }
+        }
+      }
+    },
+    "最近访问" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آخر وصول"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzter Zugriff"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last access"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último acceso"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dernier accès"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछली पहुँच"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akses terakhir"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ultimo accesso"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最終アクセス"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최근 접근"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laatste toegang"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ostatni dostęp"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último acesso"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Последний доступ"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senaste åtkomst"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เข้าถึงล่าสุด"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son erişim"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Останній доступ"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Truy cập gần nhất"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近访问"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近存取"
+          }
+        }
+      }
+    },
+    "服务状态" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حالة الخدمة"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dienststatus"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Service status"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado del servicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "État du service"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेवा की स्थिति"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status layanan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stato del servizio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サービスの状態"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서비스 상태"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servicestatus"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stan usługi"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado do serviço"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Состояние службы"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tjänstens status"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "สถานะบริการ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hizmet durumu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стан служби"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trạng thái dịch vụ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "服务状态"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "服務狀態"
+          }
+        }
+      }
+    },
+    "本机 MCP 正在运行" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP المحلي قيد التشغيل"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokales MCP läuft"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local MCP is running"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP local está en ejecución"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP local est en cours d’exécution"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्थानीय MCP चल रहा है"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP lokal sedang berjalan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP locale è in esecuzione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ローカル MCP は実行中です"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로컬 MCP 실행 중"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokale MCP is actief"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokalny MCP działa"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O MCP local está em execução"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Локальный MCP работает"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokal MCP körs"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP ในเครื่องกำลังทำงาน"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yerel MCP çalışıyor"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Локальний MCP працює"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP cục bộ đang chạy"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本机 MCP 正在运行"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本機 MCP 正在執行"
+          }
+        }
+      }
+    },
+    "本机 MCP 默认关闭。只有你在设置中启用并授权客户端后，该客户端才能读取授权日期范围内的录音与笔记标题、文字、OCR、转写、总结、画面要点和待办；隐藏条目不共享。当前接口只读，不允许外部客户端录音、删除条目或写入系统提醒事项。\n\n服务仅监听本机回环地址，访问令牌存于本机钥匙串，你可以随时关闭服务或撤销单个客户端。输出默认沿用本机词典与规则脱敏；你也可以明确授权客户端读取原文。脱敏不保证识别所有敏感信息，外部客户端可能将读取的内容发送到它使用的云端模型，请按需要限制共享日期并妥善保管连接配置中的访问令牌。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يكون MCP المحلي متوقفاً افتراضياً. لا يستطيع العميل قراءة عناوين التسجيلات والملاحظات والنصوص ونتائج OCR والنصوص المفرغة والملخصات والملاحظات المرئية والمهام ضمن الفترة المسموح بها إلا بعد تفعيله واعتماد العميل في الإعدادات. لا تتم مشاركة العناصر المخفية. الواجهة للقراءة فقط: لا يستطيع العملاء الخارجيون التسجيل أو حذف العناصر أو الكتابة في تطبيق التذكيرات.\n\nتستمع الخدمة فقط على عنوان الاسترجاع المحلي. تُحفظ رموز الوصول في سلسلة مفاتيح هذا الـ Mac. يمكنك إيقاف الخدمة أو إلغاء اعتماد أي عميل في أي وقت. افتراضياً، تُحجب البيانات الحساسة في النص المشترك باستخدام القاموس والقواعد المحلية، ويمكنك السماح صراحةً بقراءة النص الأصلي. لا يضمن الحجب اكتشاف جميع المعلومات الحساسة. قد يرسل العملاء الخارجيون المحتوى المقروء إلى نماذجهم السحابية. حدّد فترة المشاركة حسب الحاجة واحفظ رمز الوصول في إعدادات الاتصال بأمان."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokales MCP ist standardmäßig deaktiviert. Erst nachdem du es in den Einstellungen aktiviert und einen Client autorisiert hast, kann dieser Titel und Texte von Aufnahmen und Notizen, OCR, Transkripte, Zusammenfassungen, visuelle Notizen und Aufgaben im erlaubten Zeitraum lesen. Ausgeblendete Einträge bleiben ausgeschlossen. Die Schnittstelle erlaubt nur Lesezugriffe: Externe Clients können weder aufnehmen noch Einträge löschen oder in die App Erinnerungen schreiben.\n\nDer Dienst lauscht nur an der lokalen Loopback-Adresse. Zugriffstoken liegen im Schlüsselbund dieses Mac. Du kannst den Dienst jederzeit stoppen oder einzelne Clients sperren. Sensible Daten im geteilten Text werden standardmäßig mit dem lokalen Wörterbuch und lokalen Regeln geschwärzt. Du kannst das Lesen von Originaltext ausdrücklich erlauben. Die Schwärzung erkennt möglicherweise nicht alle sensiblen Informationen. Externe Clients können gelesene Inhalte an ihre Cloud-Modelle senden. Begrenze den Zeitraum nach Bedarf und bewahre das Zugriffstoken in der Verbindungskonfiguration sicher auf."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local MCP is off by default. Only after you enable it and authorize a client in Settings can that client read recording and note titles, text, OCR, transcripts, summaries, visual notes and todos within the authorized date range. Hidden entries are excluded. The current interface is read only: external clients cannot record audio, delete entries or write system Reminders.\n\nThe service listens only on the local loopback address. Access tokens are stored in Keychain on this Mac. You can stop the service or revoke individual clients at any time. Shared text is redacted using the local dictionary and rules by default; you may explicitly authorize a client to read original text. Redaction cannot identify every sensitive detail. External clients may send retrieved content to their cloud models. Limit shared dates as needed and keep the access token in the connection configuration secure."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP local está desactivado de forma predeterminada. Solo tras activarlo y autorizar un cliente en Ajustes, este puede leer títulos de grabaciones y notas, texto, OCR, transcripciones, resúmenes, notas visuales y tareas dentro del intervalo autorizado. Se excluyen las entradas ocultas. La interfaz es de solo lectura: los clientes externos no pueden grabar, eliminar entradas ni escribir en Recordatorios.\n\nEl servicio solo escucha en la dirección de bucle local. Los tokens de acceso se guardan en el llavero de este Mac. Puedes detener el servicio o revocar clientes individuales en cualquier momento. De forma predeterminada, los datos sensibles del texto compartido se ocultan con el diccionario y las reglas locales; puedes autorizar explícitamente la lectura del texto original. La ocultación no garantiza identificar toda la información sensible. Los clientes externos pueden enviar el contenido leído a sus modelos en la nube. Limita las fechas compartidas según tus necesidades y protege el token de la configuración de conexión."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP local est désactivé par défaut. Après activation et autorisation d’un client dans Réglages, celui-ci peut lire les titres des enregistrements et notes, leur texte, l’OCR, les transcriptions, résumés, notes visuelles et tâches dans la période autorisée. Les entrées masquées sont exclues. L’interface est en lecture seule : les clients externes ne peuvent ni enregistrer, ni supprimer des entrées, ni écrire dans Rappels.\n\nLe service écoute uniquement sur l’adresse de bouclage locale. Les jetons d’accès sont conservés dans le trousseau de ce Mac. Vous pouvez arrêter le service ou révoquer un client à tout moment. Par défaut, les données sensibles du texte partagé sont masquées avec le dictionnaire et les règles locaux ; vous pouvez autoriser explicitement la lecture du texte original. Ce traitement ne garantit pas la détection de toutes les informations sensibles. Les clients externes peuvent envoyer le contenu lu à leurs modèles cloud. Limitez la période partagée selon vos besoins et protégez le jeton de la configuration de connexion."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्थानीय MCP डिफ़ॉल्ट रूप से बंद रहता है। सेटिंग्स में इसे चालू करने और क्लाइंट को अधिकृत करने के बाद ही वह अधिकृत तारीख की सीमा के भीतर रिकॉर्डिंग और नोट के शीर्षक, पाठ, OCR, ट्रांसक्रिप्ट, सारांश, दृश्य नोट और कार्य पढ़ सकता है। छिपी प्रविष्टियाँ साझा नहीं होतीं। मौजूदा इंटरफ़ेस केवल पढ़ने के लिए है: बाहरी क्लाइंट रिकॉर्डिंग नहीं कर सकते, प्रविष्टियाँ नहीं मिटा सकते और सिस्टम रिमाइंडर में नहीं लिख सकते।\n\nसेवा केवल स्थानीय लूपबैक पते पर सुनती है। एक्सेस टोकन इस Mac की कीचेन में रखे जाते हैं। आप किसी भी समय सेवा रोक सकते हैं या किसी क्लाइंट की अनुमति वापस ले सकते हैं। साझा पाठ में संवेदनशील जानकारी डिफ़ॉल्ट रूप से स्थानीय शब्दकोश और नियमों से छिपाई जाती है; आप मूल पाठ पढ़ने की स्पष्ट अनुमति भी दे सकते हैं। यह प्रक्रिया हर संवेदनशील जानकारी की पहचान की गारंटी नहीं देती। बाहरी क्लाइंट पढ़ी गई सामग्री अपने क्लाउड मॉडल को भेज सकते हैं। ज़रूरत के अनुसार साझा तारीखें सीमित करें और कनेक्शन कॉन्फ़िगरेशन में मौजूद एक्सेस टोकन को सुरक्षित रखें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP lokal nonaktif secara default. Hanya setelah Anda mengaktifkannya dan mengotorisasi klien di Pengaturan, klien tersebut dapat membaca judul rekaman dan catatan, teks, OCR, transkrip, ringkasan, catatan visual, serta tugas dalam rentang tanggal yang diizinkan. Entri tersembunyi tidak dibagikan. Antarmuka saat ini hanya baca: klien eksternal tidak dapat merekam audio, menghapus entri, atau menulis ke Pengingat sistem.\n\nLayanan hanya mendengarkan pada alamat loopback lokal. Token akses disimpan di Rantai Kunci Mac ini. Anda dapat menghentikan layanan atau mencabut otorisasi tiap klien kapan saja. Secara default, data sensitif dalam teks bersama disamarkan menggunakan kamus dan aturan lokal; Anda juga dapat secara tegas mengizinkan pembacaan teks asli. Penyamaran tidak menjamin semua informasi sensitif teridentifikasi. Klien eksternal dapat mengirim konten yang dibaca ke model cloud mereka. Batasi tanggal berbagi sesuai kebutuhan dan jaga keamanan token akses dalam konfigurasi koneksi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP locale è disattivato per impostazione predefinita. Solo dopo averlo abilitato e aver autorizzato un client nelle Impostazioni, quel client può leggere titoli di registrazioni e note, testo, OCR, trascrizioni, riepiloghi, note visive e attività nel periodo autorizzato. Le voci nascoste sono escluse. L’interfaccia è di sola lettura: i client esterni non possono registrare, eliminare voci o scrivere in Promemoria.\n\nIl servizio ascolta solo sull’indirizzo di loopback locale. I token di accesso sono conservati nel Portachiavi di questo Mac. Puoi interrompere il servizio o revocare singoli client in qualsiasi momento. Per impostazione predefinita, i dati sensibili del testo condiviso sono oscurati usando il dizionario e le regole locali; puoi autorizzare esplicitamente la lettura del testo originale. L’oscuramento non garantisce di identificare ogni informazione sensibile. I client esterni possono inviare i contenuti letti ai propri modelli cloud. Limita il periodo condiviso in base alle necessità e proteggi il token nella configurazione di connessione."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ローカル MCP は既定でオフです。「設定」で有効にしてクライアントを許可した場合に限り、許可した期間の録音やメモのタイトル、本文、OCR、文字起こし、要約、映像メモ、ToDo を読み取れます。非表示の項目は共有されません。現在のインターフェースは読み取り専用で、外部クライアントによる録音、項目の削除、システムのリマインダーへの書き込みはできません。\n\nサービスはローカルのループバックアドレスだけで待ち受けます。アクセストークンはこの Mac のキーチェーンに保存されます。いつでもサービスを停止したり、個別のクライアントの許可を取り消したりできます。共有テキストは既定でローカルの辞書とルールにより匿名化されますが、明示的に原文の読み取りを許可することもできます。匿名化ですべての機密情報を検出できるとは限りません。外部クライアントが読み取った内容をクラウドモデルへ送信する場合があります。必要に応じて共有期間を制限し、接続設定のアクセストークンを安全に保管してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로컬 MCP는 기본적으로 꺼져 있습니다. 설정에서 활성화하고 클라이언트를 승인한 경우에만 승인된 날짜 범위의 녹음과 메모 제목, 본문, OCR, 전사, 요약, 화면 메모 및 할 일을 읽을 수 있습니다. 숨겨진 항목은 공유되지 않습니다. 현재 인터페이스는 읽기 전용이므로 외부 클라이언트가 녹음하거나 항목을 삭제하거나 시스템 미리 알림에 쓸 수 없습니다.\n\n서비스는 로컬 루프백 주소에서만 수신합니다. 접근 토큰은 이 Mac의 키체인에 저장됩니다. 언제든지 서비스를 중지하거나 개별 클라이언트의 승인을 취소할 수 있습니다. 공유 텍스트에는 기본적으로 로컬 사전과 규칙을 이용한 비식별화가 적용되며, 원문 읽기를 명시적으로 허용할 수도 있습니다. 비식별화가 모든 민감한 정보를 식별한다고 보장할 수는 없습니다. 외부 클라이언트는 읽은 내용을 클라우드 모델로 보낼 수 있습니다. 필요에 따라 공유 날짜를 제한하고 연결 설정에 포함된 접근 토큰을 안전하게 보관하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokale MCP staat standaard uit. Pas nadat je deze in Instellingen inschakelt en een client machtigt, kan die client binnen de toegestane periode titels van opnamen en notities, tekst, OCR, transcripties, samenvattingen, visuele notities en taken lezen. Verborgen items worden niet gedeeld. De interface is alleen-lezen: externe clients kunnen geen audio opnemen, items verwijderen of in Herinneringen schrijven.\n\nDe service luistert alleen op het lokale loopbackadres. Toegangstokens staan in de sleutelhanger van deze Mac. Je kunt de service altijd stoppen of afzonderlijke machtigingen intrekken. Gevoelige gegevens in gedeelde tekst worden standaard verborgen met het lokale woordenboek en lokale regels; je kunt het lezen van oorspronkelijke tekst uitdrukkelijk toestaan. De verwerking herkent mogelijk niet alle gevoelige informatie. Externe clients kunnen gelezen inhoud naar hun cloudmodellen sturen. Beperk de gedeelde periode waar nodig en bewaar het toegangstoken in de verbindingsconfiguratie veilig."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokalny MCP jest domyślnie wyłączony. Dopiero po włączeniu go i autoryzacji klienta w Ustawieniach klient może czytać tytuły nagrań i notatek, tekst, OCR, transkrypcje, podsumowania, notatki wizualne i zadania z dozwolonego okresu. Ukryte wpisy nie są udostępniane. Interfejs umożliwia tylko odczyt: klienci zewnętrzni nie mogą nagrywać, usuwać wpisów ani zapisywać danych w systemowych Przypomnieniach.\n\nUsługa nasłuchuje tylko na lokalnym adresie pętli zwrotnej. Tokeny dostępu są przechowywane w Pęku kluczy tego Maca. Możesz w każdej chwili zatrzymać usługę lub cofnąć autoryzację wybranego klienta. Dane wrażliwe w udostępnianym tekście są domyślnie ukrywane za pomocą lokalnego słownika i reguł; można wyraźnie zezwolić na odczyt oryginału. Ukrywanie danych nie gwarantuje wykrycia wszystkich poufnych informacji. Klienci zewnętrzni mogą wysyłać odczytane treści do swoich modeli w chmurze. Ogranicz okres udostępniania do potrzeb i chroń token w konfiguracji połączenia."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O MCP local está desativado por predefinição. Apenas após o ativar e autorizar um cliente nas Definições é que esse cliente pode ler títulos de gravações e notas, texto, OCR, transcrições, resumos, notas visuais e tarefas no período autorizado. As entradas ocultas são excluídas. A interface é só de leitura: os clientes externos não podem gravar, eliminar entradas nem escrever em Lembretes.\n\nO serviço escuta apenas no endereço de loopback local. Os tokens de acesso são guardados no Porta-chaves deste Mac. Pode parar o serviço ou revogar clientes individuais a qualquer momento. Por predefinição, os dados sensíveis no texto partilhado são ocultados com o dicionário e as regras locais; pode autorizar explicitamente a leitura do texto original. A ocultação não garante a identificação de todas as informações sensíveis. Os clientes externos podem enviar o conteúdo lido para os seus modelos na nuvem. Limite o período partilhado conforme necessário e proteja o token na configuração de ligação."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Локальный MCP по умолчанию выключен. Только после его включения и авторизации клиента в Настройках клиент сможет читать названия записей и заметок, текст, OCR, расшифровки, сводки, визуальные заметки и задачи за разрешённый период. Скрытые записи не передаются. Интерфейс доступен только для чтения: внешние клиенты не могут записывать звук, удалять записи или изменять системные Напоминания.\n\nСлужба прослушивает только локальный адрес обратной связи. Токены доступа хранятся в Связке ключей этого Mac. Вы можете в любой момент остановить службу или отозвать доступ отдельного клиента. По умолчанию конфиденциальные данные в передаваемом тексте скрываются с помощью локального словаря и правил; можно явно разрешить чтение исходного текста. Обезличивание не гарантирует обнаружения всех конфиденциальных сведений. Внешние клиенты могут отправлять прочитанное своим облачным моделям. При необходимости ограничьте период доступа и храните токен из настроек подключения в безопасности."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokal MCP är avstängd som standard. Först när du aktiverar den och auktoriserar en klient i Inställningar kan klienten läsa inspelnings- och anteckningstitlar, text, OCR, transkriptioner, sammanfattningar, visuella anteckningar och uppgifter inom den tillåtna perioden. Dolda poster delas inte. Gränssnittet är skrivskyddat: externa klienter kan inte spela in, ta bort poster eller skriva till systemets Påminnelser.\n\nTjänsten lyssnar bara på den lokala loopbackadressen. Åtkomsttoken lagras i denna Macs nyckelring. Du kan när som helst stoppa tjänsten eller återkalla enskilda klienters åtkomst. Känsliga uppgifter i delad text döljs som standard med den lokala ordlistan och lokala regler; du kan uttryckligen tillåta läsning av ursprunglig text. Maskeringen garanterar inte att all känslig information hittas. Externa klienter kan skicka läst innehåll till sina molnmodeller. Begränsa delningsperioden efter behov och förvara åtkomsttoken i anslutningskonfigurationen säkert."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP ในเครื่องปิดอยู่ตามค่าเริ่มต้น ไคลเอนต์จะอ่านชื่อเสียงบันทึกและโน้ต ข้อความ OCR ข้อความถอดเสียง สรุป บันทึกภาพ และงานภายในช่วงวันที่ที่อนุญาตได้เมื่อคุณเปิดใช้และอนุญาตไคลเอนต์ในการตั้งค่าแล้วเท่านั้น รายการที่ซ่อนจะไม่ถูกแชร์ อินเทอร์เฟซปัจจุบันอ่านได้อย่างเดียว ไคลเอนต์ภายนอกไม่สามารถบันทึกเสียง ลบรายการ หรือเขียนลงในแอปเตือนความจำของระบบได้\n\nบริการรับการเชื่อมต่อเฉพาะที่อยู่ลูปแบ็กในเครื่อง โทเค็นการเข้าถึงเก็บอยู่ในพวงกุญแจของ Mac เครื่องนี้ คุณหยุดบริการหรือเพิกถอนสิทธิ์ไคลเอนต์แต่ละรายได้ทุกเมื่อ ตามค่าเริ่มต้น ข้อมูลอ่อนไหวในข้อความที่แชร์จะถูกปกปิดด้วยพจนานุกรมและกฎในเครื่อง คุณสามารถอนุญาตให้อ่านต้นฉบับอย่างชัดแจ้งได้ การปกปิดไม่รับประกันว่าจะตรวจพบข้อมูลอ่อนไหวทั้งหมด ไคลเอนต์ภายนอกอาจส่งเนื้อหาที่อ่านไปยังโมเดลบนคลาวด์ โปรดจำกัดช่วงวันที่ตามความจำเป็นและเก็บโทเค็นในตั้งค่าการเชื่อมต่อให้ปลอดภัย"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yerel MCP varsayılan olarak kapalıdır. Yalnızca Ayarlar’da etkinleştirip bir istemciyi yetkilendirdikten sonra bu istemci izin verilen tarih aralığındaki kayıt ve not başlıklarını, metinleri, OCR sonuçlarını, dökümleri, özetleri, görsel notları ve görevleri okuyabilir. Gizli öğeler paylaşılmaz. Mevcut arayüz salt okunurdur: harici istemciler ses kaydedemez, öğeleri silemez veya sistem Anımsatıcılar uygulamasına yazamaz.\n\nHizmet yalnızca yerel geri döngü adresini dinler. Erişim belirteçleri bu Mac’in Anahtar Zinciri’nde saklanır. Hizmeti istediğiniz zaman durdurabilir veya tek bir istemcinin yetkisini kaldırabilirsiniz. Paylaşılan metindeki hassas veriler varsayılan olarak yerel sözlük ve kurallarla gizlenir; özgün metnin okunmasına açıkça izin verebilirsiniz. Gizleme işlemi tüm hassas bilgilerin belirlenmesini garanti etmez. Harici istemciler okudukları içeriği bulut modellerine gönderebilir. Paylaşım tarihlerini gerektiği kadar sınırlayın ve bağlantı yapılandırmasındaki erişim belirtecini güvenli tutun."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Локальний MCP типово вимкнено. Лише після ввімкнення та авторизації клієнта в Параметрах він може читати назви записів і нотаток, текст, OCR, розшифрування, підсумки, візуальні нотатки та завдання в дозволеному діапазоні дат. Приховані записи не поширюються. Інтерфейс доступний лише для читання: зовнішні клієнти не можуть записувати звук, видаляти записи чи змінювати системні Нагадування.\n\nСлужба прослуховує лише локальну адресу зворотного зв’язку. Токени доступу зберігаються у В’язці ключів цього Mac. Ви можете будь-коли зупинити службу або скасувати доступ окремого клієнта. Типово конфіденційні дані в поширюваному тексті приховуються локальним словником і правилами; можна явно дозволити читання початкового тексту. Знеособлення не гарантує виявлення всіх конфіденційних відомостей. Зовнішні клієнти можуть надсилати прочитане своїм хмарним моделям. За потреби обмежте період поширення й захищайте токен у налаштуваннях підключення."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MCP cục bộ mặc định tắt. Chỉ sau khi bạn bật và cấp quyền cho ứng dụng khách trong Cài đặt, ứng dụng đó mới có thể đọc tiêu đề bản ghi và ghi chú, văn bản, OCR, bản chép lời, tóm tắt, ghi chú hình ảnh và việc cần làm trong khoảng ngày được phép. Các mục bị ẩn không được chia sẻ. Giao diện hiện tại chỉ cho phép đọc: ứng dụng bên ngoài không thể ghi âm, xóa mục hoặc ghi vào Lời nhắc của hệ thống.\n\nDịch vụ chỉ lắng nghe trên địa chỉ vòng lặp cục bộ. Mã truy cập được lưu trong Chuỗi khóa của máy Mac này. Bạn có thể dừng dịch vụ hoặc thu hồi quyền từng ứng dụng khách bất cứ lúc nào. Mặc định, dữ liệu nhạy cảm trong văn bản chia sẻ được ẩn bằng từ điển và quy tắc cục bộ; bạn cũng có thể cho phép rõ ràng việc đọc bản gốc. Việc ẩn dữ liệu không bảo đảm nhận diện mọi thông tin nhạy cảm. Ứng dụng bên ngoài có thể gửi nội dung đã đọc đến mô hình đám mây của mình. Hãy giới hạn ngày chia sẻ khi cần và bảo vệ mã truy cập trong cấu hình kết nối."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本机 MCP 默认关闭。只有你在设置中启用并授权客户端后，该客户端才能读取授权日期范围内的录音与笔记标题、文字、OCR、转写、总结、画面要点和待办；隐藏条目不共享。当前接口只读，不允许外部客户端录音、删除条目或写入系统提醒事项。\n\n服务仅监听本机回环地址，访问令牌存于本机钥匙串，你可以随时关闭服务或撤销单个客户端。输出默认沿用本机词典与规则脱敏；你也可以明确授权客户端读取原文。脱敏不保证识别所有敏感信息，外部客户端可能将读取的内容发送到它使用的云端模型，请按需要限制共享日期并妥善保管连接配置中的访问令牌。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本機 MCP 預設關閉。只有你在設定中啟用並授權用戶端後，該用戶端才能讀取授權日期範圍內的錄音與筆記標題、文字、OCR、轉寫、總結、畫面要點和待辦；隱藏項目不共享。目前介面唯讀，不允許外部用戶端錄音、刪除項目或寫入系統提醒事項。\n\n服務僅監聽本機回環位址，存取權杖儲存於本機鑰匙圈，你可以隨時關閉服務或撤銷個別用戶端。輸出預設沿用本機詞典與規則去識別化；你也可以明確授權用戶端讀取原文。去識別化不保證識別所有敏感資訊，外部用戶端可能將讀取的內容傳送到它使用的雲端模型，請按需要限制共享日期並妥善保管連線設定中的存取權杖。"
+          }
+        }
+      }
+    },
+    "正在启动本机 MCP…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ بدء MCP المحلي…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokales MCP wird gestartet…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting local MCP…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciando MCP local…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Démarrage de MCP local…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्थानीय MCP शुरू हो रहा है…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memulai MCP lokal…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avvio di MCP locale…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ローカル MCP を起動中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로컬 MCP 시작 중…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lokale MCP wordt gestart…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uruchamianie lokalnego MCP…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A iniciar o MCP local…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запуск локального MCP…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Startar lokal MCP…"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "กำลังเริ่ม MCP ในเครื่อง…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yerel MCP başlatılıyor…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запуск локального MCP…"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đang khởi động MCP cục bộ…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在启动本机 MCP…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在啟動本機 MCP…"
+          }
+        }
+      }
+    },
+    "端口" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المنفذ"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puerto"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पोर्ट"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ポート"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "포트"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poort"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porta"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Порт"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "พอร์ต"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlantı noktası"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Порт"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cổng"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "端口"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連接埠"
+          }
+        }
+      }
+    },
+    "等待应用完成启动" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "في انتظار اكتمال بدء التطبيق"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warten auf den Abschluss des App-Starts"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for the app to finish starting"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esperando a que termine el inicio de la app"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En attente du démarrage de l’application"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ऐप शुरू होने के पूरा होने की प्रतीक्षा"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menunggu aplikasi selesai dimulai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In attesa del completamento dell’avvio dell’app"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリの起動完了を待っています"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 시작이 완료되기를 기다리는 중"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wachten tot de app is gestart"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oczekiwanie na zakończenie uruchamiania aplikacji"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A aguardar a conclusão do arranque da aplicação"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ожидание завершения запуска приложения"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Väntar på att appen ska starta klart"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "กำลังรอให้แอปเริ่มต้นเสร็จ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulamanın başlatılması bekleniyor"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очікування завершення запуску програми"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đang chờ ứng dụng khởi động xong"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "等待应用完成启动"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "等待應用完成啟動"
+          }
+        }
+      }
+    },
+    "脱敏文本" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نص محجوب البيانات الحساسة"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschwärzter Text"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redacted text"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Texto con datos ocultos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Texte expurgé"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "संवेदनशील जानकारी रहित पाठ"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teks yang disamarkan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testo oscurato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "匿名化されたテキスト"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "비식별화된 텍스트"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekst met verborgen gegevens"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekst z ukrytymi danymi"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Texto com dados ocultos"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обезличенный текст"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Text med dolda uppgifter"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ข้อความที่ปกปิดข้อมูลแล้ว"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hassas verileri gizlenmiş metin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Знеособлений текст"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Văn bản đã ẩn dữ liệu nhạy cảm"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "脱敏文本"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "去識別化文字"
+          }
+        }
+      }
+    },
+    "脱敏沿用本机词典与规则；隐藏条目始终不共享。关闭脱敏后，该客户端将读取授权范围内的原文。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يستخدم الحجب القاموس والقواعد المحلية. لا تتم مشاركة العناصر المخفية مطلقاً. أوقف الحجب لمشاركة النص الأصلي ضمن النطاق المسموح."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Schwärzung verwendet das lokale Wörterbuch und lokale Regeln. Ausgeblendete Einträge werden nie geteilt. Deaktiviere die Schwärzung, um Originaltext im autorisierten Umfang zu teilen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redaction uses the local dictionary and rules. Hidden entries are always excluded. Turn redaction off to share original text within the authorized scope."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La ocultación utiliza el diccionario y las reglas locales. Las entradas ocultas nunca se comparten. Desactívala para compartir el texto original dentro del ámbito autorizado."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le masquage utilise le dictionnaire et les règles locaux. Les entrées masquées ne sont jamais partagées. Désactivez le masquage pour partager le texte original dans le périmètre autorisé."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "जानकारी छिपाने के लिए स्थानीय शब्दकोश और नियम इस्तेमाल होते हैं। छिपी हुई प्रविष्टियाँ कभी साझा नहीं की जातीं। अधिकृत दायरे में मूल पाठ साझा करने के लिए जानकारी छिपाना बंद करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penyamaran menggunakan kamus dan aturan lokal. Entri tersembunyi tidak pernah dibagikan. Nonaktifkan penyamaran untuk membagikan teks asli dalam cakupan yang diizinkan."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’oscuramento usa il dizionario e le regole locali. Le voci nascoste non vengono mai condivise. Disattivalo per condividere il testo originale nell’ambito autorizzato."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "匿名化にはローカルの辞書とルールを使用します。非表示の項目は常に共有されません。匿名化をオフにすると、許可した範囲の原文が共有されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "비식별화에는 로컬 사전과 규칙이 사용됩니다. 숨겨진 항목은 항상 공유에서 제외됩니다. 비식별화를 끄면 승인 범위 내의 원문이 공유됩니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het verbergen gebruikt het lokale woordenboek en lokale regels. Verborgen items worden nooit gedeeld. Schakel dit uit om oorspronkelijke tekst binnen het toegestane bereik te delen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukrywanie danych korzysta z lokalnego słownika i reguł. Ukryte wpisy nigdy nie są udostępniane. Wyłącz ukrywanie danych, aby udostępnić oryginalny tekst w dozwolonym zakresie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A ocultação usa o dicionário e as regras locais. As entradas ocultas nunca são partilhadas. Desative-a para partilhar o texto original no âmbito autorizado."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обезличивание использует локальный словарь и правила. Скрытые записи никогда не передаются. Отключите обезличивание, чтобы передавать исходный текст в разрешённом объёме."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maskeringen använder den lokala ordlistan och lokala regler. Dolda poster delas aldrig. Stäng av maskering för att dela ursprunglig text inom det tillåtna området."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "การปกปิดใช้พจนานุกรมและกฎในเครื่อง รายการที่ซ่อนจะไม่ถูกแชร์ ปิดการปกปิดเพื่อแชร์ข้อความต้นฉบับภายในขอบเขตที่อนุญาต"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gizleme, yerel sözlük ve kuralları kullanır. Gizli öğeler hiçbir zaman paylaşılmaz. Yetkili kapsamda özgün metni paylaşmak için gizlemeyi kapatın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Знеособлення використовує локальний словник і правила. Приховані записи ніколи не поширюються. Вимкніть знеособлення, щоб поширювати початковий текст у дозволених межах."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Việc ẩn dữ liệu sử dụng từ điển và quy tắc cục bộ. Các mục bị ẩn luôn bị loại khỏi chia sẻ. Tắt tính năng này để chia sẻ văn bản gốc trong phạm vi đã cấp quyền."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "脱敏沿用本机词典与规则；隐藏条目始终不共享。关闭脱敏后，该客户端将读取授权范围内的原文。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "去識別化沿用本機詞典與規則；隱藏項目一律不共享。關閉去識別化後，該用戶端將讀取授權範圍內的原文。"
+          }
+        }
+      }
+    },
+    "请检查端口范围（1024–65535）及钥匙串访问权限后重试。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تحقق من أن المنفذ بين 1024 و65535 وأن الوصول إلى سلسلة المفاتيح مسموح، ثم أعد المحاولة."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prüfe, ob der Port zwischen 1024 und 65535 liegt und der Schlüsselbundzugriff erlaubt ist, und versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check that the port is between 1024 and 65535 and Keychain access is allowed, then retry."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprueba que el puerto esté entre 1024 y 65535 y que se permita el acceso al llavero; después, inténtalo de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vérifiez que le port est compris entre 1024 et 65535 et que l’accès au trousseau est autorisé, puis réessayez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "जाँचें कि पोर्ट 1024–65535 के बीच है और कीचेन तक पहुँच की अनुमति है, फिर दोबारा कोशिश करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pastikan port berada di antara 1024–65535 dan akses Rantai Kunci diizinkan, lalu coba lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verifica che la porta sia compresa tra 1024 e 65535 e che l’accesso al Portachiavi sia consentito, quindi riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ポートが 1024～65535 の範囲内で、キーチェーンへのアクセスが許可されていることを確認して再試行してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "포트가 1024~65535 범위이고 키체인 접근이 허용되어 있는지 확인한 후 다시 시도하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controleer of de poort tussen 1024 en 65535 ligt en sleutelhangers toegang is toegestaan, en probeer het opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprawdź, czy port mieści się w zakresie 1024–65535 i czy dostęp do Pęku kluczy jest dozwolony, a następnie spróbuj ponownie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verifique se a porta está entre 1024 e 65535 e se o acesso ao Porta-chaves é permitido e tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проверьте, что порт находится в диапазоне 1024–65535, а доступ к Связке ключей разрешён, и повторите попытку."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontrollera att porten är mellan 1024 och 65535 och att nyckelringsåtkomst är tillåten och försök igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ตรวจสอบว่าพอร์ตอยู่ระหว่าง 1024–65535 และอนุญาตให้เข้าถึงพวงกุญแจ แล้วลองอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlantı noktasının 1024–65535 arasında olduğunu ve Anahtar Zinciri erişimine izin verildiğini kontrol edip yeniden deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перевірте, чи порт у діапазоні 1024–65535 і чи дозволено доступ до В’язки ключів, а потім повторіть спробу."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hãy kiểm tra cổng nằm trong khoảng 1024–65535 và quyền truy cập Chuỗi khóa đã được cho phép, rồi thử lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请检查端口范围（1024–65535）及钥匙串访问权限后重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請檢查連接埠範圍（1024–65535）及鑰匙圈存取權限後重試。"
+          }
+        }
+      }
+    },
+    "连接配置已复制（包含访问令牌），请妥善保管。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم نسخ إعدادات الاتصال. تحتوي على رمز وصول؛ احتفظ بها بأمان."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbindungskonfiguration kopiert. Sie enthält ein Zugriffstoken; bewahre sie sicher auf."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection configuration copied. It contains an access token; keep it secure."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración copiada. Contiene un token de acceso; guárdala de forma segura."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuration copiée. Elle contient un jeton d’accès ; conservez-la en lieu sûr."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कनेक्शन कॉन्फ़िगरेशन कॉपी किया गया। इसमें एक्सेस टोकन है; इसे सुरक्षित रखें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konfigurasi koneksi disalin. Konfigurasi ini berisi token akses; simpan dengan aman."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurazione copiata. Contiene un token di accesso: conservala al sicuro."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接続設定をコピーしました。アクセストークンが含まれているため、安全に保管してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연결 설정을 복사했습니다. 접근 토큰이 포함되어 있으므로 안전하게 보관하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbindingsconfiguratie gekopieerd. Deze bevat een toegangstoken; bewaar deze veilig."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skopiowano konfigurację połączenia. Zawiera token dostępu; przechowuj ją bezpiecznie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuração copiada. Contém um token de acesso; guarde-a em segurança."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настройки подключения скопированы. Они содержат токен доступа; храните их в безопасности."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anslutningskonfigurationen har kopierats. Den innehåller en åtkomsttoken; förvara den säkert."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "คัดลอกการตั้งค่าการเชื่อมต่อแล้ว มีโทเค็นการเข้าถึงรวมอยู่ โปรดเก็บรักษาให้ปลอดภัย"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlantı yapılandırması kopyalandı. Erişim belirteci içerir; güvenli bir yerde saklayın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Налаштування підключення скопійовано. Вони містять токен доступу; зберігайте їх безпечно."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã sao chép cấu hình kết nối. Cấu hình chứa mã truy cập; hãy giữ an toàn."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连接配置已复制（包含访问令牌），请妥善保管。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連線設定已複製（包含存取權杖），請妥善保管。"
+          }
+        }
+      }
+    },
+    "限制共享起始日期" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تقييد المشاركة بتاريخ بداية"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabe ab einem Startdatum begrenzen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limit sharing by start date"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limitar el uso compartido por fecha inicial"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limiter le partage par date de début"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "साझा करने की शुरुआती तारीख सीमित करें"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batasi berbagi berdasarkan tanggal mulai"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limita la condivisione per data iniziale"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有開始日を制限"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유 시작 날짜 제한"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delen beperken op begindatum"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ogranicz udostępnianie datą początkową"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limitar a partilha por data inicial"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ограничить доступ начальной датой"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begränsa delning med startdatum"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "จำกัดวันที่เริ่มแชร์"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşımı başlangıç tarihiyle sınırla"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обмежити поширення початковою датою"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giới hạn chia sẻ theo ngày bắt đầu"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "限制共享起始日期"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "限制共享起始日期"
+          }
+        }
+      }
+    },
     "，约 %d 分钟" : {
       "localizations" : {
         "ar" : {

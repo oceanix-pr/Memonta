@@ -114,8 +114,7 @@ extension QuickNote {
             "itemType": "quicknote"
         ]
         do {
-            let data = try JSONSerialization.data(withJSONObject: meta, options: [.prettyPrinted])
-            try data.write(to: metaFileURL, options: .atomic)
+            id = try EntryIdentityStore.write(meta, id: id, to: folderURL)
             return true
         } catch {
             PersistenceReporting.reportSaveFailure(

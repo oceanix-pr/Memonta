@@ -33,7 +33,7 @@ Sparkle EdDSA 私钥与 Apple 证书相互独立。公钥位于 `project.yml`，
 
 1. 在 `project.yml` 固定营销版本和递增构建号。`Scripts/bump_build_number.sh [新编号]` 只在发布前手动运行；任何 build/test/archive 都不再自增编号。
 2. `xcodegen generate`，检查锁文件、运行测试并提交，然后创建与营销版本对应的正式 tag，例如 `v9.5.0`。工作区未提交内容不会出现在 tag 中。
-3. 推送 tag 触发 `release-direct.yml`；也可手动选择已存在的正式 tag。工作流只接受 `vX.Y.Z`，需要 Sparkle Secret 和下述 Apple 凭据。
+3. 推送 tag 触发 `release-direct.yml`；也可手动选择已存在的正式 tag。工作流只接受 `vX.Y.Z`。默认 `notarized` 需要 Sparkle Secret 和下述 Apple 凭据；用户已同意的未公证构建可在手动运行时显式选择 `unnotarized-test`，仅使用 Sparkle Secret。选择只作用于该次运行，不会因缺少凭据自动降级或改变后续发布的默认方式。
 4. 流水线创建附带 ZIP、appcast.xml 与 SHA256SUMS 的 **draft Release**。先用具体包验证升级、录音保护、worker 交接、保存失败和重启，再发布草稿。草稿阶段不会影响现有 feed。
 5. 用户或经授权的本机 GitHub CLI 发布 Release 后，`publish-update-feed.yml` 才会验证公开包地址、长度、签名字段及递增构建号，将 appcast 提交到 `updates` 分支的 `stable/appcast.xml`，并移除历史预览频道。发布旧构建不能覆盖较新 feed。
 6. 确认正式 feed 可匿名读取，再从旧版本测试发现更新、安装确认和重启；更新后核对版本、数据与系统权限连续性。

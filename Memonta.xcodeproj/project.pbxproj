@@ -11,7 +11,7 @@
 		01483C26C9A120679F11F9CE /* HotkeySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0877D9FD208D7C986F2DC7 /* HotkeySettingsView.swift */; };
 		01D562560D4893BE8C35DBA0 /* AppCommandCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F54F3D63DFDE52741D7ED8 /* AppCommandCatalogTests.swift */; };
 		024CE05C62519D11F88D6E10 /* CurrentTimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DF448CB60C72E3285F426F /* CurrentTimeService.swift */; };
-		034FD338C793A06305668772 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = C1F173E3DC4D46A8D8A2C1C4 /* Sparkle */; };
+		034FD338C793A06305668772 /* MCP in Frameworks */ = {isa = PBXBuildFile; productRef = 4B2E7226A42272B86AAA17EB /* MCP */; };
 		03AB9DCA87921A0A37C584D9 /* NoteSpeechTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEBD6E9CC04E16F0B0D17E4 /* NoteSpeechTests.swift */; };
 		05B85D8B05C57AAA3F3EF08B /* LocalLLMCapabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C426D700A5E8B0BA20E21C /* LocalLLMCapabilities.swift */; };
 		08FF1E4712E676B0915D4BE3 /* GlobalHotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5786ADED6FA719DFD8FBDF72 /* GlobalHotkeyManager.swift */; };
@@ -19,6 +19,7 @@
 		0AB22547F4D0D11055CC41A1 /* EchoCanceller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3347BFF97511F53E690F950A /* EchoCanceller.swift */; };
 		0BA7869E937C2FC2C8E90F2B /* AppMuteDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791E74BCD8C51E5D42C4627D /* AppMuteDetector.swift */; };
 		0BD4DB5A3C6198168A5CA056 /* StartupBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688AB5D72A451BA1F0381F9 /* StartupBootstrap.swift */; };
+		0CA8B6B3AFAEC7DCDF85A956 /* MCPReadOnlyServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDAAFA6AF9B442D35F4B9FB /* MCPReadOnlyServer.swift */; };
 		0FABD39C64D2DEF6FD0688A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 9DBEB77E6786D91D9C7927AD /* Localizable.xcstrings */; };
 		104EAF5636B7E3A4FF3FA62B /* MeetingRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6393D47EC167A81A64241F /* MeetingRecorderService.swift */; };
 		1052EBF4AA72F131F236D3E3 /* AudioConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A6DB48E5C6FFC3DB21771D /* AudioConverter.swift */; };
@@ -50,14 +51,18 @@
 		2FF04E751C343E98C75FC59F /* ScreenshotManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966920D8F70C5A6B175284A3 /* ScreenshotManager.swift */; };
 		300E245E151A49735BF02D6E /* CurrentTimeServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8199CE71A65699E34A353452 /* CurrentTimeServiceTests.swift */; };
 		3459D3950842C4444F391DFC /* KeyframeExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696C5424AA9709B46B99B13D /* KeyframeExtractorTests.swift */; };
+		374A98D871FF3099447F9FB7 /* MCP in Frameworks */ = {isa = PBXBuildFile; productRef = 606956E99F330C9E52D543DC /* MCP */; };
 		38D3BAF8D111CEBB6F03F2E8 /* PromptSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC6A44D0ECD14A85ADA6467 /* PromptSettingsView.swift */; };
 		38E5CBBFB58FA98D07454CF2 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E39DD28BDCFC3DAF38F45C0 /* FeedbackView.swift */; };
 		3CC12913B0DD5C30672D1273 /* ScreenshotSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4732D714821729D4FE26BBE0 /* ScreenshotSettingsView.swift */; };
+		3DB9EC7FF6908D31B721E128 /* EntryQueryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972BE396F7A15F01B100980D /* EntryQueryService.swift */; };
 		3E0983BAB1BD8EE21DC1110C /* RecordingMergeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F5A7063C4F4A90DACA7125 /* RecordingMergeRequest.swift */; };
 		3E1E31055169FA8F365E51FF /* TranscriptSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5601B1C9F2A56061704CEA7 /* TranscriptSegment.swift */; };
 		3E88812E40E4619D9F2AB3FF /* TodoSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBE2F431C86ABA985039A1F /* TodoSettingsView.swift */; };
 		412C88A9A5F10637A3B12643 /* STTConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836D2C84294295CC44E3097A /* STTConfig.swift */; };
+		438B9B8FEBDBE4BD2AF00AF9 /* MCPReadOnlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE7286049E80B364E1617B6 /* MCPReadOnlyTests.swift */; };
 		4400FA269D5351CAE49A3C70 /* AnnotationOverlaySupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B7C4CFDF01AEEE0FA40C9 /* AnnotationOverlaySupport.swift */; };
+		483EACF68577F4FD7EB0F284 /* EntryIdentityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282D3971A851564B5B02B355 /* EntryIdentityStore.swift */; };
 		48EBAB29F87D119643FA88CE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AC3BC74F10E8DA7049410B98 /* README.md */; };
 		4995D243EA8159CA684A4DF2 /* RecordingSegmentTimelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20AEA0492EC2E69874A67ED /* RecordingSegmentTimelineTests.swift */; };
 		4ADF0AF58AE2BDCB08ED9E7F /* StartupRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F143EFF7EF8C4688188C5AD6 /* StartupRootView.swift */; };
@@ -73,18 +78,23 @@
 		595D7554BDC5FB3A857AD083 /* RecordingCaptureReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4487C510A3F23164E51C99A9 /* RecordingCaptureReportTests.swift */; };
 		5A899653193510A703EA70EB /* RecordingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C39FF788CD0B202722829 /* RecordingViewModel.swift */; };
 		5D443F940ED1EFDDE8434F2C /* ScreenshotOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE88892E3AFD0E9F768316 /* ScreenshotOverlayController.swift */; };
+		5F544AE1FAFF84847EE90CC3 /* sherpa-onnx-shared in Frameworks */ = {isa = PBXBuildFile; productRef = 0D90099C36C236781418FF64 /* sherpa-onnx-shared */; };
 		5F942F177F64FDFF3D5E6436 /* RemindersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106A6875BE03EBF6A461B58C /* RemindersService.swift */; };
 		635D3EC57EC355A27EED3963 /* BackgroundTaskQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47110F3FA92D02A98B8C7974 /* BackgroundTaskQueue.swift */; };
 		64B23FDD44280BB9FD52EBB5 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F06101DB2937C96879FBA28 /* HelpView.swift */; };
 		64CAAA200DD00295AED91FEF /* NoteSpeechView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1F6C25F6EFC70FB9BF96ED /* NoteSpeechView.swift */; };
 		66A7D528D1E3862CFCAD5062 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEDFCEBF7960340A527E619 /* SummaryView.swift */; };
 		6823B3324605603D19B01E52 /* MemontaPrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4C0FB0B1C0AC7A5B2D8209 /* MemontaPrivacyPolicy.swift */; };
+		6A1918C66D6D71DD35A65F70 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = C1F173E3DC4D46A8D8A2C1C4 /* Sparkle */; };
 		6B9AB5B67A7E5BFC90B8B20C /* PIIScanService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D1A170177923D58295914A /* PIIScanService.swift */; };
+		6C66B6FC63D9B55FCA8AC14F /* MCP in Frameworks */ = {isa = PBXBuildFile; productRef = DE897DCB09E9B9C5AA3DFEA6 /* MCP */; };
 		6D947C8FC58ACD9C1847F56D /* PinnedOCRTextPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC8EEBFAF3E400FD413FA03 /* PinnedOCRTextPanel.swift */; };
+		6DF25D31C9FC22E46B2FB18D /* MCPServerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD6D91BA383833E17A04708 /* MCPServerController.swift */; };
 		6E84BE4F895F20ECCCAC49CF /* SystemTranscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEFB1A6E2ADB9D3F30C674F /* SystemTranscriptionService.swift */; };
 		6FAE36AA6C47A3E26B9EE061 /* TranscriptCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63759B6031B2C843BFF20165 /* TranscriptCache.swift */; };
 		70641376F81FD9F144172967 /* MemontaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6715321C6C5E7675D7307B30 /* MemontaTests.swift */; };
 		71796C14BE82296EC3AC2136 /* RecordingProgressStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10DCBA033FC938DC5C39A50 /* RecordingProgressStatus.swift */; };
+		71C176D39F3336EB501396AB /* MCP-LICENSES.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1F4697D4F44A1BBCF3F3473D /* MCP-LICENSES.txt */; };
 		73A0290C71C2F13816797EB7 /* RecordingCaptureHealthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCB2D16CABB8902ED7084EF /* RecordingCaptureHealthTests.swift */; };
 		7550920525BD22EA08D3AF20 /* WhisperLocalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D280B5EB464C952AB8DC499 /* WhisperLocalService.swift */; };
 		7654D258DB7DF60336023400 /* RecordingElapsedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B459D3DA8227EE44DD998E /* RecordingElapsedLabel.swift */; };
@@ -94,6 +104,7 @@
 		7A9C687D43BA79533940620D /* RacingWatchdog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E64E2843A6D596B6B2F819A /* RacingWatchdog.swift */; };
 		7B628F9301A84A45876549D0 /* StorageSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C36388B8F342EBD786830A /* StorageSession.swift */; };
 		81A56F212AA480280F0D898E /* MicCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E670EE311E4734F07C0670B /* MicCaptureService.swift */; };
+		8543B028712BC99B329345E5 /* MCPAccessStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB82EA0108DF5B33B536AE6 /* MCPAccessStore.swift */; };
 		86D9F0FBB657046EA2AB5FEB /* VoiceprintMergeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF28F84B6BBC6AE6965239E3 /* VoiceprintMergeTests.swift */; };
 		87E7A09B45E5B173A3005E63 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF51AD1A22B2B2305B7DEC6 /* OnboardingView.swift */; };
 		8A551E3CB74854C9775E9EE5 /* ScreenVideoRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41B6F3CC0B7347D873FAB03 /* ScreenVideoRecorder.swift */; };
@@ -102,7 +113,7 @@
 		8E51BA505DA71CE6D2301201 /* WindowCloseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7564355B1353C42D10BB89 /* WindowCloseTests.swift */; };
 		8E7F9E52123F2E44F1868861 /* RootDeletionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281CEB999E23E533AF5C3A69 /* RootDeletionRequest.swift */; };
 		9080A2E3A7D4E57B6DE9BF2C /* AppExperience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F5334B13FFBE78E18CC42F /* AppExperience.swift */; };
-		92278244B3670CC8A782C426 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = E7A449851EAC141427D928C9 /* KeychainAccess */; };
+		92278244B3670CC8A782C426 /* NIOPosix in Frameworks */ = {isa = PBXBuildFile; productRef = 12556C2164EAD5B1C931C1CF /* NIOPosix */; };
 		92ACB01A6C03EBA31C39237D /* VoiceprintStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47EE89729812D8398993A68 /* VoiceprintStore.swift */; };
 		938531313478CAA5D9FF8C48 /* RecordingConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12294D93472D291CA1F723B8 /* RecordingConfig.swift */; };
 		938745C66705D4D517D53216 /* RecordCountdownPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91DB8731EB31CD1723498E8 /* RecordCountdownPanel.swift */; };
@@ -117,9 +128,10 @@
 		A0BBDAF5BFCC46EF0F9585AC /* STPhrases.txt in Resources */ = {isa = PBXBuildFile; fileRef = 35889CF37201F3BB9ED045F4 /* STPhrases.txt */; };
 		A13CDAD92423C34DAB78A76E /* NativeSpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88BC84F971D52DB16C1719 /* NativeSpeechService.swift */; };
 		A228A6B42C7D99E0547BC341 /* LLMConfigDraftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9447E809793443BB7B27E32A /* LLMConfigDraftTests.swift */; };
+		A444BD3DA6F3DC6493844D84 /* MCPSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB487A20D31DAA5F17B5DE58 /* MCPSettingsView.swift */; };
 		A731687576153BFA80F0A093 /* QuickNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B2FB1DDDAA00FC1A2602C /* QuickNote.swift */; };
-		A74EDBB2EB4177074E2BC618 /* sherpa-onnx-shared in Frameworks */ = {isa = PBXBuildFile; productRef = 0D90099C36C236781418FF64 /* sherpa-onnx-shared */; };
-		A801F97F53849B6BBA5D9A7C /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 979844683C78548F5EBAFCED /* WhisperKit */; };
+		A74EDBB2EB4177074E2BC618 /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = BBDB3287B5C76A8316828623 /* NIOHTTP1 */; };
+		A801F97F53849B6BBA5D9A7C /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8BF9EEF7D5C20BB785500498 /* NIOCore */; };
 		AA9E9051CE711F88FDDE242F /* VisionOCRLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9603F549999BD7F646443D0A /* VisionOCRLanguageTests.swift */; };
 		AD3C5AEB3270D3D9CE9B99E3 /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1A95F7B65BA718FBE7EABB /* TodoItem.swift */; };
 		AF8FC3A73BDAF8BA663D2CEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1977F8EE6DCDF26B64B400E7 /* Assets.xcassets */; };
@@ -135,9 +147,11 @@
 		B8B8654CFDA21CCFAC087AC0 /* TranscriptDictionaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB609D584755408625641DE /* TranscriptDictionaryService.swift */; };
 		BA47064756D00A81468D9E2C /* LLMPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9035B0D58DC88F0F406202AC /* LLMPreset.swift */; };
 		BCF6AE261DF462D7A9A3BF8C /* PersistenceReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158535A62372F2C47EB3A256 /* PersistenceReporting.swift */; };
+		BD8CA164CA85F5304EA4FD1C /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 979844683C78548F5EBAFCED /* WhisperKit */; };
 		BE6C3751ACB196375DA2C952 /* RecordingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AA4BEDAC1E291ACCDBBC5C /* RecordingListView.swift */; };
 		BEA048610CBCA6F407CC76B7 /* StartupBootstrapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E22AE429C3DEB202470A61D /* StartupBootstrapTests.swift */; };
 		BEA66BF47222DD7E8CC00827 /* RecordingSegmentTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB20192C5A155E511F7B85B /* RecordingSegmentTimeline.swift */; };
+		BF69F02E573294A8EC7C79BB /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = E7A449851EAC141427D928C9 /* KeychainAccess */; };
 		BFB9FB93E0A2A679FC55EC50 /* NoteSpeechViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91F0EDFDA628F2C776068A6 /* NoteSpeechViewModel.swift */; };
 		C131839BD8FADCCAF596BA70 /* RuntimeVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590412AF3B08D86FCA01111A /* RuntimeVerification.swift */; };
 		C2A531E68665A69C4E8E8367 /* MicMuteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FE77757A658F8456291CA3 /* MicMuteCommand.swift */; };
@@ -167,6 +181,7 @@
 		DA592A42CDDC9FB3C23923C3 /* AnnotationToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E192EDA36E5D9BA22A4D7FF /* AnnotationToolbar.swift */; };
 		DB0F987CB7E6E666ED883953 /* MemontaSmokeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D399D3D0E7E3E61667E142 /* MemontaSmokeUITests.swift */; };
 		DD4602269D697F0DA6C34ADE /* EntryMirrorStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF026FB4A7B9980D69850F9D /* EntryMirrorStoreTests.swift */; };
+		DFA103A4367B838B7DC5E784 /* MemontaMCPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2191FE0914C1120C46C676C /* MemontaMCPHelper.swift */; };
 		DFB7C7D5E33F0988CFB33788 /* AudioRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DDDBEE808A88B1A98C5DE0 /* AudioRecording.swift */; };
 		E0185F52D03C507305FB97A6 /* BackgroundWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63425E7F3BDEDA9E33843EB5 /* BackgroundWorker.swift */; };
 		E29AC5F1588B4366804598B3 /* OneClickPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D2842510B39EDEB2006E35 /* OneClickPlanTests.swift */; };
@@ -185,6 +200,7 @@
 		F9CCB5DDEDC61052EFE20572 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399C2AFDAA945086FE0DDBB2 /* TranscriptView.swift */; };
 		FCCF9A7EFA182E83C5B4049E /* TransientModeReadOnlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9896C65742B195F28BB24B37 /* TransientModeReadOnlyTests.swift */; };
 		FD4AB10770E5C299606125E6 /* StabilityRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F260BE9D46A6554344E1B1D6 /* StabilityRegressionTests.swift */; };
+		FD7E76C3BEE22B5BF2B1F626 /* MCPLoopbackListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A137DCFE24390373D6DCCD28 /* MCPLoopbackListener.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -201,6 +217,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = C9FF176CB2DEBB1D7861A94B;
 			remoteInfo = Memonta;
+		};
+		C3BC7E10DE038442D0BBFDC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7A48E0C8A19F2670CEFC8146 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D87378FF0193739C5D5821C2;
+			remoteInfo = MemontaMCPHelper;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -223,6 +246,8 @@
 		1B7564355B1353C42D10BB89 /* WindowCloseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCloseTests.swift; sourceTree = "<group>"; };
 		1E192EDA36E5D9BA22A4D7FF /* AnnotationToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationToolbar.swift; sourceTree = "<group>"; };
 		1E64E2843A6D596B6B2F819A /* RacingWatchdog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RacingWatchdog.swift; sourceTree = "<group>"; };
+		1EDAAFA6AF9B442D35F4B9FB /* MCPReadOnlyServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPReadOnlyServer.swift; sourceTree = "<group>"; };
+		1F4697D4F44A1BBCF3F3473D /* MCP-LICENSES.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "MCP-LICENSES.txt"; sourceTree = "<group>"; };
 		1F678CDFACEB0B6700058222 /* LLMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMService.swift; sourceTree = "<group>"; };
 		21F54F3D63DFDE52741D7ED8 /* AppCommandCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCommandCatalogTests.swift; sourceTree = "<group>"; };
 		21F5A7063C4F4A90DACA7125 /* RecordingMergeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingMergeRequest.swift; sourceTree = "<group>"; };
@@ -231,6 +256,7 @@
 		26C36388B8F342EBD786830A /* StorageSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageSession.swift; sourceTree = "<group>"; };
 		273E13CD8547491E4B92377E /* TaskCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCenterTests.swift; sourceTree = "<group>"; };
 		281CEB999E23E533AF5C3A69 /* RootDeletionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootDeletionRequest.swift; sourceTree = "<group>"; };
+		282D3971A851564B5B02B355 /* EntryIdentityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryIdentityStore.swift; sourceTree = "<group>"; };
 		2A9C6012E128677F62399335 /* MarkdownPDFRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownPDFRenderer.swift; sourceTree = "<group>"; };
 		2AC6A44D0ECD14A85ADA6467 /* PromptSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptSettingsView.swift; sourceTree = "<group>"; };
 		2BB9FBD7A398426234020931 /* SpeakerDiarizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakerDiarizationService.swift; sourceTree = "<group>"; };
@@ -314,15 +340,18 @@
 		94C3CD283C8DD4687AF1E01F /* VideoUnderstandingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoUnderstandingService.swift; sourceTree = "<group>"; };
 		9603F549999BD7F646443D0A /* VisionOCRLanguageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionOCRLanguageTests.swift; sourceTree = "<group>"; };
 		966920D8F70C5A6B175284A3 /* ScreenshotManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotManager.swift; sourceTree = "<group>"; };
+		972BE396F7A15F01B100980D /* EntryQueryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryQueryService.swift; sourceTree = "<group>"; };
 		9896C65742B195F28BB24B37 /* TransientModeReadOnlyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransientModeReadOnlyTests.swift; sourceTree = "<group>"; };
 		98C8720929A8CE42D0A1F712 /* WhisperModelDownloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperModelDownloadTests.swift; sourceTree = "<group>"; };
 		9AC2E07293B56E97C9534EB3 /* PersistenceCapability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceCapability.swift; sourceTree = "<group>"; };
 		9B9EB20C014AAF36BBA4C9C5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		9DBEB77E6786D91D9C7927AD /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A137DCFE24390373D6DCCD28 /* MCPLoopbackListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPLoopbackListener.swift; sourceTree = "<group>"; };
 		A2AA4BEDAC1E291ACCDBBC5C /* RecordingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingListView.swift; sourceTree = "<group>"; };
 		A5601B1C9F2A56061704CEA7 /* TranscriptSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptSegment.swift; sourceTree = "<group>"; };
 		A848D9B766E93793274DCFCA /* MicMuteMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicMuteMonitor.swift; sourceTree = "<group>"; };
 		A90A754F37A51078A0411921 /* AppUpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateService.swift; sourceTree = "<group>"; };
+		AB487A20D31DAA5F17B5DE58 /* MCPSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPSettingsView.swift; sourceTree = "<group>"; };
 		AB615F4CD00EFC5E2EE0CA14 /* UITestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSupport.swift; sourceTree = "<group>"; };
 		AC3BC74F10E8DA7049410B98 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		ACB609D584755408625641DE /* TranscriptDictionaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptDictionaryService.swift; sourceTree = "<group>"; };
@@ -339,6 +368,7 @@
 		B9D2842510B39EDEB2006E35 /* OneClickPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneClickPlanTests.swift; sourceTree = "<group>"; };
 		B9E3CFEBF2AD021A7658D791 /* EchoCancellerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoCancellerTests.swift; sourceTree = "<group>"; };
 		BAE165E47B08C2873D2E989D /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		BBB82EA0108DF5B33B536AE6 /* MCPAccessStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPAccessStore.swift; sourceTree = "<group>"; };
 		BE22D5CF12A705E6C0BA9AA1 /* SpeechSynthesisOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechSynthesisOptions.swift; sourceTree = "<group>"; };
 		BEE875AC8646590415BBF501 /* WhisperModelDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperModelDownloader.swift; sourceTree = "<group>"; };
 		BF026FB4A7B9980D69850F9D /* EntryMirrorStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryMirrorStoreTests.swift; sourceTree = "<group>"; };
@@ -359,12 +389,14 @@
 		D424B13A82FCB71468559B25 /* VideoUnderstandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoUnderstandingView.swift; sourceTree = "<group>"; };
 		D803F5C3E85E75BE8332EEEB /* AudioImportValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioImportValidator.swift; sourceTree = "<group>"; };
 		D87EE074DE242F28EBFDDF49 /* TimeInterval+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Formatting.swift"; sourceTree = "<group>"; };
+		D9871767D49EEB902E2B6F93 /* MemontaMCPHelper */ = {isa = PBXFileReference; includeInIndex = 0; path = MemontaMCPHelper; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAF6C05395E2F539A85E7E86 /* RecordingCaptureReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCaptureReport.swift; sourceTree = "<group>"; };
 		DC88BC84F971D52DB16C1719 /* NativeSpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeSpeechService.swift; sourceTree = "<group>"; };
 		DD491CAC9E839029D9329C0B /* FileSyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSyncService.swift; sourceTree = "<group>"; };
 		DDC8EEBFAF3E400FD413FA03 /* PinnedOCRTextPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedOCRTextPanel.swift; sourceTree = "<group>"; };
 		E03422960E06512CB62F57D6 /* TodoExtractionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoExtractionService.swift; sourceTree = "<group>"; };
 		E1AB3584F8A12FE99BF6AA7D /* TranscriptionProgressEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionProgressEstimator.swift; sourceTree = "<group>"; };
+		E2191FE0914C1120C46C676C /* MemontaMCPHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemontaMCPHelper.swift; sourceTree = "<group>"; };
 		E287679DA6284E534EFF7319 /* AppUpdateSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateSettingsView.swift; sourceTree = "<group>"; };
 		E4571647E37CED274A6E4051 /* DiarizationCalibrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarizationCalibrator.swift; sourceTree = "<group>"; };
 		E7B459D3DA8227EE44DD998E /* RecordingElapsedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingElapsedLabel.swift; sourceTree = "<group>"; };
@@ -372,7 +404,9 @@
 		E91F0EDFDA628F2C776068A6 /* NoteSpeechViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSpeechViewModel.swift; sourceTree = "<group>"; };
 		EB1A82F69516104C9C372A0E /* KeyframeExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyframeExtractor.swift; sourceTree = "<group>"; };
 		EBE08E8B05528625D9996D68 /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
+		EBE7286049E80B364E1617B6 /* MCPReadOnlyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPReadOnlyTests.swift; sourceTree = "<group>"; };
 		EC57F8EB75730E259185CEBF /* MemontaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemontaApp.swift; sourceTree = "<group>"; };
+		ECD6D91BA383833E17A04708 /* MCPServerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPServerController.swift; sourceTree = "<group>"; };
 		EEEDFCEBF7960340A527E619 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		EFBE2F431C86ABA985039A1F /* TodoSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSettingsView.swift; sourceTree = "<group>"; };
 		F0115F630825D9CE63CDE4F3 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -387,14 +421,34 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2F63F433EEAC068B49381CB1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				374A98D871FF3099447F9FB7 /* MCP in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C9ABEBA20723EF14A823025 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C66B6FC63D9B55FCA8AC14F /* MCP in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A46EE3D7FE06A31EF1A84002 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				034FD338C793A06305668772 /* Sparkle in Frameworks */,
-				A801F97F53849B6BBA5D9A7C /* WhisperKit in Frameworks */,
-				92278244B3670CC8A782C426 /* KeychainAccess in Frameworks */,
-				A74EDBB2EB4177074E2BC618 /* sherpa-onnx-shared in Frameworks */,
+				034FD338C793A06305668772 /* MCP in Frameworks */,
+				A801F97F53849B6BBA5D9A7C /* NIOCore in Frameworks */,
+				92278244B3670CC8A782C426 /* NIOPosix in Frameworks */,
+				A74EDBB2EB4177074E2BC618 /* NIOHTTP1 in Frameworks */,
+				6A1918C66D6D71DD35A65F70 /* Sparkle in Frameworks */,
+				BD8CA164CA85F5304EA4FD1C /* WhisperKit in Frameworks */,
+				BF69F02E573294A8EC7C79BB /* KeychainAccess in Frameworks */,
+				5F544AE1FAFF84847EE90CC3 /* sherpa-onnx-shared in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +459,7 @@
 			isa = PBXGroup;
 			children = (
 				CDDB04C70934796B36C0B770 /* Memonta */,
+				7DABD402E7E248FAA4B49318 /* MemontaMCPHelper */,
 				EBA7B49A8CC5DD6EB775A36F /* MemontaTests */,
 				6CD1FCE6C782920DC4493A31 /* MemontaUITests */,
 				668E52F48BB521250A332BC1 /* Products */,
@@ -423,6 +478,18 @@
 				C085FF4255CD1938DC2DDBD0 /* SystemNotice.swift */,
 			);
 			path = Root;
+			sourceTree = "<group>";
+		};
+		38472F4AE2B0FF953829239A /* MCP */ = {
+			isa = PBXGroup;
+			children = (
+				972BE396F7A15F01B100980D /* EntryQueryService.swift */,
+				BBB82EA0108DF5B33B536AE6 /* MCPAccessStore.swift */,
+				A137DCFE24390373D6DCCD28 /* MCPLoopbackListener.swift */,
+				1EDAAFA6AF9B442D35F4B9FB /* MCPReadOnlyServer.swift */,
+				ECD6D91BA383833E17A04708 /* MCPServerController.swift */,
+			);
+			path = MCP;
 			sourceTree = "<group>";
 		};
 		3AD0FBD7D4EBFB128A98B054 /* ScreenRecording */ = {
@@ -476,6 +543,7 @@
 			isa = PBXGroup;
 			children = (
 				7A1783D3E227D620F547AC56 /* Memonta.app */,
+				D9871767D49EEB902E2B6F93 /* MemontaMCPHelper */,
 				C790B433E478226D7E1EDD36 /* MemontaTests.xctest */,
 				690E301D13889658D881A972 /* MemontaUITests.xctest */,
 			);
@@ -514,12 +582,21 @@
 				150F924E42FBC037B152D766 /* Info.plist */,
 				BAE165E47B08C2873D2E989D /* InfoPlist.xcstrings */,
 				9DBEB77E6786D91D9C7927AD /* Localizable.xcstrings */,
+				1F4697D4F44A1BBCF3F3473D /* MCP-LICENSES.txt */,
 				FC96DBFE97F1CD5CAAD7FEF0 /* Memonta.entitlements */,
 				F0115F630825D9CE63CDE4F3 /* PrivacyInfo.xcprivacy */,
 				040F5C076E9E3D046E19E56B /* Sparkle-LICENSE.txt */,
 				885BE845475D25C8E61F4578 /* ChineseDictionary */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		7DABD402E7E248FAA4B49318 /* MemontaMCPHelper */ = {
+			isa = PBXGroup;
+			children = (
+				E2191FE0914C1120C46C676C /* MemontaMCPHelper.swift */,
+			);
+			path = MemontaMCPHelper;
 			sourceTree = "<group>";
 		};
 		885BE845475D25C8E61F4578 /* ChineseDictionary */ = {
@@ -541,6 +618,7 @@
 				8E39DD28BDCFC3DAF38F45C0 /* FeedbackView.swift */,
 				2D0877D9FD208D7C986F2DC7 /* HotkeySettingsView.swift */,
 				50FE5B3C11D193D425B8E1FE /* LLMSettingsViews.swift */,
+				AB487A20D31DAA5F17B5DE58 /* MCPSettingsView.swift */,
 				AE309DEC8A3B141056BA63BB /* PrivacyPolicyDetailView.swift */,
 				4732D714821729D4FE26BBE0 /* ScreenshotSettingsView.swift */,
 				EFBE2F431C86ABA985039A1F /* TodoSettingsView.swift */,
@@ -572,6 +650,7 @@
 				3347BFF97511F53E690F950A /* EchoCanceller.swift */,
 				8219A2F0E80F5B97F8B95918 /* EchoReductionService.swift */,
 				EBE08E8B05528625D9996D68 /* EncryptionService.swift */,
+				282D3971A851564B5B02B355 /* EntryIdentityStore.swift */,
 				4605F33D6873D94110C48D3E /* EntryMirrorStore.swift */,
 				DD491CAC9E839029D9329C0B /* FileSyncService.swift */,
 				5786ADED6FA719DFD8FBDF72 /* GlobalHotkeyManager.swift */,
@@ -619,6 +698,7 @@
 				73D4FFF21077571F80DD0326 /* WhisperAPIService.swift */,
 				8D280B5EB464C952AB8DC499 /* WhisperLocalService.swift */,
 				BEE875AC8646590415BBF501 /* WhisperModelDownloader.swift */,
+				38472F4AE2B0FF953829239A /* MCP */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -650,6 +730,7 @@
 				696C5424AA9709B46B99B13D /* KeyframeExtractorTests.swift */,
 				9447E809793443BB7B27E32A /* LLMConfigDraftTests.swift */,
 				83C5857D081B52ADC1115EDF /* MarkdownPDFRendererTests.swift */,
+				EBE7286049E80B364E1617B6 /* MCPReadOnlyTests.swift */,
 				6715321C6C5E7675D7307B30 /* MemontaTests.swift */,
 				798D67D700437D5AA1503956 /* MicCaptureRecoveryTests.swift */,
 				683F3B871F1AF2EE49A21A3B /* MicCaptureRestartTests.swift */,
@@ -714,6 +795,7 @@
 			buildConfigurationList = FF64E302974CDE2A06D7BA9D /* Build configuration list for PBXNativeTarget "MemontaTests" */;
 			buildPhases = (
 				86FC593DD51479B4E31C5B63 /* Sources */,
+				2F63F433EEAC068B49381CB1 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -722,6 +804,7 @@
 			);
 			name = MemontaTests;
 			packageProductDependencies = (
+				606956E99F330C9E52D543DC /* MCP */,
 			);
 			productName = MemontaTests;
 			productReference = C790B433E478226D7E1EDD36 /* MemontaTests.xctest */;
@@ -754,14 +837,20 @@
 				9239E3E59CFA90D4A7B74EB1 /* Sources */,
 				3527ED728C91DD5AB9A63171 /* Resources */,
 				A46EE3D7FE06A31EF1A84002 /* Frameworks */,
+				922FB769EE8C71EAAF6C7AF5 /* Embed MCP Helper */,
 				EF180A48C0755CE3EFC6402D /* Verify Embedded Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E7DD264B3492DA106B5478AC /* PBXTargetDependency */,
 			);
 			name = Memonta;
 			packageProductDependencies = (
+				4B2E7226A42272B86AAA17EB /* MCP */,
+				8BF9EEF7D5C20BB785500498 /* NIOCore */,
+				12556C2164EAD5B1C931C1CF /* NIOPosix */,
+				BBDB3287B5C76A8316828623 /* NIOHTTP1 */,
 				C1F173E3DC4D46A8D8A2C1C4 /* Sparkle */,
 				979844683C78548F5EBAFCED /* WhisperKit */,
 				E7A449851EAC141427D928C9 /* KeychainAccess */,
@@ -771,6 +860,25 @@
 			productReference = 7A1783D3E227D620F547AC56 /* Memonta.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D87378FF0193739C5D5821C2 /* MemontaMCPHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F1C6E48013A31406BE31AF09 /* Build configuration list for PBXNativeTarget "MemontaMCPHelper" */;
+			buildPhases = (
+				AC35D651CF7F2CAC431B6DA9 /* Sources */,
+				4C9ABEBA20723EF14A823025 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MemontaMCPHelper;
+			packageProductDependencies = (
+				DE897DCB09E9B9C5AA3DFEA6 /* MCP */,
+			);
+			productName = MemontaMCPHelper;
+			productReference = D9871767D49EEB902E2B6F93 /* MemontaMCPHelper */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -778,7 +886,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2700;
+				LastUpgradeCheck = 2710;
 				TargetAttributes = {
 					332EA8A2586D44BF154960A7 = {
 						DevelopmentTeam = B35SN74F9U;
@@ -788,6 +896,9 @@
 						TestTargetID = C9FF176CB2DEBB1D7861A94B;
 					};
 					C9FF176CB2DEBB1D7861A94B = {
+						DevelopmentTeam = B35SN74F9U;
+					};
+					D87378FF0193739C5D5821C2 = {
 						DevelopmentTeam = B35SN74F9U;
 					};
 				};
@@ -823,8 +934,10 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				ACD80C39F70BF43A94DA0A19 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				B2E958D466CF34A1B7E2DC2E /* XCRemoteSwiftPackageReference "swift-sdk" */,
 				685104B81990B990F232293C /* XCRemoteSwiftPackageReference "sherpa-onnx" */,
 				728FFD8E0DE8AB4D89319CE0 /* XCRemoteSwiftPackageReference "Sparkle" */,
+				A8D39123DE08B273E25C4E9E /* XCRemoteSwiftPackageReference "swift-nio" */,
 				4F963E471008A304223A7069 /* XCRemoteSwiftPackageReference "argmax-oss-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -833,6 +946,7 @@
 			projectRoot = "";
 			targets = (
 				C9FF176CB2DEBB1D7861A94B /* Memonta */,
+				D87378FF0193739C5D5821C2 /* MemontaMCPHelper */,
 				332EA8A2586D44BF154960A7 /* MemontaTests */,
 				BD295DFD48247E14FA6DD2B5 /* MemontaUITests */,
 			);
@@ -847,6 +961,7 @@
 				AF8FC3A73BDAF8BA663D2CEB /* Assets.xcassets in Resources */,
 				C687BFB5CD58D47F82773E38 /* InfoPlist.xcstrings in Resources */,
 				0FABD39C64D2DEF6FD0688A6 /* Localizable.xcstrings in Resources */,
+				71C176D39F3336EB501396AB /* MCP-LICENSES.txt in Resources */,
 				7701974D6D4405A46179F7FC /* PrivacyInfo.xcprivacy in Resources */,
 				D65DF6DE6FBF58BB0E734DD2 /* STCharacters.txt in Resources */,
 				A0BBDAF5BFCC46EF0F9585AC /* STPhrases.txt in Resources */,
@@ -886,6 +1001,25 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\n# 修复 sherpa-onnx shared 产物的两个上游打包问题（构建前执行，幂等）：\n# 1. csukuangfj/onnxruntime-libs 的 shared xcframework 用实体目录/文件复制代替标准\n#    符号链接（Versions/Current 为实体目录、顶层存在重复的二进制与 Info.plist），\n#    Xcode 嵌入后 codesign --verify --strict 会报 \"invalid Info.plist\"；\n# 2. SherpaOnnxC 二进制引用 @rpath/libonnxruntime.dylib，而实际嵌入的是\n#    onnxruntime.framework（install name 为 @rpath/onnxruntime.framework/Versions/A/onnxruntime），\n#    导致启动时 dyld 报 Library missing 崩溃。\n#\n# 产物目录只定位「本次构建所用的」DerivedData：BUILD_DIR / BUILD_ROOT 均为\n# …/DerivedData/<工程>/Build/Products（**不含**配置目录），故 SourcePackages/artifacts\n# 是其兄弟目录，路径为 ../../SourcePackages/artifacts。旧实现写 ../../../、多退一级后\n# 落到 DerivedData 根，自定义 DerivedData 与 CI 上会静默找不到产物（应用照旧嵌错引用），\n# 当时靠遍历 ~/Library/Developer/Xcode/DerivedData/* 兜底，代价是会扫描并改写其他工程的\n# 产物，现改为只认本次构建目录 + 仓库内 .packages（-packageCachePath 场景）。\nset -u\nshopt -s nullglob\n\nroots=()\nadd_root() {\n    local candidate=\"$1\"\n    [ -n \"$candidate\" ] && [ -d \"$candidate\" ] || return 0\n    for existing in \"${roots[@]:-}\"; do\n        [ \"$existing\" = \"$candidate\" ] && return 0\n    done\n    roots+=(\"$candidate\")\n}\n\n# 发布脚本显式传入的本次 SwiftPM 路径；不扫描其他项目的缓存。\nif [ -n \"${MEMONTA_PACKAGE_CACHE_PATH:-}\" ]; then\n    add_root \"$MEMONTA_PACKAGE_CACHE_PATH/artifacts\"\nfi\n\n# 仓库内产物（构建时指定 -packageCachePath .packages 的场景）\nadd_root \"${SRCROOT:-}/.packages/artifacts\"\n# 本次构建的 DerivedData：BUILD_DIR / BUILD_ROOT 指向 …/Build/Products，\n# OBJROOT 指向 …/Build/Intermediates.noindex，两者上溯两级即 DerivedData 工程目录\nadd_root \"${BUILD_DIR:-}/../../SourcePackages/artifacts\"\nadd_root \"${BUILD_ROOT:-}/../../SourcePackages/artifacts\"\nadd_root \"${OBJROOT:-}/../../SourcePackages/artifacts\"\n\nif [ \"${#roots[@]}\" -eq 0 ]; then\n    echo \"WARNING: 未找到 SourcePackages/artifacts 产物目录，跳过产物修复；后续 'Verify Embedded Frameworks' 阶段会校验嵌入结果\" >&2\nfi\n\nlayout_fixed=0\ndylib_fixed=0\ndylib_failed=0\n\nfor root in \"${roots[@]:-}\"; do\n    for fw in \"$root\"/onnxruntime-libs/*/onnxruntime.xcframework/*/onnxruntime.framework \\\n              \"$root\"/extract/onnxruntime-libs/*/onnxruntime.xcframework/*/onnxruntime.framework; do\n        [ -d \"$fw/Versions/A\" ] || continue\n        changed=0\n        if [ ! -L \"$fw/Versions/Current\" ]; then\n            rm -rf \"$fw/Versions/Current\"\n            ln -s A \"$fw/Versions/Current\"\n            changed=1\n        fi\n        for name in onnxruntime Headers Resources Modules; do\n            # 上游的 Modules 只在 framework 根目录，而其他内容可能在\n            # 根目录和 Versions/A 同时存在。先把唯一副本移入 A，再统一建立符号链接。\n            if [ -e \"$fw/$name\" ] && [ ! -L \"$fw/$name\" ]; then\n                if [ ! -e \"$fw/Versions/A/$name\" ]; then\n                    mv \"$fw/$name\" \"$fw/Versions/A/$name\"\n                else\n                    rm -rf \"$fw/$name\"\n                fi\n                changed=1\n            fi\n            if [ -e \"$fw/Versions/A/$name\" ]; then\n                if [ ! -L \"$fw/$name\" ]; then\n                    rm -rf \"$fw/$name\"\n                    ln -s \"Versions/Current/$name\" \"$fw/$name\"\n                    changed=1\n                fi\n            fi\n        done\n        if [ \"$changed\" -eq 1 ]; then\n            layout_fixed=$((layout_fixed + 1))\n            echo \"Normalized framework layout: $fw\"\n        fi\n    done\n\n    # 修复 SherpaOnnxC 对 libonnxruntime.dylib 的错误引用（指向 onnxruntime.framework 的真实路径）\n    for fw in \"$root\"/sherpa-onnx/*/sherpa-onnx.xcframework/*/SherpaOnnxC.framework \\\n              \"$root\"/extract/sherpa-onnx/*/sherpa-onnx.xcframework/*/SherpaOnnxC.framework; do\n        bin=\"$fw/Versions/A/SherpaOnnxC\"\n        [ -f \"$bin\" ] || continue\n        if otool -L \"$bin\" 2>/dev/null | grep -q \"libonnxruntime.dylib\"; then\n            if install_name_tool -change \"@rpath/libonnxruntime.dylib\" \\\n                \"@rpath/onnxruntime.framework/Versions/A/onnxruntime\" \"$bin\" 2>/dev/null; then\n                dylib_fixed=$((dylib_fixed + 1))\n                echo \"Fixed dylib reference: $bin\"\n            else\n                # 改不动就必须让构建失败：继续下去会产出一个启动即崩溃的 App，\n                # 旧实现只打 WARNING 并 exit 0\n                echo \"error: install_name_tool 修复失败，产物仍引用 libonnxruntime.dylib: $bin\" >&2\n                dylib_failed=$((dylib_failed + 1))\n            fi\n        fi\n    done\ndone\n\nif [ \"$dylib_failed\" -gt 0 ]; then\n    echo \"error: $dylib_failed 个 SherpaOnnxC 产物的 dylib 引用未能修复，中止构建\" >&2\n    exit 1\nfi\n\necho \"onnxruntime 产物修复完成：规范布局 $layout_fixed 个，dylib 引用 $dylib_fixed 个，产物目录 ${#roots[@]} 个\"\n\n# 注意：这里**不再删除** App 内嵌副本。\n# 实测 Xcode 的「Embed Frameworks」不会仅仅因为该文件被删除就重新拷贝（它认为输出已是\n# 最新，Debug 使用 debug dylib 时尤其明显），删除反而会让 App 缺失 SherpaOnnxC、\n# 启动即 “Library not loaded”。内嵌副本的刷新与重签统一交给构建末段的\n# Verify Embedded Frameworks 阶段处理（那里能拿到签名身份，也能一并做校验）。\n\nexit 0\n";
 		};
+		922FB769EE8C71EAAF6C7AF5 /* Embed MCP Helper */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Embed MCP Helper";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\nset -eu\n\n# Xcode target dependency 保证 helper 已构建、已签名，再嵌入主应用。\nhelper_source=\"${BUILT_PRODUCTS_DIR}/memonta-mcp\"\nhelper_destination=\"${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/Helpers\"\ntest -x \"$helper_source\"\nmkdir -p \"$helper_destination\"\nditto \"$helper_source\" \"${helper_destination}/memonta-mcp\"\n";
+		};
 		EF180A48C0755CE3EFC6402D /* Verify Embedded Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -922,6 +1056,7 @@
 				DD4602269D697F0DA6C34ADE /* EntryMirrorStoreTests.swift in Sources */,
 				3459D3950842C4444F391DFC /* KeyframeExtractorTests.swift in Sources */,
 				A228A6B42C7D99E0547BC341 /* LLMConfigDraftTests.swift in Sources */,
+				438B9B8FEBDBE4BD2AF00AF9 /* MCPReadOnlyTests.swift in Sources */,
 				95BE394560FCFF52BA68C898 /* MarkdownPDFRendererTests.swift in Sources */,
 				70641376F81FD9F144172967 /* MemontaTests.swift in Sources */,
 				D26F7BDBEA191A359B153A5F /* MicCaptureRecoveryTests.swift in Sources */,
@@ -974,7 +1109,9 @@
 				0AB22547F4D0D11055CC41A1 /* EchoCanceller.swift in Sources */,
 				097E2F76738F05D30DE480F5 /* EchoReductionService.swift in Sources */,
 				ECA48F776CA483B6F289DCE9 /* EncryptionService.swift in Sources */,
+				483EACF68577F4FD7EB0F284 /* EntryIdentityStore.swift in Sources */,
 				EB2C9BF51BEF21350B3A75A4 /* EntryMirrorStore.swift in Sources */,
+				3DB9EC7FF6908D31B721E128 /* EntryQueryService.swift in Sources */,
 				D310907F350AD383634EB111 /* ExportDocuments.swift in Sources */,
 				CCD57062FCED3B5F3DB99A19 /* ExportModifiers.swift in Sources */,
 				38E5CBBFB58FA98D07454CF2 /* FeedbackView.swift in Sources */,
@@ -989,6 +1126,11 @@
 				CD38C7127C141E971FD45DF7 /* LLMSettingsViews.swift in Sources */,
 				7837A4CCF4B7976D75B31583 /* LifecycleTasksModifier.swift in Sources */,
 				05B85D8B05C57AAA3F3EF08B /* LocalLLMCapabilities.swift in Sources */,
+				8543B028712BC99B329345E5 /* MCPAccessStore.swift in Sources */,
+				FD7E76C3BEE22B5BF2B1F626 /* MCPLoopbackListener.swift in Sources */,
+				0CA8B6B3AFAEC7DCDF85A956 /* MCPReadOnlyServer.swift in Sources */,
+				6DF25D31C9FC22E46B2FB18D /* MCPServerController.swift in Sources */,
+				A444BD3DA6F3DC6493844D84 /* MCPSettingsView.swift in Sources */,
 				C46C5C4ABB724A1EA5DCC5A4 /* MainActor+AssumeOnMainThread.swift in Sources */,
 				20851004D24613DFFDC74E73 /* MarkdownPDFRenderer.swift in Sources */,
 				50F42EADB9670EB78161B22B /* MarkdownView.swift in Sources */,
@@ -1082,6 +1224,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AC35D651CF7F2CAC431B6DA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DFA103A4367B838B7DC5E784 /* MemontaMCPHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CE6E3671F39C2239461A4BF9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1106,9 +1256,29 @@
 			target = C9FF176CB2DEBB1D7861A94B /* Memonta */;
 			targetProxy = BCCBD75BCA5BB7327FBAC00F /* PBXContainerItemProxy */;
 		};
+		E7DD264B3492DA106B5478AC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D87378FF0193739C5D5821C2 /* MemontaMCPHelper */;
+			targetProxy = C3BC7E10DE038442D0BBFDC9 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		01C2A77FB7480E70F9CF3A94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.oceanix.Memonta.mcp-helper";
+				PRODUCT_NAME = "memonta-mcp";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		2547E864604834A3958988AC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1126,7 +1296,11 @@
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Memonta 需要访问麦克风以录制会议音频";
 				INFOPLIST_KEY_NSRemindersUsageDescription = "Memonta 需要访问提醒事项以将 AI 拆解的待办写入系统提醒事项";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Memonta 需要访问语音识别以在本地将会议录音转成文字";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/Frameworks",
+				);
 				MEMONTA_UNNOTARIZED_BUILD = NO;
 				MEMONTA_UPDATE_FEED_URL = "https://raw.githubusercontent.com/oceanix-pr/Memonta/updates/stable/appcast.xml";
 				MEMONTA_UPDATE_PUBLIC_KEY = "IixvTkNz6P7bWMnZhap/1nSns9CJDAjlMhGxUO/2BtI=";
@@ -1141,6 +1315,21 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.oceanix.Memonta;
 				PRODUCT_NAME = Memonta;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		677EF9E6EFBDE669EED043E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.oceanix.Memonta.mcp-helper";
+				PRODUCT_NAME = "memonta-mcp";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -1214,7 +1403,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 143;
+				CURRENT_PROJECT_VERSION = 144;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1231,7 +1420,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOG = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 9.5.3;
+				MARKETING_VERSION = 9.6.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1279,7 +1468,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 143;
+				CURRENT_PROJECT_VERSION = 144;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1302,7 +1491,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOG = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 9.5.3;
+				MARKETING_VERSION = 9.6.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1333,7 +1522,11 @@
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Memonta 需要访问麦克风以录制会议音频";
 				INFOPLIST_KEY_NSRemindersUsageDescription = "Memonta 需要访问提醒事项以将 AI 拆解的待办写入系统提醒事项";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Memonta 需要访问语音识别以在本地将会议录音转成文字";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/Frameworks",
+				);
 				MEMONTA_UNNOTARIZED_BUILD = NO;
 				MEMONTA_UPDATE_FEED_URL = "https://raw.githubusercontent.com/oceanix-pr/Memonta/updates/stable/appcast.xml";
 				MEMONTA_UPDATE_PUBLIC_KEY = "IixvTkNz6P7bWMnZhap/1nSns9CJDAjlMhGxUO/2BtI=";
@@ -1416,6 +1609,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
+		F1C6E48013A31406BE31AF09 /* Build configuration list for PBXNativeTarget "MemontaMCPHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				677EF9E6EFBDE669EED043E1 /* Debug */,
+				01C2A77FB7480E70F9CF3A94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		FF64E302974CDE2A06D7BA9D /* Build configuration list for PBXNativeTarget "MemontaTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1452,12 +1654,28 @@
 				version = 2.10.0;
 			};
 		};
+		A8D39123DE08B273E25C4E9E /* XCRemoteSwiftPackageReference "swift-nio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-nio";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.65.0;
+			};
+		};
 		ACD80C39F70BF43A94DA0A19 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.2.2;
+			};
+		};
+		B2E958D466CF34A1B7E2DC2E /* XCRemoteSwiftPackageReference "swift-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/modelcontextprotocol/swift-sdk";
+			requirement = {
+				kind = exactVersion;
+				version = 0.12.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1468,15 +1686,45 @@
 			package = 685104B81990B990F232293C /* XCRemoteSwiftPackageReference "sherpa-onnx" */;
 			productName = "sherpa-onnx-shared";
 		};
+		12556C2164EAD5B1C931C1CF /* NIOPosix */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8D39123DE08B273E25C4E9E /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOPosix;
+		};
+		4B2E7226A42272B86AAA17EB /* MCP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B2E958D466CF34A1B7E2DC2E /* XCRemoteSwiftPackageReference "swift-sdk" */;
+			productName = MCP;
+		};
+		606956E99F330C9E52D543DC /* MCP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B2E958D466CF34A1B7E2DC2E /* XCRemoteSwiftPackageReference "swift-sdk" */;
+			productName = MCP;
+		};
+		8BF9EEF7D5C20BB785500498 /* NIOCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8D39123DE08B273E25C4E9E /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOCore;
+		};
 		979844683C78548F5EBAFCED /* WhisperKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F963E471008A304223A7069 /* XCRemoteSwiftPackageReference "argmax-oss-swift" */;
 			productName = WhisperKit;
 		};
+		BBDB3287B5C76A8316828623 /* NIOHTTP1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8D39123DE08B273E25C4E9E /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOHTTP1;
+		};
 		C1F173E3DC4D46A8D8A2C1C4 /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 728FFD8E0DE8AB4D89319CE0 /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
+		};
+		DE897DCB09E9B9C5AA3DFEA6 /* MCP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B2E958D466CF34A1B7E2DC2E /* XCRemoteSwiftPackageReference "swift-sdk" */;
+			productName = MCP;
 		};
 		E7A449851EAC141427D928C9 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;

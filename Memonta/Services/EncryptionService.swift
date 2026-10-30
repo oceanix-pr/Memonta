@@ -267,6 +267,18 @@ enum EncryptionService {
 
     // MARK: - 文件加密/解密
 
+    /// 对外读取必须区分“没有内容”与“密文无法解开”，沿用明文兼容和失败告警。
+    static func decryptForExternalAccess(_ value: String?) throws -> String {
+        guard let value, !value.isEmpty else { return "" }
+        guard value.utf8.count <= 4 * 1024 * 1024 else { throw MCPQueryError.responseTooLarge }
+        guard let data = Data(base64Encoded: value), data.count >= 28 else { return value }
+        do { return try decrypt(value) }
+        catch {
+            markDecryptionFailureIfNeeded(value)
+            throw MCPQueryError.readFailed
+        }
+    }
+
     /// 加密文件内容并写入磁盘
     /// - Parameters:
     ///   - sourceURL: 源文件 URL

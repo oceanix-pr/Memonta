@@ -612,6 +612,7 @@ enum FileSyncService {
 
         // 顺序阶段——ModelContext 非线程安全，插入操作必须串行
         var newCount = 0
+        var metadataSaveFailed = false
         // 插入前二次检查的已占用集合：以扫描开始时的快照为起点，每插入一条就登记
         // 批量二次检查：把「候选文件夹名里哪些已入库」压缩成按批的少数查询。
         // 取到的是循环开始时刻的快照；循环内本轮自己插入的占用由 occupiedFolderNames 跟进。
@@ -651,10 +652,12 @@ enum FileSyncService {
                     videoFileName: data.videoFileName
                 )
                 recording.createdAt = data.createdAt
+                if let entryID = data.entryID { recording.id = entryID }
                 recording.isHidden = data.isHidden
                 // 兜底：meta.json 尚未带 hasVideoSource 的旧文件夹，只要磁盘上仍有视频就补上，
                 // 之后即便用户清理原视频，条目类型也不会退回「录音」
                 recording.hasVideoSource = data.hasVideoSource || recording.hasVideoSource
+                if data.entryID == nil, !recording.saveMetaToFolder() { metadataSaveFailed = true }
                 // 先插入再加载镜像：加载路径的提交前校验会按 id 确认条目仍存在，
                 // 未插入的新条目会被误判为“已删除”
                 context.insert(recording)
@@ -680,7 +683,9 @@ enum FileSyncService {
                     folderName: data.folderName
                 )
                 note.createdAt = data.createdAt
+                if let entryID = data.entryID { note.id = entryID }
                 note.isHidden = data.isHidden
+                if data.entryID == nil, !note.saveMetaToFolder() { metadataSaveFailed = true }
                 let preparedSummary = await loadEncryptedMirrorFile(at: note.summaryFileURL)
                 note.summaryText = preparedSummary.encrypted ?? preparedSummary.plain
                 context.insert(note)
@@ -689,7 +694,7 @@ enum FileSyncService {
             }
         }
 
-        var saveFailed = false
+        var saveFailed = metadataSaveFailed
         if newCount > 0 {
             do {
                 try context.save()
@@ -947,7 +952,8 @@ enum FileSyncService {
             title: meta.title,
             isHidden: meta.isHidden,
             videoFileName: videoFileName,
-            hasVideoSource: hasVideoSource
+            hasVideoSource: hasVideoSource,
+            entryID: readEntryIdentity(in: dir)
         ))
         return outcome
     }
@@ -992,8 +998,20 @@ enum FileSyncService {
             title: title,
             encryptedText: encryptedText,
             imageFileName: imageFileName,
-            isHidden: meta.isHidden
+            isHidden: meta.isHidden,
+            entryID: readEntryIdentity(in: AudioRecording.resolveFolderURL(forFolderName: folderName))
         ))
+    }
+
+    private static func readEntryIdentity(in folder: URL) -> UUID? {
+        do { return try EntryIdentityStore.read(from: folder) }
+        catch {
+            logger.error("条目身份元数据读取失败：\(error.localizedDescription)")
+            PersistenceReporting.reportSaveFailure(EntryMetadataWriteError(
+                folderName: folder.lastPathComponent, reason: error.localizedDescription
+            ))
+            return nil
+        }
     }
 
     // MARK: - 异步音频时长
@@ -1885,6 +1903,7 @@ enum FolderScanResult: Sendable {
         /// 条目是否为视频条目（录屏/导入视频）：来自 meta.json，清理原视频后仍保留，
         /// 用于列表图标/类型文案不因删除视频文件而退回「录音」
         let hasVideoSource: Bool
+        var entryID: UUID? = nil
     }
 
     struct QuickNoteData: Sendable {
@@ -1894,6 +1913,7 @@ enum FolderScanResult: Sendable {
         let encryptedText: String?
         let imageFileName: String?
         let isHidden: Bool
+        var entryID: UUID? = nil
     }
 
     case recording(RecordingData)

@@ -3,7 +3,7 @@ options:
   bundleIdPrefix: com.oceanix.Memonta
   deploymentTarget:
     macOS: "15.0"
-  xcodeVersion: "27.0"
+  xcodeVersion: "27.1"
   generateEmptyDirectories: true
   # 开发语言：与 String Catalog 的 sourceLanguage（简体中文 zh-Hans）保持一致。
   # 生成工程的 developmentRegion 会由此变为 zh-Hans；若不设置则默认 en，
@@ -36,8 +36,8 @@ options:
 settings:
   base:
     SWIFT_VERSION: "6.0"
-    MARKETING_VERSION: "9.5.3"
-    CURRENT_PROJECT_VERSION: "143"
+    MARKETING_VERSION: "9.6.0"
+    CURRENT_PROJECT_VERSION: "144"
     DEVELOPMENT_TEAM: "B35SN74F9U"
     CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: YES
     DEAD_CODE_STRIPPING: YES
@@ -76,7 +76,10 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         # macOS 应用框架位于 Contents/Frameworks，必须用 ../Frameworks；
         # 之前只有 @executable_path/Frameworks（指向 MacOS/Frameworks）导致嵌入动态库启动时崩溃
-        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../Frameworks @executable_path/Frameworks"
+        LD_RUNPATH_SEARCH_PATHS:
+          - "$(inherited)"
+          - "@executable_path/../Frameworks"
+          - "@executable_path/Frameworks"
         # 8.0.0(68) macOS 27 崩溃修复（BUG.txt）：SwiftUI VideoPlayer 实现在 _AVKit_SwiftUI 垫片框架，
         # 其表示类型的 ObjC 父类在 AVKit；macOS 27 SDK 起 import AVKit 不再自动链接 AVKit.framework
         # （实测仅 import 只链到 _AVKit_SwiftUI 垫片），首帧构建 VideoPlayer 时 Swift 运行时在
@@ -121,6 +124,11 @@ targets:
         inputFiles: []
         outputFiles: []
     postBuildScripts:
+      - path: Scripts/embed_mcp_helper.sh
+        name: Embed MCP Helper
+        basedOnDependencyAnalysis: false
+        inputFiles: []
+        outputFiles: []
       # 重签 Xcode Run/Test 会优先加载的构建目录动态框架，并校验
       # SherpaOnnxC 的引用与签名；异常时直接让构建失败，避免启动即崩溃
       - path: Scripts/verify_embedded_frameworks.sh
@@ -129,6 +137,16 @@ targets:
         inputFiles: []
         outputFiles: []
     dependencies:
+      - target: MemontaMCPHelper
+        embed: false
+      - package: MCP
+        product: MCP
+      - package: SwiftNIO
+        product: NIOCore
+      - package: SwiftNIO
+        product: NIOPosix
+      - package: SwiftNIO
+        product: NIOHTTP1
       - package: Sparkle
       - package: WhisperKit
       - package: KeychainAccess
@@ -143,6 +161,20 @@ targets:
         - MemontaTests
         - MemontaUITests
 
+  MemontaMCPHelper:
+    type: tool
+    platform: macOS
+    sources:
+      - path: MemontaMCPHelper
+    dependencies:
+      - package: MCP
+        product: MCP
+    settings:
+      base:
+        PRODUCT_NAME: memonta-mcp
+        PRODUCT_BUNDLE_IDENTIFIER: com.oceanix.Memonta.mcp-helper
+        ENABLE_HARDENED_RUNTIME: YES
+
   MemontaTests:
     type: bundle.unit-test
     platform: macOS
@@ -150,6 +182,8 @@ targets:
       - path: MemontaTests
     dependencies:
       - target: Memonta
+      - package: MCP
+        product: MCP
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.oceanix.Memonta.tests
@@ -175,6 +209,12 @@ targets:
 
 
 packages:
+  MCP:
+    url: https://github.com/modelcontextprotocol/swift-sdk
+    exactVersion: "0.12.1"
+  SwiftNIO:
+    url: https://github.com/apple/swift-nio
+    from: "2.65.0"
   Sparkle:
     url: https://github.com/sparkle-project/Sparkle
     exactVersion: "2.10.0"

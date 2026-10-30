@@ -19,6 +19,7 @@ Memonta 使用 Swift 6、SwiftUI、SwiftData，核心链路为：
 - macOS 集成菜单栏、全局截图热键、麦克风与会议应用静音检测、Dock 显隐。
 - 本地文件为权威数据，SwiftData 为索引；文本加密与云端 PII 处理有各自边界，详见安全篇。
 - 工程为 macOS 单平台应用与测试；iOS 支持（含 iOS Share Extension）已取消。
+- [本机 MCP](../MCP.md) 默认关闭，按客户端授权提供只读的资料查询与检索；进程运行、隐私确认和持久化启动就绪后可用。
 
 ## 文档导航
 

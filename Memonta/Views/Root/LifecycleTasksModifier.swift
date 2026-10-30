@@ -25,7 +25,7 @@ struct LifecycleTasksModifier: ViewModifier {
             .disabled(AppUpdateService.shared.isPreparingToInstall || RecordingMergeActivity.shared.isRunning)
             .task(id: privacyAccepted) {
                 guard !AppRuntime.isRunningTests else { return }
-                guard privacyAccepted else { return }
+                guard privacyAccepted else { await MCPServerController.shared.suspend(); return }
                 // 单一启动协调器：以下步骤共用同一个 ModelContext，必须严格串行执行
                 // （加密迁移 → 崩溃残留状态复位 → 磁盘对账 → 后台队列续跑）。
                 // 旧实现把「录音导入 / 快捷笔记导入 / 模型预热」拆成并列的 task 并行跑：
@@ -52,6 +52,9 @@ struct LifecycleTasksModifier: ViewModifier {
                 if result.saveFailed {
                     viewModel.errorMessage = String(localized: "数据同步完成但保存到数据库失败，重启应用后可能需要重新加载。请检查磁盘空间后重启应用。")
                     viewModel.showError = true
+                }
+                if !result.saveFailed, !Task.isCancelled {
+                    await MCPServerController.shared.install(context: modelContext, isTransient: isTransientMode)
                 }
                 // 兜底续跑：队列有残留且守护进程不在运行（worker 崩溃/让位/握手超时）时，
                 // 主应用直接续跑同一套出队逻辑，保证用户发起的任务不因 worker 异常而丢失。

@@ -835,7 +835,7 @@ struct RootView: View {
     /// 设置弹窗内容
     @ViewBuilder
     private var settingsSheetContent: some View {
-        SettingsView(settingsVM: settingsVM, experienceStore: experienceStore)
+        SettingsView(isTransientMode: isTransientMode, settingsVM: settingsVM, experienceStore: experienceStore)
             #if os(macOS)
             .frame(minWidth: 500, minHeight: 500)
             #else

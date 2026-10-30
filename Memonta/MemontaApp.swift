@@ -296,8 +296,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let service = WhisperLocalService.shared
         let needsUnload = service.hasLoadedModel
         Task { @MainActor in
+            MCPServerController.shared.stopAcceptingRequests()
             // 先等待采集资源收尾（内部有界看门狗），再启动 worker。
             await MeetingRecorderService.shared.finalizeForTermination()
+            await MCPServerController.shared.suspend()
             // 条目镜像（转写/总结/画面要点）此前是 fire-and-forget 写入：刚保存完就退出、
             // 被系统终止时会丢掉最后一次修改，而磁盘对账又会跳过已入库条目，下次启动也补不回来。
             // 有界等待（超时只记 fault，不阻塞退出）。flush 返回结构化结果，据此记录

@@ -48,6 +48,7 @@ struct PrivacyPolicyTests {
         #expect(MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "1.9"))
         #expect(MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "2.0"))
         #expect(MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "3.0"))
+        #expect(MemontaPrivacyPolicy.needsConsent(accepted: true, storedVersion: "4.0"))
     }
 
     @Test("主版本号解析")

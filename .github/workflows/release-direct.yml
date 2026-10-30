@@ -9,6 +9,14 @@ on:
         description: '已提交版本对应的正式 tag，例如 v9.5.0'
         required: true
         type: string
+      distribution:
+        description: '分发方式；未公证方式仅用于已获用户同意的构建'
+        required: true
+        type: choice
+        default: notarized
+        options:
+          - notarized
+          - unnotarized-test
 
 permissions:
   contents: read
@@ -27,6 +35,7 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+      DISTRIBUTION_MODE: ${{ inputs.distribution || 'notarized' }}
     steps:
       - name: Validate release tag and key availability
         env:
@@ -39,7 +48,15 @@ jobs:
         shell: bash
         run: |
           [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
-          for name in SPARKLE_PRIVATE_KEY DEVELOPER_ID_P12_BASE64 NOTARY_API_KEY_P8 APPLE_TEAM_ID NOTARY_KEY_ID NOTARY_ISSUER_ID; do
+          required=(SPARKLE_PRIVATE_KEY)
+          case "$DISTRIBUTION_MODE" in
+            notarized)
+              required+=(DEVELOPER_ID_P12_BASE64 NOTARY_API_KEY_P8 APPLE_TEAM_ID NOTARY_KEY_ID NOTARY_ISSUER_ID)
+              ;;
+            unnotarized-test) ;;
+            *) echo '::error::未知分发方式。'; exit 1 ;;
+          esac
+          for name in "${required[@]}"; do
             if [ -z "${!name}" ]; then
               echo "::error::请在 release 环境配置 $name。"
               exit 1
@@ -64,6 +81,7 @@ jobs:
           CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=
           ENABLE_HARDENED_RUNTIME=NO test -only-testing:MemontaTests
       - name: Import formal distribution credentials
+        if: env.DISTRIBUTION_MODE == 'notarized'
         env:
           CERTIFICATE: ${{ secrets.DEVELOPER_ID_P12_BASE64 }}
           CERTIFICATE_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
@@ -91,7 +109,7 @@ jobs:
           NOTARY_KEY_FILE: ${{ runner.temp }}/notary.p8
           RELEASE_WORK_DIR: ${{ runner.temp }}/memonta-release
         run: |
-          bash Scripts/release_direct.sh notarized
+          bash Scripts/release_direct.sh "$DISTRIBUTION_MODE"
       - name: Upload complete draft release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -100,7 +118,7 @@ jobs:
           gh release create "$RELEASE_TAG" "$DIRECTORY"/*.zip "$DIRECTORY/appcast.xml" "$DIRECTORY/SHA256SUMS" \
             --repo "$GITHUB_REPOSITORY" --verify-tag --draft \
             --title "Memonta $RELEASE_TAG" --notes-file "$DIRECTORY"/*.md
-          echo '正式版草稿附件已上传。发布后将更新唯一的 stable 频道。'
+          echo "${DISTRIBUTION_MODE} 草稿附件已上传。发布后将更新唯一的 stable 频道。"
       - name: Clean signing material
         if: always()
         run: |

@@ -38,6 +38,7 @@ private func storageDirectoryTotalBytes(directory: URL, maxEntries: Int) -> Int?
 }
 
 struct SettingsView: View {
+    var isTransientMode: Bool = false
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Bindable var settingsVM: SettingsViewModel
@@ -148,6 +149,7 @@ struct SettingsView: View {
         case dictionary = "词典"
         case voiceprints = "声纹库"
         case data = "数据管理"
+        case mcp = "MCP 集成"
         case about = "关于"
 
         var id: String { rawValue }
@@ -171,6 +173,7 @@ struct SettingsView: View {
             case .dictionary: return "character.book.closed"
             case .voiceprints: return "person.text.rectangle"
             case .data:      return "externaldrive"
+            case .mcp:       return "point.3.connected.trianglepath.dotted"
             case .about:     return "info.circle"
             }
         }
@@ -180,7 +183,7 @@ struct SettingsView: View {
         if experienceStore.isPro { return SettingsSection.allCases }
         // 热键页两种模式都显示：录音热键与截图热键都是普通模式也在用的能力
         // （全屏直拍热键仅在专业模式注册，进而在页内隐藏对应行）
-        return [.stt, .llm, .recording, .hotkeys, .data, .about]
+        return [.stt, .llm, .recording, .hotkeys, .data, .mcp, .about]
     }
 
     var body: some View {
@@ -283,6 +286,7 @@ struct SettingsView: View {
         case .dictionary: DictionarySettingsView(settingsVM: settingsVM, recordings: allRecordings)
         case .voiceprints: VoiceprintLibraryView()
         case .data:      dataManagementView
+        case .mcp:       MCPSettingsView(isTransient: isTransientMode)
         case .about:     aboutView
         }
     }

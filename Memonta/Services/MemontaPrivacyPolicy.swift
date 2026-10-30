@@ -16,10 +16,10 @@ import Foundation
 enum MemontaPrivacyPolicy {
 
     /// 当前政策版本。语义：主版本号变动 = 实质性变更（需重新同意）。
-    static let version = "4.0"
+    static let version = "5.0"
 
     /// 生效日期（yyyy-MM-dd）
-    static let effectiveDate = "2026-10-26"
+    static let effectiveDate = "2026-10-30"
 
     /// 页眉展示用的版本文案
     static var versionLine: String {
@@ -73,6 +73,15 @@ enum MemontaPrivacyPolicy {
 
             只有你主动配置并启用云端转写、云端大模型或云端视觉能力时，相应内容才会发送到你自行指定的第三方服务。云端请求由你的设备直接发往你配置的服务地址，不经过我们的服务器；我们不会收到这些请求中的录音、文本或画面。
             """
+        ),
+        Section(
+            "external-mcp",
+            String(localized: "外部 AI 访问（MCP，可选）"),
+            String(localized: """
+            本机 MCP 默认关闭。只有你在设置中启用并授权客户端后，该客户端才能读取授权日期范围内的录音与笔记标题、文字、OCR、转写、总结、画面要点和待办；隐藏条目不共享。当前接口只读，不允许外部客户端录音、删除条目或写入系统提醒事项。
+
+            服务仅监听本机回环地址，访问令牌存于本机钥匙串，你可以随时关闭服务或撤销单个客户端。输出默认沿用本机词典与规则脱敏；你也可以明确授权客户端读取原文。脱敏不保证识别所有敏感信息，外部客户端可能将读取的内容发送到它使用的云端模型，请按需要限制共享日期并妥善保管连接配置中的访问令牌。
+            """)
         ),
         Section(
             "collected",
