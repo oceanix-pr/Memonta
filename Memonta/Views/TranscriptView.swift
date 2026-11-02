@@ -193,6 +193,9 @@ struct TranscriptView: View {
             audioFileExists = FileManager.default.fileExists(atPath: recording.fileURL.path)
             await loadTranscriptBlocks()
         }
+        .onChange(of: recording.audioRemovedAt) { _, _ in
+            audioFileExists = FileManager.default.fileExists(atPath: recording.fileURL.path)
+        }
         // 搜索防抖：与列表页一致的 300ms 窗口，避免逐字符触发整篇匹配扫描
         .task(id: searchText) {
             try? await Task.sleep(for: .milliseconds(300))

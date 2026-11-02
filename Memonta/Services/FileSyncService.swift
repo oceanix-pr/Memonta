@@ -265,7 +265,7 @@ enum FileSyncService {
     static func syncFromDisk(context: ModelContext, excludeFolderNames: Set<String> = []) async -> SyncResult {
         // 扫描互斥：已有扫描在运行时直接跳过本次调用（下轮刷新/重启会补上）
         guard !isScanning, !AppUpdateService.shared.isPreparingToInstall,
-              !RecordingMergeActivity.shared.isRunning else {
+              !RecordingMergeActivity.shared.isRunning, !MediaCleanupService.shared.isRunning else {
             logger.info("磁盘同步已在进行中，跳过本次调用")
             return .empty
         }
@@ -657,6 +657,7 @@ enum FileSyncService {
                 // 兜底：meta.json 尚未带 hasVideoSource 的旧文件夹，只要磁盘上仍有视频就补上，
                 // 之后即便用户清理原视频，条目类型也不会退回「录音」
                 recording.hasVideoSource = data.hasVideoSource || recording.hasVideoSource
+                recording.audioRemovedAt = data.audioRemovedAt
                 if data.entryID == nil, !recording.saveMetaToFolder() { metadataSaveFailed = true }
                 // 先插入再加载镜像：加载路径的提交前校验会按 id 确认条目仍存在，
                 // 未插入的新条目会被误判为“已删除”
@@ -679,12 +680,13 @@ enum FileSyncService {
                     title: data.title,
                     textContent: data.encryptedText,
                     sourceImageFileName: data.imageFileName,
-                    ocrText: nil,
+                    ocrText: data.encryptedOcrText,
                     folderName: data.folderName
                 )
                 note.createdAt = data.createdAt
                 if let entryID = data.entryID { note.id = entryID }
                 note.isHidden = data.isHidden
+                note.hasImageSource = data.hasImageSource
                 if data.entryID == nil, !note.saveMetaToFolder() { metadataSaveFailed = true }
                 let preparedSummary = await loadEncryptedMirrorFile(at: note.summaryFileURL)
                 note.summaryText = preparedSummary.encrypted ?? preparedSummary.plain
@@ -835,6 +837,7 @@ enum FileSyncService {
         try? FileManager.default.removeItem(at: dir.appendingPathComponent(mergeMarkerName))
 
         let itemType = readItemType(from: dir)
+        let retainedAudio = retainedAudioMetadata(in: dir)
 
         let audioExtensions = Set(["m4a", "mp3", "wav"])
         let audioFile = files.first { file in
@@ -888,7 +891,7 @@ enum FileSyncService {
                 }
                 recovery = await recoverCrashedRecording(from: dir, files: files)
             }
-        } else {
+        } else if retainedAudio?.audioRemovedAt == nil {
             recovery = await recoverCrashedRecording(from: dir, files: files)
         }
 
@@ -906,17 +909,17 @@ enum FileSyncService {
 
         // 路由：明确是 quicknote，或无音频文件（含恢复失败）但有 source.txt → 快捷笔记
         let effectiveAudioFile = audioFile ?? recovery?.recoveredURL
-        if itemType == "quicknote" || (effectiveAudioFile == nil && hasQuickNoteContent(files: files)) {
+        if itemType == "quicknote" || (itemType != "recording" && effectiveAudioFile == nil && hasQuickNoteContent(files: files)) {
             outcome.result = scanQuickNote(folderName: folderName, files: files)
             return outcome
         }
 
         // 默认：录音
-        guard let audioURL = effectiveAudioFile else { return outcome }
+        guard effectiveAudioFile != nil || retainedAudio != nil else { return outcome }
 
         let createdAt = parseDate(from: folderName) ?? Date()
-        let storedFileName = audioURL.lastPathComponent
-        let fileExt = audioURL.pathExtension.lowercased()
+        let storedFileName = effectiveAudioFile?.lastPathComponent ?? retainedAudio!.storedFileName
+        let fileExt = effectiveAudioFile?.pathExtension.lowercased() ?? retainedAudio!.fileExtension
 
         // 视频导入时留存的原始视频：按文件名约定识别（`{base}_video.{ext}`），
         // 与 QuickNote 的 source.png 同一范式，不从 meta.json 推字段。
@@ -924,7 +927,9 @@ enum FileSyncService {
         let videoFileName = AudioConverter.retainedVideoFileName(in: files)
 
         // P0-1: 异步获取音频时长，不阻塞
-        let duration = await getAudioDuration(at: audioURL)
+        let duration: TimeInterval
+        if let audioURL = effectiveAudioFile { duration = await getAudioDuration(at: audioURL) }
+        else { duration = retainedAudio?.duration ?? 0 }
 
         // 崩溃恢复成功：填充恢复详情（含最终时长），供刷新结果横幅展示
         if recovery?.recoveredURL != nil {
@@ -953,6 +958,8 @@ enum FileSyncService {
             isHidden: meta.isHidden,
             videoFileName: videoFileName,
             hasVideoSource: hasVideoSource,
+            audioRemovedAt: effectiveAudioFile == nil
+                ? retainedAudio?.audioRemovedAt.map(Date.init(timeIntervalSince1970:)) ?? Date() : nil,
             entryID: readEntryIdentity(in: dir)
         ))
         return outcome
@@ -974,11 +981,22 @@ enum FileSyncService {
             imageFileName = url.lastPathComponent
         }
 
-        guard textContent != nil || imageFileName != nil else { return nil }
-
         let createdAt = parseDate(from: folderName) ?? Date()
         let meta = QuickNote.loadMetaFromFolder(folderName: folderName)
-        let title = meta.title ?? makeQuickNoteDisplayName(folderName: folderName, hasImage: imageFileName != nil)
+        let hasImageSource = meta.hasImageSource || imageFileName != nil
+        guard textContent != nil || hasImageSource else { return nil }
+        let title = meta.title ?? makeQuickNoteDisplayName(folderName: folderName, hasImage: hasImageSource)
+
+        let ocrURL = AudioRecording.resolveFolderURL(forFolderName: folderName).appendingPathComponent("ocr.txt")
+        let ocrText = EncryptionService.decryptFileOrPlaintext(at: ocrURL)
+        var encryptedOcrText: String?
+        if let ocrText {
+            do { encryptedOcrText = try EncryptionService.encrypt(ocrText) }
+            catch {
+                EncryptionService.reportEncryptionFailure(error, context: "磁盘对账图片 OCR")
+                encryptedOcrText = ocrText
+            }
+        }
 
         var encryptedText: String?
         if let text = textContent {
@@ -999,6 +1017,8 @@ enum FileSyncService {
             encryptedText: encryptedText,
             imageFileName: imageFileName,
             isHidden: meta.isHidden,
+            hasImageSource: hasImageSource,
+            encryptedOcrText: encryptedOcrText,
             entryID: readEntryIdentity(in: AudioRecording.resolveFolderURL(forFolderName: folderName))
         ))
     }
@@ -1012,6 +1032,24 @@ enum FileSyncService {
             ))
             return nil
         }
+    }
+
+    /// 清理音频前保存的元数据允许无音频条目重建；不把遗留分片重新恢复成已清理的音频。
+    private struct RetainedAudioMetadata: Decodable {
+        let storedFileName: String
+        let fileExtension: String
+        let duration: TimeInterval
+        let audioRemovedAt: Double?
+    }
+
+    private static func retainedAudioMetadata(in folder: URL) -> RetainedAudioMetadata? {
+        guard let data = try? Data(contentsOf: folder.appendingPathComponent("meta.json")),
+              let meta = try? JSONDecoder().decode(RetainedAudioMetadata.self, from: data),
+              !meta.storedFileName.isEmpty,
+              URL(fileURLWithPath: meta.storedFileName).lastPathComponent == meta.storedFileName,
+              ["m4a", "mp3", "wav"].contains(meta.fileExtension.lowercased()),
+              meta.duration.isFinite, meta.duration >= 0 else { return nil }
+        return meta
     }
 
     // MARK: - 异步音频时长
@@ -1903,6 +1941,7 @@ enum FolderScanResult: Sendable {
         /// 条目是否为视频条目（录屏/导入视频）：来自 meta.json，清理原视频后仍保留，
         /// 用于列表图标/类型文案不因删除视频文件而退回「录音」
         let hasVideoSource: Bool
+        var audioRemovedAt: Date? = nil
         var entryID: UUID? = nil
     }
 
@@ -1913,6 +1952,8 @@ enum FolderScanResult: Sendable {
         let encryptedText: String?
         let imageFileName: String?
         let isHidden: Bool
+        var hasImageSource: Bool = false
+        var encryptedOcrText: String? = nil
         var entryID: UUID? = nil
     }
 

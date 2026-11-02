@@ -856,9 +856,9 @@ struct QuickNoteRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack(spacing: 4) {
-                Image(systemName: note.hasImage ? "photo.fill" : "text.bubble.fill")
+                Image(systemName: note.isImageNote ? "photo.fill" : "text.bubble.fill")
                     .foregroundStyle(
-                        (note.hasImage ? imageNoteTintColor : textNoteTintColor)
+                        (note.isImageNote ? imageNoteTintColor : textNoteTintColor)
                             .adaptedForSelection(isSelected)
                     )
                     .opacity(note.isHidden ? 0.5 : 1.0)
@@ -939,7 +939,7 @@ struct QuickNoteRowView: View {
     private var accessibilityLabel: String {
         // 整句走本地化键：否则非中文界面的 VoiceOver 会把整行读成中文拼接串
         // （与 RecordingRowView.accessibilityLabel 保持同一口径）
-        let typeText = note.hasImage
+        let typeText = note.isImageNote
             ? String(localized: "图片笔记")
             : String(localized: "文字笔记")
         // 待办与总结相互独立，朗读同时给出两个维度（视觉上仅显示价值更深者）

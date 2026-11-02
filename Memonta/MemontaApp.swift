@@ -242,10 +242,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 }
                 return .terminateLater
             }
-            if RecordingMergeActivity.shared.isRunning {
+            if RecordingMergeActivity.shared.isRunning || MediaCleanupService.shared.isRunning {
                 Task { @MainActor in
                     // 导出本身由有界看门狗保护；等待事务完成，避免提交/删除中途退出。
-                    while RecordingMergeActivity.shared.isRunning {
+                    while RecordingMergeActivity.shared.isRunning || MediaCleanupService.shared.isRunning {
                         try? await Task.sleep(for: .milliseconds(200))
                     }
                     Self.completeTerminationFlow()

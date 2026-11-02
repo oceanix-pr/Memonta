@@ -20,6 +20,7 @@
 		0BA7869E937C2FC2C8E90F2B /* AppMuteDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791E74BCD8C51E5D42C4627D /* AppMuteDetector.swift */; };
 		0BD4DB5A3C6198168A5CA056 /* StartupBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688AB5D72A451BA1F0381F9 /* StartupBootstrap.swift */; };
 		0CA8B6B3AFAEC7DCDF85A956 /* MCPReadOnlyServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDAAFA6AF9B442D35F4B9FB /* MCPReadOnlyServer.swift */; };
+		0D2DAA6FEF3203D4A53645DD /* MediaCleanupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0EFA5E9F49BFC7FA2518FC /* MediaCleanupTests.swift */; };
 		0FABD39C64D2DEF6FD0688A6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 9DBEB77E6786D91D9C7927AD /* Localizable.xcstrings */; };
 		104EAF5636B7E3A4FF3FA62B /* MeetingRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6393D47EC167A81A64241F /* MeetingRecorderService.swift */; };
 		1052EBF4AA72F131F236D3E3 /* AudioConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A6DB48E5C6FFC3DB21771D /* AudioConverter.swift */; };
@@ -146,6 +147,7 @@
 		B707B9101C7FEBD597E8DB4E /* VisionOCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4767809C035BC23279D6778F /* VisionOCRService.swift */; };
 		B89B184356F21B6EFA9D0394 /* AppExperienceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA6736D3925418ABDF741F /* AppExperienceTests.swift */; };
 		B8B8654CFDA21CCFAC087AC0 /* TranscriptDictionaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB609D584755408625641DE /* TranscriptDictionaryService.swift */; };
+		B9F50F1A4DB6D9122A4BD201 /* MediaCleanupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1E8C1C8C227D5BCC49267F /* MediaCleanupService.swift */; };
 		BA47064756D00A81468D9E2C /* LLMPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9035B0D58DC88F0F406202AC /* LLMPreset.swift */; };
 		BCF6AE261DF462D7A9A3BF8C /* PersistenceReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158535A62372F2C47EB3A256 /* PersistenceReporting.swift */; };
 		BD8CA164CA85F5304EA4FD1C /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 979844683C78548F5EBAFCED /* WhisperKit */; };
@@ -299,6 +301,7 @@
 		587B0CEE16DFF0A57619EC33 /* MicCaptureFileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicCaptureFileStore.swift; sourceTree = "<group>"; };
 		590412AF3B08D86FCA01111A /* RuntimeVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeVerification.swift; sourceTree = "<group>"; };
 		59329C6BB99E85E3E474FAD1 /* SystemAudioCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemAudioCaptureService.swift; sourceTree = "<group>"; };
+		5A0EFA5E9F49BFC7FA2518FC /* MediaCleanupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCleanupTests.swift; sourceTree = "<group>"; };
 		5E670EE311E4734F07C0670B /* MicCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicCaptureService.swift; sourceTree = "<group>"; };
 		63425E7F3BDEDA9E33843EB5 /* BackgroundWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundWorker.swift; sourceTree = "<group>"; };
 		63759B6031B2C843BFF20165 /* TranscriptCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptCache.swift; sourceTree = "<group>"; };
@@ -419,6 +422,7 @@
 		F20AEA0492EC2E69874A67ED /* RecordingSegmentTimelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingSegmentTimelineTests.swift; sourceTree = "<group>"; };
 		F23801C9757DF70751590266 /* RecordingMergeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingMergeService.swift; sourceTree = "<group>"; };
 		F260BE9D46A6554344E1B1D6 /* StabilityRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StabilityRegressionTests.swift; sourceTree = "<group>"; };
+		FC1E8C1C8C227D5BCC49267F /* MediaCleanupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCleanupService.swift; sourceTree = "<group>"; };
 		FC96DBFE97F1CD5CAAD7FEF0 /* Memonta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Memonta.entitlements; sourceTree = "<group>"; };
 		FD3BF65D6865CFC0F830D5B9 /* SpeechTextPreparer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTextPreparer.swift; sourceTree = "<group>"; };
 		FF35ABDF200E58E548BBE4AA /* UpdateInstallationCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateInstallationCoordinatorTests.swift; sourceTree = "<group>"; };
@@ -663,6 +667,7 @@
 				34C426D700A5E8B0BA20E21C /* LocalLLMCapabilities.swift */,
 				7209964B0DDEAF2DDEE98693 /* MainActor+AssumeOnMainThread.swift */,
 				2A9C6012E128677F62399335 /* MarkdownPDFRenderer.swift */,
+				FC1E8C1C8C227D5BCC49267F /* MediaCleanupService.swift */,
 				3A6393D47EC167A81A64241F /* MeetingRecorderService.swift */,
 				2E4C0FB0B1C0AC7A5B2D8209 /* MemontaPrivacyPolicy.swift */,
 				C612A9053890574B6C628836 /* MenuBarController.swift */,
@@ -736,6 +741,7 @@
 				9447E809793443BB7B27E32A /* LLMConfigDraftTests.swift */,
 				83C5857D081B52ADC1115EDF /* MarkdownPDFRendererTests.swift */,
 				EBE7286049E80B364E1617B6 /* MCPReadOnlyTests.swift */,
+				5A0EFA5E9F49BFC7FA2518FC /* MediaCleanupTests.swift */,
 				6715321C6C5E7675D7307B30 /* MemontaTests.swift */,
 				798D67D700437D5AA1503956 /* MicCaptureRecoveryTests.swift */,
 				683F3B871F1AF2EE49A21A3B /* MicCaptureRestartTests.swift */,
@@ -1064,6 +1070,7 @@
 				A228A6B42C7D99E0547BC341 /* LLMConfigDraftTests.swift in Sources */,
 				438B9B8FEBDBE4BD2AF00AF9 /* MCPReadOnlyTests.swift in Sources */,
 				95BE394560FCFF52BA68C898 /* MarkdownPDFRendererTests.swift in Sources */,
+				0D2DAA6FEF3203D4A53645DD /* MediaCleanupTests.swift in Sources */,
 				70641376F81FD9F144172967 /* MemontaTests.swift in Sources */,
 				D26F7BDBEA191A359B153A5F /* MicCaptureRecoveryTests.swift in Sources */,
 				F52606DF0F47EC59FA5389CA /* MicCaptureRestartTests.swift in Sources */,
@@ -1141,6 +1148,7 @@
 				C46C5C4ABB724A1EA5DCC5A4 /* MainActor+AssumeOnMainThread.swift in Sources */,
 				20851004D24613DFFDC74E73 /* MarkdownPDFRenderer.swift in Sources */,
 				50F42EADB9670EB78161B22B /* MarkdownView.swift in Sources */,
+				B9F50F1A4DB6D9122A4BD201 /* MediaCleanupService.swift in Sources */,
 				104EAF5636B7E3A4FF3FA62B /* MeetingRecorderService.swift in Sources */,
 				8CC1D2AD1EF299594EB84E18 /* MemontaApp.swift in Sources */,
 				6823B3324605603D19B01E52 /* MemontaPrivacyPolicy.swift in Sources */,
@@ -1411,7 +1419,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 145;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1428,7 +1436,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOG = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 9.6.1;
+				MARKETING_VERSION = 9.6.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1476,7 +1484,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 145;
+				CURRENT_PROJECT_VERSION = 146;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1499,7 +1507,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOG = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 9.6.1;
+				MARKETING_VERSION = 9.6.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

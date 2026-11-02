@@ -14,6 +14,7 @@ struct QuickNoteDetailView: View {
     var isProMode: Bool = true
     /// 一键处理（概要总结 → 拆解待办），由宿主投递到处理队列
     var onOneClick: (() -> Void)? = nil
+    var onCleanupImage: (() -> Void)? = nil
 
     @Environment(\.modelContext) private var modelContext
     @AppStorage(MenuBarController.appLanguageDefaultsKey) private var interfaceLanguage = ""
@@ -57,7 +58,7 @@ struct QuickNoteDetailView: View {
             // 标题栏
             headerBar
 
-            if !quickNote.hasImage && supportsNoteSpeech {
+            if !quickNote.isImageNote && supportsNoteSpeech {
                 HStack {
                     Spacer()
                     Button {
@@ -88,6 +89,16 @@ struct QuickNoteDetailView: View {
                     // 图片内容
                     if quickNote.hasImage, let imageURL = quickNote.sourceImageURL {
                         imageSection(url: imageURL)
+                    } else if quickNote.isImageNote {
+                        Label("图片原件已清理，文字、OCR、总结与待办已保留。", systemImage: "photo")
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    if !quickNote.decryptedOcrText.isEmpty {
+                        Text(quickNote.decryptedOcrText)
+                            .textSelection(.enabled)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
 
                     // AI 总结区域
@@ -110,6 +121,9 @@ struct QuickNoteDetailView: View {
         .onChange(of: quickNote.id) { _, _ in
             viewModel.loadTodoDocument(for: quickNote)
             viewModel.loadSummary(for: quickNote)
+        }
+        .onChange(of: quickNote.sourceImageFileName) { _, _ in
+            showImageFullscreen = false
         }
         .onChange(of: supportsNoteSpeech) { _, supported in
             if !supported { speechInput = nil }
@@ -177,8 +191,8 @@ struct QuickNoteDetailView: View {
     private var headerBar: some View {
         HStack(spacing: 8) {
             // 图片笔记橙色、文字笔记紫色，与列表行标识一致
-            Image(systemName: quickNote.hasImage ? "photo.fill" : "text.bubble.fill")
-                .foregroundStyle(quickNote.hasImage ? Color.orange : .purple)
+            Image(systemName: quickNote.isImageNote ? "photo.fill" : "text.bubble.fill")
+                .foregroundStyle(quickNote.isImageNote ? Color.orange : .purple)
                 .font(.title3)
 
             if isEditingTitle {
@@ -216,6 +230,13 @@ struct QuickNoteDetailView: View {
             // 重新标注按钮（仅图片笔记显示）
             #if os(macOS)
             if isProMode && quickNote.hasImage {
+                if let onCleanupImage {
+                    Button(role: .destructive, action: onCleanupImage) {
+                        Label("清理图片", systemImage: "trash.slash")
+                    }
+                    .buttonStyle(.borderless)
+                    .disabled(isReadOnly || MediaCleanupService.shared.isRunning || !ScreenshotManager.shared.isIdle)
+                }
                 Button {
                     startReannotate()
                 } label: {

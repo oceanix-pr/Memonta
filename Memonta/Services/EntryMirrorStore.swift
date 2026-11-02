@@ -150,6 +150,13 @@ final class EntryMirrorStore: @unchecked Sendable {
     /// - Parameters:
     ///   - timeout: 最长等待时间；超时或调用方取消均返回 false，写者可在后台自行收尾。
     /// - Returns: 本次内容是否已成功落盘
+    func writeTranscriptNow(_ items: [TranscriptMirrorItem], folderName: String, to url: URL) async -> Bool {
+        guard capability.allowsContentMutation, !folderName.isEmpty else { return false }
+        let key = Key(kind: .transcript, folderName: folderName)
+        let generation = enqueue(payload: .transcript(items), url: url, requiresResult: true, for: key)
+        return await waitForResult(of: generation, for: key, timeout: .seconds(30))
+    }
+
     func writeNow(
         _ content: String,
         kind: Kind,

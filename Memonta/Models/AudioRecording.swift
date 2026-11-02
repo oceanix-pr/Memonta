@@ -87,6 +87,9 @@ final class AudioRecording {
     /// 事实要留下，否则列表图标会退回录音图标
     var hasVideoSource: Bool = false
 
+    /// 仅清理音频原件的时间；条目、转写与总结仍保留。可选以兼容旧数据库。
+    var audioRemovedAt: Date? = nil
+
     init(
         fileName: String,
         fileExtension: String,
@@ -437,7 +440,12 @@ extension AudioRecording {
         let meta: [String: Any] = [
             "title": fileName,
             "isHidden": isHidden,
-            "hasVideoSource": hasVideoSource
+            "itemType": "recording",
+            "hasVideoSource": isVideoRecording,
+            "storedFileName": storedFileName,
+            "fileExtension": fileExtension,
+            "duration": duration,
+            "audioRemovedAt": audioRemovedAt?.timeIntervalSince1970 as Any? ?? NSNull()
         ]
         do {
             id = try EntryIdentityStore.write(meta, id: id, to: folderURL)

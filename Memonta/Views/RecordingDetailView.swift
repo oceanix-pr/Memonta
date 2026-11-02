@@ -116,6 +116,7 @@ struct RecordingDetailView: View {
     var onCancelTranscription: (() -> Void)? = nil
     /// 一键处理（转写 → 画面分析 → 总结 → 拆解待办），由宿主投递到处理队列
     var onOneClick: (() -> Void)? = nil
+    var onCleanupAudio: (() -> Void)? = nil
 
     @State private var captureReport: RecordingCaptureReport?
     @State private var captureReportReadFailed = false
@@ -226,6 +227,9 @@ struct RecordingDetailView: View {
         .navigationSubtitle("")
         #endif
         .task(id: recording.fileURL) {
+            prepareForRecordingSwitch()
+        }
+        .onChange(of: recording.audioRemovedAt) { _, _ in
             prepareForRecordingSwitch()
         }
         .onChange(of: viewModel.captureReportRequestedFolder) { _, folder in
@@ -483,6 +487,14 @@ struct RecordingDetailView: View {
                 }
 
                 Spacer()
+
+                if experience == .pro, fileExists, !recording.folderName.isEmpty, let onCleanupAudio {
+                    Button(role: .destructive, action: onCleanupAudio) {
+                        Label("清理录音", systemImage: "trash.slash")
+                    }
+                    .buttonStyle(.borderless)
+                    .disabled(isReadOnly || MediaCleanupService.shared.isRunning)
+                }
 
                 // 播放控制（右侧）
                 if fileExists, let state = playerState {

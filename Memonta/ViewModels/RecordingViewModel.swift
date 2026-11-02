@@ -148,7 +148,7 @@ final class RecordingViewModel {
     /// 抽帧/请求进度（0...1）：逐帧抽取天然有粒度，比“只转圈”更可信
     var visualNotesProgress: Double = 0
     /// 「清理视频」进行中：仅用于禁用按钮防重复点击（unlink 本身很快）
-    var isCleaningUpVideo = false
+    var isCleaningUpVideo: Bool { MediaCleanupService.shared.isRunning }
     /// 当前时间分段的起始字符下标：长视频按时间分多段流式追加，
     /// 段内重试只能回退本段已吐的 token，不能清掉前面段已完成的要点
     private var visualSegmentStartOffset = 0
@@ -1537,27 +1537,14 @@ final class RecordingViewModel {
     /// 删文件失败向上报错，不假装已清理。
     func cleanupVideo(recording: AudioRecording, context: ModelContext) {
         guard !rejectWriteIfReadOnly(.deleteEntry) else { return }
-        guard !isCleaningUpVideo else { return }
-        guard let videoURL = recording.videoFileURL,
-              FileManager.default.fileExists(atPath: videoURL.path) else {
+        guard let request = MediaCleanupRequest(kind: .video, items: [.recording(recording)]) else {
             showErrorMessage("该条目没有留存的原始视频可清理。")
             return
         }
-        isCleaningUpVideo = true
         Task { @MainActor in
-            defer { isCleaningUpVideo = false }
             do {
-                _ = try await VideoUnderstandingService.cleanupOriginalVideo(
-                    videoURL: videoURL,
-                    framesDirectoryURL: recording.framesDirectoryURL
-                )
-                recording.videoFileName = nil
-                // 删掉原视频 = 删掉磁盘上最后一份「这是视频条目」的物证。条目类型必须
-                // 在删之前落进 meta.json（文件才是权威源）：否则数据库重建、换机同步后
-                // 该条目会被当纯录音，列表图标从摄像机退回波形。
-                recording.hasVideoSource = true
-                recording.saveMetaToFolder()
-                PersistenceReporting.saveOrReport { try context.save() }
+                let result = try await MediaCleanupService.shared.cleanup(request, context: context, persistence: persistence)
+                if !result.failures.isEmpty { showErrorMessage(result.message) }
             } catch {
                 showErrorMessage(UserFacingError.summary(for: error))
             }

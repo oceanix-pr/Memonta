@@ -14,6 +14,8 @@ final class QuickNote {
     var textContent: String?
     /// 文件夹内 source.png 的文件名（空表示无图片）
     var sourceImageFileName: String?
+    /// 图片原件清理后仍保留图片条目身份；可选以兼容旧数据库迁移。
+    var hasImageSource: Bool? = false
     /// OCR 结果或视觉模型提取的文字（加密存储）
     var ocrText: String?
     /// AI 总结（加密存储）
@@ -42,6 +44,7 @@ final class QuickNote {
         self.title = title
         self.textContent = textContent
         self.sourceImageFileName = sourceImageFileName
+        self.hasImageSource = sourceImageFileName?.isEmpty == false
         self.ocrText = ocrText
         self.folderName = folderName
         self.createdAt = Date()
@@ -104,6 +107,10 @@ extension QuickNote {
         sourceImageFileName != nil && !((sourceImageFileName ?? "").isEmpty)
     }
 
+    var isImageNote: Bool {
+        hasImageSource == true || hasImage
+    }
+
     /// 保存 meta.json（含 itemType 字段）
     @discardableResult
     func saveMetaToFolder() -> Bool {
@@ -111,7 +118,8 @@ extension QuickNote {
         let meta: [String: Any] = [
             "title": title,
             "isHidden": isHidden,
-            "itemType": "quicknote"
+            "itemType": "quicknote",
+            "hasImageSource": isImageNote
         ]
         do {
             id = try EntryIdentityStore.write(meta, id: id, to: folderURL)
@@ -132,18 +140,18 @@ extension QuickNote {
     }
 
     /// 从文件夹加载元数据（月份目录优先、旧平铺结构兼容）
-    static func loadMetaFromFolder(folderName: String) -> (title: String?, isHidden: Bool) {
-        guard !folderName.isEmpty else { return (nil, false) }
+    static func loadMetaFromFolder(folderName: String) -> (title: String?, isHidden: Bool, hasImageSource: Bool) {
+        guard !folderName.isEmpty else { return (nil, false, false) }
         let metaURL = AudioRecording.resolveFolderURL(forFolderName: folderName)
             .appendingPathComponent("meta.json")
         guard FileManager.default.fileExists(atPath: metaURL.path),
               let data = try? Data(contentsOf: metaURL),
               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-            return (nil, false)
+            return (nil, false, false)
         }
         let title = json["title"] as? String
         let isHidden = json["isHidden"] as? Bool ?? false
-        return (title, isHidden)
+        return (title, isHidden, json["hasImageSource"] as? Bool ?? false)
     }
 
     /// 生成 yyyyMMddHHmmss 格式的文件夹名（与 AudioRecording 一致）

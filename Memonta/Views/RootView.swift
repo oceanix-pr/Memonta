@@ -40,6 +40,8 @@ struct RootView: View {
     /// （详见 Views/Root/RootDeletionRequest.swift）。
     @State private var pendingDeletion: RootDeletionRequest?
     @State private var pendingMerge: RecordingMergeRequest?
+    @State private var pendingMediaCleanup: MediaCleanupRequest?
+    @State private var mediaCleanupResult: String?
 
     /// 批量删除的目标集合（仅 pendingDeletion 的 kind 为 .batch 时有意义）
     @State private var recordingsToDelete: [AudioRecording] = []
@@ -182,6 +184,7 @@ struct RootView: View {
     // body 链条过长会导致类型检查超时，拆为三层计算属性分层组合
     var body: some View {
         dialogLayers
+        .disabled(MediaCleanupService.shared.isRunning)
         .overlay(alignment: .bottom) {
             VStack(spacing: 8) {
                 transientModeBanner
@@ -221,6 +224,7 @@ struct RootView: View {
         }
         .contextMenu(forSelectionType: ListItem.self) { items in
             contextMenuContent(for: items)
+                .disabled(MediaCleanupService.shared.isRunning)
         }
         .modifier(ExportModifiers(
             showTranscriptExporter: $showTranscriptExporter,
@@ -448,6 +452,33 @@ struct RootView: View {
     /// 视图层 3：删除确认对话框 + 新建笔记 Sheet + 错误提示
     private var dialogLayers: some View {
         sheetAndAlertLayers
+        .confirmationDialog(Text(pendingMediaCleanup?.kind.title ?? ""), isPresented: Binding(
+            get: { pendingMediaCleanup != nil },
+            set: { if !$0 { pendingMediaCleanup = nil } }
+        ), titleVisibility: .visible, presenting: pendingMediaCleanup) { request in
+            Button(request.kind.title, role: .destructive) {
+                pendingMediaCleanup = nil
+                Task {
+                    do {
+                        let result = try await MediaCleanupService.shared.cleanup(request, context: modelContext, persistence: persistence)
+                        mediaCleanupResult = result.message
+                    } catch {
+                        mediaCleanupResult = UserFacingError.summary(for: error)
+                    }
+                }
+            }
+            Button("取消", role: .cancel) { pendingMediaCleanup = nil }
+        } message: { request in
+            Text(request.message)
+        }
+        .alert("媒体清理", isPresented: Binding(
+            get: { mediaCleanupResult != nil },
+            set: { if !$0 { mediaCleanupResult = nil } }
+        )) {
+            Button("确定") { mediaCleanupResult = nil }
+        } message: {
+            Text(mediaCleanupResult ?? "")
+        }
         .confirmationDialog("合并录音？", isPresented: Binding(
             get: { pendingMerge != nil },
             set: { if !$0 { pendingMerge = nil } }
@@ -693,7 +724,8 @@ struct RootView: View {
                     experience: experienceStore.current,
                     onTranscribe: { startTranscriptionFor(recording) },
                     onCancelTranscription: { viewModel.cancelTranscription() },
-                    onOneClick: { presentOneClickPreview(item) }
+                    onOneClick: { presentOneClickPreview(item) },
+                    onCleanupAudio: { presentMediaCleanup(.audio, items: [item]) }
                 )
                 // 详情页展示的条目即「当前展示条目」：同步到 ViewModel，
                 // 只有它才把流式内容与进行中态写入共享 UI 状态（避免后台另一条目串数据）
@@ -717,7 +749,8 @@ struct RootView: View {
                     ),
                     defaultReminderListID: settingsVM.defaultReminderListID,
                     isProMode: experienceStore.isPro,
-                    onOneClick: { presentOneClickPreview(item) }
+                    onOneClick: { presentOneClickPreview(item) },
+                    onCleanupImage: { presentMediaCleanup(.image, items: [item]) }
                 )
                 .onAppear { syncDetailSelection() }
                 .onChange(of: note.id) { _, _ in syncDetailSelection() }
@@ -972,6 +1005,8 @@ struct RootView: View {
                     Label("删除", systemImage: "trash")
                 }
 
+                mediaCleanupMenu(for: items)
+
             case .quickNote(let note):
                 Button {
                     editingItemID = item.id
@@ -1045,6 +1080,7 @@ struct RootView: View {
                 } label: {
                     Label("删除", systemImage: "trash")
                 }
+                mediaCleanupMenu(for: items)
             }
         } else if !items.isEmpty && experienceStore.policy.allows(.batchOperations) {
             if quickNoteItems.isEmpty,
@@ -1088,7 +1124,30 @@ struct RootView: View {
             } label: {
                 Label("删除选中的 \(items.count) 个条目", systemImage: "trash")
             }
+            mediaCleanupMenu(for: items)
         }
+    }
+
+    @ViewBuilder
+    private func mediaCleanupMenu(for items: Set<ListItem>) -> some View {
+        // 与既有清理视频保持一致：专业模式提供原件清理；混选时各按钮仅处理相应媒体。
+        if experienceStore.isPro {
+            ForEach(MediaCleanupRequest.Kind.allCases, id: \.self) { kind in
+                if MediaCleanupRequest(kind: kind, items: items) != nil {
+                    Button(role: .destructive) {
+                        presentMediaCleanup(kind, items: items)
+                    } label: {
+                        Label(kind.title, systemImage: "trash.slash")
+                    }
+                    .disabled(isTransientMode || MediaCleanupService.shared.isRunning)
+                }
+            }
+        }
+    }
+
+    private func presentMediaCleanup(_ kind: MediaCleanupRequest.Kind, items: Set<ListItem>) {
+        guard !blockWriteIfPersistenceUnavailable(.deleteEntry) else { return }
+        pendingMediaCleanup = MediaCleanupRequest(kind: kind, items: items)
     }
 
     // MARK: - 批量删除（录音 + 快捷笔记共用同一确认载荷）
@@ -1511,7 +1570,14 @@ struct RootView: View {
     /// 会留下半成品文件，故只提示、不提供取消。
     @ViewBuilder
     private var mergingAudioOverlay: some View {
-        if RecordingMergeActivity.shared.isRunning {
+        if MediaCleanupService.shared.isRunning {
+            HStack(spacing: 10) {
+                ProgressView().controlSize(.small)
+                Text("正在清理媒体…").font(.caption)
+            }
+            .padding(12)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+        } else if RecordingMergeActivity.shared.isRunning {
             HStack(spacing: 10) {
                 ProgressView().controlSize(.small)
                 Text("正在合并录音…").font(.caption)
@@ -1892,7 +1958,7 @@ private extension RootView {
                 summaryCompleted: !(note.summaryText ?? "").isEmpty,
                 todoCompleted: TodoDocument.exists(in: note.folderURL),
                 audioFileExists: false,
-                isImageNote: note.hasImage,
+                isImageNote: note.isImageNote,
                 usesCloudLLM: !config.isLocal,
                 forceRetranscribe: false
             )

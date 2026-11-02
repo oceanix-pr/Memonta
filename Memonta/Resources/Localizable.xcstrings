@@ -184665,6 +184665,1566 @@
           }
         }
       }
+    },
+    "只删除所选 %1$lld 个图片原件（约 %2$@），保留条目、文字、OCR、总结与待办。此操作无法撤销，清理后无法查看、标注或重新识别原图。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف الصور الأصلية المحددة فقط، وعددها %1$lld (نحو %2$@). يتم الاحتفاظ بالعناصر والنص ونتائج OCR والملخصات والمهام. لا يمكن التراجع، ولن يتاح عرض الصور الأصلية أو إضافة تعليقات إليها أو إعادة التعرف عليها."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur die %1$lld ausgewählten Originalbilder (etwa %2$@) löschen. Einträge, Text, OCR, Zusammenfassungen und Aufgaben bleiben erhalten. Dies kann nicht rückgängig gemacht werden. Die Originalbilder können danach nicht mehr angezeigt, bearbeitet oder erneut erkannt werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete only the %1$lld selected original images (about %2$@). Entries, text, OCR, summaries and to-dos are preserved. This cannot be undone. You will no longer be able to view, annotate or recognize the original images."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar solo las %1$lld imágenes originales seleccionadas (unos %2$@). Se conservan las entradas, texto, OCR, resúmenes y tareas. Esta acción no se puede deshacer. Ya no será posible ver, anotar ni volver a reconocer las imágenes originales."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer uniquement les %1$lld images originales sélectionnées (environ %2$@). Les entrées, textes, OCR, résumés et tâches sont conservés. Cette action est irréversible. Il sera impossible d’afficher, d’annoter ou de reconnaître à nouveau les images originales."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "केवल चुनी हुई %1$lld मूल छवियाँ (लगभग %2$@) हटाएँ। प्रविष्टियाँ, पाठ, OCR, सारांश और कार्य सुरक्षित रहेंगे। इसे पूर्ववत नहीं किया जा सकता। मूल छवियाँ देखना, उन पर टिप्पणी करना या दोबारा पहचानना संभव नहीं होगा।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hapus hanya %1$lld gambar asli yang dipilih (sekitar %2$@). Entri, teks, OCR, ringkasan, dan tugas tetap disimpan. Tindakan ini tidak dapat dibatalkan. Gambar asli tidak dapat dilihat, diberi anotasi, atau dikenali ulang."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina solo le %1$lld immagini originali selezionate (circa %2$@). Voci, testo, OCR, riepiloghi e attività restano conservati. L’azione è irreversibile. Non sarà più possibile visualizzare, annotare o riconoscere nuovamente le immagini originali."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択した %1$lld 個の元の画像（約 %2$@）のみを削除します。項目、テキスト、OCR、要約、ToDo は保持されます。取り消しはできず、元画像の表示、注釈、再認識は利用できなくなります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택한 원본 이미지 %1$lld개(약 %2$@)만 삭제합니다. 항목, 텍스트, OCR, 요약과 할 일은 보존됩니다. 이 작업은 취소할 수 없으며 원본 이미지를 보거나 주석을 달거나 다시 인식할 수 없게 됩니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijder alleen de %1$lld geselecteerde originele afbeeldingen (ongeveer %2$@). Items, tekst, OCR, samenvattingen en taken blijven behouden. Dit kan niet ongedaan worden gemaakt. De originele afbeeldingen kunnen daarna niet meer worden bekeken, geannoteerd of opnieuw herkend."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń tylko %1$lld wybranych oryginalnych obrazów (około %2$@). Wpisy, tekst, OCR, podsumowania i zadania pozostaną. Tej operacji nie można cofnąć. Przeglądanie, oznaczanie i ponowne rozpoznawanie oryginalnych obrazów nie będą możliwe."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar apenas as %1$lld imagens originais selecionadas (cerca de %2$@). Entradas, texto, OCR, resumos e tarefas são preservados. A ação não pode ser desfeita. Não será mais possível visualizar, anotar ou reconhecer novamente as imagens originais."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить только выбранные исходные изображения (%1$lld, около %2$@). Записи, текст, OCR, сводки и задачи сохраняются. Действие необратимо. Просмотр, аннотирование и повторное распознавание исходных изображений станут недоступны."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radera endast de %1$lld valda originalbilderna (cirka %2$@). Poster, text, OCR, sammanfattningar och uppgifter behålls. Detta kan inte ångras. Originalbilderna kan inte längre visas, kommenteras eller tolkas på nytt."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ลบเฉพาะรูปภาพต้นฉบับที่เลือก %1$lld รูป (ประมาณ %2$@) โดยเก็บรายการ ข้อความ OCR สรุปและงานที่ต้องทำไว้ ไม่สามารถเลิกทำได้ และจะไม่สามารถดู ใส่คำอธิบายหรือรู้จำรูปต้นฉบับใหม่ได้"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yalnızca seçili %1$lld özgün görseli (yaklaşık %2$@) silin. Öğeler, metin, OCR, özetler ve yapılacaklar korunur. Bu işlem geri alınamaz. Özgün görseller görüntülenemez, açıklama eklenemez veya yeniden tanınamaz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити лише вибрані оригінальні зображення (%1$lld, близько %2$@). Записи, текст, OCR, підсумки та завдання збережуться. Цю дію не можна скасувати. Перегляд, анотування та повторне розпізнавання оригінальних зображень стануть недоступними."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chỉ xóa %1$lld ảnh gốc đã chọn (khoảng %2$@). Các mục, văn bản, OCR, tóm tắt và việc cần làm được giữ lại. Không thể hoàn tác. Bạn sẽ không thể xem, chú thích hoặc nhận dạng lại ảnh gốc."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "只删除所选 %1$lld 个图片原件（约 %2$@），保留条目、文字、OCR、总结与待办。此操作无法撤销，清理后无法查看、标注或重新识别原图。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "只刪除所選 %1$lld 個圖片原件（約 %2$@），保留項目、文字、OCR、摘要與待辦。此操作無法復原，清理後無法查看、標註或重新辨識原圖。"
+          }
+        }
+      }
+    },
+    "只删除所选 %1$lld 个视频原件（约 %2$@），保留关键帧、画面要点、音频、转写、总结与待办。仅清理已有可复用关键帧的条目。此操作无法撤销，清理后无法播放原视频或重新抽帧。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف مقاطع الفيديو الأصلية المحددة فقط، وعددها %1$lld (نحو %2$@). يتم الاحتفاظ بالإطارات الرئيسية والملاحظات المرئية والصوت والنصوص المفرغة والملخصات والمهام. يقتصر التنظيف على العناصر ذات الإطارات الرئيسية القابلة لإعادة الاستخدام. لا يمكن التراجع، ولن يتاح تشغيل الفيديو الأصلي أو استخراج إطارات جديدة."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur die %1$lld ausgewählten Originalvideos (etwa %2$@) löschen. Schlüsselbilder, Bildnotizen, Audio, Transkripte, Zusammenfassungen und Aufgaben bleiben erhalten. Nur Einträge mit wiederverwendbaren Schlüsselbildern werden bereinigt. Dies kann nicht rückgängig gemacht werden. Originalvideos können danach nicht mehr abgespielt und neue Bilder nicht mehr extrahiert werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete only the %1$lld selected original videos (about %2$@). Keyframes, visual notes, audio, transcripts, summaries and to-dos are preserved. Only entries with reusable keyframes can be cleaned up. This cannot be undone. Original video playback and new frame extraction will no longer be available."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar solo los %1$lld vídeos originales seleccionados (unos %2$@). Se conservan los fotogramas clave, notas visuales, audio, transcripciones, resúmenes y tareas. Solo se limpian entradas con fotogramas clave reutilizables. Esta acción no se puede deshacer. Ya no será posible reproducir los vídeos originales ni extraer nuevos fotogramas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer uniquement les %1$lld vidéos originales sélectionnées (environ %2$@). Les images clés, notes visuelles, audio, transcriptions, résumés et tâches sont conservés. Seules les entrées disposant d’images clés réutilisables sont nettoyées. Cette action est irréversible. La lecture des vidéos originales et une nouvelle extraction d’images seront impossibles."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "केवल चुने हुए %1$lld मूल वीडियो (लगभग %2$@) हटाएँ। मुख्य फ़्रेम, दृश्य नोट्स, ऑडियो, प्रतिलेख, सारांश और कार्य सुरक्षित रहेंगे। केवल दोबारा उपयोग योग्य मुख्य फ़्रेम वाली प्रविष्टियाँ साफ़ होंगी। इसे पूर्ववत नहीं किया जा सकता। मूल वीडियो चलाना या नए फ़्रेम निकालना संभव नहीं होगा।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hapus hanya %1$lld video asli yang dipilih (sekitar %2$@). Bingkai utama, catatan visual, audio, transkrip, ringkasan, dan tugas tetap disimpan. Hanya entri dengan bingkai utama yang dapat digunakan kembali yang dibersihkan. Tindakan ini tidak dapat dibatalkan. Video asli tidak dapat diputar dan bingkai baru tidak dapat diekstrak."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina solo i %1$lld video originali selezionati (circa %2$@). Fotogrammi chiave, note visive, audio, trascrizioni, riepiloghi e attività restano conservati. Vengono pulite solo le voci con fotogrammi chiave riutilizzabili. L’azione è irreversibile. Non sarà più possibile riprodurre i video originali o estrarre nuovi fotogrammi."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択した %1$lld 個の元の動画（約 %2$@）のみを削除します。キーフレーム、画面メモ、音声、文字起こし、要約、ToDo は保持されます。再利用可能なキーフレームがある項目のみ整理できます。取り消しはできず、元動画の再生や新たなフレーム抽出は利用できなくなります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택한 원본 동영상 %1$lld개(약 %2$@)만 삭제합니다. 키프레임, 화면 메모, 오디오, 전사, 요약과 할 일은 보존됩니다. 재사용 가능한 키프레임이 있는 항목만 정리합니다. 이 작업은 취소할 수 없으며 원본 동영상 재생이나 새 프레임 추출은 불가능해집니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijder alleen de %1$lld geselecteerde originele video’s (ongeveer %2$@). Sleutelframes, beeldnotities, audio, transcripties, samenvattingen en taken blijven behouden. Alleen items met herbruikbare sleutelframes worden opgeruimd. Dit kan niet ongedaan worden gemaakt. Originele video’s afspelen of nieuwe frames extraheren is daarna niet meer mogelijk."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń tylko %1$lld wybranych oryginalnych filmów (około %2$@). Klatki kluczowe, notatki wizualne, dźwięk, transkrypcje, podsumowania i zadania pozostaną. Porządkowanie dotyczy tylko wpisów z klatkami do ponownego użycia. Tej operacji nie można cofnąć. Odtwarzanie oryginalnych filmów i wyodrębnianie nowych klatek nie będą możliwe."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar apenas os %1$lld vídeos originais selecionados (cerca de %2$@). Quadros-chave, notas visuais, áudio, transcrições, resumos e tarefas são preservados. Apenas entradas com quadros-chave reutilizáveis serão limpas. A ação não pode ser desfeita. Não será mais possível reproduzir os vídeos originais ou extrair novos quadros."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить только выбранные исходные видео (%1$lld, около %2$@). Ключевые кадры, визуальные заметки, аудио, расшифровки, сводки и задачи сохраняются. Очистка доступна только при наличии повторно используемых ключевых кадров. Действие необратимо. Воспроизведение исходных видео и извлечение новых кадров станут недоступны."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radera endast de %1$lld valda originalvideorna (cirka %2$@). Nyckelbilder, bildanteckningar, ljud, transkriptioner, sammanfattningar och uppgifter behålls. Endast poster med återanvändbara nyckelbilder rensas. Detta kan inte ångras. Originalvideor kan inte längre spelas upp och nya bildrutor kan inte extraheras."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ลบเฉพาะวิดีโอต้นฉบับที่เลือก %1$lld ไฟล์ (ประมาณ %2$@) โดยเก็บคีย์เฟรม บันทึกภาพ เสียง บทถอดเสียง สรุปและงานที่ต้องทำไว้ ล้างได้เฉพาะรายการที่มีคีย์เฟรมใช้ซ้ำได้ ไม่สามารถเลิกทำได้ และจะไม่สามารถเล่นวิดีโอต้นฉบับหรือดึงเฟรมใหม่ได้"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yalnızca seçili %1$lld özgün videoyu (yaklaşık %2$@) silin. Anahtar kareler, görsel notlar, ses, dökümler, özetler ve yapılacaklar korunur. Yalnızca yeniden kullanılabilir anahtar kareleri olan öğeler temizlenir. Bu işlem geri alınamaz. Özgün video oynatılamaz veya yeni kareler çıkarılamaz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити лише вибрані оригінальні відео (%1$lld, близько %2$@). Ключові кадри, візуальні нотатки, аудіо, транскрипції, підсумки та завдання збережуться. Очищуються лише записи з придатними до повторного використання ключовими кадрами. Цю дію не можна скасувати. Відтворення оригінальних відео та видобування нових кадрів стануть недоступними."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chỉ xóa %1$lld video gốc đã chọn (khoảng %2$@). Khung hình chính, ghi chú hình ảnh, âm thanh, bản chép lời, tóm tắt và việc cần làm được giữ lại. Chỉ dọn các mục có khung hình chính tái sử dụng được. Không thể hoàn tác. Bạn sẽ không thể phát video gốc hoặc trích xuất khung hình mới."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "只删除所选 %1$lld 个视频原件（约 %2$@），保留关键帧、画面要点、音频、转写、总结与待办。仅清理已有可复用关键帧的条目。此操作无法撤销，清理后无法播放原视频或重新抽帧。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "只刪除所選 %1$lld 個影片原件（約 %2$@），保留關鍵影格、畫面要點、音訊、轉寫、摘要與待辦。僅清理已有可重用關鍵影格的項目。此操作無法復原，清理後無法播放原影片或重新擷取影格。"
+          }
+        }
+      }
+    },
+    "只删除所选 %1$lld 个音频原件（约 %2$@），保留条目、转写、总结与待办。此操作无法撤销，清理后无法播放或重新转写。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف ملفات الصوت الأصلية المحددة فقط، وعددها %1$lld (نحو %2$@). يتم الاحتفاظ بالعناصر والنصوص المفرغة والملخصات والمهام. لا يمكن التراجع، ولن يتاح التشغيل أو إعادة التفريغ."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur die %1$lld ausgewählten Original-Audiodateien (etwa %2$@) löschen. Einträge, Transkripte, Zusammenfassungen und Aufgaben bleiben erhalten. Dies kann nicht rückgängig gemacht werden. Wiedergabe und erneute Transkription sind danach nicht mehr möglich."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete only the %1$lld selected original audio files (about %2$@). Entries, transcripts, summaries and to-dos are preserved. This cannot be undone. Playback and retranscription will no longer be available."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar solo los %1$lld archivos de audio originales seleccionados (unos %2$@). Se conservan las entradas, transcripciones, resúmenes y tareas. Esta acción no se puede deshacer. Ya no será posible reproducir ni volver a transcribir el audio."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer uniquement les %1$lld fichiers audio originaux sélectionnés (environ %2$@). Les entrées, transcriptions, résumés et tâches sont conservés. Cette action est irréversible. La lecture et une nouvelle transcription ne seront plus possibles."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "केवल चुनी हुई %1$lld मूल ऑडियो फ़ाइलें (लगभग %2$@) हटाएँ। प्रविष्टियाँ, प्रतिलेख, सारांश और कार्य सुरक्षित रहेंगे। इसे पूर्ववत नहीं किया जा सकता। ऑडियो चलाना या फिर से प्रतिलेखन करना संभव नहीं होगा।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hapus hanya %1$lld file audio asli yang dipilih (sekitar %2$@). Entri, transkrip, ringkasan, dan tugas tetap disimpan. Tindakan ini tidak dapat dibatalkan. Pemutaran dan transkripsi ulang tidak akan tersedia."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina solo i %1$lld file audio originali selezionati (circa %2$@). Voci, trascrizioni, riepiloghi e attività restano conservati. L’azione è irreversibile. Non sarà più possibile riprodurre o trascrivere nuovamente l’audio."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択した %1$lld 個の元の音声ファイル（約 %2$@）のみを削除します。項目、文字起こし、要約、ToDo は保持されます。取り消しはできず、再生や再文字起こしは利用できなくなります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택한 원본 오디오 파일 %1$lld개(약 %2$@)만 삭제합니다. 항목, 전사, 요약과 할 일은 보존됩니다. 이 작업은 취소할 수 없으며 재생이나 재전사를 할 수 없게 됩니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijder alleen de %1$lld geselecteerde originele audiobestanden (ongeveer %2$@). Items, transcripties, samenvattingen en taken blijven behouden. Dit kan niet ongedaan worden gemaakt. Afspelen en opnieuw transcriberen zijn daarna niet meer mogelijk."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń tylko %1$lld wybranych oryginalnych plików dźwiękowych (około %2$@). Wpisy, transkrypcje, podsumowania i zadania pozostaną. Tej operacji nie można cofnąć. Odtwarzanie i ponowna transkrypcja nie będą możliwe."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar apenas os %1$lld arquivos de áudio originais selecionados (cerca de %2$@). Entradas, transcrições, resumos e tarefas são preservados. A ação não pode ser desfeita. Não será mais possível reproduzir ou transcrever novamente o áudio."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить только выбранные исходные аудиофайлы (%1$lld, около %2$@). Записи, расшифровки, сводки и задачи сохраняются. Действие необратимо. Воспроизведение и повторная расшифровка станут недоступны."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radera endast de %1$lld valda originalljudfilerna (cirka %2$@). Poster, transkriptioner, sammanfattningar och uppgifter behålls. Detta kan inte ångras. Uppspelning och ny transkription blir inte längre möjliga."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ลบเฉพาะไฟล์เสียงต้นฉบับที่เลือก %1$lld ไฟล์ (ประมาณ %2$@) โดยเก็บรายการ บทถอดเสียง สรุปและงานที่ต้องทำไว้ ไม่สามารถเลิกทำได้ และจะไม่สามารถเล่นเสียงหรือถอดเสียงใหม่ได้"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yalnızca seçili %1$lld özgün ses dosyasını (yaklaşık %2$@) silin. Öğeler, dökümler, özetler ve yapılacaklar korunur. Bu işlem geri alınamaz. Oynatma ve yeniden yazıya dökme artık mümkün olmayacaktır."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити лише вибрані оригінальні аудіофайли (%1$lld, близько %2$@). Записи, транскрипції, підсумки та завдання збережуться. Цю дію не можна скасувати. Відтворення та повторна транскрипція стануть недоступними."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chỉ xóa %1$lld tệp âm thanh gốc đã chọn (khoảng %2$@). Các mục, bản chép lời, tóm tắt và việc cần làm được giữ lại. Không thể hoàn tác. Bạn sẽ không thể phát hoặc chép lời lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "只删除所选 %1$lld 个音频原件（约 %2$@），保留条目、转写、总结与待办。此操作无法撤销，清理后无法播放或重新转写。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "只刪除所選 %1$lld 個音訊原件（約 %2$@），保留項目、轉寫、摘要與待辦。此操作無法復原，清理後無法播放或重新轉寫。"
+          }
+        }
+      }
+    },
+    "图片原件已清理，文字、OCR、总结与待办已保留。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حُذفت الصورة الأصلية. تم الاحتفاظ بالنص ونتائج OCR والملخصات والمهام."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Originalbild wurde gelöscht. Text, OCR, Zusammenfassungen und Aufgaben bleiben erhalten."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The original image was deleted. Text, OCR, summaries and to-dos are preserved."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se eliminó la imagen original. Se conservan el texto, OCR, resúmenes y tareas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’image originale a été supprimée. Le texte, l’OCR, les résumés et les tâches sont conservés."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मूल छवि हटा दी गई है। पाठ, OCR, सारांश और कार्य सुरक्षित हैं।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gambar asli telah dihapus. Teks, OCR, ringkasan, dan tugas tetap disimpan."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’immagine originale è stata eliminata. Testo, OCR, riepiloghi e attività sono conservati."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "元の画像を削除しました。テキスト、OCR、要約、ToDo は保持されています。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "원본 이미지를 삭제했습니다. 텍스트, OCR, 요약과 할 일은 보존됩니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De originele afbeelding is verwijderd. Tekst, OCR, samenvattingen en taken blijven behouden."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oryginalny obraz został usunięty. Tekst, OCR, podsumowania i zadania zachowano."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A imagem original foi apagada. Texto, OCR, resumos e tarefas foram preservados."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Исходное изображение удалено. Текст, OCR, сводки и задачи сохранены."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Originalbilden har raderats. Text, OCR, sammanfattningar och uppgifter har sparats."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ลบรูปภาพต้นฉบับแล้ว โดยเก็บข้อความ OCR สรุปและงานที่ต้องทำไว้"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özgün görsel silindi. Metin, OCR, özetler ve yapılacaklar korundu."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оригінальне зображення видалено. Текст, OCR, підсумки та завдання збережено."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã xóa ảnh gốc. Văn bản, OCR, tóm tắt và việc cần làm được giữ lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "图片原件已清理，文字、OCR、总结与待办已保留。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "圖片原件已清理，文字、OCR、摘要與待辦已保留。"
+          }
+        }
+      }
+    },
+    "媒体清理" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تنظيف الوسائط"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medienbereinigung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Media Cleanup"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpieza de medios"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nettoyage des médias"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मीडिया सफ़ाई"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pembersihan media"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulizia dei media"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メディアの整理"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "미디어 정리"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Media opruimen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porządkowanie multimediów"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpeza de mídia"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистка медиа"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medierensning"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ล้างสื่อ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medya temizliği"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очищення медіа"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dọn dẹp phương tiện"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "媒体清理"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "媒體清理"
+          }
+        }
+      }
+    },
+    "已清理 %1$lld 个文件，释放约 %2$@。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حُذف %1$lld من الملفات، وتم تحرير نحو %2$@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld Dateien gelöscht, etwa %2$@ freigegeben."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deleted %1$lld files, freeing about %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se eliminaron %1$lld archivos y se liberaron unos %2$@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld fichiers supprimés, environ %2$@ libérés."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld फ़ाइलें हटाई गईं, लगभग %2$@ जगह खाली हुई।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld file dihapus, membebaskan sekitar %2$@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminati %1$lld file, liberando circa %2$@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld 個のファイルを削除し、約 %2$@ を解放しました。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일 %1$lld개를 삭제하여 약 %2$@의 공간을 확보했습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld bestanden verwijderd, ongeveer %2$@ vrijgemaakt."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usunięto %1$lld plików, zwalniając około %2$@."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld arquivos apagados, liberando cerca de %2$@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалено файлов: %1$lld. Освобождено около %2$@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld filer raderade, cirka %2$@ frigjort."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ลบแล้ว %1$lld ไฟล์ เพิ่มพื้นที่ว่างประมาณ %2$@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld dosya silindi, yaklaşık %2$@ alan açıldı."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалено %1$lld файлів, звільнено близько %2$@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã xóa %1$lld tệp, giải phóng khoảng %2$@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已清理 %1$lld 个文件，释放约 %2$@。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已清理 %1$lld 個檔案，釋放約 %2$@。"
+          }
+        }
+      }
+    },
+    "有 %1$lld 个条目未完成清理：%2$@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لم يكتمل تنظيف %1$lld من العناصر: %2$@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bereinigung für %1$lld Einträge unvollständig: %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleanup was incomplete for %1$lld entries: %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpieza incompleta en %1$lld entradas: %2$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nettoyage de %1$lld entrées est incomplet : %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld प्रविष्टियों की सफ़ाई अधूरी रही: %2$@"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pembersihan belum selesai untuk %1$lld entri: %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulizia incompleta per %1$lld voci: %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld 件の項目の整理が完了しませんでした：%2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목 %1$lld개의 정리가 완료되지 않았습니다: %2$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opruimen niet voltooid voor %1$lld items: %2$@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porządkowanie %1$lld wpisów nie zostało ukończone: %2$@"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpeza incompleta em %1$lld entradas: %2$@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистка не завершена для %1$lld записей: %2$@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rensningen slutfördes inte för %1$lld poster: %2$@"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ล้างไม่สำเร็จทั้งหมด %1$lld รายการ: %2$@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld öğenin temizliği tamamlanamadı: %2$@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очищення %1$lld записів не завершено: %2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chưa dọn dẹp xong %1$lld mục: %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有 %1$lld 个条目未完成清理：%2$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有 %1$lld 個項目未完成清理：%2$@"
+          }
+        }
+      }
+    },
+    "条目内容或元数据尚未安全保存，已保留媒体原件。请重试。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذر حفظ المحتوى أو البيانات الوصفية بأمان. تم الاحتفاظ بالوسائط الأصلية. حاول مجددًا."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inhalt oder Metadaten konnten nicht sicher gespeichert werden. Die Originalmedien bleiben erhalten. Versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entry content or metadata could not be saved safely. The original media was kept. Please try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo guardar de forma segura el contenido o los metadatos. Se conservó el medio original. Inténtalo de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le contenu ou les métadonnées n’ont pas pu être enregistrés en toute sécurité. Le média original est conservé. Réessayez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सामग्री या मेटाडेटा सुरक्षित रूप से सहेजा नहीं जा सका। मूल मीडिया रखा गया है। फिर प्रयास करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konten atau metadata tidak dapat disimpan dengan aman. Media asli tetap disimpan. Coba lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile salvare in sicurezza il contenuto o i metadati. Il media originale è stato conservato. Riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "項目の内容またはメタデータを安全に保存できませんでした。元のメディアは保持されています。再試行してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목 내용 또는 메타데이터를 안전하게 저장하지 못했습니다. 원본 미디어를 유지했습니다. 다시 시도하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inhoud of metadata konden niet veilig worden opgeslagen. De originele media zijn behouden. Probeer het opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udało się bezpiecznie zapisać treści lub metadanych. Oryginalne multimedia zachowano. Spróbuj ponownie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível salvar o conteúdo ou os metadados com segurança. A mídia original foi mantida. Tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось безопасно сохранить содержимое или метаданные. Исходный медиафайл сохранён. Повторите попытку."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Innehåll eller metadata kunde inte sparas säkert. Originalmedierna har behållits. Försök igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ไม่สามารถบันทึกเนื้อหาหรือข้อมูลเมตาอย่างปลอดภัย จึงเก็บสื่อต้นฉบับไว้ โปรดลองอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İçerik veya üst veriler güvenle kaydedilemedi. Özgün medya korundu. Yeniden deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося безпечно зберегти вміст або метадані. Оригінальні медіафайли збережено. Спробуйте ще раз."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể lưu an toàn nội dung hoặc siêu dữ liệu. Phương tiện gốc được giữ lại. Hãy thử lại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "条目内容或元数据尚未安全保存，已保留媒体原件。请重试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "項目內容或中繼資料尚未安全儲存，已保留媒體原件。請重試。"
+          }
+        }
+      }
+    },
+    "正在清理媒体…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ تنظيف الوسائط…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medien werden bereinigt…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleaning up media…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpiando medios…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nettoyage des médias…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मीडिया साफ़ किया जा रहा है…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Membersihkan media…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulizia dei media…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メディアを整理中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "미디어 정리 중…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Media worden opgeruimd…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porządkowanie multimediów…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpando mídia…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистка медиа…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rensar medier…"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "กำลังล้างสื่อ…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medya temizleniyor…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очищення медіа…"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đang dọn dẹp phương tiện…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在清理媒体…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在清理媒體…"
+          }
+        }
+      }
+    },
+    "清理图片" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف الصور"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilder löschen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Images"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar imágenes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer les images"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "छवियाँ हटाएँ"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hapus gambar"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina immagini"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像を削除"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이미지 삭제"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afbeeldingen verwijderen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń obrazy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar imagens"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить изображения"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radera bilder"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ลบรูปภาพ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görselleri sil"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити зображення"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xóa hình ảnh"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清理图片"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清理圖片"
+          }
+        }
+      }
+    },
+    "清理录音" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف الصوت"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio löschen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Audio"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar audio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer l’audio"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ऑडियो हटाएँ"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hapus audio"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina audio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "音声を削除"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오디오 삭제"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio verwijderen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń dźwięk"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar áudio"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить аудио"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radera ljud"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ลบเสียง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesi sil"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити аудіо"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xóa âm thanh"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清理录音"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清理錄音"
+          }
+        }
+      }
+    },
+    "请等待录音、处理任务和磁盘同步完成后再清理媒体。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انتظر انتهاء التسجيل والمعالجة ومزامنة القرص قبل تنظيف الوسائط."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warte vor der Medienbereinigung, bis Aufnahme, Verarbeitung und Datenträgersynchronisierung abgeschlossen sind."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wait for recording, processing tasks and disk sync to finish before cleaning up media."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Espera a que terminen la grabación, el procesamiento y la sincronización del disco antes de limpiar los medios."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attendez la fin de l’enregistrement, du traitement et de la synchronisation du disque avant de nettoyer les médias."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मीडिया साफ़ करने से पहले रिकॉर्डिंग, प्रोसेसिंग और डिस्क सिंक पूरा होने दें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tunggu perekaman, pemrosesan, dan sinkronisasi disk selesai sebelum membersihkan media."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attendi il termine della registrazione, dell’elaborazione e della sincronizzazione del disco prima di pulire i media."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "録音、処理タスク、ディスク同期の完了後にメディアを整理してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹음, 처리 작업과 디스크 동기화가 끝난 후 미디어를 정리하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wacht tot opname, verwerking en schijfsynchronisatie zijn voltooid voordat je media opruimt."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przed porządkowaniem poczekaj na zakończenie nagrywania, przetwarzania i synchronizacji dysku."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aguarde o fim da gravação, do processamento e da sincronização do disco antes de limpar a mídia."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перед очисткой медиа дождитесь окончания записи, обработки и синхронизации диска."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vänta tills inspelning, bearbetning och disksynkronisering är klara innan du rensar medier."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "โปรดรอให้การบันทึก การประมวลผลและการซิงค์ดิสก์เสร็จก่อนล้างสื่อ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medyayı temizlemeden önce kayıt, işleme ve disk eşitlemesinin bitmesini bekleyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перед очищенням медіа дочекайтеся завершення запису, обробки та синхронізації диска."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chờ ghi âm, xử lý và đồng bộ ổ đĩa hoàn tất trước khi dọn dẹp phương tiện."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请等待录音、处理任务和磁盘同步完成后再清理媒体。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請等待錄音、處理工作和磁碟同步完成後再清理媒體。"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
