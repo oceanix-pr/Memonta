@@ -3,30 +3,28 @@
     <channel>
         <title>Memonta</title>
         <item>
-            <title>9.6.2</title>
-            <pubDate>Mon, 02 Nov 2026 15:24:10 +0000</pubDate>
-            <sparkle:version>146</sparkle:version>
-            <sparkle:shortVersionString>9.6.2</sparkle:shortVersionString>
+            <title>9.6.4</title>
+            <pubDate>Tue, 03 Nov 2026 13:25:30 +0000</pubDate>
+            <sparkle:version>148</sparkle:version>
+            <sparkle:shortVersionString>9.6.4</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[Memonta 9.6.2（146）
+            <description sparkle:format="markdown"><![CDATA[Memonta 9.6.4（148）
 
-- 专业模式新增「清理录音」「清理图片」：删除媒体原件以释放空间，保留条目、转写、OCR、总结与待办。
-- 右键菜单支持录音、图片、视频的单选和多选清理；混选时按媒体类型处理，并确认数量、预计体积与不可撤销的后果。
-- 清理后保留图片与录屏类型，磁盘重建可恢复无原件的条目；清理视频继续要求可复用关键帧。
-- 内容和元数据保存成功后才清理原件；批量部分失败明确反馈，清理与处理任务、磁盘同步和更新安装互斥。
+- 修复新增录音或更新侧栏列表后，标题、状态和时间叠在同一行的问题。条目增删、替换、重排和搜索过滤后正确清除旧行残留。
+- 保留侧栏选中项与月份折叠状态；普通标题和状态更新继续原地刷新。
+- 包含 9.6.3 的统一「清理源件」及批量清理修复，并在临时签名更新后首次启动时清理本应用的旧系统授权。使用相关功能时仍需通过 macOS 弹窗重新授权。
 
-此版本沿用未公证分发方式。临时签名不能保证跨版本保留 macOS 授权；系统要求时需要重新授权。
+此版本沿用未公证分发方式。长期跨版本保留系统授权需要稳定的 Developer ID 签名。
 
 English
 
-- Adds Delete Audio and Delete Images in Pro mode to free disk space while preserving entries, transcripts, OCR, summaries and to-dos.
-- Adds single-selection and multiple-selection audio, image and video cleanup to context menus, with file counts, estimated space and irreversible consequences shown before confirmation.
-- Preserves image and video entry types and restores entries without original media when rebuilding from disk. Video cleanup still requires reusable keyframes.
-- Saves content and metadata before deleting originals, reports partial batch failures, and prevents cleanup from conflicting with processing, disk sync or update installation.
+- Fixes overlapping titles, status badges and timestamps after adding recordings or updating the sidebar. Clears stale row content when entries are inserted, removed, replaced, reordered or filtered.
+- Preserves the sidebar selection and month expansion state. Ordinary title and status changes continue to update in place.
+- Includes the unified Clean Up Originals action and batch cleanup fixes from 9.6.3, plus a one-time cleanup of Memonta's old system permissions after an ad-hoc signed update. Relevant features still request authorization through macOS.
 
-This release remains non-notarized. Ad-hoc signing cannot guarantee macOS authorization continuity across versions; reauthorization may be required.
+This release remains non-notarized. A stable Developer ID signature is needed for long-term permission continuity across versions.
 ]]></description>
-            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.6.2/Memonta-v9.6.2-146-macOS.zip" length="44665861" type="application/octet-stream" sparkle:edSignature="A1DncUbRlrzEWC66IiN9I9jI2wFPo+KcOAjbiNs8IXIjo0o4D4AflDdaho50VqeZSd4Sm8E7S4wNl5qem+DZCw=="/>
+            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.6.4/Memonta-v9.6.4-148-macOS.zip" length="44756830" type="application/octet-stream" sparkle:edSignature="FpnKueh1ROi3NeGk4XJXgjJ7jiggt4qu1Te5anDjuu9RXhJnPSQPuM9zZ1iwfzBJXule6wXQ5XlOHC3YNfgWDQ=="/>
         </item>
     </channel>
 </rss>
