@@ -65,6 +65,12 @@ struct RecordingListView: View {
         var id: String { key }
     }
 
+    /// 原生 List 的内容身份：记录月份与组内条目的顺序，覆盖新增、删除、替换和重排。
+    /// 标题、状态和待办数量不参与，避免普通行更新打断编辑或滚动。
+    private var listContentIdentity: [[String]] {
+        filteredGroups.map { group in [group.key] + group.items.map(\.id) }
+    }
+
     /// 月份分组 key 格式化器（yyyy-MM，字符串倒序即时间倒序）
     /// 用 autoupdatingCurrent 而非 current：本实例长期存活，捕获 current 会把时区快照冻住，
     /// 用户改系统时区后分组口径会与新条目命名口径不一致
@@ -221,10 +227,10 @@ struct RecordingListView: View {
             List(selection: effectiveSelection) {
                 listContent
             }
-            // macOS 的 List 在 DisclosureGroup 内做搜索过滤时，被移除的旧行可能残留在界面上
-            // （NSTableView diff 失效）。过滤条件变化时通过 .id 强制重建 List 清除残留行；
-            // 搜索框文本与选中态分别由 @State searchText / 外层 selection 绑定持有，不受重建影响
-            .id("filter-\(debouncedSearchText)-\(showHiddenRecordings)")
+            // macOS 的 List 在 DisclosureGroup 内增删/替换条目时，旧行内容可能残留并叠在
+            // 新行上。按实际分组与有序条目 ID 重建 List，而非只在搜索/隐藏开关变化时重建。
+            // 搜索、选中和月份折叠状态均在 List 外持有，不受重建影响。
+            .id(listContentIdentity)
             .listStyle(.sidebar)
             .contextMenu(forSelectionType: ListItem.self) { items in
                 contextMenuContent(items)
@@ -284,7 +290,7 @@ struct RecordingListView: View {
     /// 外观走 macOS 26+ 的 Liquid Glass（`glassEffect`），旧系统回退为半透明填充，
     /// 详见 `searchFieldSurface`。原 `.searchable` 在 macOS 会并入窗口工具栏
     /// （与右上角按钮同区），现改为侧栏顶部独立搜索条；过滤/防抖/重建等既有逻辑
-    /// 保持不变（见 body 中 `.task(id: searchText)` 与 `.id("filter-…")`）。
+    /// 保持不变（见 body 中 `.task(id: searchText)` 与 `.id(listContentIdentity)`）。
     @ViewBuilder
     private var searchField: some View {
         searchFieldSurface
