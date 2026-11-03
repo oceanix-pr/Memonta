@@ -176,7 +176,7 @@ RemindersService → EKReminder（回填 reminderIdentifier/status）
 
 ### 8.1 清理视频（只删原件，保留画面产物）
 
-入口在「画面」Tab 播放器下方（`VideoUnderstandingView`，仅原件存在时可见），确认弹框给出将释放的体积与保留清单；`RecordingViewModel.cleanupVideo` 委托 `MediaCleanupService` 执行。列表右键也可单选/多选「清理视频」，共用原件清理与关键帧前置条件。
+入口在「画面」Tab 播放器下方（`VideoUnderstandingView`，仅原件存在时可见），确认弹框给出将释放的体积与保留清单；`RecordingViewModel.cleanupVideo` 委托 `MediaCleanupService` 执行。列表右键统一为单选/多选「清理源件」，包括所选条目的音频、图片和视频，共用视频关键帧前置条件。
 
 - **前置条件**：`VideoUnderstandingService.hasReusableFrameCache` 要求帧缓存版本标记与当前抽帧策略一致且目录里确有帧。不满足则抛 `frameCacheMissing`，拒绝删除并不碰任何文件——原件一走就再也抽不出帧，删了等于把画面链路一起删掉。
 - **删除范围**：`MediaCleanupService.removeOriginalFile` 只对 `videoFileURL` 那一个普通文件路径删除，不按后缀扫目录也不递归删；`frames/`、`visual.md`、分析检查点、音频与转写均保留（单测逐条核对，见 `MediaCleanupTests`、`VideoCleanupTests`）。删失败向上报错，不假装已清理。

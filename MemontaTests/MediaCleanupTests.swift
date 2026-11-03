@@ -212,4 +212,101 @@ struct MediaCleanupTests {
             #expect(FileManager.default.fileExists(atPath: frame.path))
         }
     }
+
+    @Test func fortySelectedImagesSurvivePartialContextMenuAndClearEveryOriginal() async throws {
+        try await withSandbox { _, context in
+            var notes: [QuickNote] = []
+            for index in 0..<40 {
+                let folder = index < 20 ? String(format: "2026110301%02d", index)
+                    : String(format: "202611030100%02d-%d", index, index)
+                let note = try imageNote(context, folder: folder)
+                note.title = "image-\(index)"
+                notes.append(note)
+            }
+            // 覆盖旧索引没有图片引用，以及引用指向已不存在文件的情况。
+            notes[0].sourceImageFileName = nil
+            notes[1].sourceImageFileName = "missing.png"
+            let selection = Set(notes.map { ListItem.quickNote($0) })
+            let contextItems: Set<ListItem> = [.quickNote(notes[10]), .quickNote(notes[11])]
+            let resolved = MediaCleanupRequest.contextSelection(items: contextItems, selection: selection)
+            #expect(resolved.count == 40)
+            let request = try #require(MediaCleanupRequest(kind: .originals, items: resolved))
+            #expect(request.selectedItemCount == 40 && request.targets.count == 40)
+            #expect(request.estimatedBytes == 40 * 2048 && request.skippedEntryCount == 0)
+            // 展示提示和固定载荷本身不能删除任何东西，确认后才调用 cleanup。
+            #expect(notes.allSatisfy { FileManager.default.fileExists(atPath: $0.folderURL.appendingPathComponent("source.png").path) })
+            let service = MediaCleanupService(isBusy: { false })
+            let result = try await service.cleanup(request, context: context, persistence: .readWrite)
+            #expect(result.cleanedCount == 40 && result.failures.isEmpty)
+            #expect(result.freedBytes == 40 * 2048)
+            #expect(service.completedTargetCount == 40 && service.targetCount == 40)
+            #expect(notes.allSatisfy { !FileManager.default.fileExists(atPath: $0.folderURL.appendingPathComponent("source.png").path) })
+            #expect(notes.allSatisfy { $0.sourceImageFileName == nil && $0.isImageNote })
+            #expect(notes.allSatisfy { $0.decryptedOcrText == "识别文字" && $0.decryptedSummaryText == "图片总结" })
+            #expect(try context.fetchCount(FetchDescriptor<QuickNote>()) == 40)
+        }
+    }
+
+    @Test func rightClickOutsideSelectionNeverCleansPreviousSelection() async throws {
+        try await withSandbox { _, context in
+            let first = try imageNote(context)
+            let second = try imageNote(context, folder: "20261103120002")
+            let clicked = try imageNote(context, folder: "20261103120003")
+            let selection: Set<ListItem> = [.quickNote(first), .quickNote(second)]
+            let resolved = MediaCleanupRequest.contextSelection(items: [.quickNote(clicked)], selection: selection)
+            #expect(resolved == [.quickNote(clicked)])
+            #expect(MediaCleanupRequest.contextSelection(items: [], selection: selection).isEmpty)
+            let request = try #require(MediaCleanupRequest(kind: .originals, items: resolved))
+            let result = try await MediaCleanupService(isBusy: { false }).cleanup(request, context: context, persistence: .readWrite)
+            #expect(result.cleanedCount == 1 && result.failures.isEmpty)
+            #expect(FileManager.default.fileExists(atPath: try #require(first.sourceImageURL).path))
+            #expect(FileManager.default.fileExists(atPath: try #require(second.sourceImageURL).path))
+        }
+    }
+
+    @Test func unifiedCleanupIncludesAudioImageAndVideoAndReportsEntriesWithoutSources() async throws {
+        try await withSandbox { _, context in
+            let audio = try recording(context)
+            let video = try recording(context, folder: "20261103120004", video: true)
+            let note = try imageNote(context)
+            let text = QuickNote(title: "文字", textContent: "正文", folderName: "20261103120005")
+            context.insert(text)
+            try FileManager.default.createDirectory(at: video.framesDirectoryURL, withIntermediateDirectories: true)
+            let frame = video.framesDirectoryURL.appendingPathComponent(AudioRecording.frameFileName(index: 1, time: 1))
+            try Data([1, 2, 3]).write(to: frame)
+            try VideoUnderstandingService.framesCacheVersion.write(
+                to: video.framesDirectoryURL.appendingPathComponent(VideoUnderstandingService.framesCacheVersionFileName),
+                atomically: true, encoding: .utf8)
+            let sourceURLs = [audio.fileURL, video.fileURL, try #require(video.videoFileURL), try #require(note.sourceImageURL)]
+            let request = try #require(MediaCleanupRequest(kind: .originals, items: [.recording(audio), .recording(video), .quickNote(note), .quickNote(text)]))
+            #expect(request.selectedItemCount == 4 && request.targets.count == 4 && request.skippedEntryCount == 1)
+            #expect(request.targets.filter { $0.kind == .audio }.count == 2)
+            #expect(request.targets.filter { $0.kind == .video }.count == 1)
+            #expect(request.targets.filter { $0.kind == .image }.count == 1)
+            let result = try await MediaCleanupService(isBusy: { false }).cleanup(request, context: context, persistence: .readWrite)
+            #expect(result.cleanedCount == 4 && result.failures.isEmpty && result.skippedEntryCount == 1)
+            #expect(sourceURLs.allSatisfy { !FileManager.default.fileExists(atPath: $0.path) })
+            #expect(FileManager.default.fileExists(atPath: frame.path))
+            #expect(video.isVideoRecording && video.audioRemovedAt != nil && video.videoFileName == nil)
+            #expect(note.decryptedTextContent == "附注" && text.decryptedTextContent == "正文")
+        }
+    }
+
+    @Test func batchResultListsEveryFailedOriginalAndContinuesTheRest() async throws {
+        try await withSandbox { _, context in
+            let first = try imageNote(context, folder: "20261103120010")
+            let second = try imageNote(context, folder: "20261103120011")
+            let third = try imageNote(context, folder: "20261103120012")
+            first.title = "missing-image-A"
+            second.title = "missing-image-B"
+            let request = try #require(MediaCleanupRequest(kind: .originals, items: [.quickNote(first), .quickNote(second), .quickNote(third)]))
+            try FileManager.default.removeItem(at: try #require(first.sourceImageURL))
+            try FileManager.default.removeItem(at: try #require(second.sourceImageURL))
+            let result = try await MediaCleanupService(isBusy: { false }).cleanup(request, context: context, persistence: .readWrite)
+            #expect(result.cleanedCount == 1 && result.failures.count == 2)
+            #expect(result.message.contains(first.title) && result.message.contains(second.title))
+            #expect(third.sourceImageFileName == nil)
+            #expect(first.sourceImageFileName != nil && second.sourceImageFileName != nil)
+        }
+    }
 }

@@ -186225,6 +186225,1176 @@
           }
         }
       }
+    },
+    "清理源件" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تنظيف الملفات الأصلية"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Originale bereinigen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clean Up Originals"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpiar originales"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nettoyer les originaux"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मूल फ़ाइलें साफ़ करें"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bersihkan file asli"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulisci gli originali"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "元ファイルを整理"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "원본 정리"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Originelen opruimen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uporządkuj oryginały"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpar originais"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистить оригиналы"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rensa original"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ล้างไฟล์ต้นฉบับ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özgün dosyaları temizle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистити оригінали"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dọn dẹp bản gốc"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清理源件"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清理來源檔案"
+          }
+        }
+      }
+    },
+    "将清理所选 %1$lld 个条目中的音频 %2$lld 个、图片 %3$lld 张、视频 %4$lld 个，预计释放 %5$@。\n\n只删除源文件，保留条目、转写、OCR、总结、待办、关键帧与画面要点。清理后无法播放或查看原件，也无法重新转写或抽帧。没有可复用关键帧的视频、处理中或保存失败的文件会保留并说明原因。此操作无法撤销，点击「确定」执行。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تحتوي العناصر المحددة وعددها %1$lld على %2$lld من ملفات الصوت و%3$lld من الصور و%4$lld من مقاطع الفيديو لتنظيفها وتحرير نحو %5$@.\n\nستُحذف الملفات المصدر فقط. ستُحفظ العناصر والنصوص المفرغة وOCR والملخصات والمهام والإطارات الرئيسية والملاحظات المرئية. لن يتاح تشغيل أو عرض الأصل أو إعادة التفريغ أو استخراج إطارات جديدة. ستُحفظ مقاطع الفيديو التي لا تملك إطارات قابلة لإعادة الاستخدام، والملفات قيد المعالجة أو التي لم تُحفظ بأمان، مع بيان الأسباب. لا يمكن التراجع عن هذا الإجراء. اضغط «موافق» للمتابعة."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die %1$lld ausgewählten Einträge enthalten %2$lld Audiodateien, %3$lld Bilder und %4$lld Videos zur Bereinigung, um etwa %5$@ freizugeben.\n\nNur Quelldateien werden gelöscht. Einträge, Transkripte, OCR, Zusammenfassungen, Aufgaben, Schlüsselbilder und Bildnotizen bleiben erhalten. Wiedergabe und Anzeige der Originale, erneute Transkription und neue Bildextraktion sind danach nicht mehr möglich. Videos ohne wiederverwendbare Schlüsselbilder und Dateien, die verarbeitet oder nicht sicher gespeichert wurden, werden mit Begründung beibehalten. Dies kann nicht rückgängig gemacht werden. Klicke zum Fortfahren auf OK."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The %1$lld selected entries contain %2$lld audio files, %3$lld images and %4$lld videos to clean up, freeing about %5$@.\n\nOnly source files will be deleted. Entries, transcripts, OCR, summaries, to-dos, keyframes and visual notes are preserved. Original playback, viewing, retranscription and new frame extraction will no longer be available. Videos without reusable keyframes and files being processed or not safely saved will be kept, with reasons shown. This cannot be undone. Click OK to proceed."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las %1$lld entradas seleccionadas contienen %2$lld archivos de audio, %3$lld imágenes y %4$lld vídeos para limpiar y liberar unos %5$@.\n\nSolo se eliminarán los archivos originales. Se conservan entradas, transcripciones, OCR, resúmenes, tareas, fotogramas clave y notas visuales. Ya no se podrán reproducir o ver los originales, volver a transcribir ni extraer nuevos fotogramas. Los vídeos sin fotogramas clave reutilizables y los archivos en proceso o no guardados de forma segura se conservarán, indicando los motivos. Esta acción no se puede deshacer. Pulsa Aceptar para continuar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les %1$lld entrées sélectionnées contiennent %2$lld fichiers audio, %3$lld images et %4$lld vidéos à nettoyer, pour libérer environ %5$@.\n\nSeuls les fichiers sources seront supprimés. Entrées, transcriptions, OCR, résumés, tâches, images clés et notes visuelles sont conservés. La lecture et l’affichage des originaux, la retranscription et l’extraction de nouvelles images ne seront plus possibles. Les vidéos sans images clés réutilisables et les fichiers en cours de traitement ou non enregistrés de façon sûre seront conservés, avec les raisons indiquées. Cette action est irréversible. Cliquez sur OK pour continuer."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चुनी गई %1$lld प्रविष्टियों की %2$lld ऑडियो फ़ाइलें, %3$lld छवियाँ और %4$lld वीडियो साफ़ किए जाएँगे, जिससे लगभग %5$@ जगह खाली होगी।\n\nकेवल मूल फ़ाइलें हटेंगी। प्रविष्टियाँ, प्रतिलेख, OCR, सारांश, कार्य, मुख्य फ़्रेम और दृश्य नोट्स सुरक्षित रहेंगे। मूल फ़ाइलों को चलाना या देखना, फिर से प्रतिलेखन और नए फ़्रेम निकालना संभव नहीं होगा। दोबारा उपयोग योग्य मुख्य फ़्रेम के बिना वीडियो तथा प्रोसेस हो रही या सुरक्षित रूप से सहेजी न गई फ़ाइलें कारण सहित रखी जाएँगी। इसे पूर्ववत नहीं किया जा सकता। आगे बढ़ने के लिए ठीक दबाएँ।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld entri yang dipilih berisi %2$lld file audio, %3$lld gambar, dan %4$lld video untuk dibersihkan, membebaskan sekitar %5$@.\n\nHanya file asli yang dihapus. Entri, transkrip, OCR, ringkasan, tugas, bingkai utama, dan catatan visual tetap disimpan. Pemutaran atau penayangan asli, transkripsi ulang, dan ekstraksi bingkai baru tidak lagi tersedia. Video tanpa bingkai utama yang dapat digunakan kembali serta file yang sedang diproses atau belum tersimpan dengan aman akan dipertahankan beserta alasannya. Tindakan ini tidak dapat dibatalkan. Klik OK untuk melanjutkan."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le %1$lld voci selezionate contengono %2$lld file audio, %3$lld immagini e %4$lld video da pulire, per liberare circa %5$@.\n\nSaranno eliminati solo i file originali. Voci, trascrizioni, OCR, riepiloghi, attività, fotogrammi chiave e note visive restano conservati. Non sarà più possibile riprodurre o visualizzare gli originali, ritrascrivere o estrarre nuovi fotogrammi. I video senza fotogrammi chiave riutilizzabili e i file in elaborazione o non salvati in sicurezza saranno mantenuti, indicando i motivi. L’azione è irreversibile. Fai clic su OK per procedere."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択した %1$lld 件の項目から音声 %2$lld 個、画像 %3$lld 枚、動画 %4$lld 個を整理し、約 %5$@ を解放します。\n\n元ファイルのみを削除します。項目、文字起こし、OCR、要約、ToDo、キーフレーム、画面メモは保持されます。元ファイルの再生・表示、再文字起こし、新たなフレーム抽出はできなくなります。再利用可能なキーフレームがない動画、処理中または安全に保存できないファイルは保持し、理由を表示します。取り消しはできません。「OK」で実行します。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택한 항목 %1$lld개의 오디오 %2$lld개, 이미지 %3$lld개, 동영상 %4$lld개를 정리하여 약 %5$@의 공간을 확보합니다.\n\n원본 파일만 삭제합니다. 항목, 전사, OCR, 요약, 할 일, 키프레임과 화면 메모는 보존됩니다. 원본 재생·보기, 재전사와 새 프레임 추출은 불가능해집니다. 재사용 가능한 키프레임이 없는 동영상, 처리 중이거나 안전하게 저장하지 못한 파일은 유지하고 이유를 표시합니다. 이 작업은 취소할 수 없습니다. 확인을 눌러 실행하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De %1$lld geselecteerde items bevatten %2$lld audiobestanden, %3$lld afbeeldingen en %4$lld video’s om op te ruimen, goed voor ongeveer %5$@ vrije ruimte.\n\nAlleen bronbestanden worden verwijderd. Items, transcripties, OCR, samenvattingen, taken, sleutelframes en beeldnotities blijven behouden. Originelen afspelen of bekijken, opnieuw transcriberen en nieuwe frames extraheren zijn daarna niet meer mogelijk. Video’s zonder herbruikbare sleutelframes en bestanden die worden verwerkt of niet veilig zijn opgeslagen, blijven met vermelding van de reden behouden. Dit kan niet ongedaan worden gemaakt. Klik op OK om door te gaan."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld wybranych wpisów zawiera %2$lld plików dźwiękowych, %3$lld obrazów i %4$lld filmów do uporządkowania, co zwolni około %5$@.\n\nUsunięte zostaną tylko pliki źródłowe. Wpisy, transkrypcje, OCR, podsumowania, zadania, klatki kluczowe i notatki wizualne pozostaną. Odtwarzanie i przeglądanie oryginałów, ponowna transkrypcja i wyodrębnianie nowych klatek nie będą możliwe. Filmy bez klatek do ponownego użycia oraz pliki w trakcie przetwarzania lub niezapisane bezpiecznie zostaną zachowane wraz z przyczynami. Tej operacji nie można cofnąć. Kliknij OK, aby kontynuować."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As %1$lld entradas selecionadas contêm %2$lld arquivos de áudio, %3$lld imagens e %4$lld vídeos para limpar, liberando cerca de %5$@.\n\nSomente os arquivos originais serão apagados. Entradas, transcrições, OCR, resumos, tarefas, quadros-chave e notas visuais serão mantidos. Não será mais possível reproduzir ou visualizar os originais, transcrever novamente ou extrair novos quadros. Vídeos sem quadros-chave reutilizáveis e arquivos em processamento ou não salvos com segurança serão mantidos, com os motivos indicados. Esta ação não pode ser desfeita. Clique em OK para continuar."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрано записей: %1$lld. Будут очищены аудиофайлы: %2$lld, изображения: %3$lld, видео: %4$lld. Освободится около %5$@.\n\nУдаляются только исходные файлы. Записи, расшифровки, OCR, сводки, задачи, ключевые кадры и визуальные заметки сохраняются. Воспроизведение и просмотр оригиналов, повторная расшифровка и извлечение новых кадров станут недоступны. Видео без пригодных ключевых кадров и файлы, которые обрабатываются или не сохранены безопасно, будут оставлены с указанием причин. Действие необратимо. Нажмите «ОК» для продолжения."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De %1$lld valda posterna innehåller %2$lld ljudfiler, %3$lld bilder och %4$lld videor att rensa, vilket frigör cirka %5$@.\n\nEndast källfiler raderas. Poster, transkriptioner, OCR, sammanfattningar, uppgifter, nyckelbilder och bildanteckningar behålls. Original kan sedan inte spelas upp eller visas, transkriberas på nytt eller användas för att extrahera nya bildrutor. Videor utan återanvändbara nyckelbilder och filer som bearbetas eller inte har sparats säkert behålls med angivna orsaker. Detta kan inte ångras. Klicka på OK för att fortsätta."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รายการที่เลือก %1$lld รายการมีไฟล์เสียง %2$lld ไฟล์ รูปภาพ %3$lld รูป และวิดีโอ %4$lld ไฟล์ที่จะล้าง เพื่อเพิ่มพื้นที่ว่างประมาณ %5$@\n\nลบเฉพาะไฟล์ต้นฉบับ โดยเก็บรายการ บทถอดเสียง OCR สรุป งานที่ต้องทำ คีย์เฟรมและบันทึกภาพไว้ หลังจากล้างจะไม่สามารถเล่นหรือดูต้นฉบับ ถอดเสียงใหม่หรือดึงเฟรมใหม่ได้ วิดีโอที่ไม่มีคีย์เฟรมใช้ซ้ำได้ รวมถึงไฟล์ที่กำลังประมวลผลหรือบันทึกอย่างปลอดภัยไม่ได้จะถูกเก็บไว้พร้อมแจ้งเหตุผล ไม่สามารถเลิกทำได้ กดตกลงเพื่อดำเนินการ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçili %1$lld öğede temizlenecek %2$lld ses dosyası, %3$lld görsel ve %4$lld video bulunuyor. Yaklaşık %5$@ alan açılacak.\n\nYalnızca kaynak dosyalar silinir. Öğeler, dökümler, OCR, özetler, yapılacaklar, anahtar kareler ve görsel notlar korunur. Özgün dosyaları oynatma veya görüntüleme, yeniden yazıya dökme ve yeni kare çıkarma artık mümkün olmayacaktır. Yeniden kullanılabilir anahtar karesi olmayan videolar ile işlenen veya güvenle kaydedilemeyen dosyalar, nedenleri belirtilerek korunur. Bu işlem geri alınamaz. Devam etmek için Tamam’a tıklayın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вибраних записах (%1$lld) буде очищено аудіофайли: %2$lld, зображення: %3$lld, відео: %4$lld. Звільниться близько %5$@.\n\nВидаляються лише вихідні файли. Записи, транскрипції, OCR, підсумки, завдання, ключові кадри й візуальні нотатки зберігаються. Відтворення та перегляд оригіналів, повторна транскрипція й видобування нових кадрів стануть недоступними. Відео без придатних ключових кадрів і файли, що обробляються або не збережені безпечно, будуть залишені з поясненням причин. Цю дію не можна скасувати. Натисніть «ОК», щоб продовжити."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld mục đã chọn có %2$lld tệp âm thanh, %3$lld ảnh và %4$lld video để dọn dẹp, giải phóng khoảng %5$@.\n\nChỉ xóa tệp gốc. Các mục, bản chép lời, OCR, tóm tắt, việc cần làm, khung hình chính và ghi chú hình ảnh được giữ lại. Không thể phát hoặc xem bản gốc, chép lời lại hay trích xuất khung hình mới. Video không có khung hình chính tái sử dụng được, tệp đang xử lý hoặc chưa được lưu an toàn sẽ được giữ lại và nêu rõ lý do. Không thể hoàn tác. Nhấn OK để tiếp tục."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将清理所选 %1$lld 个条目中的音频 %2$lld 个、图片 %3$lld 张、视频 %4$lld 个，预计释放 %5$@。\n\n只删除源文件，保留条目、转写、OCR、总结、待办、关键帧与画面要点。清理后无法播放或查看原件，也无法重新转写或抽帧。没有可复用关键帧的视频、处理中或保存失败的文件会保留并说明原因。此操作无法撤销，点击「确定」执行。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "將清理所選 %1$lld 個項目中的音訊 %2$lld 個、圖片 %3$lld 張、影片 %4$lld 個，預計釋放 %5$@。\n\n只刪除來源檔案，保留項目、轉寫、OCR、摘要、待辦、關鍵影格與畫面要點。清理後無法播放或檢視原件，也無法重新轉寫或擷取影格。沒有可重用關鍵影格的影片、處理中或儲存失敗的檔案會保留並說明原因。此操作無法復原，點選「確定」執行。"
+          }
+        }
+      }
+    },
+    "%lld 个条目没有可清理的源件，已跳过。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تخطي %lld من العناصر لعدم وجود ملفات أصلية لتنظيفها."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Einträge ohne zu bereinigende Originaldateien wurden übersprungen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld entries had no original files to clean up and were skipped."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se omitieron %lld entradas sin archivos originales que limpiar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld entrées sans fichier original à nettoyer ont été ignorées."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld प्रविष्टियों में साफ़ करने योग्य मूल फ़ाइलें नहीं थीं, इसलिए उन्हें छोड़ दिया गया।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld entri tanpa file asli untuk dibersihkan dilewati."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld voci senza file originali da pulire sono state ignorate."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 件の項目には整理する元ファイルがないため、スキップしました。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목 %lld개는 정리할 원본 파일이 없어 건너뛰었습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld items zonder op te ruimen originele bestanden zijn overgeslagen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pominięto %lld wpisów bez oryginalnych plików do uporządkowania."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld entradas sem arquivos originais para limpar foram ignoradas."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пропущено записей без исходных файлов для очистки: %lld."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld poster utan originalfiler att rensa hoppades över."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ข้าม %lld รายการที่ไม่มีไฟล์ต้นฉบับให้ล้าง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temizlenecek özgün dosyası olmayan %lld öğe atlandı."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пропущено %lld записів без вихідних файлів для очищення."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã bỏ qua %lld mục không có tệp gốc để dọn dẹp."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 个条目没有可清理的源件，已跳过。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 個項目沒有可清理的來源檔案，已略過。"
+          }
+        }
+      }
+    },
+    "%1$lld 个源文件未完成清理：\n%2$@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذر تنظيف %1$lld من الملفات الأصلية:\n%2$@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld Originaldateien konnten nicht bereinigt werden:\n%2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not clean up %1$lld original files:\n%2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron limpiar %1$lld archivos originales:\n%2$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de nettoyer %1$lld fichiers originaux :\n%2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld मूल फ़ाइलों की सफ़ाई नहीं हो सकी:\n%2$@"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak dapat membersihkan %1$lld file asli:\n%2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile pulire %1$lld file originali:\n%2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld 個の元ファイルを整理できませんでした：\n%2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "원본 파일 %1$lld개를 정리하지 못했습니다:\n%2$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld originele bestanden konden niet worden opgeruimd:\n%2$@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udało się uporządkować %1$lld plików oryginalnych:\n%2$@"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível limpar %1$lld arquivos originais:\n%2$@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось очистить исходные файлы (%1$lld):\n%2$@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunde inte rensa %1$lld originalfiler:\n%2$@"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ล้างไฟล์ต้นฉบับไม่สำเร็จ %1$lld ไฟล์:\n%2$@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld özgün dosya temizlenemedi:\n%2$@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося очистити %1$lld вихідних файлів:\n%2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể dọn dẹp %1$lld tệp gốc:\n%2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld 个源文件未完成清理：\n%2$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld 個來源檔案未完成清理：\n%2$@"
+          }
+        }
+      }
+    },
+    "%1$@（%2$@）：%3$@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@) : %3$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@（%2$@）：%3$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@): %3$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@（%2$@）：%3$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@（%2$@）：%3$@"
+          }
+        }
+      }
+    },
+    "所选条目没有可清理的源件。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا تحتوي العناصر المحددة على ملفات أصلية لتنظيفها."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die ausgewählten Einträge enthalten keine zu bereinigenden Originaldateien."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected entries have no original files to clean up."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las entradas seleccionadas no tienen archivos originales que limpiar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les entrées sélectionnées n’ont aucun fichier original à nettoyer."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चुनी हुई प्रविष्टियों में साफ़ करने योग्य मूल फ़ाइलें नहीं हैं।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entri yang dipilih tidak memiliki file asli untuk dibersihkan."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le voci selezionate non contengono file originali da pulire."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択した項目には整理する元ファイルがありません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택한 항목에 정리할 원본 파일이 없습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De geselecteerde items hebben geen originele bestanden om op te ruimen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybrane wpisy nie mają oryginalnych plików do uporządkowania."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As entradas selecionadas não têm arquivos originais para limpar."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В выбранных записях нет исходных файлов для очистки."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De valda posterna har inga originalfiler att rensa."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รายการที่เลือกไม่มีไฟล์ต้นฉบับให้ล้าง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçili öğelerde temizlenecek özgün dosya yok."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вибраних записах немає вихідних файлів для очищення."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các mục đã chọn không có tệp gốc để dọn dẹp."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "所选条目没有可清理的源件。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "所選項目沒有可清理的來源檔案。"
+          }
+        }
+      }
+    },
+    "正在清理旧版本系统授权…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ تنظيف أذونات الإصدار السابق…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berechtigungen der vorherigen Version werden bereinigt…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleaning up previous-version permissions…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpiando permisos de la versión anterior…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nettoyage des autorisations de la version précédente…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछले संस्करण की सिस्टम अनुमतियाँ साफ़ की जा रही हैं…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Membersihkan izin sistem versi sebelumnya…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulizia dei permessi della versione precedente…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "旧バージョンのシステム権限を整理中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이전 버전의 시스템 권한 정리 중…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Systeemrechten van de vorige versie worden opgeruimd…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porządkowanie uprawnień systemowych poprzedniej wersji…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpando permissões da versão anterior…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистка системных разрешений предыдущей версии…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rensar systembehörigheter från föregående version…"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "กำลังล้างสิทธิ์ระบบของเวอร์ชันก่อนหน้า…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önceki sürümün sistem izinleri temizleniyor…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очищення системних дозволів попередньої версії…"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đang dọn quyền hệ thống của phiên bản trước…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在清理旧版本系统授权…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在清理舊版本系統授權…"
+          }
+        }
+      }
+    },
+    "旧版本系统授权已清理。首次使用相关功能时，请在系统弹窗中重新授权。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم مسح أذونات الإصدار السابق. امنح الوصول مجددًا في نافذة النظام عند أول استخدام للميزات المعنية."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Berechtigungen der vorherigen Version wurden gelöscht. Erlaube den Zugriff beim ersten Verwenden der betreffenden Funktionen erneut im Systemdialog."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previous-version permissions were cleared. Authorize access again in the system prompt when you first use the relevant features."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se borraron los permisos de la versión anterior. Autoriza el acceso de nuevo en el aviso del sistema al usar por primera vez las funciones correspondientes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les autorisations de la version précédente ont été effacées. Accordez à nouveau l’accès dans la fenêtre système lors de la première utilisation des fonctions concernées."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछले संस्करण की सिस्टम अनुमतियाँ साफ़ कर दी गई हैं। संबंधित सुविधा का पहली बार उपयोग करते समय सिस्टम के संकेत में फिर से अनुमति दें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izin sistem versi sebelumnya telah dihapus. Izinkan akses lagi pada dialog sistem saat pertama kali menggunakan fitur terkait."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I permessi della versione precedente sono stati cancellati. Autorizza nuovamente l’accesso nella finestra di sistema al primo utilizzo delle funzioni interessate."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "旧バージョンのシステム権限を消去しました。対象機能を初めて使う際に、システムのダイアログで再度許可してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이전 버전의 시스템 권한을 정리했습니다. 관련 기능을 처음 사용할 때 시스템 대화상자에서 다시 권한을 허용하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De systeemrechten van de vorige versie zijn gewist. Geef opnieuw toegang in de systeemmelding wanneer je de betreffende functies voor het eerst gebruikt."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uprawnienia systemowe poprzedniej wersji zostały wyczyszczone. Przy pierwszym użyciu odpowiednich funkcji ponownie zezwól na dostęp w oknie systemowym."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As permissões da versão anterior foram apagadas. Autorize o acesso novamente na janela do sistema ao usar pela primeira vez os recursos correspondentes."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Системные разрешения предыдущей версии сброшены. При первом использовании соответствующих функций снова разрешите доступ в системном окне."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Systembehörigheterna från föregående version har rensats. Tillåt åtkomst igen i systemdialogen när du använder de berörda funktionerna för första gången."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ล้างสิทธิ์ระบบของเวอร์ชันก่อนหน้าแล้ว โปรดอนุญาตอีกครั้งในหน้าต่างของระบบเมื่อใช้คุณสมบัติที่เกี่ยวข้องเป็นครั้งแรก"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önceki sürümün sistem izinleri temizlendi. İlgili özellikleri ilk kez kullanırken sistem isteminde yeniden erişim izni verin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Системні дозволи попередньої версії скинуто. Під час першого використання відповідних функцій знову надайте доступ у системному вікні."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã xóa quyền hệ thống của phiên bản trước. Hãy cấp quyền lại trong lời nhắc hệ thống khi dùng các tính năng liên quan lần đầu."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "旧版本系统授权已清理。首次使用相关功能时，请在系统弹窗中重新授权。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "舊版本系統授權已清理。首次使用相關功能時，請在系統彈窗中重新授權。"
+          }
+        }
+      }
+    },
+    "旧版本系统授权未能自动清理。请完全退出 Memonta 后重试；若仍报未授权，可在系统设置移除旧记录并重新添加当前应用。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذر مسح الأذونات القديمة تلقائيًا. أغلق Memonta بالكامل وحاول مجددًا. إذا استمر رفض الوصول، فأزل الإدخال القديم من إعدادات النظام وأضف التطبيق الحالي مرة أخرى."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die alten Berechtigungen konnten nicht automatisch gelöscht werden. Beende Memonta vollständig und versuche es erneut. Wird der Zugriff weiter verweigert, entferne den alten Eintrag in den Systemeinstellungen und füge die aktuelle App erneut hinzu."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previous-version permissions could not be cleared automatically. Quit Memonta completely and try again. If access is still denied, remove the old entry in System Settings and add the current app again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron borrar los permisos anteriores automáticamente. Cierra Memonta por completo e inténtalo de nuevo. Si se sigue denegando el acceso, elimina la entrada antigua en Ajustes del Sistema y añade la app actual."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les anciennes autorisations n’ont pas pu être effacées automatiquement. Quittez complètement Memonta et réessayez. Si l’accès reste refusé, supprimez l’ancienne entrée dans les Réglages Système et ajoutez l’application actuelle."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पुरानी अनुमतियाँ अपने-आप साफ़ नहीं हो सकीं। Memonta को पूरी तरह बंद करके फिर प्रयास करें। पहुँच अब भी अस्वीकृत हो तो सिस्टम सेटिंग्स में पुरानी प्रविष्टि हटाकर वर्तमान ऐप फिर से जोड़ें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izin lama tidak dapat dihapus secara otomatis. Keluar sepenuhnya dari Memonta dan coba lagi. Jika akses tetap ditolak, hapus entri lama di Pengaturan Sistem lalu tambahkan aplikasi saat ini lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile cancellare automaticamente i permessi precedenti. Esci completamente da Memonta e riprova. Se l’accesso è ancora negato, rimuovi la vecchia voce nelle Impostazioni di Sistema e aggiungi l’app attuale."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "旧バージョンの権限を自動で消去できませんでした。Memonta を完全に終了して再試行してください。引き続き拒否される場合は、システム設定で古い項目を削除して現在のアプリを再追加してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이전 버전의 권한을 자동으로 정리하지 못했습니다. Memonta를 완전히 종료한 후 다시 시도하세요. 계속 거부되면 시스템 설정에서 이전 항목을 제거하고 현재 앱을 다시 추가하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De oude rechten konden niet automatisch worden gewist. Sluit Memonta volledig af en probeer het opnieuw. Blijft toegang geweigerd, verwijder dan de oude vermelding in Systeeminstellingen en voeg de huidige app opnieuw toe."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udało się automatycznie wyczyścić starych uprawnień. Całkowicie zamknij Memonta i spróbuj ponownie. Jeśli dostęp nadal jest odmawiany, usuń stary wpis w Ustawieniach systemowych i ponownie dodaj bieżącą aplikację."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível apagar automaticamente as permissões antigas. Encerre o Memonta completamente e tente novamente. Se o acesso continuar negado, remova a entrada antiga nos Ajustes do Sistema e adicione o app atual."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось автоматически сбросить прежние разрешения. Полностью закройте Memonta и повторите попытку. Если доступ по-прежнему запрещён, удалите старую запись в Системных настройках и добавьте текущее приложение заново."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gamla behörigheter kunde inte rensas automatiskt. Avsluta Memonta helt och försök igen. Om åtkomst fortfarande nekas tar du bort den gamla posten i Systeminställningar och lägger till den aktuella appen igen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ไม่สามารถล้างสิทธิ์เก่าโดยอัตโนมัติได้ โปรดออกจาก Memonta ให้สมบูรณ์แล้วลองอีกครั้ง หากยังถูกปฏิเสธ ให้ลบรายการเก่าในการตั้งค่าระบบแล้วเพิ่มแอปปัจจุบันอีกครั้ง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eski izinler otomatik temizlenemedi. Memonta’dan tamamen çıkıp yeniden deneyin. Erişim hâlâ reddediliyorsa Sistem Ayarları’ndaki eski kaydı kaldırıp güncel uygulamayı yeniden ekleyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося автоматично скинути старі дозволи. Повністю закрийте Memonta й повторіть спробу. Якщо доступ усе ще заборонено, видаліть старий запис у Системних параметрах і знову додайте поточну програму."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể tự động xóa quyền cũ. Thoát hoàn toàn Memonta rồi thử lại. Nếu quyền truy cập vẫn bị từ chối, xóa mục cũ trong Cài đặt hệ thống và thêm lại ứng dụng hiện tại."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "旧版本系统授权未能自动清理。请完全退出 Memonta 后重试；若仍报未授权，可在系统设置移除旧记录并重新添加当前应用。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "舊版本系統授權未能自動清理。請完全退出 Memonta 後重試；若仍顯示未授權，可在系統設定移除舊記錄並重新加入目前的應用程式。"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

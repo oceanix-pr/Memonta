@@ -356,6 +356,8 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// - Parameter config: 录音配置
     /// - Returns: 录音文件 URL（mixed 模式下为合并后的最终文件，录音停止后才生成）
     func startRecording(config: RecordingConfig) async throws -> URL {
+        await UpdatePermissionRepair.shared.prepareIfNeeded()
+        try Task.checkCancellation()
         guard !AppUpdateService.shared.isPreparingToInstall else {
             throw NSError(domain: "com.oceanix.Memonta.Updates", code: 2,
                           userInfo: [NSLocalizedDescriptionKey: String(localized: "请稍后重试更新。")])

@@ -57,6 +57,7 @@
 		38D3BAF8D111CEBB6F03F2E8 /* PromptSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC6A44D0ECD14A85ADA6467 /* PromptSettingsView.swift */; };
 		38E5CBBFB58FA98D07454CF2 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E39DD28BDCFC3DAF38F45C0 /* FeedbackView.swift */; };
 		3CC12913B0DD5C30672D1273 /* ScreenshotSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4732D714821729D4FE26BBE0 /* ScreenshotSettingsView.swift */; };
+		3D60B088C158EAFABF6E673E /* UpdatePermissionRepair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BA0D9BECC4640E7B7CA903 /* UpdatePermissionRepair.swift */; };
 		3DB9EC7FF6908D31B721E128 /* EntryQueryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972BE396F7A15F01B100980D /* EntryQueryService.swift */; };
 		3E0983BAB1BD8EE21DC1110C /* RecordingMergeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F5A7063C4F4A90DACA7125 /* RecordingMergeRequest.swift */; };
 		3E1E31055169FA8F365E51FF /* TranscriptSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5601B1C9F2A56061704CEA7 /* TranscriptSegment.swift */; };
@@ -107,6 +108,7 @@
 		7B628F9301A84A45876549D0 /* StorageSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C36388B8F342EBD786830A /* StorageSession.swift */; };
 		81A56F212AA480280F0D898E /* MicCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E670EE311E4734F07C0670B /* MicCaptureService.swift */; };
 		8543B028712BC99B329345E5 /* MCPAccessStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB82EA0108DF5B33B536AE6 /* MCPAccessStore.swift */; };
+		865AD24FEF31C84296B7E864 /* UpdatePermissionRepairTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB75A071EDBF0FF4BEB9E22 /* UpdatePermissionRepairTests.swift */; };
 		86D9F0FBB657046EA2AB5FEB /* VoiceprintMergeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF28F84B6BBC6AE6965239E3 /* VoiceprintMergeTests.swift */; };
 		87E7A09B45E5B173A3005E63 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF51AD1A22B2B2305B7DEC6 /* OnboardingView.swift */; };
 		8A551E3CB74854C9775E9EE5 /* ScreenVideoRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41B6F3CC0B7347D873FAB03 /* ScreenVideoRecorder.swift */; };
@@ -288,6 +290,7 @@
 		4732D714821729D4FE26BBE0 /* ScreenshotSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotSettingsView.swift; sourceTree = "<group>"; };
 		4767809C035BC23279D6778F /* VisionOCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionOCRService.swift; sourceTree = "<group>"; };
 		4802806EC17AC22A3BC84B9D /* VoiceprintLibraryViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceprintLibraryViews.swift; sourceTree = "<group>"; };
+		48BA0D9BECC4640E7B7CA903 /* UpdatePermissionRepair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePermissionRepair.swift; sourceTree = "<group>"; };
 		4D13796CEB17EB01B2BD7E09 /* DiarizationSegmentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarizationSegmentationTests.swift; sourceTree = "<group>"; };
 		4D66BB31CD5CED68F361BEC5 /* AppCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCommand.swift; sourceTree = "<group>"; };
 		4EF51AD1A22B2B2305B7DEC6 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -375,6 +378,7 @@
 		B9E3CFEBF2AD021A7658D791 /* EchoCancellerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoCancellerTests.swift; sourceTree = "<group>"; };
 		BAE165E47B08C2873D2E989D /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		BBB82EA0108DF5B33B536AE6 /* MCPAccessStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPAccessStore.swift; sourceTree = "<group>"; };
+		BCB75A071EDBF0FF4BEB9E22 /* UpdatePermissionRepairTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePermissionRepairTests.swift; sourceTree = "<group>"; };
 		BE22D5CF12A705E6C0BA9AA1 /* SpeechSynthesisOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechSynthesisOptions.swift; sourceTree = "<group>"; };
 		BEE875AC8646590415BBF501 /* WhisperModelDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperModelDownloader.swift; sourceTree = "<group>"; };
 		BF026FB4A7B9980D69850F9D /* EntryMirrorStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryMirrorStoreTests.swift; sourceTree = "<group>"; };
@@ -702,6 +706,7 @@
 				ACB609D584755408625641DE /* TranscriptDictionaryService.swift */,
 				E1AB3584F8A12FE99BF6AA7D /* TranscriptionProgressEstimator.swift */,
 				AE8827390778830AD1079954 /* UpdateInstallationCoordinator.swift */,
+				48BA0D9BECC4640E7B7CA903 /* UpdatePermissionRepair.swift */,
 				94C3CD283C8DD4687AF1E01F /* VideoUnderstandingService.swift */,
 				4767809C035BC23279D6778F /* VisionOCRService.swift */,
 				B47EE89729812D8398993A68 /* VoiceprintStore.swift */,
@@ -760,6 +765,7 @@
 				0D53606B3C33E85E58958AC0 /* TodoExtractionServiceTests.swift */,
 				9896C65742B195F28BB24B37 /* TransientModeReadOnlyTests.swift */,
 				FF35ABDF200E58E548BBE4AA /* UpdateInstallationCoordinatorTests.swift */,
+				BCB75A071EDBF0FF4BEB9E22 /* UpdatePermissionRepairTests.swift */,
 				10C34108F637D6E5100C1860 /* VideoCleanupTests.swift */,
 				9603F549999BD7F646443D0A /* VisionOCRLanguageTests.swift */,
 				CF28F84B6BBC6AE6965239E3 /* VoiceprintMergeTests.swift */,
@@ -1089,6 +1095,7 @@
 				2E486CE91F6FAA31302310DF /* TodoExtractionServiceTests.swift in Sources */,
 				FCCF9A7EFA182E83C5B4049E /* TransientModeReadOnlyTests.swift in Sources */,
 				50A4AC50BFF7DF1FBC22D57B /* UpdateInstallationCoordinatorTests.swift in Sources */,
+				865AD24FEF31C84296B7E864 /* UpdatePermissionRepairTests.swift in Sources */,
 				28F36894E87371E4ED2059D4 /* VideoCleanupTests.swift in Sources */,
 				AA9E9051CE711F88FDDE242F /* VisionOCRLanguageTests.swift in Sources */,
 				86D9F0FBB657046EA2AB5FEB /* VoiceprintMergeTests.swift in Sources */,
@@ -1228,6 +1235,7 @@
 				F9CCB5DDEDC61052EFE20572 /* TranscriptView.swift in Sources */,
 				F149AEF6CFEE0EF09AFFF0C0 /* TranscriptionProgressEstimator.swift in Sources */,
 				9A3C6FB8C29E12CC47055385 /* UpdateInstallationCoordinator.swift in Sources */,
+				3D60B088C158EAFABF6E673E /* UpdatePermissionRepair.swift in Sources */,
 				98BD51859CC6E3B3A0D2C646 /* VideoUnderstandingService.swift in Sources */,
 				DA32215EFCFB0989B9780879 /* VideoUnderstandingView.swift in Sources */,
 				B707B9101C7FEBD597E8DB4E /* VisionOCRService.swift in Sources */,
@@ -1419,7 +1427,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1436,7 +1444,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOG = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 9.6.2;
+				MARKETING_VERSION = 9.6.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1484,7 +1492,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 146;
+				CURRENT_PROJECT_VERSION = 147;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = B35SN74F9U;
@@ -1507,7 +1515,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOG = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 9.6.2;
+				MARKETING_VERSION = 9.6.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

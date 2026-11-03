@@ -43,6 +43,23 @@ final class ScreenshotManager {
 
     /// 当前是否为重新标注会话
     private var isReannotating = false
+    private var pendingPermissionRepairCapture: (() -> Void)?
+
+    private func deferCaptureForPermissionRepair(_ retry: @escaping () -> Void) -> Bool {
+        guard UpdatePermissionRepair.shared.needsPreparation else { return false }
+        guard pendingPermissionRepairCapture == nil else {
+            reportPermissionPending(context: "等待更新授权清理")
+            return true
+        }
+        pendingPermissionRepairCapture = retry
+        Task { @MainActor in
+            await UpdatePermissionRepair.shared.prepareIfNeeded()
+            let action = pendingPermissionRepairCapture
+            pendingPermissionRepairCapture = nil
+            action?()
+        }
+        return true
+    }
 
     /// 活动的钉住窗口会话（每个钉住的截图一个独立置顶窗口，可同时存在多个）
     private var pinnedSessions: [PinnedWindowSession] = []
@@ -71,6 +88,7 @@ final class ScreenshotManager {
 
     /// 直接全屏截图（无悬浮层）：立即捕获鼠标所在屏幕并入库为图片笔记
     func captureFullScreenDirect() {
+        guard !deferCaptureForPermissionRepair({ self.captureFullScreenDirect() }) else { return }
         guard !AppUpdateService.shared.isPreparingToInstall else { return }
         guard FeaturePolicy(experience: AppExperiencePreference.resolved()).allows(.advancedCapture) else {
             Self.logger.debug("普通模式忽略全屏直拍请求")
@@ -233,6 +251,7 @@ final class ScreenshotManager {
     ///   - mode: 捕获模式
     ///   - intent: .record 时选定目标后自动进入录制倒计时（菜单/工具栏「录选区/录窗口」直达）
     func startCapture(mode: CaptureMode, intent: CaptureIntent = .screenshot) {
+        guard !deferCaptureForPermissionRepair({ self.startCapture(mode: mode, intent: intent) }) else { return }
         guard !AppUpdateService.shared.isPreparingToInstall else { return }
         let effectiveIntent: CaptureIntent = FeaturePolicy(
             experience: AppExperiencePreference.resolved()

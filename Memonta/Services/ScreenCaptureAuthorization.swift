@@ -26,6 +26,8 @@ enum ScreenCaptureAuthorization {
     }
 
     static func content(onScreenWindowsOnly: Bool = false) async throws -> SCShareableContent {
+        await UpdatePermissionRepair.shared.prepareIfNeeded()
+        try Task.checkCancellation()
         // CG 预检保留为无弹窗诊断。false 也可能是未决定或更新后的旧授权，
         // 不能据此在真正的 ScreenCaptureKit 授权请求之前直接终止。
         if !CGPreflightScreenCaptureAccess() {

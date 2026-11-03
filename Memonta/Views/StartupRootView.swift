@@ -56,7 +56,7 @@ struct StartupRootView: View {
     }
 
     private func mainContent(container: ModelContainer, isTransient: Bool) -> some View {
-        RootView(persistence: isTransient ? .readOnlyTransient : .readWrite)
+        PermissionPreparedRootView(isTransient: isTransient)
             .frame(minWidth: 700, minHeight: 500)
             #if os(macOS)
             .frame(idealWidth: 1100, idealHeight: 700)
@@ -69,6 +69,45 @@ struct StartupRootView: View {
         #if os(macOS)
         NSApp.terminate(nil)
         #endif
+    }
+}
+
+/// 新版已安装且独占可写数据库后，先处理旧签名的授权，再开放主界面。
+private struct PermissionPreparedRootView: View {
+    let isTransient: Bool
+    @State private var prepared = false
+    @State private var dismissedNotice = false
+
+    var body: some View {
+        Group {
+            if prepared {
+                RootView(persistence: isTransient ? .readOnlyTransient : .readWrite)
+                    .safeAreaInset(edge: .top) {
+                        if !dismissedNotice, let message = UpdatePermissionRepair.shared.outcome.message {
+                            HStack(alignment: .top, spacing: 10) {
+                                Label(message, systemImage: "info.circle")
+                                    .font(.callout)
+                                Spacer()
+                                Button { dismissedNotice = true } label: { Image(systemName: "xmark") }
+                                    .buttonStyle(.plain)
+                                    .accessibilityLabel("关闭")
+                            }
+                            .padding(12)
+                            .background(.bar)
+                        }
+                    }
+            } else {
+                VStack(spacing: 12) {
+                    ProgressView()
+                    Text("正在清理旧版本系统授权…")
+                }
+            }
+        }
+        .task {
+            UpdatePermissionRepair.shared.configureSession(isPersistent: !isTransient)
+            await UpdatePermissionRepair.shared.prepareIfNeeded()
+            prepared = true
+        }
     }
 }
 

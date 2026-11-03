@@ -26,6 +26,7 @@ struct LifecycleTasksModifier: ViewModifier {
             .task(id: privacyAccepted) {
                 guard !AppRuntime.isRunningTests else { return }
                 guard privacyAccepted else { await MCPServerController.shared.suspend(); return }
+                if !isTransientMode { await UpdatePermissionRepair.shared.prepareIfNeeded() }
                 // 单一启动协调器：以下步骤共用同一个 ModelContext，必须严格串行执行
                 // （加密迁移 → 崩溃残留状态复位 → 磁盘对账 → 后台队列续跑）。
                 // 旧实现把「录音导入 / 快捷笔记导入 / 模型预热」拆成并列的 task 并行跑：

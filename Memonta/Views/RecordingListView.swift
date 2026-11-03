@@ -22,6 +22,8 @@ struct RecordingListView: View {
     @Binding var editingItemID: String?
     var onRefresh: @MainActor () async -> Void = {}
     var isMeetingRecording: Bool = false
+    /// 菜单直接挂在持有 selection 的 List 上，避免外层容器截断列表的选择上下文。
+    var contextMenuContent: (Set<ListItem>) -> AnyView = { _ in AnyView(EmptyView()) }
     var onToggleMeetingRecording: () -> Void = {}
 
     @State private var searchText = ""
@@ -224,6 +226,9 @@ struct RecordingListView: View {
             // 搜索框文本与选中态分别由 @State searchText / 外层 selection 绑定持有，不受重建影响
             .id("filter-\(debouncedSearchText)-\(showHiddenRecordings)")
             .listStyle(.sidebar)
+            .contextMenu(forSelectionType: ListItem.self) { items in
+                contextMenuContent(items)
+            }
         }
         .navigationTitle("Memonta 闻墨达")
         // P2-7: 搜索防抖，300ms 内连续输入只触发一次过滤

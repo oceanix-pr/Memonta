@@ -9,14 +9,15 @@ import Darwin
 /// 确认框固定所选条目与原件路径，避免确认期间列表选择变化导致误删。
 @MainActor
 struct MediaCleanupRequest {
-    enum Kind: CaseIterable, Hashable {
-        case audio, image, video
+    enum Kind: Hashable {
+        case audio, image, video, originals
 
         var title: String {
             switch self {
             case .audio: String(localized: "清理录音")
             case .image: String(localized: "清理图片")
             case .video: String(localized: "清理视频")
+            case .originals: String(localized: "清理源件")
             }
         }
 
@@ -24,7 +25,10 @@ struct MediaCleanupRequest {
             guard !item.folderName.isEmpty else { return nil }
             switch (self, item) {
             case (.audio, .recording(let recording)): return recording.fileURL
-            case (.image, .quickNote(let note)): return note.sourceImageURL
+            case (.image, .quickNote(let note)):
+                // 文件系统为权威源：兼容旧索引缺少/残留图片引用，但 source.png 仍在的条目。
+                if let url = note.sourceImageURL, MediaCleanupService.isOriginalFile(url, in: note.folderURL) { return url }
+                return note.folderURL.appendingPathComponent("source.png")
             case (.video, .recording(let recording)): return recording.videoFileURL
             default: return nil
             }
@@ -32,6 +36,7 @@ struct MediaCleanupRequest {
     }
 
     struct Target {
+        let kind: Kind
         let item: ListItem
         let url: URL
     }
@@ -39,19 +44,39 @@ struct MediaCleanupRequest {
     let kind: Kind
     let targets: [Target]
     let estimatedBytes: Int64
+    let selectedItemCount: Int
+    let skippedEntryCount: Int
+
+    /// 点击已选中的行时以完整的选中绑定为准，不让批量范围取决于菜单的临时上下文；
+    /// 点击选中范围外的行则只作用于该行，不能意外清理旧的多选集合。
+    static func contextSelection(items: Set<ListItem>, selection: Set<ListItem>) -> Set<ListItem> {
+        guard !items.isEmpty, selection.count > 1 else { return items }
+        let selectedIDs = Set(selection.map(\.id))
+        return items.allSatisfy { selectedIDs.contains($0.id) } ? selection : items
+    }
 
     init?(kind: Kind, items: Set<ListItem>) {
-        let targets = items.sorted { $0.id < $1.id }.compactMap { item -> Target? in
-            guard let url = kind.originalURL(for: item),
-                  MediaCleanupService.isOriginalFile(url, in: item.folderURL) else { return nil }
-            return Target(item: item, url: url)
+        let kinds: [Kind] = kind == .originals ? [.audio, .image, .video] : [kind]
+        var targets: [Target] = []
+        var paths = Set<String>()
+        var entriesWithSources = Set<String>()
+        for item in items.sorted(by: { $0.id < $1.id }) {
+            for fileKind in kinds {
+                guard let url = fileKind.originalURL(for: item),
+                      MediaCleanupService.isOriginalFile(url, in: item.folderURL) else { continue }
+                entriesWithSources.insert(item.id)
+                guard paths.insert(url.standardizedFileURL.path).inserted else { continue }
+                targets.append(Target(kind: fileKind, item: item, url: url))
+            }
         }
         guard !targets.isEmpty else { return nil }
         self.kind = kind
         self.targets = targets
+        selectedItemCount = items.count
+        skippedEntryCount = items.count - entriesWithSources.count
         estimatedBytes = targets.reduce(0) { total, target in
-            let size = (try? target.url.resourceValues(forKeys: [.fileSizeKey]))?.fileSize ?? 0
-            return total + Int64(size)
+            let attributes = try? FileManager.default.attributesOfItem(atPath: target.url.path)
+            return total + ((attributes?[.size] as? NSNumber)?.int64Value ?? 0)
         }
     }
 
@@ -64,6 +89,11 @@ struct MediaCleanupRequest {
             format = String(localized: "只删除所选 %1$lld 个图片原件（约 %2$@），保留条目、文字、OCR、总结与待办。此操作无法撤销，清理后无法查看、标注或重新识别原图。")
         case .video:
             format = String(localized: "只删除所选 %1$lld 个视频原件（约 %2$@），保留关键帧、画面要点、音频、转写、总结与待办。仅清理已有可复用关键帧的条目。此操作无法撤销，清理后无法播放原视频或重新抽帧。")
+        case .originals:
+            return String(format: String(localized: "将清理所选 %1$lld 个条目中的音频 %2$lld 个、图片 %3$lld 张、视频 %4$lld 个，预计释放 %5$@。\n\n只删除源文件，保留条目、转写、OCR、总结、待办、关键帧与画面要点。清理后无法播放或查看原件，也无法重新转写或抽帧。没有可复用关键帧的视频、处理中或保存失败的文件会保留并说明原因。此操作无法撤销，点击「确定」执行。"),
+                          Int64(selectedItemCount), Int64(targets.filter { $0.kind == .audio }.count),
+                          Int64(targets.filter { $0.kind == .image }.count), Int64(targets.filter { $0.kind == .video }.count),
+                          ByteCountFormatter.string(fromByteCount: estimatedBytes, countStyle: .file))
         }
         return String(format: format, Int64(targets.count),
                       ByteCountFormatter.string(fromByteCount: estimatedBytes, countStyle: .file))
@@ -77,6 +107,8 @@ struct MediaCleanupRequest {
 final class MediaCleanupService {
     static let shared = MediaCleanupService()
     private(set) var isRunning = false
+    private(set) var completedTargetCount = 0
+    private(set) var targetCount = 0
     private let isBusy: @MainActor () -> Bool
     private let logger = Logger(subsystem: "com.oceanix.Memonta", category: "MediaCleanup")
 
@@ -88,12 +120,17 @@ final class MediaCleanupService {
         var cleanedCount = 0
         var freedBytes: Int64 = 0
         var failures: [String] = []
+        var skippedEntryCount = 0
 
         var message: String {
             var text = String(format: String(localized: "已清理 %1$lld 个文件，释放约 %2$@。"),
                               Int64(cleanedCount), ByteCountFormatter.string(fromByteCount: freedBytes, countStyle: .file))
-            if let first = failures.first {
-                text += "\n" + String(format: String(localized: "有 %1$lld 个条目未完成清理：%2$@"), Int64(failures.count), first)
+            if skippedEntryCount > 0 {
+                text += "\n" + String(format: String(localized: "%lld 个条目没有可清理的源件，已跳过。"), Int64(skippedEntryCount))
+            }
+            if !failures.isEmpty {
+                text += "\n\n" + String(format: String(localized: "%1$lld 个源文件未完成清理：\n%2$@"),
+                                          Int64(failures.count), failures.joined(separator: "\n"))
             }
             return text
         }
@@ -153,30 +190,37 @@ final class MediaCleanupService {
 
     func cleanup(_ request: MediaCleanupRequest, context: ModelContext, persistence: PersistenceGuard) async throws -> Result {
         if let rejection = persistence.rejection(for: .deleteEntry) { throw rejection }
-        guard !isRunning, !isBusy() else { throw CleanupError.busy }
+        guard !isRunning, !isBusy() else {
+            logger.notice("媒体清理暂未执行：资源仍被占用，选中 \(request.selectedItemCount) 个条目，目标 \(request.targets.count) 个文件")
+            throw CleanupError.busy
+        }
         isRunning = true
+        completedTargetCount = 0
+        targetCount = request.targets.count
         defer { isRunning = false }
         try context.save()
-        var result = Result()
+        var result = Result(skippedEntryCount: request.skippedEntryCount)
+        logger.info("媒体清理开始：选中 \(request.selectedItemCount) 个条目，目标 \(request.targets.count) 个文件，无源件 \(request.skippedEntryCount) 个条目")
         for target in request.targets {
+            defer { completedTargetCount += 1 }
             do {
                 try Task.checkCancellation()
-                guard !isBusy(), request.kind.originalURL(for: target.item) == target.url else { throw CleanupError.busy }
+                guard !isBusy(), target.kind.originalURL(for: target.item) == target.url else { throw CleanupError.busy }
                 switch target.item {
                 case .recording(let recording):
                     guard recording.modelContext === context, !recording.isDeleted,
                           recording.transcriptionStatus != .processing, recording.summaryStatus != .processing,
                           recording.visualStatus != .processing, recording.todoStatus != .processing else { throw CleanupError.busy }
-                    if request.kind == .video {
+                    if target.kind == .video {
                         guard await VideoUnderstandingService.hasReusableFrameCache(in: recording.framesDirectoryURL) else {
                             throw VideoUnderstandingService.VideoUnderstandingError.frameCacheMissing
                         }
                     }
                     try await preserve(recording)
                     // 在删除最后一份媒体物证前把路径、时长、类型与身份写盘，数据库重建仍能恢复。
-                    if request.kind == .video { recording.hasVideoSource = true }
+                    if target.kind == .video { recording.hasVideoSource = true }
                     guard recording.saveMetaToFolder() else { throw CleanupError.preservationFailed }
-                    if request.kind == .audio {
+                    if target.kind == .audio {
                         // 删除意图先落盘：unlink 后即使进程退出，扫描也不会用遗留分片复活原件。
                         try EntryIdentityStore.write(["audioRemovedAt": Date().timeIntervalSince1970],
                                                      id: recording.id, to: recording.folderURL)
@@ -196,7 +240,7 @@ final class MediaCleanupService {
                 // 只在实际删除成功后更新文件引用；失败保留模型与原件。
                 switch target.item {
                 case .recording(let recording):
-                    if request.kind == .audio { recording.audioRemovedAt = Date() }
+                    if target.kind == .audio { recording.audioRemovedAt = Date() }
                     else { recording.videoFileName = nil }
                 case .quickNote(let note):
                     note.sourceImageFileName = nil
@@ -204,9 +248,11 @@ final class MediaCleanupService {
                 try context.save()
             } catch {
                 logger.error("媒体清理未完成：\(error.localizedDescription, privacy: .private)")
-                result.failures.append(UserFacingError.summary(for: error))
+                result.failures.append(String(format: String(localized: "%1$@（%2$@）：%3$@"),
+                                              target.item.title, target.kind.title, UserFacingError.summary(for: error)))
             }
         }
+        logger.info("媒体清理结束：清理 \(result.cleanedCount) 个文件，失败 \(result.failures.count) 个文件，无源件 \(result.skippedEntryCount) 个条目")
         return result
     }
 

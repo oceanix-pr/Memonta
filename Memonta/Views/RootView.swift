@@ -222,10 +222,6 @@ struct RootView: View {
                 viewModel.showError = true
             }
         }
-        .contextMenu(forSelectionType: ListItem.self) { items in
-            contextMenuContent(for: items)
-                .disabled(MediaCleanupService.shared.isRunning)
-        }
         .modifier(ExportModifiers(
             showTranscriptExporter: $showTranscriptExporter,
             exportTranscriptDoc: exportTranscriptDoc,
@@ -452,11 +448,11 @@ struct RootView: View {
     /// 视图层 3：删除确认对话框 + 新建笔记 Sheet + 错误提示
     private var dialogLayers: some View {
         sheetAndAlertLayers
-        .confirmationDialog(Text(pendingMediaCleanup?.kind.title ?? ""), isPresented: Binding(
+        .alert(Text(pendingMediaCleanup?.kind.title ?? ""), isPresented: Binding(
             get: { pendingMediaCleanup != nil },
             set: { if !$0 { pendingMediaCleanup = nil } }
-        ), titleVisibility: .visible, presenting: pendingMediaCleanup) { request in
-            Button(request.kind.title, role: .destructive) {
+        ), presenting: pendingMediaCleanup) { request in
+            Button("确定", role: .destructive) {
                 pendingMediaCleanup = nil
                 Task {
                     do {
@@ -471,13 +467,25 @@ struct RootView: View {
         } message: { request in
             Text(request.message)
         }
-        .alert("媒体清理", isPresented: Binding(
+        .sheet(isPresented: Binding(
             get: { mediaCleanupResult != nil },
             set: { if !$0 { mediaCleanupResult = nil } }
         )) {
-            Button("确定") { mediaCleanupResult = nil }
-        } message: {
-            Text(mediaCleanupResult ?? "")
+            VStack(alignment: .leading, spacing: 16) {
+                Text("媒体清理").font(.headline)
+                ScrollView {
+                    Text(mediaCleanupResult ?? "")
+                        .textSelection(.enabled)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                HStack {
+                    Spacer()
+                    Button("确定") { mediaCleanupResult = nil }
+                        .keyboardShortcut(.defaultAction)
+                }
+            }
+            .padding(24)
+            .frame(minWidth: 480, idealWidth: 600, minHeight: 240, idealHeight: 420)
         }
         .confirmationDialog("合并录音？", isPresented: Binding(
             get: { pendingMerge != nil },
@@ -620,6 +628,9 @@ struct RootView: View {
                 handleSyncResult(result, isManualRefresh: true)
             },
             isMeetingRecording: viewModel.isMeetingRecording,
+            contextMenuContent: { items in
+                AnyView(contextMenuContent(for: items).disabled(MediaCleanupService.shared.isRunning))
+            },
             onToggleMeetingRecording: {
                 #if os(macOS)
                 toggleMeetingRecording()
@@ -1130,24 +1141,21 @@ struct RootView: View {
 
     @ViewBuilder
     private func mediaCleanupMenu(for items: Set<ListItem>) -> some View {
-        // 与既有清理视频保持一致：专业模式提供原件清理；混选时各按钮仅处理相应媒体。
-        if experienceStore.isPro {
-            ForEach(MediaCleanupRequest.Kind.allCases, id: \.self) { kind in
-                if MediaCleanupRequest(kind: kind, items: items) != nil {
-                    Button(role: .destructive) {
-                        presentMediaCleanup(kind, items: items)
-                    } label: {
-                        Label(kind.title, systemImage: "trash.slash")
-                    }
-                    .disabled(isTransientMode || MediaCleanupService.shared.isRunning)
-                }
+        let cleanupItems = MediaCleanupRequest.contextSelection(items: items, selection: selectedListItems)
+        if experienceStore.isPro && !cleanupItems.isEmpty {
+            Button(role: .destructive) {
+                presentMediaCleanup(.originals, items: cleanupItems)
+            } label: {
+                Label("清理源件", systemImage: "trash.slash")
             }
+            .disabled(isTransientMode || MediaCleanupService.shared.isRunning)
         }
     }
 
     private func presentMediaCleanup(_ kind: MediaCleanupRequest.Kind, items: Set<ListItem>) {
         guard !blockWriteIfPersistenceUnavailable(.deleteEntry) else { return }
         pendingMediaCleanup = MediaCleanupRequest(kind: kind, items: items)
+        if pendingMediaCleanup == nil { mediaCleanupResult = String(localized: "所选条目没有可清理的源件。") }
     }
 
     // MARK: - 批量删除（录音 + 快捷笔记共用同一确认载荷）
@@ -1574,6 +1582,8 @@ struct RootView: View {
             HStack(spacing: 10) {
                 ProgressView().controlSize(.small)
                 Text("正在清理媒体…").font(.caption)
+                Text("\(MediaCleanupService.shared.completedTargetCount)/\(MediaCleanupService.shared.targetCount)")
+                    .monospacedDigit()
             }
             .padding(12)
             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
