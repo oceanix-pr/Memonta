@@ -3,28 +3,34 @@
     <channel>
         <title>Memonta</title>
         <item>
-            <title>9.6.4</title>
-            <pubDate>Tue, 03 Nov 2026 13:25:30 +0000</pubDate>
-            <sparkle:version>148</sparkle:version>
-            <sparkle:shortVersionString>9.6.4</sparkle:shortVersionString>
+            <title>9.6.5</title>
+            <pubDate>Wed, 04 Nov 2026 13:15:52 +0000</pubDate>
+            <sparkle:version>149</sparkle:version>
+            <sparkle:shortVersionString>9.6.5</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[Memonta 9.6.4（148）
+            <description sparkle:format="markdown"><![CDATA[Memonta 9.6.5（149）
 
-- 修复新增录音或更新侧栏列表后，标题、状态和时间叠在同一行的问题。条目增删、替换、重排和搜索过滤后正确清除旧行残留。
-- 保留侧栏选中项与月份折叠状态；普通标题和状态更新继续原地刷新。
-- 包含 9.6.3 的统一「清理源件」及批量清理修复，并在临时签名更新后首次启动时清理本应用的旧系统授权。使用相关功能时仍需通过 macOS 弹窗重新授权。
+- 在录音播放进度条下方显示声波图，区分有声和静音区间；可点击或拖动跳转，分析在本机完成。
+- 停止录音时尝试修复不可播放的 CAF/WAV 分片容器头，按原时间轴合入可用声音，保留原始分片，并在采集详情中说明自动修复结果。未采集到的声音无法补回。
+- 麦克风设备切换期间的临时格式协商失败由应用内部重试；恢复成功且无其他采集问题时，不再误报录音中断。
+- 本地模型生成标题改为流式接收，兼容仍返回完整 JSON 的服务；断流或输出预算耗尽时不保存不完整标题。
+- 更新后的系统权限清理仅适用于未公证分发包；开发调试构建不会自动清理授权。
 
-此版本沿用未公证分发方式。长期跨版本保留系统授权需要稳定的 Developer ID 签名。
+此版本沿用未公证分发方式。
 
 English
 
-- Fixes overlapping titles, status badges and timestamps after adding recordings or updating the sidebar. Clears stale row content when entries are inserted, removed, replaced, reordered or filtered.
-- Preserves the sidebar selection and month expansion state. Ordinary title and status changes continue to update in place.
-- Includes the unified Clean Up Originals action and batch cleanup fixes from 9.6.3, plus a one-time cleanup of Memonta's old system permissions after an ad-hoc signed update. Relevant features still request authorization through macOS.
+- Adds a waveform below the recording playback bar to distinguish sound from quiet sections. Click or drag to seek; analysis runs locally.
+- Attempts to repair unplayable CAF/WAV segment headers when recording stops, merges usable audio on the original timeline, retains the source segments, and reports the repair in capture details. Audio that was never captured cannot be recovered.
+- Retries temporary audio format negotiation failures during microphone device changes without reporting a recovered switch as a recording interruption.
+- Streams title generation from local models while accepting services that return complete JSON. Interrupted or output limited responses are not saved as partial titles.
+- Limits post-update system permission cleanup to non-notarized distribution builds; development builds do not reset permissions automatically.
 
-This release remains non-notarized. A stable Developer ID signature is needed for long-term permission continuity across versions.
+This release remains non-notarized. macOS may block first launch, and related system permissions may need to be granted again after updating.
+
+此版本未经 Apple 公证，仅用于用户已同意的更新测试；首次安装可能被系统阻止，系统权限可能需要重新授予。
 ]]></description>
-            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.6.4/Memonta-v9.6.4-148-macOS.zip" length="44756830" type="application/octet-stream" sparkle:edSignature="FpnKueh1ROi3NeGk4XJXgjJ7jiggt4qu1Te5anDjuu9RXhJnPSQPuM9zZ1iwfzBJXule6wXQ5XlOHC3YNfgWDQ=="/>
+            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.6.5/Memonta-v9.6.5-149-macOS.zip" length="44764793" type="application/octet-stream" sparkle:edSignature="LEmkXOaUfubDSRVx4WdQjJllllg+tFcls6T49csRvZKkYglt93aRmlP7XXp83gbvg2wY9Vj1H31dVYwbngV0Ag=="/>
         </item>
     </channel>
 </rss>
