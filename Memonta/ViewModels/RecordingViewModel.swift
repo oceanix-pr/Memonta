@@ -2251,7 +2251,8 @@ final class RecordingViewModel {
                 liveRecordingWarning = message
             } else {
                 liveRecordingWarning = nil
-                let feedback = message ?? String(localized: "音频采集已恢复。")
+                // 正常设备协商已自动完成、没有采集影响时，仅收起恢复横幅。
+                guard let feedback = message else { return }
                 guard lastRecoveredFeedback != feedback else { return }
                 lastRecoveredFeedback = feedback
                 recordingFeedback = RecordingFeedback(

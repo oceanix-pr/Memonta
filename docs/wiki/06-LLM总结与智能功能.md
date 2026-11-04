@@ -15,7 +15,7 @@
 | 方法 | 用途 |
 |------|------|
 | `generateSummary(...)` | 转写文本 → Markdown 总结（录音/快捷笔记共用） |
-| `generateTitle(from:config:)` | 内容 → 简短标题（总结完成后自动命名录音/笔记） |
+| `generateTitle(from:config:)` | 内容 → 简短标题（自动命名与右键润色标题；本地流式、云端非流式） |
 | `generateSummaryFromImage(...)` | 图片 → 总结（快捷笔记图片，需配置 `supportsVision`） |
 | `generateVisualNotes(frames:config:...)` | 视频关键帧 → 按时间轴的「画面要点」 |
 | `detectMeeting(transcript:config:)` | 转写文本 → 是否会议（无模板按钮入口自动调用，如守护进程续跑 / 一键处理；单条总结由用户双按钮显式选择） |
@@ -39,6 +39,10 @@ max_tokens：克制默认值（非模型理论上限）
 ```
 
 SSE 解析：`URLSession.shared.bytes` 逐行读取 → 识别 `data:` 前缀 → 解析 `choices[0].delta.content` → 合批回调 `onToken` → 累积完整返回文本。
+
+标题请求由 `generateTitle` 使用独立 URLSession：本地模型复用 `LocalLLMCapabilities` 探测，仅在模型声明允许关闭思考时发送 `reasoning_effort: "none"`，并通过 SSE 接收（兼容服务忽略 `stream`、返回完整 JSON）；空闲超时 180 秒、单次请求总时限 600 秒，取消会中断能力探测与推理连接。云端保持非流式与 60 秒空闲超时。旧路径将本地标题请求也设为 60 秒非流式，默认开启思考的模型可能在正文生成前就被客户端断开，单纯增加 `max_tokens` 无法解决此超时。
+
+标题只取最终正文，忽略 `reasoning_content` / `reasoning` 并剥离正文开头的旧式 `<think>` 块；仅有思考、输出截断或缺少结束标记的断流均报错，不覆盖原标题。只有真正的空返回重试一次，网络与推理失败不自动重试。诊断仅记录耗时、结束原因、正文长度和是否收到思考，不记录内容原文。
 
 ### 1.4 LLMConfigSnapshot
 

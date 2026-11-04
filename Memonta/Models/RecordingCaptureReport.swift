@@ -46,13 +46,15 @@ struct RecordingCaptureReport: Codable, Sendable, Equatable {
 
     /// Optional 字段兼容既有 version 1 报告。
     var skippedSegments: [String]?
+    /// 仅在修复副本校验并成功合入最终录音后填写；不表示补回了未采集的声音。
+    var repairedSegments: [String]?
     var retainedOriginals: Bool?
     var microphoneLastSuccessfulWriteAt: Date?
     var microphoneWrittenFrames: Int64?
     var version = 1
     var interruptions: [Interruption] = []
     var issues: [Issue] = []
-    var isEmpty: Bool { interruptions.isEmpty && issues.isEmpty }
+    var isEmpty: Bool { interruptions.isEmpty && issues.isEmpty && (repairedSegments ?? []).isEmpty }
     var hasWarning: Bool {
         !issues.isEmpty || interruptions.contains {
             !($0.track == .microphone && $0.recovered && $0.mutedThroughout)
@@ -60,7 +62,8 @@ struct RecordingCaptureReport: Codable, Sendable, Equatable {
     }
     var summary: String? {
         var seen = Set<String>()
-        let messages = (interruptions.map(\.message) + issues.map(\.message)).filter { seen.insert($0).inserted }
+        let repairs = (repairedSegments ?? []).isEmpty ? [] : [String(localized: "音频分片已自动修复并合入录音。")]
+        let messages = (interruptions.map(\.message) + issues.map(\.message) + repairs).filter { seen.insert($0).inserted }
         return messages.isEmpty ? nil : messages.joined(separator: "\n")
     }
 }

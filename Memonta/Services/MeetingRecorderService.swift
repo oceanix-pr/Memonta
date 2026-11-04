@@ -84,6 +84,7 @@ final class MeetingRecorderService: @unchecked Sendable {
         }
         if mergeHadDegradation { report.issues.append(.audioDegraded) }
         report.skippedSegments = skippedSegmentNames.isEmpty ? nil : skippedSegmentNames
+        report.repairedSegments = repairedSegmentNames.isEmpty ? nil : repairedSegmentNames
         report.retainedOriginals = retainedOriginals ? true : nil
         report.microphoneLastSuccessfulWriteAt = microphoneLastWrite
         report.microphoneWrittenFrames = microphoneFrames
@@ -113,6 +114,7 @@ final class MeetingRecorderService: @unchecked Sendable {
     private var segmentTimeline: RecordingSegmentTimelineStore?
     private var timelineSaveFailed = false
     private var skippedSegmentNames: [String] = []
+    private var repairedSegmentNames: [String] = []
     private var retainedOriginals = false
     private var microphoneLastWrite: Date?
     private var microphoneFrames: Int64?
@@ -374,6 +376,7 @@ final class MeetingRecorderService: @unchecked Sendable {
         mergeHadDegradation = false
         captureHadWarningBeforeMerge = false
         skippedSegmentNames = []
+        repairedSegmentNames = []
         retainedOriginals = false
         timelineSaveFailed = false
         microphoneLastWrite = nil
@@ -761,6 +764,7 @@ final class MeetingRecorderService: @unchecked Sendable {
     ) async -> URL? {
         isMerging = true
         mergeHadDegradation = false
+        repairedSegmentNames = []
         captureHadWarningBeforeMerge = lastError != nil
         mergePhase = .inspectingSegments
         mergeProgressCompleted = 0
@@ -792,14 +796,28 @@ final class MeetingRecorderService: @unchecked Sendable {
             return nil
         }
 
-        var micOK: [URL] = []
-        for url in micURLs where await isPlayable(at: url) { micOK.append(url) }
-        var sysOK: [URL] = []
-        for url in sysURLs where await isPlayable(at: url) { sysOK.append(url) }
+        var usable: [URL: URL] = [:]
+        var repairedCopies: [URL] = []
+        var repairedNames: [String] = []
+        defer { removeSegments(repairedCopies) }
+        for url in micURLs + sysURLs {
+            if await isPlayable(at: url) {
+                usable[url] = url
+            } else if let repaired = await FileSyncService.repairedPCMContainerCopy(at: url) {
+                usable[url] = repaired
+                repairedCopies.append(repaired)
+                repairedNames.append(url.lastPathComponent)
+                // 修复只恢复容器，不改变样本所在的原始时间，不能顺序拼接压缩缺口。
+                let start = timeline?.starts[url.lastPathComponent]
+                timeline?.starts[repaired.lastPathComponent] = start
+            }
+        }
+        var micOK = micURLs.compactMap { usable[$0] }
+        let sysOK = sysURLs.compactMap { usable[$0] }
 
-        skippedSegmentNames = (micURLs + sysURLs).filter { !micOK.contains($0) && !sysOK.contains($0) }.map(\.lastPathComponent)
+        skippedSegmentNames = (micURLs + sysURLs).filter { usable[$0] == nil }.map(\.lastPathComponent)
         let skipped = skippedSegmentNames.count
-        retainedOriginals = skipped > 0 || timelineSaveFailed || captureHadWarningBeforeMerge
+        retainedOriginals = skipped > 0 || !repairedNames.isEmpty || timelineSaveFailed || captureHadWarningBeforeMerge
             || micRecoveryError != nil || captureHealth.report.hasWarning
         if skipped > 0 {
             mergeHadDegradation = true
@@ -851,6 +869,7 @@ final class MeetingRecorderService: @unchecked Sendable {
         // 两轨均可用：拼接后叠加混音
         if !micOK.isEmpty && !sysOK.isEmpty {
             if await exportMixedComposition(micSegments: micOK, sysSegments: sysOK, outputURL: outputURL, timeout: exportTimeout, timeline: timeline) {
+                repairedSegmentNames = repairedNames
                 // 只有完整且无采集故障的合并才删除原片；未知/未消费素材保留。
                 let shellCount = micURLs.count + sysURLs.count - micOK.count - sysOK.count
                 if !retainedOriginals { removeSegments(cleanupURLs) }
@@ -878,6 +897,12 @@ final class MeetingRecorderService: @unchecked Sendable {
         // 单轨路径：按时间轴保留缺口（麦克风优先）
         let single = !micOK.isEmpty ? micOK : sysOK
         if let result = await concatOrMove(segments: single, to: outputURL, timeout: exportTimeout, timeline: timeline) {
+            // 双轨导出失败后的单轨回退，只能确认被实际选中声轨的分片已修复合入。
+            let consumedOriginals = !micOK.isEmpty ? micURLs : sysURLs
+            repairedSegmentNames = consumedOriginals.filter {
+                guard let prepared = usable[$0] else { return false }
+                return prepared != $0
+            }.map(\.lastPathComponent)
             // 单轨回退与跳片时保留全部原片，不能删除未合入的另一轨。
             if !retainedOriginals { removeSegments(cleanupURLs) }
             mergePhase = .saving
@@ -1024,7 +1049,8 @@ final class MeetingRecorderService: @unchecked Sendable {
     /// 删除已处理的分片文件
     private func removeSegments(_ urls: [URL]) {
         for url in urls {
-            try? FileManager.default.removeItem(at: url)
+            do { try FileManager.default.removeItem(at: url) }
+            catch { logger.error("清理音频分片失败: \(error.localizedDescription, privacy: .private)") }
         }
     }
 

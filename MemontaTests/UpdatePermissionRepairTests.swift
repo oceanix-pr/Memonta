@@ -143,4 +143,16 @@ struct UpdatePermissionRepairTests {
         #expect(!identity.hash.isEmpty)
         #expect(identity.hash.allSatisfy { $0.isHexDigit })
     }
+
+    @Test func debugBuildNeverResetsPermissionsOrChangesReleaseMarker() async {
+        let repair = UpdatePermissionRepair(snapshot: {
+            var value = snapshot()
+            value.isUnnotarizedDistribution = false
+            return value
+        }, rememberedIdentity: { "146:release-code" },
+            rememberIdentity: { _ in Issue.record("must not change the release marker from a debug build") },
+            runReset: { Issue.record("must not reset permissions from a debug build"); return .success })
+        #expect(!repair.needsPreparation)
+        #expect(await repair.prepareIfNeeded() == .notNeeded)
+    }
 }

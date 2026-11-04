@@ -21,16 +21,22 @@ final class MicCaptureService: @unchecked Sendable {
     @MainActor init(
         permissionCheck: @escaping @Sendable () async -> Bool = { await MicCaptureService.ensureMicrophonePermission() },
         bindInput: @escaping @MainActor (AVAudioEngine) throws -> UInt32 = MicCaptureService.bindInputDevice,
-        makeEngine: @escaping @MainActor () -> AVAudioEngine = { AVAudioEngine() }
+        makeEngine: @escaping @MainActor () -> AVAudioEngine = { AVAudioEngine() },
+        startEngine: @escaping @MainActor (AVAudioEngine) throws -> Void = { engine in
+            engine.prepare()
+            try engine.start()
+        }
     ) {
         self.permissionCheck = permissionCheck
         self.bindInput = bindInput
         self.makeEngine = makeEngine
+        self.startEngine = startEngine
     }
 
     private let permissionCheck: @Sendable () async -> Bool
     @MainActor private let bindInput: (AVAudioEngine) throws -> UInt32
     @MainActor private let makeEngine: () -> AVAudioEngine
+    @MainActor private let startEngine: (AVAudioEngine) throws -> Void
 
     private let logger = Logger(subsystem: "com.oceanix.Memonta", category: "MicCapture")
     // 引擎及节点仅在 MainActor 操作；音频回调只捕获文件盒和不可变标识。
@@ -492,8 +498,7 @@ final class MicCaptureService: @unchecked Sendable {
             isTapInstalled = true
             observeConfigurationChanges()
             stage = .startEngine
-            nextEngine.prepare()
-            try nextEngine.start()
+            try startEngine(nextEngine)
             recordingFormat = format
             lastRecoveryFailure = nil
             if let replacement, previousFile != nil {
@@ -543,7 +548,12 @@ final class MicCaptureService: @unchecked Sendable {
                 originEngineGeneration: failedEngineGeneration, deviceSampleRate: deviceRate
             )
             logRecoveryFailure(attempt: token.number)
-            if let failure = lastRecoveryFailure, !isStarting, lastAttemptCanRetry { emit(.deviceUnavailable(failure)) }
+            // 蓝牙/设备切换时 HAL 与客户端格式短暂不一致，-10868 是本轮协商的中间结果。
+            // 继续沿用有界重试；只有首包超时或最终失败才留下中断告警，不能把已自愈的协商报成录音故障。
+            if let failure = lastRecoveryFailure, !isStarting, lastAttemptCanRetry,
+               !failure.isFormatNegotiationFailure {
+                emit(.deviceUnavailable(failure))
+            }
             return false
         }
     }
@@ -616,7 +626,11 @@ final class MicCaptureService: @unchecked Sendable {
     @MainActor private func logRecoveryFailure(attempt: Int) {
         guard let failure = lastRecoveryFailure else { return }
         let summary = "麦克风恢复失败 stage=\(failure.stage.rawValue) 会话代次=\(failure.generation) 尝试=\(attempt) 设备绑定=\(failure.deviceBound.map { String($0) } ?? "-") 采样率=\(failure.oldSampleRate.map { String($0) } ?? "-")→\(failure.newSampleRate.map { String($0) } ?? "-") 声道=\(failure.oldChannelCount.map { String($0) } ?? "-")→\(failure.newChannelCount.map { String($0) } ?? "-") 引擎代次=\(failure.engineGeneration) 硬件采样率=\(failure.hardwareSampleRate.map { String($0) } ?? "-") 客户端采样率=\(failure.clientSampleRate.map { String($0) } ?? "-") 设备采样率=\(failure.deviceSampleRate.map { String($0) } ?? "-") 错误域=\(failure.errorDomain ?? "-") 错误码=\(failure.errorCode.map { String($0) } ?? "-")"
-        logger.error("\(summary, privacy: .public) 详情=\(failure.detail ?? "-", privacy: .private)")
+        if failure.isFormatNegotiationFailure {
+            logger.debug("\(summary, privacy: .public) 详情=\(failure.detail ?? "-", privacy: .private)")
+        } else {
+            logger.error("\(summary, privacy: .public) 详情=\(failure.detail ?? "-", privacy: .private)")
+        }
     }
 
     /// 本地静音：tap 保持安装，改写全零缓冲。
@@ -1088,6 +1102,12 @@ struct MicCaptureDiagnostics: Sendable {
     var hardwareChannelCount: UInt32? = nil
     var clientChannelCount: UInt32? = nil
     var deviceSampleRate: Double? = nil
+
+    /// 仅启动/tap 安装阶段的格式不支持可作为内部协商重试；写盘等阶段不得据错误码降级告警。
+    var isFormatNegotiationFailure: Bool {
+        (stage == .startEngine || stage == .installTap)
+            && errorDomain == "com.apple.coreaudio.avfaudio" && errorCode == -10868
+    }
 }
 
 /// 麦克风采集事件：把「可恢复的设备切换/恢复」与「真实写盘失败」分开上报。

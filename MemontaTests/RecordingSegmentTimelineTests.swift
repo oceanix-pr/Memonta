@@ -133,6 +133,59 @@ struct RecordingSegmentTimelineTests {
         #expect(recorder.recordingCaptureReport.retainedOriginals == true)
     }
 
+    @Test(arguments: ["caf", "wav"])
+    func stoppedMergeRepairsContainerBeforeSkippingAndKeepsOriginal(ext: String) async throws {
+        let dir = try folder()
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let broken = dir.appendingPathComponent("sample_mic_tmp_0001.\(ext)")
+        let later = dir.appendingPathComponent("sample_mic_tmp_0002.caf")
+        try tone(broken)
+        try tone(later)
+        var bytes = try Data(contentsOf: broken)
+        let data = try #require(bytes.range(of: Data("data".utf8)))
+        if ext == "caf" {
+            bytes.replaceSubrange(data.upperBound..<(data.upperBound + 8), with: repeatElement(UInt8(0), count: 8))
+        } else {
+            bytes.replaceSubrange(data.upperBound..<(data.upperBound + 4), with: repeatElement(UInt8(0), count: 4))
+            bytes.replaceSubrange(4..<8, with: repeatElement(UInt8(0), count: 4))
+        }
+        try bytes.write(to: broken, options: .atomic)
+        let brokenDuration = try? await AVURLAsset(url: broken).load(.duration)
+        #expect(brokenDuration.map { !$0.seconds.isFinite || $0.seconds <= 0 } ?? true, "复现未 finalize 的容器")
+        try saveTimeline([broken.lastPathComponent: 0, later.lastPathComponent: 2], in: dir)
+        let output = dir.appendingPathComponent("sample.m4a")
+        let recorder = MeetingRecorderService()
+        let result = await recorder.mergeCapturedSegments(CapturedSegments(micURLs: [broken, later],
+            sysURLs: [], finalURL: output, micFormatChanged: true))
+        #expect(result == output)
+        let file = try AVAudioFile(forReading: output)
+        #expect(try energy(file, at: 0.1) > 0.05, "修复后的声音必须被合入")
+        #expect(try energy(file, at: 1.1) < 0.005, "未采集到的声音不能被伪造或压缩")
+        #expect(try energy(file, at: 2.1) > 0.05)
+        #expect(abs(Double(file.length) / file.processingFormat.sampleRate - 3) < 0.1)
+        #expect(try Data(contentsOf: broken) == bytes, "修复仅操作副本，不改写原始证据")
+        #expect(FileManager.default.fileExists(atPath: later.path))
+        let report = recorder.recordingCaptureReport
+        #expect(report.repairedSegments == [broken.lastPathComponent])
+        #expect(report.skippedSegments == nil)
+        #expect(report.retainedOriginals == true)
+        #expect(!report.isEmpty)
+        let remaining = try FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil)
+        #expect(!remaining.contains { $0.lastPathComponent.hasPrefix(".capture_repaired_") })
+    }
+
+    @Test func failedRepairDoesNotClaimSuccessOrLeaveCopies() async throws {
+        let dir = try folder()
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let unknown = dir.appendingPathComponent("unknown.caf")
+        let bytes = Data(repeating: 1, count: 8_193)
+        try bytes.write(to: unknown)
+        #expect(await FileSyncService.repairedPCMContainerCopy(at: unknown) == nil)
+        #expect(try Data(contentsOf: unknown) == bytes)
+        let remaining = try FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil)
+        #expect(remaining.map(\.lastPathComponent) == [unknown.lastPathComponent])
+    }
+
     @Test func crashRecoveryUsesSameTimelineAndPreservesUnreadableSegments() async throws {
         let dir = try folder()
         defer { try? FileManager.default.removeItem(at: dir) }
@@ -202,6 +255,7 @@ struct RecordingSegmentTimelineTests {
         let old = try JSONDecoder().decode(RecordingCaptureReport.self,
             from: Data(#"{"version":1,"interruptions":[],"issues":["audioDegraded"]}"#.utf8))
         #expect(old.retainedOriginals == nil)
+        #expect(old.repairedSegments == nil)
         #expect(old.hasWarning)
     }
 }

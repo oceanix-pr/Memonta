@@ -1066,6 +1066,34 @@ enum FileSyncService {
 
     // MARK: - PCM 分片容器头修补（崩溃恢复）
 
+    /// 停录后先在独立副本修补，校验通过才交给合并；原始素材始终不变。
+    /// 调用方负责在导出完成后清理返回的副本，且必须确认采集已经停止。
+    static func repairedPCMContainerCopy(at url: URL) async -> URL? {
+        let ext = url.pathExtension.lowercased()
+        guard ext == "wav" || ext == "caf" else { return nil }
+        let copy = url.deletingLastPathComponent()
+            .appendingPathComponent(".capture_repaired_\(UUID()).\(ext)")
+        var accepted = false
+        defer {
+            if !accepted, FileManager.default.fileExists(atPath: copy.path) {
+                do { try FileManager.default.removeItem(at: copy) }
+                catch { logger.error("清理未通过校验的音频修复副本失败: \(error.localizedDescription)") }
+            }
+        }
+        do { try FileManager.default.copyItem(at: url, to: copy) }
+        catch {
+            logger.error("创建音频修复副本失败: \(error.localizedDescription)")
+            return nil
+        }
+        guard repairPCMContainerHeader(at: copy), await isAudioPlayable(at: copy) else {
+            logger.warning("音频分片自动修复后仍未通过校验，保留原始分片")
+            return nil
+        }
+        accepted = true
+        logger.info("音频分片容器已自动修复并通过校验")
+        return copy
+    }
+
     /// 修补崩溃截断的 PCM 分片（.wav/.caf）容器头部。
     /// PCM 分片头部在文件开头、音频数据线性追加，异常退出仅导致头部 size 字段
     /// 过期（正常关闭时才回写最终值）；按实际文件长度重算并回写后即可正常读取：
@@ -1097,7 +1125,8 @@ enum FileSyncService {
                 | Int(d[d.startIndex + o + 2]) << 16 | Int(d[d.startIndex + o + 3]) << 24
         }
         guard header.subdata(in: 0..<4) == Data("RIFF".utf8),
-              header.subdata(in: 8..<12) == Data("WAVE".utf8) else { return false }
+              header.subdata(in: 8..<12) == Data("WAVE".utf8),
+              fileSize - 8 <= Int(UInt32.max) else { return false }
         var offset = 12
         while offset + 8 <= header.count {
             let chunkID = header.subdata(in: offset..<(offset + 4))
@@ -1394,7 +1423,7 @@ enum FileSyncService {
         do {
             _ = try RecordingSegmentTimeline.load(in: dir) // 损坏的新时间轴不能回退成无缺口的旧拼接。
             var report = try RecordingCaptureReportStore.load(in: dir) ?? RecordingCaptureReport()
-            preserveOriginals = skipped > 0 || report.hasWarning
+            preserveOriginals = skipped > 0 || report.hasWarning || report.retainedOriginals == true
             if skipped > 0 {
                 if !report.issues.contains(.audioDegraded) { report.issues.append(.audioDegraded) }
                 report.skippedSegments = (micTmpURLs + sysTmpURLs).filter { !micOK.contains($0) && !sysOK.contains($0) }.map(\.lastPathComponent)

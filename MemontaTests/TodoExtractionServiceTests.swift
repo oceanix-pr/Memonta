@@ -299,7 +299,7 @@ struct TodoExtractionServiceTests {
 }
 
 /// 每个夹具有独立 host/session；处理器注册表由 Mutex 保护，避免并行测试串请求。
-private struct TodoHTTPFixture {
+struct TodoHTTPFixture {
     let host = UUID().uuidString.lowercased() + ".invalid"
     let session: URLSession
 
@@ -335,7 +335,7 @@ private struct TodoHTTPFixture {
 }
 
 /// URLProtocol 的生命周期由 URLSession 管理；实例无可变状态，跨实例注册表只经 Mutex 访问。
-private final class TodoTestProtocol: URLProtocol, @unchecked Sendable {
+final class TodoTestProtocol: URLProtocol, @unchecked Sendable {
     enum Reply: Sendable {
         case json(String, status: Int = 200)
         case sse(String)

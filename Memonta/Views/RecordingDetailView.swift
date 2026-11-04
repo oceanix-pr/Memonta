@@ -129,9 +129,17 @@ struct RecordingDetailView: View {
     /// 音频原件是否存在：`fileExists` 曾在 body 内每次求值都做同步 stat，
     /// 而播放进度每 0.5s 触发一次 body 重算；改为切换录音时算一次并缓存
     @State private var audioFileExistsCache = false
+    /// 当前录音的声波包络；nil 表示分析中或无法读取音频，由完成标记区分
+    @State private var waveform: AudioWaveform?
+    @State private var waveformAnalysisFinished = false
     /// 「一键处理」按钮实测宽度：标题行为它留出等宽空白，使播放控制落在状态正上方
     @State private var oneClickButtonWidth: CGFloat = 0
     @FocusState private var titleFieldFocused: Bool
+
+    private struct PlaybackSource: Equatable {
+        let fileURL: URL
+        let audioRemovedAt: Date?
+    }
 
     /// 临时模式（不落盘）：禁用全部编辑/分析入口，只保留浏览、播放、复制、导出
     private var isReadOnly: Bool { viewModel.persistence.capability.isTransient }
@@ -226,11 +234,9 @@ struct RecordingDetailView: View {
         #if os(macOS)
         .navigationSubtitle("")
         #endif
-        .task(id: recording.fileURL) {
+        .task(id: PlaybackSource(fileURL: recording.fileURL, audioRemovedAt: recording.audioRemovedAt)) {
             prepareForRecordingSwitch()
-        }
-        .onChange(of: recording.audioRemovedAt) { _, _ in
-            prepareForRecordingSwitch()
+            await loadWaveform()
         }
         .onChange(of: viewModel.captureReportRequestedFolder) { _, folder in
             if folder == recording.folderName { captureReportExpanded = true }
@@ -294,8 +300,11 @@ struct RecordingDetailView: View {
                             Text("已跳过的音频分片")
                             ForEach(skipped, id: \.self) { Text(verbatim: $0).textSelection(.enabled) }
                         }
+                        if let repaired = report.repairedSegments, !repaired.isEmpty {
+                            Text("音频分片已自动修复并合入录音。")
+                        }
                         if report.retainedOriginals == true {
-                            Text("原始音频分片已保留在录音文件夹，可用于修复。")
+                            Text("应用已自动合并可用分片，原始音频分片同时保留。")
                         }
                         Text("以下时间是观察到的采集中断区间，不代表精确的声音缺失时长。")
                             .foregroundStyle(.secondary)
@@ -335,6 +344,8 @@ struct RecordingDetailView: View {
         }
         // 切换录音时直接替换播放器，避免播放栏闪烁
         playerState?.invalidate()
+        waveform = nil
+        waveformAnalysisFinished = false
         let url = recording.fileURL
         let exists = FileManager.default.fileExists(atPath: url.path)
         audioFileExistsCache = exists
@@ -347,6 +358,26 @@ struct RecordingDetailView: View {
             selectedLLMConfig = settingsVM.getActiveLLMConfig(from: llmConfigs)
         }
         normalizeSelectedTab()
+    }
+
+    // MARK: - 声波图
+
+    /// 加载当前录音的声波包络（播放条下方声波图）。
+    ///
+    /// 解码在后台执行，完成的结果经 `WaveformCache` 复用；切换条目时取消当前分析。
+    /// 录音文件被清理或替换后 `fileExists` 为 false，直接跳过。
+    private func loadWaveform() async {
+        let url = recording.fileURL
+        guard FileManager.default.fileExists(atPath: url.path) else {
+            waveform = nil
+            waveformAnalysisFinished = true
+            return
+        }
+
+        let result = await WaveformCache.shared.waveform(for: url)
+        guard !Task.isCancelled else { return }
+        waveform = result
+        waveformAnalysisFinished = true
     }
 
     /// 页签可见性可能随专业模式变化：当前页签不再可用时回到「转写」
@@ -515,32 +546,41 @@ struct RecordingDetailView: View {
                 }
             }
 
-            // 进度条 + 状态（合并为一行）
+            // 进度条 + 状态（合并为一行），下方接声波图
             if fileExists {
-                HStack(spacing: 8) {
-                    if let state = playerState, state.duration > 0 {
-                        // 进度条同样抽成子视图，隔离 currentTime 依赖
-                        PlaybackProgressSlider(state: state)
+                VStack(spacing: 4) {
+                    HStack(spacing: 8) {
+                        if let state = playerState, state.duration > 0 {
+                            // 进度条同样抽成子视图，隔离 currentTime 依赖
+                            PlaybackProgressSlider(state: state)
+                        }
+
+                        // 状态指示（紧凑）
+                        HStack(spacing: 4) {
+                            Circle().fill(statusColor).frame(width: 6, height: 6)
+                            Text(statusText).font(.caption2).foregroundStyle(.tertiary)
+                        }
+                        // 「一键处理」置于状态（转写中...）右侧：转写（若有）→ 画面分析（录屏）→ 总结 → 拆解待办
+                        if let onOneClick {
+                            Button {
+                                onOneClick()
+                            } label: {
+                                Label("一键处理", systemImage: "wand.and.stars")
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .controlSize(.regular)
+                            .help("一键处理：转写 → 画面分析 → 总结 → 拆解待办")
+                            .disabled(isReadOnly)
+                            // 实测按钮宽度，回传给标题行做对齐留白（见 oneClickButtonReserve）
+                            .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { oneClickButtonWidth = $0 }
+                        }
                     }
 
-                    // 状态指示（紧凑）
-                    HStack(spacing: 4) {
-                        Circle().fill(statusColor).frame(width: 6, height: 6)
-                        Text(statusText).font(.caption2).foregroundStyle(.tertiary)
-                    }
-                    // 「一键处理」置于状态（转写中...）右侧：转写（若有）→ 画面分析（录屏）→ 总结 → 拆解待办
-                    if let onOneClick {
-                        Button {
-                            onOneClick()
-                        } label: {
-                            Label("一键处理", systemImage: "wand.and.stars")
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.regular)
-                        .help("一键处理：转写 → 画面分析 → 总结 → 拆解待办")
-                        .disabled(isReadOnly)
-                        // 实测按钮宽度，回传给标题行做对齐留白（见 oneClickButtonReserve）
-                        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { oneClickButtonWidth = $0 }
+                    // 声波图：直接挂在播放进度条下方，一眼看出哪里有声、哪里静音；
+                    // 点击/拖动即跳转。数据源是离线解码的峰值包络（见 WaveformAnalyzer）
+                    if let state = playerState {
+                        WaveformStrip(state: state, waveform: waveform, isLoading: !waveformAnalysisFinished)
+                            .padding(.top, 2)
                     }
                 }
             } else {

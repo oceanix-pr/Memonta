@@ -85,6 +85,32 @@ struct RecordingCaptureReportTests {
         #expect(throws: (any Error).self) { try RecordingCaptureReportStore.load(in: folder) }
     }
 
+    @Test func repairedContainersAreInformationalButDoNotEraseCaptureGaps() throws {
+        var report = RecordingCaptureReport(repairedSegments: ["sample_mic_tmp_0001.caf"])
+        #expect(!report.isEmpty)
+        #expect(!report.hasWarning)
+        #expect(report.summary == String(localized: "音频分片已自动修复并合入录音。"))
+        #expect(try JSONDecoder().decode(RecordingCaptureReport.self, from: JSONEncoder().encode(report)) == report)
+        report.interruptions = recoveredReport().interruptions
+        #expect(report.hasWarning, "修好容器不等于补回中断期间没有采集到的声音")
+        #expect(report.summary?.contains(try #require(report.interruptions.first).message) == true)
+    }
+
+    @Test func crashRebuildKeepsOriginalsPreviouslyRetainedAfterAutomaticRepair() async throws {
+        let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: folder) }
+        let original = folder.appendingPathComponent("sample_mic_tmp_0001.caf")
+        try writeAudio(to: original)
+        let report = RecordingCaptureReport(repairedSegments: [original.lastPathComponent], retainedOriginals: true)
+        try RecordingCaptureReportStore.save(report, in: folder)
+        #expect(!report.hasWarning, "自动修复信息本身不是故障")
+        let result = await FileSyncService.recoverCrashedRecording(from: folder, files: [original], skipFreshnessCheck: true)
+        #expect(result.recoveredURL != nil)
+        #expect(FileManager.default.fileExists(atPath: original.path), "后续恢复必须尊重已有的原片保留标记")
+        #expect(try RecordingCaptureReportStore.load(in: folder) == report)
+    }
+
     @Test func recoveredStopUsesFeedbackAndReportSurvivesTitleEdit() async throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)

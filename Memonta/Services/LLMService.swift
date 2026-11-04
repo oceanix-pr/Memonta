@@ -366,6 +366,8 @@ enum LLMService {
         var finishReason: String?
         /// 是否收到过思考内容（用于诊断「预算被思考吃掉」）
         var hadReasoning: Bool
+        /// 是否收到 [DONE]，供标题请求识别没有结束标记的断流
+        var sawDone = false
     }
 
     /// 逐行解析 SSE 流：提取 choices[0].delta.content 作为正文、delta.reasoning_content /
@@ -387,6 +389,7 @@ enum LLMService {
         )
         var finishReason: String?
         var hadReasoning = false
+        var sawDone = false
 
         for try await line in bytes.lines {
             if Task.isCancelled {
@@ -394,10 +397,13 @@ enum LLMService {
                 reasoningCoalescer.flush()
                 throw CancellationError()
             }
-            guard line.hasPrefix("data: ") else { continue }
-            let jsonStr = String(line.dropFirst(6))
+            guard line.hasPrefix("data:") else { continue }
+            let jsonStr = String(line.dropFirst(5)).trimmingCharacters(in: .whitespaces)
 
-            if jsonStr == "[DONE]" { break }
+            if jsonStr == "[DONE]" {
+                sawDone = true
+                break
+            }
 
             // 不再要求 delta.content 存在：结束块与纯思考块都可能没有正文，
             // 旧写法把它们整体 `continue` 掉，正是「返回空内容」无法归因的根源
@@ -422,7 +428,8 @@ enum LLMService {
         return SSEStreamResult(
             text: pieces.joined(),
             finishReason: finishReason,
-            hadReasoning: hadReasoning
+            hadReasoning: hadReasoning,
+            sawDone: sawDone
         )
     }
 
@@ -579,10 +586,44 @@ enum LLMService {
     /// 标题生成输入上限（标题只需内容概要，避免请求体过大）
     private static let maxTitleInputCharacters = 8_000
 
-    /// 从内容生成简短标题（非流式）。
+    /// 从内容生成简短标题；本地模型流式接收，云端保留非流式请求。
     /// 用于总结生成/待办拆解完成后自动更新列表标题与右键「润色标题」，调用方自行容错
-    static func generateTitle(from content: String, config: LLMConfigSnapshot) async throws -> String {
-        let raw = try await performTitleRequest(content: content, config: config, retryOnEmpty: true)
+    static func generateTitle(
+        from content: String,
+        config: LLMConfigSnapshot,
+        session suppliedSession: URLSession? = nil
+    ) async throws -> String {
+        let session: URLSession
+        if let suppliedSession {
+            session = suppliedSession
+        } else {
+            let configuration = URLSessionConfiguration.ephemeral
+            configuration.timeoutIntervalForRequest = config.isLocal ? 180 : 60
+            // 思考 token 持续到达时也必须有总时限，不能仅依赖流的空闲超时。
+            configuration.timeoutIntervalForResource = config.isLocal ? 600 : 120
+            session = URLSession(configuration: configuration)
+        }
+        defer { if suppliedSession == nil { session.invalidateAndCancel() } }
+        let raw = try await withTaskCancellationHandler {
+            do {
+                try Task.checkCancellation()
+                let capabilities = try await LocalLLMCapabilities.discover(config: config, session: session)
+                return try await performTitleRequest(
+                    content: content, config: config, capabilities: capabilities,
+                    session: session, retryOnEmpty: true
+                )
+            } catch {
+                if Task.isCancelled || error is CancellationError { throw CancellationError() }
+                if let networkError = error as? URLError {
+                    logger.debug("标题请求网络失败 local=\(config.isLocal, privacy: .public) code=\(networkError.code.rawValue, privacy: .public)")
+                }
+                throw error
+            }
+        } onCancel: {
+            // 每次生产调用独占 session，同时取消能力探测、等待响应头与流读取。
+            session.invalidateAndCancel()
+        }
+        try Task.checkCancellation()
 
         // 清洗：取首行、去首尾引号与修饰符、剥离开头时间/数字碎片、限长（防模型输出多余内容污染标题）
         var title = raw.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -602,14 +643,16 @@ enum LLMService {
         return String(title.prefix(10))
     }
 
-    /// 执行单次标题请求，返回模型原始文本。
-    /// max_tokens 放宽到本地 64k：推理型模型会先用思考 token 消耗预算，
-    /// 预算过小会导致 content 为空（finish_reason=length）；空返回且非预算耗尽时重试一次
+    /// 只在服务声明支持时关闭思考；其余模型保留输出预算，用 SSE 避免在思考中被
+    /// 原先的 60 秒非流式超时断开。只有真正的空返回重试一次，不重复失败的推理。
     private static func performTitleRequest(
         content: String,
         config: LLMConfigSnapshot,
+        capabilities: LocalLLMCapabilities,
+        session: URLSession,
         retryOnEmpty: Bool
     ) async throws -> String {
+        try Task.checkCancellation()
         guard let url = URL(string: config.chatCompletionsURL) else {
             throw LLMError.invalidURL
         }
@@ -624,45 +667,78 @@ enum LLMService {
         if !config.apiKey.isEmpty {
             request.setValue("Bearer \(config.apiKey)", forHTTPHeaderField: "Authorization")
         }
-        request.timeoutInterval = 60
+        request.timeoutInterval = config.isLocal ? 180 : 60
 
-        let requestBody: [String: Any] = [
+        var requestBody: [String: Any] = [
             "model": config.modelName,
             "messages": [
                 ["role": "system", "content": PromptTemplateStore.resolved(.title)],
                 ["role": "user", "content": capped]
             ],
-            "stream": false,
+            "stream": config.isLocal,
             "temperature": 0.3,
             "max_tokens": maxOutputTokens(for: config, cloudDefault: 65536)
         ]
+        if let off = capabilities.reasoningOffValue {
+            requestBody["reasoning_effort"] = off
+        }
         request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let started = Date()
+        let (bytes, response) = try await session.bytes(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw LLMError.invalidResponse
         }
-        guard httpResponse.statusCode == 200 else {
-            throw LLMError.apiError(
-                statusCode: httpResponse.statusCode,
-                message: String(data: data, encoding: .utf8) ?? ""
+        let result: SSEStreamResult
+        if httpResponse.statusCode == 200,
+           httpResponse.value(forHTTPHeaderField: "Content-Type")?.lowercased().contains("text/event-stream") == true {
+            result = try await consumeSSEStream(bytes: bytes, onToken: { _ in })
+            guard result.sawDone || result.finishReason != nil else { throw LLMError.invalidResponse }
+        } else {
+            // 兼容忽略 stream、仍然返回完整 JSON 的本地服务，以及云端原有响应。
+            var data = Data()
+            for try await byte in bytes { data.append(byte) }
+            guard httpResponse.statusCode == 200 else {
+                throw LLMError.apiError(
+                    statusCode: httpResponse.statusCode,
+                    message: String(decoding: data, as: UTF8.self)
+                )
+            }
+            guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  let choices = json["choices"] as? [[String: Any]],
+                  let choice = choices.first,
+                  let message = choice["message"] as? [String: Any] else {
+                throw LLMError.parseError
+            }
+            result = SSEStreamResult(
+                text: message["content"] as? String ?? "",
+                finishReason: choice["finish_reason"] as? String,
+                hadReasoning: reasoningDeltaKeys.contains { (message[$0] as? String)?.isEmpty == false }
             )
         }
-        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let choices = json["choices"] as? [[String: Any]],
-              let message = choices.first?["message"] as? [String: Any] else {
-            throw LLMError.parseError
+        try Task.checkCancellation()
+        // 只记录耗时、结束状态和长度，不记录用户文本、思考内容或原始错误。
+        logger.debug("标题请求诊断 elapsed=\(Int(Date().timeIntervalSince(started)), privacy: .public)s finish=\(result.finishReason ?? "nil", privacy: .public) textLength=\(result.text.count, privacy: .public) hadReasoning=\(result.hadReasoning, privacy: .public)")
+        var raw = result.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        var hadThinkingBlock = false
+        // 旧服务可能把思考块放进 content，不能取其首行当作标题。
+        while raw.hasPrefix("<think>") {
+            hadThinkingBlock = true
+            guard let end = raw.range(of: "</think>") else { throw LLMError.invalidResponse }
+            raw = String(raw[end.upperBound...]).trimmingCharacters(in: .whitespacesAndNewlines)
         }
-        let raw = (message["content"] as? String) ?? ""
 
-        // 空返回：先区分「预算耗尽」（确定性失败，重试无意义，且要给出可操作的提示），
-        // 再对真正的空输出重试一次
-        if raw.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            if choices.first?["finish_reason"] as? String == "length" {
-                throw LLMError.outputBudgetExhausted
-            }
+        if result.finishReason == "length" {
+            throw raw.isEmpty ? LLMError.outputBudgetExhausted : LLMError.invalidResponse
+        }
+        guard result.finishReason == nil || result.finishReason == "stop" else { throw LLMError.invalidResponse }
+        if raw.isEmpty {
+            guard !result.hadReasoning, !hadThinkingBlock else { throw LLMError.invalidResponse }
             if retryOnEmpty {
-                return try await performTitleRequest(content: content, config: config, retryOnEmpty: false)
+                return try await performTitleRequest(
+                    content: content, config: config, capabilities: capabilities,
+                    session: session, retryOnEmpty: false
+                )
             }
         }
         return raw

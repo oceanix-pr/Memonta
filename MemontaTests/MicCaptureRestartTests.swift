@@ -4,6 +4,7 @@ import CoreAudio
 import Testing
 @testable import Memonta
 
+@Suite(.serialized)
 struct MicCaptureRestartTests {
     private static var bluetoothRouteAvailable: Bool {
         if let input = MicrophoneDeviceRegistry.resolvedDeviceID(), isBluetooth(input) { return true }
@@ -30,6 +31,95 @@ struct MicCaptureRestartTests {
 
     private func format(_ rate: Double) throws -> AVAudioFormat {
         try #require(AVAudioFormat(standardFormatWithSampleRate: rate, channels: 1))
+    }
+
+    @Test func onlyEngineFormatNegotiationCanRetryWithoutInterruptionWarning() {
+        for stage: MicCaptureDiagnostics.Stage in [.bindDevice, .readFormat, .openSegmentFile, .installTap,
+                                                   .startEngine, .writeBuffer, .recoveryBudget, .captureStalled] {
+            let diagnostics = MicCaptureDiagnostics(stage: stage, generation: 1, attempt: 1,
+                deviceBound: true, oldSampleRate: 24_000, newSampleRate: 96_000,
+                oldChannelCount: 1, newChannelCount: 1,
+                errorDomain: "com.apple.coreaudio.avfaudio", errorCode: -10868, detail: nil)
+            #expect(diagnostics.isFormatNegotiationFailure == (stage == .startEngine || stage == .installTap))
+        }
+    }
+
+    /// 模拟日志中的 -10868：同一设备协商重试成功不产生警告，预算耗尽仍须报告。
+    /// 只在显式启用、已有权限时运行，全部写入均为静音且位于临时目录。
+    @MainActor
+    @Test(.serialized, .enabled(if: ProcessInfo.processInfo.environment["MEMONTA_VERIFY_AUDIO_CAPTURE"] == "1"
+                   && AVAudioApplication.shared.recordPermission == .granted), arguments: [false, true])
+    func realFormatNegotiationRecoversInternally(exhaustRetries: Bool) async throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("MicNegotiation-\(UUID())")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        var activeEngine: AVAudioEngine?
+        var starts = 0
+        let capture = MicCaptureService(makeEngine: {
+            let engine = AVAudioEngine()
+            activeEngine = engine
+            return engine
+        }, startEngine: { engine in
+            starts += 1
+            if starts == 2 || (exhaustRetries && starts > 2) {
+                throw NSError(domain: "com.apple.coreaudio.avfaudio", code: -10868)
+            }
+            engine.prepare()
+            try engine.start()
+        })
+        defer { capture.stop() }
+        var index = 1
+        capture.nextSegmentForFormatChange = {
+            index += 1
+            return directory.appendingPathComponent("sample_mic_tmp_\(index).caf")
+        }
+        let health = LockedBox(RecordingCaptureHealth(usesMicrophone: true))
+        let session = try #require(health.value.sessionID)
+        let recovered = LockedBox(false)
+        let failed = LockedBox(false)
+        capture.onEvent = { event in
+            var state = health.value
+            switch event {
+            case .deviceUnavailable: state.handle(.microphoneUnavailable, sessionID: session)
+            case .recoveryStarted: state.handle(.microphoneRecovering, sessionID: session)
+            case .recovered:
+                state.handle(.microphoneRecovered, sessionID: session)
+                recovered.value = true
+            case .recoveryFailed, .writeFailed:
+                state.handle(.microphoneRecoveryFailed, sessionID: session)
+                failed.value = true
+            }
+            health.value = state
+        }
+        let first = directory.appendingPathComponent("sample_mic_tmp_1.caf")
+        let timeline = RecordingSegmentTimelineStore()
+        try await capture.start(to: first, initiallyMuted: true, timeline: timeline)
+        let before = capture.writtenFrames
+        let engine = try #require(activeEngine)
+        engine.stop()
+        NotificationCenter.default.post(name: .AVAudioEngineConfigurationChange, object: engine)
+        let deadline = ContinuousClock.now.advanced(by: .seconds(16))
+        while !recovered.value, !failed.value, ContinuousClock.now < deadline {
+            try await Task.sleep(for: .milliseconds(20))
+        }
+        #expect(starts >= 3, "格式协商失败必须由应用重试")
+        if exhaustRetries {
+            #expect(failed.value)
+            #expect(!recovered.value)
+            #expect(health.value.report.hasWarning, "重试耗尽不能被格式协商分类掩盖")
+        } else {
+            #expect(recovered.value)
+            #expect(!failed.value)
+            #expect(capture.writtenFrames > before)
+            #expect(health.value.report.isEmpty, "已成功消化的格式协商不得成为用户的修复任务")
+        }
+        capture.stop()
+        #expect(try AVAudioFile(forReading: first).length > 0, "重试不得覆盖先前音频")
+        timeline.finish()
+        try timeline.save(in: directory)
+        if !exhaustRetries {
+            #expect(try RecordingSegmentTimeline.load(in: directory)?.starts.count ?? 0 >= 2)
+        }
     }
 
     /// 显式启用且已有权限才运行；不弹授权框，只在临时目录写全零音频。

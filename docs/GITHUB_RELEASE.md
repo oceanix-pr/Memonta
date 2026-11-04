@@ -33,7 +33,7 @@ Sparkle EdDSA 私钥与 Apple 证书相互独立。公钥位于 `project.yml`，
 
 ad-hoc 签名的 designated requirement 与单个构建的代码哈希绑定，Sparkle 更新签名不会使其成为稳定的 Apple 代码身份。系统可能仍显示旧开关已开启，但 TCC 日志报 `Failed to match existing code requirement`；单纯关闭再开启可能只修改旧记录。
 
-9.6.3 起按用户要求加入 `UpdatePermissionRepair`：新版已安装、主应用取得持久化会话并已获隐私同意后，在开放主界面和新的采集请求前，对变化的临时签名代码身份执行一次 `tccutil reset All com.oceanix.Memonta`，只影响本应用。身份取自 Security 签名信息中的代码哈希与构建号；首次安装建立基线，同一身份重启不重复清理，稳定签名版本不自动撤销授权。worker、测试、临时会话和已有采集资源时不执行。系统工具在后台运行，5 秒超时或取消会结束子进程；只有成功退出才记录完成，失败保留重试机会并向用户提示。正常退出和更新安装等待该步骤收尾。测试通过注入替身与无害进程验证，不能替代真实的跨版本系统授权验收。
+9.6.3 起按用户要求加入 `UpdatePermissionRepair`：新版已安装、主应用取得持久化会话并已获隐私同意后，在开放主界面和新的采集请求前，仅对明确标记为未公证更新包且变化的临时签名代码身份执行一次 `tccutil reset All com.oceanix.Memonta`，只影响本应用。身份取自 Security 签名信息中的代码哈希与构建号；首次安装建立基线，同一身份重启不重复清理，稳定签名版本不自动撤销授权。开发调试构建、worker、测试、临时会话和已有采集资源时不执行。系统工具在后台运行，5 秒超时或取消会结束子进程；只有成功退出才记录完成，失败保留重试机会并向用户提示。正常退出和更新安装等待该步骤收尾。测试通过注入替身与无害进程验证，不能替代真实的跨版本系统授权验收。
 
 清理旧记录后，实际功能仍通过 macOS 弹窗重新征求同意；UserDefaults 只保存去重标记，不表示系统已授权。自动清理失败时，可完全退出后重试，或在系统设置移除旧授权并添加当前应用。系统工具语义见 Apple [重置 macOS 受保护资源访问](https://developer.apple.com/documentation/xcode/resetting-access-to-protected-resources-in-macos)。
 

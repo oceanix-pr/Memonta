@@ -28,6 +28,7 @@ final class UpdatePermissionRepair {
         var bundleID: String = UpdatePermissionRepair.bundleID
         var identity: String?
         var isAdHoc: Bool
+        var isUnnotarizedDistribution: Bool = true
         var canReset: Bool = true
         var hasPriorInstallation: Bool = true
         var hasCaptureResources: Bool = false
@@ -70,7 +71,9 @@ final class UpdatePermissionRepair {
 
     var needsPreparation: Bool {
         if isPreparing { return true }
-        return persistentSession && !preparedForLaunch && snapshot().canReset
+        guard persistentSession, !preparedForLaunch else { return false }
+        let current = snapshot()
+        return current.canReset && current.isUnnotarizedDistribution
     }
 
     /// 同一启动期间多个窗口/热键共享一个执行体；失败留待下次启动重试，避免使用中再撤销授权。
@@ -80,6 +83,10 @@ final class UpdatePermissionRepair {
         guard persistentSession, !preparedForLaunch else { return outcome }
         let current = snapshot()
         guard current.canReset, current.bundleID == Self.bundleID else { return .notNeeded }
+        guard current.isUnnotarizedDistribution else {
+            preparedForLaunch = true
+            return .notNeeded
+        }
         guard let identity = current.identity else {
             preparedForLaunch = true
             if current.isAdHoc {
@@ -129,6 +136,7 @@ final class UpdatePermissionRepair {
             bundleID: Bundle.main.bundleIdentifier ?? "",
             identity: signing.map { version + ":" + $0.hash },
             isAdHoc: signing?.isAdHoc ?? isUnnotarized,
+            isUnnotarizedDistribution: isUnnotarized,
             canReset: !AppRuntime.isRunningTests && !AppRuntime.isUITesting &&
                 !ProcessInfo.processInfo.arguments.contains(BackgroundWorker.launchFlag) &&
                 DatabaseOwnershipLock.isHeld && !MemontaPrivacyPolicy.needsConsent(),
