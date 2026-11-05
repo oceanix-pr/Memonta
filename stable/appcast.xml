@@ -3,34 +3,28 @@
     <channel>
         <title>Memonta</title>
         <item>
-            <title>9.6.5</title>
-            <pubDate>Wed, 04 Nov 2026 13:15:52 +0000</pubDate>
-            <sparkle:version>149</sparkle:version>
-            <sparkle:shortVersionString>9.6.5</sparkle:shortVersionString>
+            <title>9.6.6</title>
+            <pubDate>Thu, 05 Nov 2026 01:04:26 +0000</pubDate>
+            <sparkle:version>150</sparkle:version>
+            <sparkle:shortVersionString>9.6.6</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[Memonta 9.6.5（149）
+            <description sparkle:format="markdown"><![CDATA[Memonta 9.6.6（150）
 
-- 在录音播放进度条下方显示声波图，区分有声和静音区间；可点击或拖动跳转，分析在本机完成。
-- 停止录音时尝试修复不可播放的 CAF/WAV 分片容器头，按原时间轴合入可用声音，保留原始分片，并在采集详情中说明自动修复结果。未采集到的声音无法补回。
-- 麦克风设备切换期间的临时格式协商失败由应用内部重试；恢复成功且无其他采集问题时，不再误报录音中断。
-- 本地模型生成标题改为流式接收，兼容仍返回完整 JSON 的服务；断流或输出预算耗尽时不保存不完整标题。
-- 更新后的系统权限清理仅适用于未公证分发包；开发调试构建不会自动清理授权。
+- 将媒体导入、录音合并与媒体清理的进度提示统一显示在窗口顶部横幅，减少底部提示遮挡。
+- 录音合并时继续显示处理阶段与进度；回声消除阶段仍可取消，取消后保留原始音轨。
 
-此版本沿用未公证分发方式。
+此版本沿用未公证分发方式。首次安装可能被 macOS 阻止，更新后可能需要重新授予系统权限。
 
 English
 
-- Adds a waveform below the recording playback bar to distinguish sound from quiet sections. Click or drag to seek; analysis runs locally.
-- Attempts to repair unplayable CAF/WAV segment headers when recording stops, merges usable audio on the original timeline, retains the source segments, and reports the repair in capture details. Audio that was never captured cannot be recovered.
-- Retries temporary audio format negotiation failures during microphone device changes without reporting a recovered switch as a recording interruption.
-- Streams title generation from local models while accepting services that return complete JSON. Interrupted or output limited responses are not saved as partial titles.
-- Limits post-update system permission cleanup to non-notarized distribution builds; development builds do not reset permissions automatically.
+- Shows media import, recording merge, and media cleanup progress in the top banner to reduce obstruction at the bottom of the window.
+- Keeps the merge stage and progress visible. Echo reduction can still be cancelled, falling back to the original audio track.
 
 This release remains non-notarized. macOS may block first launch, and related system permissions may need to be granted again after updating.
 
 此版本未经 Apple 公证，仅用于用户已同意的更新测试；首次安装可能被系统阻止，系统权限可能需要重新授予。
 ]]></description>
-            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.6.5/Memonta-v9.6.5-149-macOS.zip" length="44764793" type="application/octet-stream" sparkle:edSignature="LEmkXOaUfubDSRVx4WdQjJllllg+tFcls6T49csRvZKkYglt93aRmlP7XXp83gbvg2wY9Vj1H31dVYwbngV0Ag=="/>
+            <enclosure url="https://github.com/oceanix-pr/Memonta/releases/download/v9.6.6/Memonta-v9.6.6-150-macOS.zip" length="44753073" type="application/octet-stream" sparkle:edSignature="cJ5iE8mVTqT4ZnpGMfdekC1xmd5HtlmP5OxacI7tkSkA2NTxaQARE1RJny7fkfZOuh0YCr3ZWbzK4bKE0MsXDQ=="/>
         </item>
     </channel>
 </rss>
