@@ -185,11 +185,10 @@ struct RootView: View {
     var body: some View {
         dialogLayers
         .disabled(MediaCleanupService.shared.isRunning)
+        // 底部只保留常驻的临时模式提示；过程类反馈（导入/合并/清理）统一走顶部横幅
         .overlay(alignment: .bottom) {
             VStack(spacing: 8) {
                 transientModeBanner
-                progressOverlay
-                mergingAudioOverlay
             }
         }
         // 录音实时告警与磁盘同步结果同级：同处顶部横幅层，位置与刷新反馈一致
@@ -202,6 +201,9 @@ struct RootView: View {
         .animation(.easeInOut, value: syncBannerText)
         .animation(.easeInOut, value: viewModel.liveRecordingWarning)
         .animation(.easeInOut, value: viewModel.importProgressText)
+        .animation(.easeInOut, value: MediaCleanupService.shared.isRunning)
+        .animation(.easeInOut, value: RecordingMergeActivity.shared.isRunning)
+        .animation(.easeInOut, value: viewModel.isMergingAudio)
         .animation(.easeInOut, value: viewModel.isMeetingRecording)
         .animation(.easeInOut, value: viewModel.isRecordingMuted)
         .onChange(of: viewModel.recordingFeedback?.id) { _, _ in handleRecordingFeedback() }
@@ -1410,25 +1412,6 @@ struct RootView: View {
         }
     }
 
-    /// 进度覆盖层视图（媒体导入）。批量转写/总结已收敛到处理队列，队列进度看右上角队列面板
-    @ViewBuilder
-    private var progressOverlay: some View {
-        if let progressText = viewModel.importProgressText {
-            HStack(spacing: 8) {
-                ProgressView()
-                    .controlSize(.small)
-                Text(progressText)
-                    .font(.caption)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(.bar)
-            .clipShape(Capsule())
-            .padding(.bottom, 8)
-            .transition(.move(edge: .bottom).combined(with: .opacity))
-        }
-    }
-
     /// 磁盘同步结果反馈：非模态横幅告知“恢复了几条、新载入了什么”；
     /// 恢复失败走模态 alert（需要用户明确知晓且不频繁）。
     /// 手动刷新始终展示（回答“刷新到底做了什么”）；启动同步仅在有待展示内容时展示
@@ -1531,26 +1514,54 @@ struct RootView: View {
         }
     }
 
-    /// 磁盘同步结果横幅（顶部居中，8 秒自动消失，点击关闭按钮立即收起）
+    /// 顶部横幅：结果提示在 8 秒后收起，过程提示在操作结束时收起。
+    /// 结果类（同步/保存/截图）与过程类（导入、合并、清理）反馈共用这一条，
+    /// 过程类在左侧显示转圈图标，不再单独占用底部胶囊。
     @ViewBuilder
     private var syncResultBanner: some View {
-        if let text = syncBannerText {
-            HStack(alignment: .top, spacing: 10) {
+        // 过程类反馈优先：导入/合并/清理进行中时，横幅显示当前步骤而不是上一条结果
+        if let text = progressBannerText {
+            bannerContent(text: text, isProgress: true)
+        } else if let text = syncBannerText {
+            bannerContent(text: text, isProgress: false)
+        }
+    }
+
+    /// 横幅内容：结果类与过程类共用同一套样式（胶囊背景 + 图标 + 文案 + 关闭键）
+    @ViewBuilder
+    private func bannerContent(text: String, isProgress: Bool) -> some View {
+        // 单行提示（如「录音已保存。」+「查看详情」）按中线对齐：图标、文字、按钮、关闭键
+        // 的视觉中心落在同一条水平线上；多行提示（采集详情逐条列出）仍按顶对齐，
+        // 否则图标与关闭键会飘到整段文字的中部
+        HStack(alignment: text.contains("\n") ? .top : .center, spacing: 10) {
+            if isProgress {
+                ProgressView()
+                    .controlSize(.small)
+                    .accessibilityLabel(Text("处理中"))
+            } else {
                 Image(systemName: syncBannerSymbol)
                     .foregroundStyle(syncBannerIsWarning ? Color.yellow : Color.secondary)
-                Text(text)
-                    .font(.callout)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                // 就近入口（如任务入队后的「查看队列」）：不必让用户自己去工具栏找队列按钮
-                if let actionTitle = syncBannerActionTitle, let action = syncBannerAction {
-                    Button(actionTitle) {
-                        action()
-                        dismissTransientBanner()
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
+            }
+            Text(text)
+                .font(.callout)
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+            // 就近入口（如任务入队后的「查看队列」）：不必让用户自己去工具栏找队列按钮
+            if isProgress, viewModel.isMergingAudio, viewModel.canCancelEchoReduction {
+                Button("取消回声消除") { viewModel.cancelEchoReduction() }
+                    .buttonStyle(.link)
+            } else if !isProgress,
+                      let actionTitle = syncBannerActionTitle, let action = syncBannerAction {
+                Button(actionTitle) {
+                    action()
+                    dismissTransientBanner()
                 }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                // 小号按钮自带内边距，与文字基线对齐时会显得偏下，这里按中线对齐
+                .alignmentGuide(.top) { $0[VerticalAlignment.center] }
+            }
+            if !isProgress {
                 Button {
                     dismissTransientBanner()
                 } label: {
@@ -1559,77 +1570,41 @@ struct RootView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("关闭")
+                .alignmentGuide(.top) { $0[VerticalAlignment.center] }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
-            .background(.bar)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .shadow(color: .black.opacity(0.18), radius: 8, y: 2)
-            .padding(.top, 8)
-            .transition(.move(edge: .top).combined(with: .opacity))
         }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background(.bar)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(color: .black.opacity(0.18), radius: 8, y: 2)
+        .padding(.top, 8)
+        .transition(.move(edge: .top).combined(with: .opacity))
     }
 
-    /// 会议录音状态徽章
-    /// 音频合并进行中提示：录音停止后合并/混流是耗时操作（长会议可达数十秒），
-    /// 旧实现只有 `isMergingAudio` 状态而界面无任何反馈，用户会以为应用卡死。
-    /// 现在按阶段（检查分片 → 回声消除 → 混音导出 → 保存）显示当前进度；
-    /// 仅回声消除阶段可取消（取消后回退原始音轨，不影响入库），其余阶段中途取消
-    /// 会留下半成品文件，故只提示、不提供取消。
-    @ViewBuilder
-    private var mergingAudioOverlay: some View {
+    /// 过程类反馈（导入/合并/清理）的文案：与结果类共用顶部横幅，左侧显示转圈图标。
+    /// 优先级按「用户刚触发的动作」排：导入 → 清理 → 合并。
+    private var progressBannerText: String? {
+        if let progressText = viewModel.importProgressText { return progressText }
         if MediaCleanupService.shared.isRunning {
-            HStack(spacing: 10) {
-                ProgressView().controlSize(.small)
-                Text("正在清理媒体…").font(.caption)
-                Text("\(MediaCleanupService.shared.completedTargetCount)/\(MediaCleanupService.shared.targetCount)")
-                    .monospacedDigit()
-            }
-            .padding(12)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
-        } else if RecordingMergeActivity.shared.isRunning {
-            HStack(spacing: 10) {
-                ProgressView().controlSize(.small)
-                Text("正在合并录音…").font(.caption)
-            }
-            .padding(12)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
-        } else if viewModel.isMergingAudio {
-            HStack(spacing: 10) {
-                ProgressView()
-                    .controlSize(.small)
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(mergePhaseText)
-                        .font(.caption)
-
-                    if viewModel.mergePhase == .echoReduction, viewModel.mergeProgressTotal > 0 {
-                        HStack(spacing: 6) {
-                            Text("\(viewModel.mergeProgressCompleted)/\(viewModel.mergeProgressTotal)")
-                            if let startedAt = viewModel.mergeStageStartedAt {
-                                Text(startedAt, style: .timer)
-                            }
-                        }
-                        .font(.caption2)
-                        .monospacedDigit()
-                        .foregroundStyle(.secondary)
-                    }
-                }
-
-                if viewModel.canCancelEchoReduction {
-                    Button("取消回声消除") {
-                        viewModel.cancelEchoReduction()
-                    }
-                    .buttonStyle(.link)
-                    .font(.caption)
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(.bar)
-            .clipShape(Capsule())
-            .transition(.move(edge: .bottom).combined(with: .opacity))
+            let count = String(format: String(localized: "%1$lld/%2$lld"),
+                               Int64(MediaCleanupService.shared.completedTargetCount),
+                               Int64(MediaCleanupService.shared.targetCount))
+            return String(localized: "正在清理媒体…") + " " + count
         }
+        if RecordingMergeActivity.shared.isRunning {
+            return String(localized: "正在合并录音…")
+        }
+        if viewModel.isMergingAudio {
+            var text = mergePhaseText
+            if viewModel.mergePhase == .echoReduction, viewModel.mergeProgressTotal > 0 {
+                text += " " + String(format: String(localized: "%1$lld/%2$lld"),
+                                     Int64(viewModel.mergeProgressCompleted),
+                                     Int64(viewModel.mergeProgressTotal))
+            }
+            return text
+        }
+        return nil
     }
 
     /// 收尾阶段对应的用户文案
