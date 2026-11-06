@@ -10153,6 +10153,161 @@
         }
       }
     },
+    "转写可能有误，请核对重要内容。" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "قد يحتوي التفريغ على أخطاء، يُرجى مراجعة المحتوى المهم." } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Transkription kann Fehler enthalten. Bitte prüfen Sie wichtige Inhalte." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The transcript may contain errors. Please check important content." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "La transcripción puede contener errores. Comprueba el contenido importante." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "La transcription peut contenir des erreurs. Veuillez vérifier les informations importantes." } },
+        "hi" : { "stringUnit" : { "state" : "translated", "value" : "प्रतिलेखन में त्रुटियाँ हो सकती हैं। कृपया महत्वपूर्ण सामग्री जाँचें।" } },
+        "id" : { "stringUnit" : { "state" : "translated", "value" : "Transkripsi mungkin mengandung kesalahan. Periksa bagian yang penting." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "La trascrizione può contenere errori. Controlla i contenuti importanti." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "文字起こしには誤りが含まれる場合があります。重要な内容をご確認ください。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "전사 내용에 오류가 있을 수 있습니다. 중요한 내용을 확인해 주세요." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "De transcriptie kan fouten bevatten. Controleer belangrijke inhoud." } },
+        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Transkrypcja może zawierać błędy. Sprawdź ważne treści." } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "A transcrição pode conter erros. Verifique o conteúdo importante." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "В расшифровке могут быть ошибки. Проверьте важную информацию." } },
+        "sv" : { "stringUnit" : { "state" : "translated", "value" : "Transkriberingen kan innehålla fel. Kontrollera viktigt innehåll." } },
+        "th" : { "stringUnit" : { "state" : "translated", "value" : "การถอดเสียงอาจมีข้อผิดพลาด โปรดตรวจสอบเนื้อหาที่สำคัญ" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Transkripsiyon hatalar içerebilir. Lütfen önemli içerikleri kontrol edin." } },
+        "uk" : { "stringUnit" : { "state" : "translated", "value" : "У транскрипції можуть бути помилки. Перевірте важливу інформацію." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bản chép lời có thể có lỗi. Vui lòng kiểm tra nội dung quan trọng." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "转写可能有误，请核对重要内容。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "轉寫可能有誤，請核對重要內容。" } }
+      }
+    },
+    "AI 可能出错，请自行核实重要信息。" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قد يخطئ الذكاء الاصطناعي، لذا يُرجى التحقق بنفسك من المعلومات المهمة."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "KI kann Fehler machen. Bitte prüfen Sie wichtige Informationen selbst nach."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI can make mistakes. Please verify important information yourself."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La IA puede equivocarse. Verifica por tu cuenta la información importante."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'IA peut se tromper. Veuillez vérifier vous-même les informations importantes."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI गलतियाँ कर सकता है। कृपया महत्वपूर्ण जानकारी स्वयं सत्यापित करें।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI dapat membuat kesalahan. Mohon verifikasi sendiri informasi penting."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'IA può sbagliare. Verifica personalmente le informazioni importanti."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI は間違えることがあります。重要な情報はご自身で確認してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI는 틀릴 수 있습니다. 중요한 정보는 직접 확인하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI kan fouten maken. Controleer belangrijke informatie zelf."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI może się mylić. Samodzielnie zweryfikuj ważne informacje."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A IA pode cometer erros. Verifique você mesmo as informações importantes."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ИИ может ошибаться. Пожалуйста, проверяйте важную информацию самостоятельно."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI kan göra fel. Kontrollera viktig information själv."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI อาจผิดพลาดได้ โปรดตรวจสอบข้อมูลสำคัญด้วยตนเอง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yapay zekâ hata yapabilir. Önemli bilgileri kendiniz doğrulayın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ШІ може помилятися. Будь ласка, перевіряйте важливу інформацію самостійно."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI có thể sai sót. Vui lòng tự kiểm chứng những thông tin quan trọng."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 可能出错，请自行核实重要信息。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 可能出錯，請自行核實重要資訊。"
+          }
+        }
+      }
+    },
     "AI 待办拆解" : {
       "localizations" : {
         "ar" : {

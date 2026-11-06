@@ -125,6 +125,7 @@ struct SummaryView: View {
             // 流式内容合批在后台解析，生成期间也展示 Markdown。
             StreamingMarkdownView(markdown: viewModel.summaryText)
                 .frame(maxWidth: .infinity, alignment: .leading)
+            AIContentDisclaimer()
         }
     }
 
@@ -145,6 +146,9 @@ struct SummaryView: View {
 
             // Markdown 渲染的总结内容
             MarkdownView(markdown: summary)
+
+            // 模型产出的总结可能出错：提示紧贴正文，隐私政策里另有完整说明
+            AIContentDisclaimer()
         }
     }
 
@@ -455,6 +459,11 @@ struct SummaryView: View {
                     Text("生成于 \(doc.generatedAt, format: .dateTime.hour().minute()) · 模型 \(doc.model)")
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
+
+                    // 手动创建的待办文档不属于模型生成内容。
+                    if doc.source != "manual" {
+                        AIContentDisclaimer()
+                    }
                 }
             } else if isProMode && !viewModel.isExtractingTodos {
                 // 空状态：无待办时提供手动新增入口

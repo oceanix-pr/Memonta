@@ -566,6 +566,9 @@ struct QuickNoteDetailView: View {
                             .background(.quaternary.opacity(0.3))
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
+                    if !viewModel.summaryText.isEmpty || !viewModel.summaryReasoningText.isEmpty {
+                        AIContentDisclaimer()
+                    }
                 }
             } else if !viewModel.summaryText.isEmpty {
                 // 已保存的总结用 Markdown 渲染（标题/列表/粗体/代码等）
@@ -574,6 +577,9 @@ struct QuickNoteDetailView: View {
                     .padding(12)
                     .background(.quaternary.opacity(0.3))
                     .clipShape(RoundedRectangle(cornerRadius: 8))
+
+                // 图片笔记的总结同样由模型生成，提示与录音总结保持一致
+                AIContentDisclaimer()
             } else {
                 Text("点击「生成总结」按钮，AI 将自动分析笔记内容并生成概要总结")
                     .font(.caption)
@@ -740,6 +746,9 @@ struct QuickNoteDetailView: View {
                     Text("生成于 \(doc.generatedAt, format: .dateTime.hour().minute()) · 模型 \(doc.model)")
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
+                    if doc.source != "manual" {
+                        AIContentDisclaimer()
+                    }
                 }
             } else if isProMode && !viewModel.isExtractingTodos {
                 // 空状态：无待办时提供手动新增入口

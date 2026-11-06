@@ -254,6 +254,10 @@ struct TranscriptView: View {
                 }
             }
 
+            Label("转写可能有误，请核对重要内容。", systemImage: "info.circle")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
             // 搜索时高亮匹配内容，仍用 Markdown 渲染
             // 分支条件用防抖词：与 matchedSegments 的输入保持一致，
             // 否则防抖窗口内会出现"搜索词非空但匹配结果为空"的假"无匹配"闪烁

@@ -336,3 +336,23 @@ struct StreamingMarkdownView: View {
             }
     }
 }
+
+// MARK: - AI 生成内容免责声明
+
+/// AI（LLM）生成内容的统一免责脚注。
+///
+/// 总结、待办、画面要点与图片笔记总结都由模型生成，可能出错或漏掉细节；
+/// 把提示放在内容紧邻的位置，用户读到结果时就能看到，而不是只在隐私政策里声明。
+/// 文案走 String Catalog，与隐私政策中那段更完整的说明保持同一口径。
+struct AIContentDisclaimer: View {
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 4) {
+            Image(systemName: "info.circle")
+                .font(.caption2)
+            Text("AI 可能出错，请自行核实重要信息。")
+                .font(.caption)
+        }
+        .foregroundStyle(.secondary)
+        .accessibilityElement(children: .combine)
+    }
+}

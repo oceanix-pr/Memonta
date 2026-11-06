@@ -376,6 +376,9 @@ struct VideoUnderstandingView: View {
                 }
                 .padding()
                 .background(.quaternary.opacity(0.2), in: RoundedRectangle(cornerRadius: 10))
+
+                // 画面要点由多模态模型生成：提示放在卡片下方，与总结/待办口径一致
+                AIContentDisclaimer()
             }
         }
     }
@@ -554,6 +557,9 @@ private struct VisualNotesProgressPanel: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+            }
+            if !viewModel.visualNotesText.isEmpty || !viewModel.visualNotesReasoningText.isEmpty {
+                AIContentDisclaimer()
             }
         }
         .padding()
